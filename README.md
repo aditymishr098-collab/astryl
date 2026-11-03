@@ -6,7 +6,7 @@
 
 **Explore the Solar System, offline first.**
 
-Real planet positions, rotating 3D worlds, atmospheres and oxygen,<br>
+Real planet positions, rotating 3D worlds, a star map for your sky,<br>
 and an honest answer to "could humans live here?"
 
 [![Latest release](https://img.shields.io/github/v/release/lumio-apps/heliora?label=release&color=F5A524)](https://github.com/lumio-apps/heliora/releases/latest)
@@ -26,16 +26,28 @@ and an honest answer to "could humans live here?"
 
 <table>
   <tr>
-    <td align="center"><img src="docs/screenshots/explore-2d.jpg" width="220" alt="2D map with real planet positions"><br><sub>Real positions today</sub></td>
-    <td align="center"><img src="docs/screenshots/explore-3d-dark.jpg" width="220" alt="3D Earth in dark mode"><br><sub>3D worlds, dark mode</sub></td>
-    <td align="center"><img src="docs/screenshots/explore-3d-light.jpg" width="220" alt="3D Earth in light mode"><br><sub>3D worlds, light mode</sub></td>
+    <td align="center"><img src="docs/screenshots/explore.jpg" width="200" alt="Explore tab with planet cards and a 3D Earth"><br><sub><b>Explore in 3D</b></sub></td>
+    <td align="center"><img src="docs/screenshots/tonight.jpg" width="200" alt="Tonight's sky with the Moon"><br><sub><b>Tonight's sky</b></sub></td>
+    <td align="center"><img src="docs/screenshots/star-map.jpg" width="200" alt="Star map with constellations and planets"><br><sub><b>Star map</b></sub></td>
+    <td align="center"><img src="docs/screenshots/binocular.jpg" width="200" alt="Binocular guide"><br><sub><b>Binocular guide</b></sub></td>
   </tr>
   <tr>
-    <td align="center"><img src="docs/screenshots/weight.jpg" width="220" alt="Your weight on other planets"><br><sub>Your weight everywhere</sub></td>
-    <td align="center"><img src="docs/screenshots/age.jpg" width="220" alt="Your age on other planets"><br><sub>Your age on other planets</sub></td>
-    <td align="center"><img src="docs/screenshots/settings.jpg" width="220" alt="Settings with theme, language and updates"><br><sub>Theme, English and Hindi, updates</sub></td>
+    <td align="center"><img src="docs/screenshots/sky-links.jpg" width="200" alt="Share, satellites and news cards"><br><sub><b>Satellites, news, share</b></sub></td>
+    <td align="center"><img src="docs/screenshots/news.jpg" width="200" alt="Space news"><br><sub><b>Space news</b></sub></td>
+    <td align="center"><img src="docs/screenshots/compare.jpg" width="200" alt="Compare Earth and Mars"><br><sub><b>Compare worlds</b></sub></td>
+    <td align="center"><img src="docs/screenshots/weight-v16.jpg" width="200" alt="Your weight on other planets"><br><sub><b>Your weight everywhere</b></sub></td>
   </tr>
 </table>
+
+## Why Heliora
+
+| | |
+|---|---|
+| 🔭 **Real sky, real maths** | Planet positions, the Moon, sunrise and sunset, eclipses and the star map are all calculated on your phone, not copied from a website. |
+| 📴 **Offline first** | Everything works without internet. The few online extras are off until you switch them on. |
+| 🔒 **Private** | No ads, no account, no tracking. Nothing about you leaves your phone. |
+| 🌍 **English and हिन्दी** | The whole app is in English and Hindi, or follows your phone. |
+| 🆓 **Open source** | MIT licence. Read it, change it, build it yourself. |
 
 ## Features
 
@@ -98,7 +110,7 @@ After that, Heliora updates itself: go to **Settings → Check for updates**, or
 Heliora is made by [Lumio Apps](https://github.com/lumio-apps): **no ads, no account, no tracking.**
 
 - Everything works without internet, except the optional online features below. Planet data, positions and 3D surfaces are all calculated on your phone.
-- **Online features are off by default.** If you switch them on in Settings, Heliora contacts `api.wheretheiss.at` (or `celestrak.org`) for the station's orbit data `ll.thespacedevs.com` (Launch Library 2) for the launch list, and `api.spaceflightnewsapi.net` for the news. The orbits of Tiangong and Hubble come from `celestrak.org`. Nothing about you is sent; those services can only see your phone's internet address. The orbit data is saved on the phone, so the station keeps working offline for days. Switch the setting off and Heliora never contacts them.
+- **Online features are off by default.** If you switch them on in Settings, Heliora contacts `api.wheretheiss.at` (or `celestrak.org`) for the station's orbit data, `ll.thespacedevs.com` (Launch Library 2) for the launch list, and `api.spaceflightnewsapi.net` for the news. The orbits of Tiangong and Hubble come from `celestrak.org`. Nothing about you is sent; those services can only see your phone's internet address. The orbit data is saved on the phone, so the station keeps working offline for days. Switch the setting off and Heliora never contacts them.
 - Besides that, the internet is used only for updates. The app asks GitHub for the latest release and, when you tap **Download and install**, downloads the signed APK from that release. Nothing about you is sent.
 - Your birth date and settings are saved only on your phone.
 - The daily update check can be turned off in Settings.
