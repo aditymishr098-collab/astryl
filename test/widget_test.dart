@@ -1491,7 +1491,7 @@ void main() {
     test('round trip', () {
       const s = HelioraSettings(
         themeMode: ThemeMode.dark,
-        localeCode: 'hy',
+        localeCode: 'hi',
         viewMode: ViewMode.globe,
         autoUpdateCheck: false,
         lastUpdateCheckMs: 42,
@@ -1501,7 +1501,7 @@ void main() {
       );
       final back = HelioraSettings.fromJson(s.toJson());
       expect(back.themeMode, ThemeMode.dark);
-      expect(back.localeCode, 'hy');
+      expect(back.localeCode, 'hi');
       expect(back.viewMode, ViewMode.globe);
       expect(back.autoUpdateCheck, isFalse);
       expect(back.lastUpdateCheckMs, 42);
@@ -1600,14 +1600,22 @@ void main() {
       expect(constellationIndex('zzz'), -1);
     });
 
-    test('precession is about 0.4 degrees today and nothing in 2000', () {
+    test('precession moves Sirius about 0.28 degrees and nothing in 2000', () {
       const sirius = Equatorial(101.2875, -16.7161);
       final j2000 = DateTime.utc(2000, 1, 1, 12);
       expect(separation(sirius, precessFromJ2000(sirius, j2000)), lessThan(0.01));
       final now = precessFromJ2000(sirius, DateTime.utc(2026, 6, 1));
       final shift = separation(sirius, now);
-      expect(shift, greaterThan(0.3));
-      expect(shift, lessThan(0.45));
+      // Sirius is 39.6 degrees south of the ecliptic, so it moves
+      // 50.3" * sin(129.6 deg) = 38.8" a year: 0.28 degrees in 26.4 years.
+      expect(shift, greaterThan(0.25));
+      expect(shift, lessThan(0.32));
+      // A star on the ecliptic moves the full 50.3" a year, about 0.37.
+      const onEcliptic = Equatorial(0, 0);
+      final full =
+          separation(onEcliptic, precessFromJ2000(onEcliptic, DateTime.utc(2026, 6, 1)));
+      expect(full, greaterThan(0.3));
+      expect(full, lessThan(0.4));
     });
 
     test('Polaris stands as high as the latitude, all day long', () {
