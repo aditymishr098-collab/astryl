@@ -123,8 +123,7 @@ class _MoonCalendarScreenState extends State<MoonCalendarScreen> {
                 child: Text(
                   loc.formatMonthYear(DateTime(_year, _month)),
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.w700, color: p.text),
+                  style: TextStyle(fontFamily: headingFont, fontSize: 20, fontWeight: FontWeight.w700, color: p.text),
                 ),
               ),
               IconButton(
@@ -178,8 +177,7 @@ class _MoonCalendarScreenState extends State<MoonCalendarScreen> {
           ),
           const SizedBox(height: 20),
           Text(l.keyMoonDates,
-              style: TextStyle(
-                  fontSize: 18, fontWeight: FontWeight.w700, color: p.text)),
+              style: TextStyle(fontFamily: headingFont, fontSize: 18, fontWeight: FontWeight.w700, color: p.text)),
           const SizedBox(height: 10),
           for (final d in events) ...<Widget>[
             _EventRow(day: d, southern: southern, time: _time),
@@ -346,8 +344,7 @@ class _DaySheet extends StatelessWidget {
             Text(
               moonPhaseName(l, phaseIndex(day.age)),
               textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 22, fontWeight: FontWeight.w700, color: p.text),
+              style: TextStyle(fontFamily: headingFont, fontSize: 22, fontWeight: FontWeight.w700, color: p.text),
             ),
             const SizedBox(height: 4),
             Text(

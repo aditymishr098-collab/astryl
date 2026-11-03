@@ -45,8 +45,7 @@ class _CompareScreenState extends State<CompareScreen> {
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
       children: <Widget>[
         Text(l.compareTitle,
-            style: TextStyle(
-                fontSize: 26, fontWeight: FontWeight.w700, color: p.text)),
+            style: TextStyle(fontFamily: headingFont, fontSize: 26, fontWeight: FontWeight.w700, color: p.text)),
         const SizedBox(height: 6),
         Text(l.compareHint, style: TextStyle(fontSize: 14, color: p.muted)),
         const SizedBox(height: 16),

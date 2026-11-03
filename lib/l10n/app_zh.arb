@@ -488,5 +488,6 @@
   "durationHm": "{hours} 小时 {minutes} 分钟",
   "sunNote": "黄金时刻是太阳在地平线以上不到 6° 的时候。第一缕光和最后一缕光出现在太阳位于地平线以下 6° 时，天空在太阳低于地平线 18° 时完全变黑。时间按你选的日期计算。",
   "sunStaysUp": "这一天太阳不会落下。",
-  "sunStaysDown": "这一天太阳不会升起。"
+  "sunStaysDown": "这一天太阳不会升起。",
+  "solarSystemTitle": "太阳系"
 }

@@ -1731,4 +1731,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get sunStaysDown => 'এই দিনে সূর্য ওঠে না।';
+
+  @override
+  String get solarSystemTitle => 'সৌরজগৎ';
 }

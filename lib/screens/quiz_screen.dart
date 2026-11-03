@@ -89,8 +89,7 @@ class _QuizScreenState extends State<QuizScreen> {
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
       children: <Widget>[
         Text(l.quizTitle,
-            style: TextStyle(
-                fontSize: 26, fontWeight: FontWeight.w700, color: p.text)),
+            style: TextStyle(fontFamily: headingFont, fontSize: 26, fontWeight: FontWeight.w700, color: p.text)),
         const SizedBox(height: 20),
         const Center(child: HelioraLogo(size: 88)),
         const SizedBox(height: 20),
@@ -140,9 +139,7 @@ class _QuizScreenState extends State<QuizScreen> {
         ),
         const SizedBox(height: 24),
         Text(quizQuestionText(l, question.kind),
-            style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
+            style: TextStyle(fontFamily: headingFont, fontSize: 22, fontWeight: FontWeight.w700,
                 color: p.text,
                 height: 1.3)),
         const SizedBox(height: 20),
@@ -193,8 +190,7 @@ class _QuizScreenState extends State<QuizScreen> {
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
       children: <Widget>[
         Text(l.quizTitle,
-            style: TextStyle(
-                fontSize: 26, fontWeight: FontWeight.w700, color: p.text)),
+            style: TextStyle(fontFamily: headingFont, fontSize: 26, fontWeight: FontWeight.w700, color: p.text)),
         const SizedBox(height: 8),
         Text(quizLevelName(l, _level),
             style: TextStyle(
@@ -203,8 +199,7 @@ class _QuizScreenState extends State<QuizScreen> {
         Text(
           '$_score / $total',
           textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 56, fontWeight: FontWeight.w700, color: p.accentText),
+          style: TextStyle(fontFamily: headingFont, fontSize: 56, fontWeight: FontWeight.w700, color: p.accentText),
         ),
         const SizedBox(height: 8),
         Text(l.quizScore(_score, total),

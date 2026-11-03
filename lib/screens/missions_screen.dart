@@ -58,9 +58,7 @@ class MissionCard extends StatelessWidget {
             children: <Widget>[
               Text(
                 '${m.year}',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
+                style: TextStyle(fontFamily: headingFont, fontSize: 22, fontWeight: FontWeight.w700,
                   color: p.accentText,
                 ),
               ),

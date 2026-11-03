@@ -488,5 +488,6 @@
   "durationHm": "{hours} h {minutes} min",
   "sunNote": "A hora dourada é quando o Sol está a menos de 6° acima do horizonte. A primeira e a última luz acontecem quando ele está 6° abaixo, e o céu fica totalmente escuro quando ele está 18° abaixo. Os horários são calculados para a data que você escolher.",
   "sunStaysUp": "Neste dia o Sol não se põe.",
-  "sunStaysDown": "Neste dia o Sol não nasce."
+  "sunStaysDown": "Neste dia o Sol não nasce.",
+  "solarSystemTitle": "Sistema Solar"
 }

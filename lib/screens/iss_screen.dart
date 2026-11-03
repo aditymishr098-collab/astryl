@@ -309,8 +309,7 @@ class _IssScreenState extends State<IssScreen> {
       ),
       const SizedBox(height: 20),
       Text(l.issPassesTitle(city.name),
-          style: TextStyle(
-              fontSize: 18, fontWeight: FontWeight.w700, color: p.text)),
+          style: TextStyle(fontFamily: headingFont, fontSize: 18, fontWeight: FontWeight.w700, color: p.text)),
       const SizedBox(height: 12),
     ];
 

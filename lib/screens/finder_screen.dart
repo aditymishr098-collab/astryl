@@ -208,9 +208,7 @@ class _FinderScreenState extends State<FinderScreen> {
               child: Text(
                 h,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
+                style: TextStyle(fontFamily: headingFont, fontSize: 20, fontWeight: FontWeight.w700,
                   color: (g?.onTarget ?? false) ? p.good : p.text,
                 ),
               ),

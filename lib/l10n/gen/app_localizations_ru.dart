@@ -1738,4 +1738,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get sunStaysDown => 'В этот день Солнце не восходит.';
+
+  @override
+  String get solarSystemTitle => 'Солнечная система';
 }

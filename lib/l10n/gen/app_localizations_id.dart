@@ -1743,4 +1743,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get sunStaysDown => 'Pada hari ini Matahari tidak terbit.';
+
+  @override
+  String get solarSystemTitle => 'Tata surya';
 }

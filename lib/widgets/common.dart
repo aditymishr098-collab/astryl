@@ -211,15 +211,14 @@ class SurfaceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final p = Palette.of(context);
-    final light = Theme.of(context).brightness == Brightness.light;
     return Container(
       padding: padding,
       decoration: BoxDecoration(
         color: color ?? p.surface,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
         border: borderColor != null
             ? Border.all(color: borderColor!, width: 1.5)
-            : (light ? Border.all(color: p.border) : null),
+            : Border.all(color: p.border),
       ),
       child: child,
     );
@@ -369,6 +368,80 @@ class InfoRow extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// One big number with an icon above it and a small label.
+class BigStat extends StatelessWidget {
+  const BigStat({
+    super.key,
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = Palette.of(context);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Icon(icon, size: 28, color: p.accentText),
+        const SizedBox(height: 6),
+        Text(label,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontSize: 12, color: p.muted, height: 1.2)),
+        const SizedBox(height: 3),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(value,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              style: headingStyle(18, p.text)),
+        ),
+      ],
+    );
+  }
+}
+
+/// A card with [BigStat]s in three columns.
+class StatPanel extends StatelessWidget {
+  const StatPanel({super.key, required this.tiles});
+
+  final List<BigStat> tiles;
+
+  @override
+  Widget build(BuildContext context) {
+    final rows = <Widget>[];
+    for (var i = 0; i < tiles.length; i += 3) {
+      rows.add(Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          for (var k = i; k < i + 3; k++)
+            Expanded(
+              child: k < tiles.length
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: tiles[k],
+                    )
+                  : const SizedBox.shrink(),
+            ),
+        ],
+      ));
+      if (i + 3 < tiles.length) {
+        rows.add(const SizedBox(height: 18));
+      }
+    }
+    return SurfaceCard(
+      padding: const EdgeInsets.fromLTRB(8, 18, 8, 16),
+      child: Column(children: rows),
     );
   }
 }

@@ -28,7 +28,7 @@ import 'package:heliora/data/planets.dart';
 import 'package:heliora/data/settings.dart';
 import 'package:heliora/data/update_service.dart';
 import 'package:heliora/screens/events_screen.dart' show launchReminderTime;
-import 'package:heliora/widgets/common.dart' show IconStatTile, InfoRow, StatGrid;
+import 'package:heliora/widgets/common.dart' show BigStat, IconStatTile, InfoRow, StatGrid, StatPanel;
 
 void main() {
   group('planet data', () {
@@ -1293,6 +1293,54 @@ void main() {
       );
       expect(tester.takeException(), isNull);
       expect(find.byType(InfoRow), findsNWidgets(2));
+    });
+  });
+
+  group('stat panel', () {
+    Widget app(double scale, int count) {
+      return MaterialApp(
+        home: MediaQuery(
+          data: MediaQueryData(
+            size: const Size(320, 800),
+            textScaler: TextScaler.linear(scale),
+          ),
+          child: Scaffold(
+            body: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: StatPanel(
+                tiles: <BigStat>[
+                  for (var i = 0; i < count; i++)
+                    const BigStat(
+                      icon: Icons.speed,
+                      label: 'Average temperature on the surface',
+                      value: '1,234,567 million km',
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    testWidgets('three columns, any number of tiles, big text without overflow',
+        (tester) async {
+      tester.view.physicalSize = const Size(640, 1600);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(tester.view.reset);
+
+      for (final count in <int>[1, 2, 3, 5, 7, 8]) {
+        await tester.pumpWidget(app(1.0, count));
+        expect(tester.takeException(), isNull, reason: '$count tiles');
+        expect(find.byType(BigStat), findsNWidgets(count));
+      }
+      await tester.pumpWidget(app(1.0, 6));
+      final normal = tester.getSize(find.byType(StatPanel)).height;
+      await tester.pumpWidget(app(1.3, 6));
+      expect(tester.takeException(), isNull);
+      expect(find.byType(BigStat), findsNWidgets(6));
+      expect(tester.getSize(find.byType(StatPanel)).height,
+          greaterThan(normal));
     });
   });
 

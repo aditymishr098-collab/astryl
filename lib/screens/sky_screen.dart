@@ -150,8 +150,7 @@ class _SkyScreenState extends State<SkyScreen> {
         children: <Widget>[
           Expanded(
             child: Text(today ? l.skyTitle : l.skyOtherNight,
-                style: TextStyle(
-                    fontSize: 26, fontWeight: FontWeight.w700, color: p.text)),
+                style: TextStyle(fontFamily: headingFont, fontSize: 26, fontWeight: FontWeight.w700, color: p.text)),
           ),
           if (city != null)
             ActionChip(
@@ -254,9 +253,7 @@ class _SkyScreenState extends State<SkyScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(moonPhaseName(l, phaseIndex(phase.age)),
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
+                            style: TextStyle(fontFamily: headingFont, fontSize: 20, fontWeight: FontWeight.w700,
                                 color: p.text)),
                         const SizedBox(height: 4),
                         Text(
@@ -301,8 +298,7 @@ class _SkyScreenState extends State<SkyScreen> {
         ),
         const SizedBox(height: 20),
         Text(today ? l.planetsTonight : l.planetsThatNight,
-            style: TextStyle(
-                fontSize: 18, fontWeight: FontWeight.w700, color: p.text)),
+            style: TextStyle(fontFamily: headingFont, fontSize: 18, fontWeight: FontWeight.w700, color: p.text)),
         const SizedBox(height: 12),
         for (final night in sky.planets) ...<Widget>[
           _PlanetNightCard(
@@ -440,8 +436,7 @@ class _SunCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(l.sunLightTitle,
-              style: TextStyle(
-                  fontSize: 18, fontWeight: FontWeight.w700, color: p.text)),
+              style: TextStyle(fontFamily: headingFont, fontSize: 18, fontWeight: FontWeight.w700, color: p.text)),
           if (sun.stayUp || sun.stayDown) ...<Widget>[
             const SizedBox(height: 6),
             Text(sun.stayUp ? l.sunStaysUp : l.sunStaysDown,

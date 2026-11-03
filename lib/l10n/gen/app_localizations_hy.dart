@@ -1739,4 +1739,7 @@ class AppLocalizationsHy extends AppLocalizations {
 
   @override
   String get sunStaysDown => 'Այս օրը Արևը չի ծագում։';
+
+  @override
+  String get solarSystemTitle => 'Արեգակնային համակարգ';
 }

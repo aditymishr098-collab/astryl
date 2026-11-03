@@ -1664,4 +1664,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get sunStaysDown => 'この日は太陽が昇りません。';
+
+  @override
+  String get solarSystemTitle => '太陽系';
 }

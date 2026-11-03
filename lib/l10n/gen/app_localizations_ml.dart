@@ -1746,4 +1746,7 @@ class AppLocalizationsMl extends AppLocalizations {
 
   @override
   String get sunStaysDown => 'ഈ ദിവസം സൂര്യൻ ഉദിക്കുന്നില്ല.';
+
+  @override
+  String get solarSystemTitle => 'സൗരയൂഥം';
 }

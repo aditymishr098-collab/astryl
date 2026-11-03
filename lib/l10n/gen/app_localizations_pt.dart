@@ -1739,4 +1739,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get sunStaysDown => 'Neste dia o Sol não nasce.';
+
+  @override
+  String get solarSystemTitle => 'Sistema Solar';
 }

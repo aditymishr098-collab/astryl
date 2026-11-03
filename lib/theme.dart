@@ -1,5 +1,21 @@
 import 'package:flutter/material.dart';
 
+/// The font for titles and big numbers. Everything else uses DM Sans. Both
+/// are bundled in the app (assets/fonts), so nothing is downloaded.
+const String headingFont = 'SpaceGrotesk';
+const String bodyFont = 'DMSans';
+
+/// A heading in Space Grotesk.
+TextStyle headingStyle(double size, Color color,
+        {FontWeight weight = FontWeight.w700, double? height}) =>
+    TextStyle(
+      fontFamily: headingFont,
+      fontSize: size,
+      fontWeight: weight,
+      color: color,
+      height: height,
+    );
+
 /// Heliora's colours, from the approved design (dark "deep space" and a
 /// light cream theme).
 @immutable
@@ -154,6 +170,7 @@ ThemeData buildTheme(Brightness brightness) {
   );
   return ThemeData(
     useMaterial3: true,
+    fontFamily: bodyFont,
     brightness: brightness,
     colorScheme: scheme,
     scaffoldBackgroundColor: p.background,
@@ -164,35 +181,36 @@ ThemeData buildTheme(Brightness brightness) {
       elevation: 0,
       scrolledUnderElevation: 0,
       centerTitle: false,
+      titleTextStyle: headingStyle(22, p.text),
     ),
     cardTheme: CardThemeData(
       color: p.surface,
       elevation: 0,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-        side: brightness == Brightness.light
-            ? BorderSide(color: p.border)
-            : BorderSide.none,
+        borderRadius: BorderRadius.circular(24),
+        side: BorderSide(color: p.border),
       ),
     ),
     navigationBarTheme: NavigationBarThemeData(
+      height: 72,
       backgroundColor: brightness == Brightness.dark
-          ? const Color(0xFF10172C)
+          ? const Color(0xFF0E1428)
           : Colors.white,
-      indicatorColor: p.accent.withValues(alpha: 0.22),
+      indicatorColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
       labelTextStyle: WidgetStateProperty.resolveWith((states) {
         final selected = states.contains(WidgetState.selected);
         return TextStyle(
           fontSize: 12,
-          fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+          fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
           color: selected ? p.accentText : p.muted,
         );
       }),
       iconTheme: WidgetStateProperty.resolveWith((states) {
         final selected = states.contains(WidgetState.selected);
-        return IconThemeData(color: selected ? p.accentText : p.muted);
+        return IconThemeData(
+            size: 26, color: selected ? p.accentText : p.muted);
       }),
     ),
     dividerTheme: DividerThemeData(color: p.border, space: 1),

@@ -100,7 +100,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: NavigationBar(
+      bottomNavigationBar: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border(
+              top: BorderSide(color: Palette.of(context).border, width: 1)),
+        ),
+        child: NavigationBar(
         selectedIndex: _tab,
         onDestinationSelected: (i) => setState(() => _tab = i),
         destinations: <NavigationDestination>[
@@ -130,6 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
             label: l.navQuiz,
           ),
         ],
+      ),
       ),
     );
   }
@@ -238,73 +244,74 @@ class _ExploreTabState extends State<ExploreTab>
     final state = AppScope.of(context);
     final mode = state.settings.viewMode;
     final selected = planetById(_selectedId);
+    final width = MediaQuery.sizeOf(context).width;
+    final viewHeight = (width - 40).clamp(260.0, 420.0);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return ListView(
+      padding: const EdgeInsets.only(bottom: 24),
       children: <Widget>[
+        // Header: logo, name and a round settings button.
         Padding(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+          padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
           child: Row(
             children: <Widget>[
-              const HelioraLogo(size: 32),
-              const SizedBox(width: 10),
+              const HelioraLogo(size: 36),
+              const SizedBox(width: 12),
               Expanded(
-                // Shrinks instead of wrapping when the buttons need room.
+                // Shrinks instead of wrapping when the text is large.
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   alignment: AlignmentDirectional.centerStart,
                   child: Text(
                     l.appTitle,
                     maxLines: 1,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700,
-                      color: p.text,
+                    style: headingStyle(28, p.text),
+                  ),
+                ),
+              ),
+              Tooltip(
+                message: l.settings,
+                child: Material(
+                  color: p.surface,
+                  shape: CircleBorder(side: BorderSide(color: p.border)),
+                  child: InkWell(
+                    customBorder: const CircleBorder(),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                          builder: (_) => const SettingsScreen()),
+                    ),
+                    child: SizedBox(
+                      width: 46,
+                      height: 46,
+                      child: Icon(Icons.settings_outlined, color: p.text),
                     ),
                   ),
                 ),
               ),
-              IconButton.filledTonal(
-                tooltip: l.settings,
-                visualDensity: VisualDensity.compact,
-                style: IconButton.styleFrom(
-                  backgroundColor: p.surface,
-                  foregroundColor: p.text,
-                ),
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                      builder: (_) => const SettingsScreen()),
-                ),
-                icon: const Icon(Icons.settings_outlined),
-              ),
-              const SizedBox(width: 8),
-              _ViewToggle(
-                mode: mode,
-                onChanged: (m) => state.setViewMode(m),
-              ),
             ],
           ),
         ),
+        // Search bar.
         Padding(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+          padding: const EdgeInsets.fromLTRB(20, 18, 20, 0),
           child: Semantics(
             button: true,
             label: l.searchTooltip,
             child: Material(
               color: p.surface,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(18),
                 side: BorderSide(color: p.border),
               ),
               child: InkWell(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(18),
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute<void>(
                       builder: (_) => const SearchScreen()),
                 ),
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                   child: Row(
                     children: <Widget>[
                       Icon(Icons.search, color: p.muted),
@@ -324,48 +331,79 @@ class _ExploreTabState extends State<ExploreTab>
             ),
           ),
         ),
-        Expanded(
-          child: !widget.active
-              ? const SizedBox.shrink()
-              : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: mode == ViewMode.flat
-                      ? OrbitView(
-                          date: _date,
-                          selectedId: _selectedId,
-                          onPlanetTap: _openPlanet,
-                          nameOf: (planet) => planetName(l, planet),
-                        )
-                      : GlobeView(planet: selected),
-                ),
+        // Big planet cards.
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
+          child: Text(l.planetsTitle, style: headingStyle(20, p.text)),
+        ),
+        _PopularCards(selectedId: _selectedId, onTap: _openPlanet),
+        // The Solar System, flat or 3D.
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Text(l.solarSystemTitle,
+                    style: headingStyle(20, p.text)),
+              ),
+              _ViewToggle(
+                mode: mode,
+                onChanged: (m) => state.setViewMode(m),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Container(
+            height: viewHeight,
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              color: p.surface,
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(color: p.border),
+            ),
+            child: !widget.active
+                ? const SizedBox.shrink()
+                : (mode == ViewMode.flat
+                    ? OrbitView(
+                        date: _date,
+                        selectedId: _selectedId,
+                        onPlanetTap: _openPlanet,
+                        nameOf: (planet) => planetName(l, planet),
+                      )
+                    : GlobeView(planet: selected)),
+          ),
         ),
         if (mode == ViewMode.flat)
-          _DateBar(
-            date: _date,
-            playing: _playing,
-            onPick: _pickDate,
-            onBack: () => _setDate(_date.subtract(const Duration(days: 30))),
-            onForward: () => _setDate(_date.add(const Duration(days: 30))),
-            onPlay: _togglePlay,
-            onToday: () => _setDate(DateTime.now()),
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: _DateBar(
+              date: _date,
+              playing: _playing,
+              onPick: _pickDate,
+              onBack: () => _setDate(_date.subtract(const Duration(days: 30))),
+              onForward: () => _setDate(_date.add(const Duration(days: 30))),
+              onPlay: _togglePlay,
+              onToday: () => _setDate(DateTime.now()),
+            ),
           ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
           child: Text(
             mode == ViewMode.flat ? l.positionsNote : l.dragToRotate,
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 12, color: p.muted),
           ),
         ),
-        if (mode == ViewMode.flat)
-          _PlanetCards(selectedId: _selectedId, onTap: _openPlanet)
-        else ...<Widget>[
+        if (mode == ViewMode.globe) ...<Widget>[
+          const SizedBox(height: 6),
           _PlanetChips(
             selectedId: _selectedId,
             onSelect: (planet) => setState(() => _selectedId = planet.id),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
             child: _GlobeInfoCard(
               planet: selected,
               onOpen: () => _openPlanet(selected),
@@ -514,13 +552,14 @@ class _ViewToggle extends StatelessWidget {
   }
 }
 
-class _PlanetCards extends StatelessWidget {
-  const _PlanetCards({required this.selectedId, required this.onTap});
+/// Tall cards for the Sun, the planets and Pluto, each with its own glow.
+/// Starred bodies come first. Moons open from their planet.
+class _PopularCards extends StatelessWidget {
+  const _PopularCards({required this.selectedId, required this.onTap});
 
   final String selectedId;
   final ValueChanged<Planet> onTap;
 
-  /// The Sun, the eight planets and Pluto. Moons open from their planet.
   static final List<Planet> _bodies = <Planet>[
     planetById('sun'),
     ...planets,
@@ -532,7 +571,6 @@ class _PlanetCards extends StatelessWidget {
     final l = context.l10n;
     final p = Palette.of(context);
     final favorites = AppScope.of(context).settings.favorites;
-    // Starred bodies come first, the rest keep their order.
     final bodies = <Planet>[
       for (final b in _bodies)
         if (favorites.contains(b.id)) b,
@@ -542,92 +580,100 @@ class _PlanetCards extends StatelessWidget {
     // The cards grow with the text size so the words always fit.
     final textScale =
         (MediaQuery.textScalerOf(context).scale(10) / 10).clamp(1.0, 1.4);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 10),
-          child: Text(
-            l.planetsTitle,
-            style: TextStyle(
-                fontSize: 18, fontWeight: FontWeight.w700, color: p.text),
-          ),
-        ),
-        SizedBox(
-          height: 142 * textScale,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            itemCount: bodies.length,
-            separatorBuilder: (context, index) => const SizedBox(width: 12),
-            itemBuilder: (context, index) {
-              final planet = bodies[index];
-              final on = planet.id == selectedId;
-              final starred = favorites.contains(planet.id);
-              return SizedBox(
-                width: 136,
-                child: Material(
-                  // A tint of the planet's own colour over the card colour.
-                  color: Color.alphaBlend(
-                      planet.color.withValues(alpha: on ? 0.26 : 0.14),
-                      p.surface),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(22),
-                    side: on
-                        ? BorderSide(color: p.accentText, width: 1.5)
-                        : BorderSide(
-                            color: planet.color.withValues(alpha: 0.3)),
-                  ),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(22),
-                    onTap: () => onTap(planet),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
+    return SizedBox(
+      height: 196 * textScale,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        itemCount: bodies.length,
+        separatorBuilder: (context, index) => const SizedBox(width: 14),
+        itemBuilder: (context, index) {
+          final planet = bodies[index];
+          final on = planet.id == selectedId;
+          final starred = favorites.contains(planet.id);
+          return SizedBox(
+            width: 156,
+            child: Material(
+              color: Color.alphaBlend(
+                  planet.color.withValues(alpha: on ? 0.24 : 0.15),
+                  p.surface),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(26),
+                side: on
+                    ? BorderSide(color: p.accentText, width: 1.5)
+                    : BorderSide(color: planet.color.withValues(alpha: 0.32)),
+              ),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(26),
+                onTap: () => onTap(planet),
+                child: Padding(
+                  padding: const EdgeInsets.all(14),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              PlanetBall(planet: planet, size: 38),
-                              const Spacer(),
-                              if (starred)
-                                Icon(Icons.star, size: 18, color: p.accentText),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.only(top: 6, left: 4),
+                            child: SizedBox(
+                              height: 78,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    width: 70,
+                                    height: 70,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      boxShadow: <BoxShadow>[
+                                        BoxShadow(
+                                          color: planet.color
+                                              .withValues(alpha: 0.5),
+                                          blurRadius: 30,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  PlanetBall(planet: planet, size: 70),
+                                ],
+                              ),
+                            ),
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Text(
-                                planetName(l, planet),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 16,
-                                    color: p.text),
-                              ),
-                              Text(
-                                bodySubtitle(l, planet),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontSize: 12, color: p.muted, height: 1.2),
-                              ),
-                            ],
+                          const Spacer(),
+                          if (starred)
+                            Icon(Icons.star, size: 20, color: p.accentText),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Text(
+                            planetName(l, planet),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: headingStyle(19, p.text),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            bodySubtitle(l, planet),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize: 13, color: p.muted, height: 1.2),
                           ),
                         ],
                       ),
-                    ),
+                    ],
                   ),
                 ),
-              );
-            },
-          ),
-        ),
-      ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

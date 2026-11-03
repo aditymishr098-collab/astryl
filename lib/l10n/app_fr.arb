@@ -488,5 +488,6 @@
   "durationHm": "{hours} h {minutes} min",
   "sunNote": "L’heure dorée, c’est quand le Soleil est à moins de 6° au-dessus de l’horizon. La première et la dernière lumière ont lieu quand il est à 6° en dessous, et le ciel est complètement noir quand il est à 18° en dessous. Les heures sont calculées pour la date que vous choisissez.",
   "sunStaysUp": "Ce jour-là, le Soleil ne se couche pas.",
-  "sunStaysDown": "Ce jour-là, le Soleil ne se lève pas."
+  "sunStaysDown": "Ce jour-là, le Soleil ne se lève pas.",
+  "solarSystemTitle": "Système solaire"
 }

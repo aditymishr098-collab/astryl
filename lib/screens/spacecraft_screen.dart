@@ -92,9 +92,7 @@ class SpacecraftCard extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(craft.name,
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
+                    style: TextStyle(fontFamily: headingFont, fontSize: 18, fontWeight: FontWeight.w700,
                         color: p.text)),
               ),
               FavoriteButton(favoriteKey: craftKey(craft.id)),

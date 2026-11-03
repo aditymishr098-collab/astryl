@@ -1646,4 +1646,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get sunStaysDown => '这一天太阳不会升起。';
+
+  @override
+  String get solarSystemTitle => '太阳系';
 }

@@ -96,9 +96,7 @@ class BirthdayScreen extends StatelessWidget {
                         style: TextStyle(fontSize: 12, color: p.muted)),
                     const SizedBox(height: 2),
                     Text(_phaseName(l, phaseIndex(moon.age)),
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
+                        style: TextStyle(fontFamily: headingFont, fontSize: 20, fontWeight: FontWeight.w700,
                             color: p.text)),
                     const SizedBox(height: 4),
                     Text(

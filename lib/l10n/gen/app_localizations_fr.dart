@@ -1752,4 +1752,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get sunStaysDown => 'Ce jour-là, le Soleil ne se lève pas.';
+
+  @override
+  String get solarSystemTitle => 'Système solaire';
 }

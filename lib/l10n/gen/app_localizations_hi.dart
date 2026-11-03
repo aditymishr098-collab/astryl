@@ -1736,4 +1736,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get sunStaysDown => 'इस दिन सूर्य उदय नहीं होता।';
+
+  @override
+  String get solarSystemTitle => 'सौर मंडल';
 }

@@ -1736,4 +1736,7 @@ class AppLocalizationsPa extends AppLocalizations {
 
   @override
   String get sunStaysDown => 'ਇਸ ਦਿਨ ਸੂਰਜ ਨਹੀਂ ਚੜ੍ਹਦਾ।';
+
+  @override
+  String get solarSystemTitle => 'ਸੌਰ ਮੰਡਲ';
 }

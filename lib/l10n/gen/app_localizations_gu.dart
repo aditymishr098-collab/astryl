@@ -1729,4 +1729,7 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String get sunStaysDown => 'આ દિવસે સૂર્ય ઊગતો નથી.';
+
+  @override
+  String get solarSystemTitle => 'સૌરમંડળ';
 }

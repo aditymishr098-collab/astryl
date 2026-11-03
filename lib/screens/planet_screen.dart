@@ -197,96 +197,110 @@ class _PlanetScreenState extends State<PlanetScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-          Row(
-            children: <Widget>[
-              Stack(
-                alignment: Alignment.center,
-                children: <Widget>[
-                  // A soft glow in the planet's own colour.
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: planet.color.withValues(alpha: 0.38),
-                          blurRadius: 36,
-                          spreadRadius: 2,
-                        ),
-                      ],
-                    ),
-                    child: const SizedBox.square(dimension: 70),
-                  ),
-                  PlanetBall(planet: planet, size: 88),
-                ],
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      planetName(l, planet),
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w700,
-                        color: p.text,
-                        height: 1.1,
+          const SizedBox(height: 4),
+          Center(
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                // A soft glow in the planet's own colour.
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: planet.color.withValues(alpha: 0.42),
+                        blurRadius: 60,
+                        spreadRadius: 4,
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(bodySubtitle(l, planet),
-                        style: TextStyle(fontSize: 14, color: p.muted)),
-                  ],
+                    ],
+                  ),
+                  child: const SizedBox.square(dimension: 120),
+                ),
+                PlanetBall(planet: planet, size: 160),
+              ],
+            ),
+          ),
+          const SizedBox(height: 22),
+          Text(
+            planetName(l, planet),
+            textAlign: TextAlign.center,
+            style: headingStyle(38, p.text, height: 1.1),
+          ),
+          const SizedBox(height: 4),
+          Text(bodySubtitle(l, planet),
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 15, color: p.muted)),
+          if (!planet.isStar) ...<Widget>[
+            const SizedBox(height: 12),
+            Center(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: p.accent.withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(999),
+                  border: Border.all(color: p.accent.withValues(alpha: 0.5)),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                  child: Text(
+                    '${l.lifeScoreShort} '
+                    '${formatNumber(context, lifeScore(planet).total)} / '
+                    '${formatNumber(context, LifeScore.maxTotal)}',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: p.accentText),
+                  ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
           const SizedBox(height: 20),
-          StatGrid(
-            tiles: <Widget>[
-              IconStatTile(
+          StatPanel(
+            tiles: <BigStat>[
+              BigStat(
                   icon: Icons.straighten,
                   label: l.diameter,
                   value: t.diameter(planet)),
-              IconStatTile(
+              BigStat(
                   icon: Icons.vertical_align_bottom,
                   label: l.gravity,
                   value: t.gravity(planet)),
-              IconStatTile(
+              BigStat(
                   icon: Icons.thermostat,
                   label: l.avgTemp,
                   value: t.temperature(planet)),
               if (!planet.isMoon && !planet.isStar)
-                IconStatTile(
+                BigStat(
                     icon: Icons.brightness_2_outlined,
                     label: l.moons,
                     value: t.moons(planet)),
-              IconStatTile(
+              BigStat(
                   icon: Icons.wb_sunny_outlined,
                   label: l.dayLength,
                   value: t.day(planet)),
               if (planet.isMoon)
-                IconStatTile(
+                BigStat(
                     icon: Icons.autorenew,
                     label: l.orbitPeriod,
                     value: t.year(planet))
               else if (!planet.isStar)
-                IconStatTile(
+                BigStat(
                     icon: Icons.autorenew,
                     label: l.yearLength,
                     value: t.year(planet)),
               if (planet.isMoon)
-                IconStatTile(
+                BigStat(
                   icon: Icons.swap_horiz,
                   label: l.distanceFrom(parentName),
                   value: t.parentDistance(planet),
                 )
               else if (!planet.isStar)
-                IconStatTile(
+                BigStat(
                     icon: Icons.swap_horiz,
                     label: l.distance,
                     value: t.distance(planet)),
-              IconStatTile(
+              BigStat(
                   icon: Icons.speed,
                   label: l.pressure,
                   value: t.pressure(planet)),
@@ -296,11 +310,12 @@ class _PlanetScreenState extends State<PlanetScreen> {
               ),
             ),
           ),
+          const SizedBox(height: 14),
+          FactCard.of(planet.id, key: ValueKey<String>('fact-${planet.id}')),
           if (moons.isNotEmpty) ...<Widget>[
             const SizedBox(height: 24),
             Text(l.majorMoons,
-                style: TextStyle(
-                    fontSize: 18, fontWeight: FontWeight.w700, color: p.text)),
+                style: TextStyle(fontFamily: headingFont, fontSize: 18, fontWeight: FontWeight.w700, color: p.text)),
             const SizedBox(height: 12),
             Wrap(
               spacing: 8,
@@ -325,8 +340,7 @@ class _PlanetScreenState extends State<PlanetScreen> {
           ],
           const SizedBox(height: 24),
           Text(planet.isStar ? l.composition : l.atmosphere,
-              style: TextStyle(
-                  fontSize: 18, fontWeight: FontWeight.w700, color: p.text)),
+              style: TextStyle(fontFamily: headingFont, fontSize: 18, fontWeight: FontWeight.w700, color: p.text)),
           const SizedBox(height: 12),
           if (planet.atmosphere.isEmpty)
             Text(l.noAtmosphere,
@@ -349,8 +363,6 @@ class _PlanetScreenState extends State<PlanetScreen> {
             const SizedBox(height: 12),
             _TravelCard(planet: planet),
           ],
-          const SizedBox(height: 12),
-          FactCard.of(planet.id, key: ValueKey<String>('fact-${planet.id}')),
           const SizedBox(height: 16),
           SurfaceCard(
             child: Column(
@@ -410,9 +422,7 @@ class _PlanetScreenState extends State<PlanetScreen> {
                     const SizedBox(width: 8),
                     Text(
                       '${formatNumber(context, planet.weightFor(70), decimals: 1)} kg',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
+                      style: TextStyle(fontFamily: headingFont, fontSize: 20, fontWeight: FontWeight.w700,
                         color: p.accentText,
                       ),
                     ),
@@ -430,9 +440,7 @@ class _PlanetScreenState extends State<PlanetScreen> {
                     Text(
                       jumpText(context, l,
                           jumpHeightCm(_earthJumpCm, planet.relativeGravity)),
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
+                      style: TextStyle(fontFamily: headingFont, fontSize: 20, fontWeight: FontWeight.w700,
                         color: p.accentText,
                       ),
                     ),
@@ -571,8 +579,7 @@ class _LifeCard extends StatelessWidget {
             children: <Widget>[
               Text(
                 '${formatNumber(context, total)}/${formatNumber(context, LifeScore.maxTotal)}',
-                style: TextStyle(
-                    fontSize: 34, fontWeight: FontWeight.w700, color: color),
+                style: TextStyle(fontFamily: headingFont, fontSize: 34, fontWeight: FontWeight.w700, color: color),
               ),
               const SizedBox(width: 14),
               Expanded(

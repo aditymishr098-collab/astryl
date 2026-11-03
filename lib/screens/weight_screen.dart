@@ -68,8 +68,7 @@ class _WeightScreenState extends State<WeightScreen> {
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
       children: <Widget>[
         Text(l.weightTitle,
-            style: TextStyle(
-                fontSize: 26, fontWeight: FontWeight.w700, color: p.text)),
+            style: TextStyle(fontFamily: headingFont, fontSize: 26, fontWeight: FontWeight.w700, color: p.text)),
         const SizedBox(height: 16),
         TextField(
           controller: _controller,
@@ -126,9 +125,7 @@ class _WeightScreenState extends State<WeightScreen> {
                 ),
                 Text(
                   '${formatNumber(context, planet.weightFor(_kg), decimals: 1)} kg',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
+                  style: TextStyle(fontFamily: headingFont, fontSize: 18, fontWeight: FontWeight.w700,
                     color: p.accentText,
                   ),
                 ),
@@ -183,8 +180,7 @@ class _AgeSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Text(l.ageTitle,
-            style: TextStyle(
-                fontSize: 22, fontWeight: FontWeight.w700, color: p.text)),
+            style: TextStyle(fontFamily: headingFont, fontSize: 22, fontWeight: FontWeight.w700, color: p.text)),
         const SizedBox(height: 12),
         SurfaceCard(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

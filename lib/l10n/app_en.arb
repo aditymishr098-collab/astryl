@@ -1067,5 +1067,6 @@
   },
   "sunNote": "Golden hour is when the Sun is less than 6° above the horizon. First and last light are when it is 6° below, and the sky is fully dark when it is 18° below. Times are worked out for the date you choose.",
   "sunStaysUp": "On this day the Sun does not set.",
-  "sunStaysDown": "On this day the Sun does not rise."
+  "sunStaysDown": "On this day the Sun does not rise.",
+  "solarSystemTitle": "Solar system"
 }

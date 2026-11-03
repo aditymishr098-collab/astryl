@@ -134,13 +134,18 @@ Releases are built and signed by GitHub Actions when a version tag such as `v1.4
 | Version | Plan |
 |---|---|
 | 1.12.0 | New look: search bar on the home screen, tinted planet cards with starred ones first, icon stats on the planet page |
-| 1.13.0 | Moon calendar, the sky on any date, sunrise, sunset and golden hour |
-| 1.14.0 | Constellations and bright stars (kept in the app, offline), a star map you drag with your finger, constellation stories, binocular guide |
-| 1.15.0 | Optional online features: daily space news, Tiangong and Hubble passes, a share card for tonight's sky |
+| 1.13.0 | Moon calendar, the sky on any date, sunrise, sunset and golden hour (done) |
+| 1.14.0 | New design: Space Grotesk and DM Sans fonts, big planet cards, a scrolling Explore page, a new planet page and bottom bar (done) |
+| 1.15.0 | Constellations and bright stars (kept in the app, offline), a star map you drag with your finger, constellation stories, binocular guide |
+| 1.16.0 | Optional online features: daily space news, Tiangong and Hubble passes, a share card for tonight's sky |
 | 2.0.0 | Point your phone at the sky to find stars (motion sensors), all planets in one 3D scene |
 | 2.1.0 | Home-screen widget |
 
 Plans can change. Nothing in the roadmap will ask for an account or collect your data.
+
+## Fonts
+
+Titles use [Space Grotesk](https://fonts.google.com/specimen/Space+Grotesk) and the rest of the text uses [DM Sans](https://fonts.google.com/specimen/DM+Sans). Both are licensed under the SIL Open Font License (see `assets/fonts/OFL-*.txt`) and are kept inside the app, so nothing is downloaded. Scripts these two fonts do not cover (Indian scripts, Arabic, Chinese, Japanese, Armenian, Cyrillic) use the phone's own fonts.
 
 ## Translations
 
@@ -150,6 +155,7 @@ All texts live in `lib/l10n/app_<language>.arb`. Found a wrong word in your lang
 
 | Version | What's new |
 |---|---|
+| **1.14.0** | New design: Space Grotesk and DM Sans fonts (bundled, no download), big glowing planet cards, an Explore page that scrolls with the Solar System in its own card, a new planet page with a centred planet, life-score badge and a three-column stats card, round buttons, bordered cards and a flatter bottom bar |
 | **1.13.0** | Moon calendar, the sky on any date (1900 to 2049), and a Sun and light card with golden hour, twilight and the dark-sky window. The Sky tab now starts with the Moon and the planets, with the other cards below |
 | **1.12.0** | New look: search bar on the home screen, tinted planet cards (starred ones first), icon stats on the planet page that grow with the text size |
 | **1.11.0** | Spacecraft now (Voyager, New Horizons, JWST, ISS, Hubble, Mars rovers), search and favourites, and a text size setting |

@@ -1725,4 +1725,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get sunStaysDown => 'في هذا اليوم لا تشرق الشمس.';
+
+  @override
+  String get solarSystemTitle => 'المجموعة الشمسية';
 }

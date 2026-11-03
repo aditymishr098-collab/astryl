@@ -1745,4 +1745,7 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get sunStaysDown => 'இந்த நாளில் சூரியன் உதிப்பதில்லை.';
+
+  @override
+  String get solarSystemTitle => 'சூரியக் குடும்பம்';
 }

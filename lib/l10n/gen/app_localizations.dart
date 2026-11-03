@@ -3067,6 +3067,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'On this day the Sun does not rise.'**
   String get sunStaysDown;
+
+  /// No description provided for @solarSystemTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Solar system'**
+  String get solarSystemTitle;
 }
 
 class _AppLocalizationsDelegate

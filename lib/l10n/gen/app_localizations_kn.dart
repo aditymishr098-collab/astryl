@@ -1737,4 +1737,7 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get sunStaysDown => 'ಈ ದಿನ ಸೂರ್ಯ ಉದಯಿಸುವುದಿಲ್ಲ.';
+
+  @override
+  String get solarSystemTitle => 'ಸೌರವ್ಯೂಹ';
 }

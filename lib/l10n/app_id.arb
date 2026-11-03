@@ -488,5 +488,6 @@
   "durationHm": "{hours} j {minutes} mnt",
   "sunNote": "Jam emas adalah saat Matahari kurang dari 6° di atas cakrawala. Cahaya pertama dan terakhir terjadi saat Matahari 6° di bawah cakrawala, dan langit benar-benar gelap saat 18° di bawah. Waktunya dihitung untuk tanggal yang Anda pilih.",
   "sunStaysUp": "Pada hari ini Matahari tidak terbenam.",
-  "sunStaysDown": "Pada hari ini Matahari tidak terbit."
+  "sunStaysDown": "Pada hari ini Matahari tidak terbit.",
+  "solarSystemTitle": "Tata surya"
 }
