@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../core/daylight.dart';
 import '../core/events.dart';
 import '../core/format.dart';
 import '../core/sky.dart';
 import '../data/cities.dart';
 import '../data/planets.dart';
-import '../l10n/gen/app_localizations.dart';
 import '../l10n/event_text.dart';
 import '../l10n/names.dart';
 import '../state/app_state.dart';
@@ -16,6 +16,7 @@ import 'events_screen.dart';
 import 'finder_screen.dart';
 import 'iss_screen.dart';
 import 'missions_screen.dart';
+import 'moon_calendar_screen.dart';
 import 'spacecraft_screen.dart';
 
 /// "Tonight's sky": the Moon's phase and which planets can be seen tonight
@@ -28,25 +29,87 @@ class SkyScreen extends StatefulWidget {
 }
 
 class _SkyScreenState extends State<SkyScreen> {
+  /// The day being shown. Null means today, and follows the clock.
+  DateTime? _picked;
+
   SkyTonight? _sky;
+  SunDay? _sun;
+  DateTime? _darkStarts;
+  DateTime? _darkEnds;
   String _skyKey = '';
 
   ({double age, double lit})? _phase;
   DateTime? _nextFull;
   DateTime? _nextNew;
 
+  DateTime get _today {
+    final n = DateTime.now();
+    return DateTime(n.year, n.month, n.day);
+  }
+
+  DateTime get _day => _picked ?? _today;
+
   /// Works the sky out once per city and day, not on every rebuild.
   void _compute(City city) {
     final now = DateTime.now();
-    final key = '${city.id}-${now.year}-${now.month}-${now.day}';
+    final day = _day;
+    final key = '${city.id}-${day.year}-${day.month}-${day.day}';
     if (key == _skyKey) {
       return;
     }
     _skyKey = key;
-    _sky = skyTonight(now, city.lat, city.lon);
-    _phase = moonPhase(now);
-    _nextFull = nextPhase(now, 180).toLocal();
-    _nextNew = nextPhase(now, 0).toLocal();
+    // The Moon card describes right now for today, and 9 pm for any other day.
+    final at = _picked == null
+        ? now
+        : DateTime(day.year, day.month, day.day, 21);
+    _sky = skyTonight(day, city.lat, city.lon);
+    _phase = moonPhase(at);
+    _nextFull = nextPhase(at, 180).toLocal();
+    _nextNew = nextPhase(at, 0).toLocal();
+    final sun = sunDay(day, city.lat, city.lon);
+    _sun = sun;
+    // The sky is fully dark from this evening's dusk to the next dawn.
+    _darkStarts = sun.darkStarts;
+    _darkEnds = sunDay(DateTime(day.year, day.month, day.day + 1), city.lat,
+            city.lon)
+        .darkEnds;
+  }
+
+  void _setDay(DateTime d) {
+    var day = DateTime(d.year, d.month, d.day);
+    if (day.isBefore(moonCalendarFirst)) day = moonCalendarFirst;
+    if (day.isAfter(moonCalendarLast)) day = moonCalendarLast;
+    setState(() {
+      _picked = day == _today ? null : day;
+    });
+  }
+
+  void _shiftDay(int delta) {
+    final d = _day;
+    _setDay(DateTime(d.year, d.month, d.day + delta));
+  }
+
+  Future<void> _pickDate() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _day,
+      firstDate: moonCalendarFirst,
+      lastDate: moonCalendarLast,
+    );
+    if (picked != null && mounted) {
+      _setDay(picked);
+    }
+  }
+
+  Future<void> _openCalendar() async {
+    final picked = await Navigator.of(context).push<DateTime>(
+      MaterialPageRoute<DateTime>(
+        builder: (_) => MoonCalendarScreen(initial: _day),
+      ),
+    );
+    if (picked != null && mounted) {
+      _setDay(picked);
+    }
   }
 
   Future<void> _pickCity() async {
@@ -79,13 +142,14 @@ class _SkyScreenState extends State<SkyScreen> {
     final l = context.l10n;
     final p = Palette.of(context);
     final city = cityById(AppScope.of(context).settings.cityId);
+    final today = _picked == null;
 
     final header = Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: <Widget>[
           Expanded(
-            child: Text(l.skyTitle,
+            child: Text(today ? l.skyTitle : l.skyOtherNight,
                 style: TextStyle(
                     fontSize: 26, fontWeight: FontWeight.w700, color: p.text)),
           ),
@@ -104,11 +168,20 @@ class _SkyScreenState extends State<SkyScreen> {
       ),
     );
 
+    final calendarCard = _NavCard(
+      icon: Icons.calendar_month_outlined,
+      title: l.moonCalendar,
+      hint: l.moonCalendarHint,
+      onTap: _openCalendar,
+    );
+
     if (city == null) {
       return ListView(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
         children: <Widget>[
           header,
+          calendarCard,
+          const SizedBox(height: 12),
           const _EventsCard(),
           const SizedBox(height: 12),
           const _MissionsCard(),
@@ -142,20 +215,27 @@ class _SkyScreenState extends State<SkyScreen> {
     _compute(city);
     final sky = _sky!;
     final phase = _phase!;
+    final sun = _sun!;
+    final day = _day;
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
       children: <Widget>[
         header,
-        const _EventsCard(),
+        _DateBar(
+          label: today
+              ? '${l.today} · ${_date(day)}'
+              : MaterialLocalizations.of(context).formatMediumDate(day),
+          isToday: today,
+          canPrevious: day.isAfter(moonCalendarFirst),
+          canNext: day.isBefore(moonCalendarLast),
+          onPrevious: () => _shiftDay(-1),
+          onNext: () => _shiftDay(1),
+          onPick: _pickDate,
+          onToday: () => setState(() => _picked = null),
+        ),
         const SizedBox(height: 12),
-        _IssCard(city: city),
-        const SizedBox(height: 12),
-        const _MissionsCard(),
-        const SizedBox(height: 12),
-        const _SpacecraftCard(),
-        const SizedBox(height: 12),
-        // The Moon tonight.
+        // The Moon that night.
         SurfaceCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,7 +253,7 @@ class _SkyScreenState extends State<SkyScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(_phaseName(l, phaseIndex(phase.age)),
+                        Text(moonPhaseName(l, phaseIndex(phase.age)),
                             style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700,
@@ -187,23 +267,23 @@ class _SkyScreenState extends State<SkyScreen> {
                       ],
                     ),
                   ),
-                  _FindButton(city: city, targetId: 'moon'),
+                  if (today) _FindButton(city: city, targetId: 'moon'),
                 ],
               ),
               const SizedBox(height: 12),
-              _InfoRow(
+              InfoRow(
                   icon: Icons.north_east,
                   label: l.moonrise,
                   value: _time(sky.moon.rise)),
-              _InfoRow(
+              InfoRow(
                   icon: Icons.south_east,
                   label: l.moonset,
                   value: _time(sky.moon.set)),
-              _InfoRow(
+              InfoRow(
                   icon: Icons.circle,
                   label: l.nextFull,
                   value: _date(_nextFull)),
-              _InfoRow(
+              InfoRow(
                   icon: Icons.circle_outlined,
                   label: l.nextNew,
                   value: _date(_nextNew)),
@@ -211,87 +291,202 @@ class _SkyScreenState extends State<SkyScreen> {
           ),
         ),
         const SizedBox(height: 12),
-        SurfaceCard(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          child: Column(
-            children: <Widget>[
-              _InfoRow(
-                  icon: Icons.wb_twilight,
-                  label: l.sunset,
-                  value: _time(sky.sunset)),
-              _InfoRow(
-                  icon: Icons.wb_sunny_outlined,
-                  label: l.sunrise,
-                  value: _time(sky.sunrise)),
-            ],
-          ),
+        calendarCard,
+        const SizedBox(height: 12),
+        _SunCard(
+          sun: sun,
+          darkStarts: _darkStarts,
+          darkEnds: _darkEnds,
+          time: _time,
         ),
         const SizedBox(height: 20),
-        Text(l.planetsTonight,
+        Text(today ? l.planetsTonight : l.planetsThatNight,
             style: TextStyle(
                 fontSize: 18, fontWeight: FontWeight.w700, color: p.text)),
         const SizedBox(height: 12),
         for (final night in sky.planets) ...<Widget>[
-          _PlanetNightCard(night: night, city: city, time: _time),
+          _PlanetNightCard(
+              night: night, city: city, time: _time, canFind: today),
           const SizedBox(height: 8),
         ],
         const SizedBox(height: 8),
         Text(l.cityNote,
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 12, color: p.muted)),
+        const SizedBox(height: 20),
+        const _EventsCard(),
+        const SizedBox(height: 12),
+        _IssCard(city: city),
+        const SizedBox(height: 12),
+        const _MissionsCard(),
+        const SizedBox(height: 12),
+        const _SpacecraftCard(),
       ],
     );
   }
 }
 
-String _phaseName(AppLocalizations l, int index) {
-  switch (index) {
-    case 0:
-      return l.phaseNew;
-    case 1:
-      return l.phaseWaxingCrescent;
-    case 2:
-      return l.phaseFirstQuarter;
-    case 3:
-      return l.phaseWaxingGibbous;
-    case 4:
-      return l.phaseFull;
-    case 5:
-      return l.phaseWaningGibbous;
-    case 6:
-      return l.phaseLastQuarter;
-    default:
-      return l.phaseWaningCrescent;
-  }
-}
-
-class _InfoRow extends StatelessWidget {
-  const _InfoRow({
-    required this.icon,
+/// Moves the Sky tab to another day: arrows, a date picker and a way back.
+class _DateBar extends StatelessWidget {
+  const _DateBar({
     required this.label,
-    required this.value,
+    required this.isToday,
+    required this.canPrevious,
+    required this.canNext,
+    required this.onPrevious,
+    required this.onNext,
+    required this.onPick,
+    required this.onToday,
   });
 
-  final IconData icon;
   final String label;
-  final String value;
+  final bool isToday;
+  final bool canPrevious;
+  final bool canNext;
+  final VoidCallback onPrevious;
+  final VoidCallback onNext;
+  final VoidCallback onPick;
+  final VoidCallback onToday;
 
   @override
   Widget build(BuildContext context) {
+    final l = context.l10n;
     final p = Palette.of(context);
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: Row(
+    return SurfaceCard(
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+      child: Column(
         children: <Widget>[
-          Icon(icon, size: 18, color: p.muted),
-          const SizedBox(width: 12),
-          Expanded(
-            child:
-                Text(label, style: TextStyle(fontSize: 14, color: p.muted)),
+          Row(
+            children: <Widget>[
+              IconButton(
+                tooltip: l.previousDay,
+                icon: const Icon(Icons.chevron_left),
+                onPressed: canPrevious ? onPrevious : null,
+              ),
+              Expanded(
+                child: Semantics(
+                  button: true,
+                  label: l.pickDate,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(24),
+                    onTap: onPick,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(Icons.calendar_month_outlined,
+                              size: 20, color: p.accentText),
+                          const SizedBox(width: 8),
+                          Flexible(
+                            child: Text(label,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: p.text)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              IconButton(
+                tooltip: l.nextDay,
+                icon: const Icon(Icons.chevron_right),
+                onPressed: canNext ? onNext : null,
+              ),
+            ],
           ),
-          Text(value,
+          if (!isToday)
+            TextButton.icon(
+              onPressed: onToday,
+              icon: const Icon(Icons.today_outlined),
+              label: Text(l.backToTonight),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Sunrise, sunset, golden hour, twilight and the dark sky for one day.
+class _SunCard extends StatelessWidget {
+  const _SunCard({
+    required this.sun,
+    required this.darkStarts,
+    required this.darkEnds,
+    required this.time,
+  });
+
+  final SunDay sun;
+  final DateTime? darkStarts;
+  final DateTime? darkEnds;
+  final String Function(DateTime? t) time;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final p = Palette.of(context);
+    final dark = darkStarts == null || darkEnds == null
+        ? '–'
+        : '${time(darkStarts)} – ${time(darkEnds)}';
+    final hours = sun.dayLength.inMinutes ~/ 60;
+    final minutes = sun.dayLength.inMinutes % 60;
+    return SurfaceCard(
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(l.sunLightTitle,
               style: TextStyle(
-                  fontSize: 14, fontWeight: FontWeight.w600, color: p.text)),
+                  fontSize: 18, fontWeight: FontWeight.w700, color: p.text)),
+          if (sun.stayUp || sun.stayDown) ...<Widget>[
+            const SizedBox(height: 6),
+            Text(sun.stayUp ? l.sunStaysUp : l.sunStaysDown,
+                style: TextStyle(fontSize: 13, color: p.accentText)),
+          ],
+          const SizedBox(height: 6),
+          InfoRow(
+              icon: Icons.brightness_5_outlined,
+              label: l.firstLight,
+              value: time(sun.firstLight)),
+          InfoRow(
+              icon: Icons.wb_sunny_outlined,
+              label: l.sunrise,
+              value: time(sun.sunrise)),
+          InfoRow(
+              icon: Icons.camera_alt_outlined,
+              label: l.goldenMorningEnds,
+              value: time(sun.goldenMorningEnds)),
+          InfoRow(
+              icon: Icons.light_mode_outlined,
+              label: l.solarNoon,
+              value: time(sun.solarNoon)),
+          InfoRow(
+              icon: Icons.camera_alt_outlined,
+              label: l.goldenEveningStarts,
+              value: time(sun.goldenEveningStarts)),
+          InfoRow(
+              icon: Icons.wb_twilight,
+              label: l.sunset,
+              value: time(sun.sunset)),
+          InfoRow(
+              icon: Icons.brightness_4_outlined,
+              label: l.lastLight,
+              value: time(sun.lastLight)),
+          InfoRow(
+              icon: Icons.dark_mode_outlined,
+              label: l.darkSky,
+              value: dark),
+          InfoRow(
+              icon: Icons.timelapse,
+              label: l.sunDayLength,
+              value: l.durationHm(formatNumber(context, hours),
+                  formatNumber(context, minutes))),
+          const SizedBox(height: 6),
+          Text(l.sunNote, style: TextStyle(fontSize: 12, color: p.muted)),
         ],
       ),
     );
@@ -300,11 +495,17 @@ class _InfoRow extends StatelessWidget {
 
 class _PlanetNightCard extends StatelessWidget {
   const _PlanetNightCard(
-      {required this.night, required this.city, required this.time});
+      {required this.night,
+      required this.city,
+      required this.time,
+      this.canFind = true});
 
   final BodyNight night;
   final City city;
   final String Function(DateTime? t) time;
+
+  /// The finder points at the sky now, so it is only offered for today.
+  final bool canFind;
 
   @override
   Widget build(BuildContext context) {
@@ -375,7 +576,7 @@ class _PlanetNightCard extends StatelessWidget {
               ],
             ),
           ),
-          _FindButton(city: city, targetId: night.id),
+          if (canFind) _FindButton(city: city, targetId: night.id),
         ],
       ),
     );
@@ -444,13 +645,15 @@ class _NavCard extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.hint,
-    required this.builder,
-  });
+    this.builder,
+    this.onTap,
+  }) : assert(builder != null || onTap != null);
 
   final IconData icon;
   final String title;
   final String hint;
-  final WidgetBuilder builder;
+  final WidgetBuilder? builder;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -460,9 +663,11 @@ class _NavCard extends StatelessWidget {
       label: title,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: () {
-          Navigator.of(context).push(MaterialPageRoute<void>(builder: builder));
-        },
+        onTap: onTap ??
+            () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute<void>(builder: builder!));
+            },
         child: SurfaceCard(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           child: Row(

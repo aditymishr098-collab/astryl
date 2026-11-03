@@ -326,3 +326,49 @@ class SectionLabel extends StatelessWidget {
     );
   }
 }
+
+/// One line with an icon, a label and a value on the right. The value wraps
+/// instead of overflowing when the text is large.
+class InfoRow extends StatelessWidget {
+  const InfoRow({
+    super.key,
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = Palette.of(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: LayoutBuilder(
+        builder: (context, box) => Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Icon(icon, size: 18, color: p.muted),
+            const SizedBox(width: 12),
+            Expanded(
+              child:
+                  Text(label, style: TextStyle(fontSize: 14, color: p.muted)),
+            ),
+            const SizedBox(width: 12),
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: box.maxWidth * 0.5),
+              child: Text(value,
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: p.text)),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

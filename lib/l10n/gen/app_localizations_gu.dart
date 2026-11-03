@@ -1650,4 +1650,83 @@ class AppLocalizationsGu extends AppLocalizations {
   @override
   String get textSizeNote =>
       'Heliora ના અક્ષરો મોટા કરે છે. તે તમારા ફોનના પોતાના અક્ષર-કદથી ક્યારેય નાનું થતું નથી.';
+
+  @override
+  String get skyOtherNight => 'રાતનું આકાશ';
+
+  @override
+  String get planetsThatNight => 'તે રાતના ગ્રહો';
+
+  @override
+  String get previousDay => 'પાછલો દિવસ';
+
+  @override
+  String get nextDay => 'આગલો દિવસ';
+
+  @override
+  String get pickDate => 'તારીખ પસંદ કરો';
+
+  @override
+  String get backToTonight => 'આજ રાત પર પાછા';
+
+  @override
+  String get moonCalendar => 'ચંદ્ર કેલેન્ડર';
+
+  @override
+  String get moonCalendarHint => 'દરરોજ ચંદ્રની કળા';
+
+  @override
+  String get previousMonth => 'પાછલો મહિનો';
+
+  @override
+  String get nextMonth => 'આગલો મહિનો';
+
+  @override
+  String get keyMoonDates => 'આ મહિનાની મુખ્ય કળાઓ';
+
+  @override
+  String get moonCalendarNote =>
+      'કળાઓની તારીખ અને સમય તમારા ફોનના સમય ઝોનમાં બતાવ્યા છે અને લગભગ એક કલાકની અંદર સાચા છે.';
+
+  @override
+  String get seeSkyThatDay => 'આ દિવસનું આકાશ જુઓ';
+
+  @override
+  String get sunLightTitle => 'સૂર્ય અને પ્રકાશ';
+
+  @override
+  String get firstLight => 'પહેલો પ્રકાશ';
+
+  @override
+  String get goldenMorningEnds => 'સવારનો સોનેરી સમય પૂરો';
+
+  @override
+  String get solarNoon => 'સૂર્ય સૌથી ઊંચે';
+
+  @override
+  String get goldenEveningStarts => 'સાંજનો સોનેરી સમય શરૂ';
+
+  @override
+  String get lastLight => 'છેલ્લો પ્રકાશ';
+
+  @override
+  String get darkSky => 'સંપૂર્ણ અંધારું આકાશ';
+
+  @override
+  String get sunDayLength => 'દિવસની લંબાઈ';
+
+  @override
+  String durationHm(String hours, String minutes) {
+    return '$hours કલાક $minutes મિનિટ';
+  }
+
+  @override
+  String get sunNote =>
+      'સોનેરી સમય એટલે સૂર્ય ક્ષિતિજથી 6° કરતાં ઓછો ઊંચે હોય ત્યારે. પહેલો અને છેલ્લો પ્રકાશ ત્યારે હોય જ્યારે તે 6° નીચે હોય, અને આકાશ સંપૂર્ણ અંધારું ત્યારે હોય જ્યારે તે 18° નીચે હોય. સમય તમે પસંદ કરેલી તારીખ માટે ગણેલા છે.';
+
+  @override
+  String get sunStaysUp => 'આ દિવસે સૂર્ય આથમતો નથી.';
+
+  @override
+  String get sunStaysDown => 'આ દિવસે સૂર્ય ઊગતો નથી.';
 }

@@ -1659,4 +1659,83 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get textSizeNote =>
       'Увеличивает текст в Heliora. Он никогда не становится меньше размера текста, заданного в самом телефоне.';
+
+  @override
+  String get skyOtherNight => 'Ночное небо';
+
+  @override
+  String get planetsThatNight => 'Планеты в ту ночь';
+
+  @override
+  String get previousDay => 'Предыдущий день';
+
+  @override
+  String get nextDay => 'Следующий день';
+
+  @override
+  String get pickDate => 'Выбрать дату';
+
+  @override
+  String get backToTonight => 'Вернуться к сегодняшней ночи';
+
+  @override
+  String get moonCalendar => 'Лунный календарь';
+
+  @override
+  String get moonCalendarHint => 'Фаза Луны на каждый день';
+
+  @override
+  String get previousMonth => 'Предыдущий месяц';
+
+  @override
+  String get nextMonth => 'Следующий месяц';
+
+  @override
+  String get keyMoonDates => 'Главные фазы этого месяца';
+
+  @override
+  String get moonCalendarNote =>
+      'Даты и время фаз показаны по часовому поясу вашего телефона и точны примерно до часа.';
+
+  @override
+  String get seeSkyThatDay => 'Посмотреть небо в этот день';
+
+  @override
+  String get sunLightTitle => 'Солнце и свет';
+
+  @override
+  String get firstLight => 'Первый свет';
+
+  @override
+  String get goldenMorningEnds => 'Конец утреннего золотого часа';
+
+  @override
+  String get solarNoon => 'Солнечный полдень';
+
+  @override
+  String get goldenEveningStarts => 'Начало вечернего золотого часа';
+
+  @override
+  String get lastLight => 'Последний свет';
+
+  @override
+  String get darkSky => 'Полностью тёмное небо';
+
+  @override
+  String get sunDayLength => 'Длина дня';
+
+  @override
+  String durationHm(String hours, String minutes) {
+    return '$hours ч $minutes мин';
+  }
+
+  @override
+  String get sunNote =>
+      'Золотой час — это когда Солнце ниже 6° над горизонтом. Первый и последний свет бывают, когда оно на 6° под горизонтом, а небо полностью темнеет, когда оно на 18° ниже. Время рассчитано для выбранной даты.';
+
+  @override
+  String get sunStaysUp => 'В этот день Солнце не заходит.';
+
+  @override
+  String get sunStaysDown => 'В этот день Солнце не восходит.';
 }

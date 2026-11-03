@@ -1568,4 +1568,82 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get textSizeNote => '放大 Heliora 里的文字。永远不会小于手机自身的文字大小。';
+
+  @override
+  String get skyOtherNight => '夜空';
+
+  @override
+  String get planetsThatNight => '那晚的行星';
+
+  @override
+  String get previousDay => '前一天';
+
+  @override
+  String get nextDay => '后一天';
+
+  @override
+  String get pickDate => '选择日期';
+
+  @override
+  String get backToTonight => '回到今晚';
+
+  @override
+  String get moonCalendar => '月相日历';
+
+  @override
+  String get moonCalendarHint => '每天的月相';
+
+  @override
+  String get previousMonth => '上个月';
+
+  @override
+  String get nextMonth => '下个月';
+
+  @override
+  String get keyMoonDates => '本月主要月相';
+
+  @override
+  String get moonCalendarNote => '月相的日期和时间按手机时区显示，误差在一小时左右。';
+
+  @override
+  String get seeSkyThatDay => '查看这一天的星空';
+
+  @override
+  String get sunLightTitle => '太阳与光线';
+
+  @override
+  String get firstLight => '第一缕光';
+
+  @override
+  String get goldenMorningEnds => '早晨黄金时刻结束';
+
+  @override
+  String get solarNoon => '太阳最高';
+
+  @override
+  String get goldenEveningStarts => '傍晚黄金时刻开始';
+
+  @override
+  String get lastLight => '最后一缕光';
+
+  @override
+  String get darkSky => '完全黑暗的天空';
+
+  @override
+  String get sunDayLength => '白昼长度';
+
+  @override
+  String durationHm(String hours, String minutes) {
+    return '$hours 小时 $minutes 分钟';
+  }
+
+  @override
+  String get sunNote =>
+      '黄金时刻是太阳在地平线以上不到 6° 的时候。第一缕光和最后一缕光出现在太阳位于地平线以下 6° 时，天空在太阳低于地平线 18° 时完全变黑。时间按你选的日期计算。';
+
+  @override
+  String get sunStaysUp => '这一天太阳不会落下。';
+
+  @override
+  String get sunStaysDown => '这一天太阳不会升起。';
 }

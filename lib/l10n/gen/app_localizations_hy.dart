@@ -1660,4 +1660,83 @@ class AppLocalizationsHy extends AppLocalizations {
   @override
   String get textSizeNote =>
       'Մեծացնում է Heliora-ի տեքստը։ Այն երբեք չի լինում ձեր հեռախոսի սեփական տեքստի չափից փոքր։';
+
+  @override
+  String get skyOtherNight => 'Գիշերային երկինք';
+
+  @override
+  String get planetsThatNight => 'Այդ գիշերվա մոլորակները';
+
+  @override
+  String get previousDay => 'Նախորդ օրը';
+
+  @override
+  String get nextDay => 'Հաջորդ օրը';
+
+  @override
+  String get pickDate => 'Ընտրել ամսաթիվ';
+
+  @override
+  String get backToTonight => 'Վերադառնալ այսօրվա գիշերվան';
+
+  @override
+  String get moonCalendar => 'Լուսնի օրացույց';
+
+  @override
+  String get moonCalendarHint => 'Լուսնի փուլը ամեն օր';
+
+  @override
+  String get previousMonth => 'Նախորդ ամիսը';
+
+  @override
+  String get nextMonth => 'Հաջորդ ամիսը';
+
+  @override
+  String get keyMoonDates => 'Այս ամսվա հիմնական փուլերը';
+
+  @override
+  String get moonCalendarNote =>
+      'Փուլերի ամսաթվերն ու ժամերը ցուցադրվում են ձեր հեռախոսի ժամային գոտով և ճշգրիտ են մոտավորապես մեկ ժամի սահմաններում։';
+
+  @override
+  String get seeSkyThatDay => 'Տեսնել այս օրվա երկինքը';
+
+  @override
+  String get sunLightTitle => 'Արև և լույս';
+
+  @override
+  String get firstLight => 'Առաջին լույսը';
+
+  @override
+  String get goldenMorningEnds => 'Առավոտյան ոսկե ժամի ավարտը';
+
+  @override
+  String get solarNoon => 'Արևի ամենաբարձր կետը';
+
+  @override
+  String get goldenEveningStarts => 'Երեկոյան ոսկե ժամի սկիզբը';
+
+  @override
+  String get lastLight => 'Վերջին լույսը';
+
+  @override
+  String get darkSky => 'Լրիվ մութ երկինք';
+
+  @override
+  String get sunDayLength => 'Օրվա տևողությունը';
+
+  @override
+  String durationHm(String hours, String minutes) {
+    return '$hours ժ $minutes ր';
+  }
+
+  @override
+  String get sunNote =>
+      'Ոսկե ժամը այն է, երբ Արևը հորիզոնից 6°-ից պակաս բարձր է։ Առաջին և վերջին լույսը լինում են, երբ այն 6° ցածր է, իսկ երկինքը լրիվ մթնում է, երբ այն 18° ցածր է։ Ժամերը հաշվարկված են ձեր ընտրած ամսաթվի համար։';
+
+  @override
+  String get sunStaysUp => 'Այս օրը Արևը չի մայր մտնում։';
+
+  @override
+  String get sunStaysDown => 'Այս օրը Արևը չի ծագում։';
 }

@@ -1586,4 +1586,82 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get textSizeNote => 'Heliora の文字を大きくします。スマホ自体の文字サイズより小さくなることはありません。';
+
+  @override
+  String get skyOtherNight => '夜空';
+
+  @override
+  String get planetsThatNight => 'その夜の惑星';
+
+  @override
+  String get previousDay => '前の日';
+
+  @override
+  String get nextDay => '次の日';
+
+  @override
+  String get pickDate => '日付を選ぶ';
+
+  @override
+  String get backToTonight => '今夜に戻る';
+
+  @override
+  String get moonCalendar => '月齢カレンダー';
+
+  @override
+  String get moonCalendarHint => '毎日の月の満ち欠け';
+
+  @override
+  String get previousMonth => '前の月';
+
+  @override
+  String get nextMonth => '次の月';
+
+  @override
+  String get keyMoonDates => '今月の主な月相';
+
+  @override
+  String get moonCalendarNote => '月相の日付と時刻はスマホのタイムゾーンで表示され、誤差は1時間ほどです。';
+
+  @override
+  String get seeSkyThatDay => 'この日の空を見る';
+
+  @override
+  String get sunLightTitle => '太陽と光';
+
+  @override
+  String get firstLight => '最初の光';
+
+  @override
+  String get goldenMorningEnds => '朝のゴールデンアワー終了';
+
+  @override
+  String get solarNoon => '南中';
+
+  @override
+  String get goldenEveningStarts => '夕方のゴールデンアワー開始';
+
+  @override
+  String get lastLight => '最後の光';
+
+  @override
+  String get darkSky => '完全に暗い空';
+
+  @override
+  String get sunDayLength => '昼の長さ';
+
+  @override
+  String durationHm(String hours, String minutes) {
+    return '$hours時間$minutes分';
+  }
+
+  @override
+  String get sunNote =>
+      'ゴールデンアワーは、太陽が地平線の上6°未満にある時間です。太陽が地平線の下6°にあるときが最初の光と最後の光で、18°下まで沈むと空は完全に暗くなります。時刻は選んだ日付で計算しています。';
+
+  @override
+  String get sunStaysUp => 'この日は太陽が沈みません。';
+
+  @override
+  String get sunStaysDown => 'この日は太陽が昇りません。';
 }

@@ -1032,5 +1032,40 @@
   "textSizeNormal": "Normal",
   "textSizeLarge": "Large",
   "textSizeLarger": "Larger",
-  "textSizeNote": "Makes the text in Heliora bigger. It never goes below your phone's own text size."
+  "textSizeNote": "Makes the text in Heliora bigger. It never goes below your phone's own text size.",
+  "skyOtherNight": "The night sky",
+  "planetsThatNight": "Planets that night",
+  "previousDay": "Previous day",
+  "nextDay": "Next day",
+  "pickDate": "Choose a date",
+  "backToTonight": "Back to tonight",
+  "moonCalendar": "Moon calendar",
+  "moonCalendarHint": "The phase of the Moon on every day",
+  "previousMonth": "Previous month",
+  "nextMonth": "Next month",
+  "keyMoonDates": "Main phases this month",
+  "moonCalendarNote": "Phase dates and times are shown in your phone's time zone and are accurate to within about an hour.",
+  "seeSkyThatDay": "See the sky on this day",
+  "sunLightTitle": "Sun and light",
+  "firstLight": "First light",
+  "goldenMorningEnds": "Morning golden hour ends",
+  "solarNoon": "Solar noon",
+  "goldenEveningStarts": "Evening golden hour starts",
+  "lastLight": "Last light",
+  "darkSky": "Fully dark sky",
+  "sunDayLength": "Day length",
+  "durationHm": "{hours} h {minutes} min",
+  "@durationHm": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "sunNote": "Golden hour is when the Sun is less than 6° above the horizon. First and last light are when it is 6° below, and the sky is fully dark when it is 18° below. Times are worked out for the date you choose.",
+  "sunStaysUp": "On this day the Sun does not set.",
+  "sunStaysDown": "On this day the Sun does not rise."
 }

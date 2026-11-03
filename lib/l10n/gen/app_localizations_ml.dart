@@ -1667,4 +1667,83 @@ class AppLocalizationsMl extends AppLocalizations {
   @override
   String get textSizeNote =>
       'Heliora-യിലെ അക്ഷരങ്ങൾ വലുതാക്കുന്നു. നിങ്ങളുടെ ഫോണിന്റെ സ്വന്തം അക്ഷര വലുപ്പത്തിന് താഴെ ഇത് ഒരിക്കലും പോകില്ല.';
+
+  @override
+  String get skyOtherNight => 'രാത്രിയിലെ ആകാശം';
+
+  @override
+  String get planetsThatNight => 'ആ രാത്രിയിലെ ഗ്രഹങ്ങൾ';
+
+  @override
+  String get previousDay => 'മുമ്പത്തെ ദിവസം';
+
+  @override
+  String get nextDay => 'അടുത്ത ദിവസം';
+
+  @override
+  String get pickDate => 'തീയതി തിരഞ്ഞെടുക്കുക';
+
+  @override
+  String get backToTonight => 'ഇന്ന് രാത്രിയിലേക്ക് മടങ്ങുക';
+
+  @override
+  String get moonCalendar => 'ചന്ദ്ര കലണ്ടർ';
+
+  @override
+  String get moonCalendarHint => 'ഓരോ ദിവസത്തെയും ചന്ദ്രക്കല';
+
+  @override
+  String get previousMonth => 'മുമ്പത്തെ മാസം';
+
+  @override
+  String get nextMonth => 'അടുത്ത മാസം';
+
+  @override
+  String get keyMoonDates => 'ഈ മാസത്തെ പ്രധാന കലകൾ';
+
+  @override
+  String get moonCalendarNote =>
+      'കലകളുടെ തീയതിയും സമയവും നിങ്ങളുടെ ഫോണിന്റെ സമയ മേഖലയിലാണ് കാണിക്കുന്നത്; ഏകദേശം ഒരു മണിക്കൂറിനുള്ളിൽ കൃത്യമാണ്.';
+
+  @override
+  String get seeSkyThatDay => 'ഈ ദിവസത്തെ ആകാശം കാണുക';
+
+  @override
+  String get sunLightTitle => 'സൂര്യനും വെളിച്ചവും';
+
+  @override
+  String get firstLight => 'ആദ്യ വെളിച്ചം';
+
+  @override
+  String get goldenMorningEnds => 'രാവിലത്തെ സ്വർണ്ണ സമയം അവസാനിക്കുന്നു';
+
+  @override
+  String get solarNoon => 'സൂര്യൻ ഏറ്റവും ഉയരത്തിൽ';
+
+  @override
+  String get goldenEveningStarts => 'വൈകുന്നേരത്തെ സ്വർണ്ണ സമയം തുടങ്ങുന്നു';
+
+  @override
+  String get lastLight => 'അവസാന വെളിച്ചം';
+
+  @override
+  String get darkSky => 'പൂർണ്ണമായി ഇരുണ്ട ആകാശം';
+
+  @override
+  String get sunDayLength => 'പകലിന്റെ ദൈർഘ്യം';
+
+  @override
+  String durationHm(String hours, String minutes) {
+    return '$hours മണിക്കൂർ $minutes മിനിറ്റ്';
+  }
+
+  @override
+  String get sunNote =>
+      'സൂര്യൻ ചക്രവാളത്തിൽ നിന്ന് 6° ൽ താഴെ ഉയരത്തിലായിരിക്കുമ്പോഴാണ് സ്വർണ്ണ സമയം. 6° താഴെയാകുമ്പോൾ ആദ്യവും അവസാനവുമുള്ള വെളിച്ചം, 18° താഴെയാകുമ്പോൾ ആകാശം പൂർണ്ണമായി ഇരുണ്ടതാകും. സമയങ്ങൾ നിങ്ങൾ തിരഞ്ഞെടുത്ത തീയതിക്കായി കണക്കാക്കിയതാണ്.';
+
+  @override
+  String get sunStaysUp => 'ഈ ദിവസം സൂര്യൻ അസ്തമിക്കുന്നില്ല.';
+
+  @override
+  String get sunStaysDown => 'ഈ ദിവസം സൂര്യൻ ഉദിക്കുന്നില്ല.';
 }

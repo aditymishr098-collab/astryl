@@ -1656,4 +1656,83 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get textSizeNote =>
       'Makes the text in Heliora bigger. It never goes below your phone\'s own text size.';
+
+  @override
+  String get skyOtherNight => 'The night sky';
+
+  @override
+  String get planetsThatNight => 'Planets that night';
+
+  @override
+  String get previousDay => 'Previous day';
+
+  @override
+  String get nextDay => 'Next day';
+
+  @override
+  String get pickDate => 'Choose a date';
+
+  @override
+  String get backToTonight => 'Back to tonight';
+
+  @override
+  String get moonCalendar => 'Moon calendar';
+
+  @override
+  String get moonCalendarHint => 'The phase of the Moon on every day';
+
+  @override
+  String get previousMonth => 'Previous month';
+
+  @override
+  String get nextMonth => 'Next month';
+
+  @override
+  String get keyMoonDates => 'Main phases this month';
+
+  @override
+  String get moonCalendarNote =>
+      'Phase dates and times are shown in your phone\'s time zone and are accurate to within about an hour.';
+
+  @override
+  String get seeSkyThatDay => 'See the sky on this day';
+
+  @override
+  String get sunLightTitle => 'Sun and light';
+
+  @override
+  String get firstLight => 'First light';
+
+  @override
+  String get goldenMorningEnds => 'Morning golden hour ends';
+
+  @override
+  String get solarNoon => 'Solar noon';
+
+  @override
+  String get goldenEveningStarts => 'Evening golden hour starts';
+
+  @override
+  String get lastLight => 'Last light';
+
+  @override
+  String get darkSky => 'Fully dark sky';
+
+  @override
+  String get sunDayLength => 'Day length';
+
+  @override
+  String durationHm(String hours, String minutes) {
+    return '$hours h $minutes min';
+  }
+
+  @override
+  String get sunNote =>
+      'Golden hour is when the Sun is less than 6° above the horizon. First and last light are when it is 6° below, and the sky is fully dark when it is 18° below. Times are worked out for the date you choose.';
+
+  @override
+  String get sunStaysUp => 'On this day the Sun does not set.';
+
+  @override
+  String get sunStaysDown => 'On this day the Sun does not rise.';
 }

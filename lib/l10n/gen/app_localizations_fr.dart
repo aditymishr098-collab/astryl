@@ -1673,4 +1673,83 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get textSizeNote =>
       'Agrandit le texte dans Heliora. Il ne descend jamais sous la taille de texte de votre téléphone.';
+
+  @override
+  String get skyOtherNight => 'Le ciel de la nuit';
+
+  @override
+  String get planetsThatNight => 'Planètes cette nuit-là';
+
+  @override
+  String get previousDay => 'Jour précédent';
+
+  @override
+  String get nextDay => 'Jour suivant';
+
+  @override
+  String get pickDate => 'Choisir une date';
+
+  @override
+  String get backToTonight => 'Revenir à ce soir';
+
+  @override
+  String get moonCalendar => 'Calendrier lunaire';
+
+  @override
+  String get moonCalendarHint => 'La phase de la Lune chaque jour';
+
+  @override
+  String get previousMonth => 'Mois précédent';
+
+  @override
+  String get nextMonth => 'Mois suivant';
+
+  @override
+  String get keyMoonDates => 'Phases principales de ce mois';
+
+  @override
+  String get moonCalendarNote =>
+      'Les dates et heures des phases sont affichées dans le fuseau horaire de votre téléphone, à environ une heure près.';
+
+  @override
+  String get seeSkyThatDay => 'Voir le ciel de ce jour';
+
+  @override
+  String get sunLightTitle => 'Soleil et lumière';
+
+  @override
+  String get firstLight => 'Première lumière';
+
+  @override
+  String get goldenMorningEnds => 'Fin de l’heure dorée du matin';
+
+  @override
+  String get solarNoon => 'Midi solaire';
+
+  @override
+  String get goldenEveningStarts => 'Début de l’heure dorée du soir';
+
+  @override
+  String get lastLight => 'Dernière lumière';
+
+  @override
+  String get darkSky => 'Ciel complètement noir';
+
+  @override
+  String get sunDayLength => 'Durée du jour';
+
+  @override
+  String durationHm(String hours, String minutes) {
+    return '$hours h $minutes min';
+  }
+
+  @override
+  String get sunNote =>
+      'L’heure dorée, c’est quand le Soleil est à moins de 6° au-dessus de l’horizon. La première et la dernière lumière ont lieu quand il est à 6° en dessous, et le ciel est complètement noir quand il est à 18° en dessous. Les heures sont calculées pour la date que vous choisissez.';
+
+  @override
+  String get sunStaysUp => 'Ce jour-là, le Soleil ne se couche pas.';
+
+  @override
+  String get sunStaysDown => 'Ce jour-là, le Soleil ne se lève pas.';
 }

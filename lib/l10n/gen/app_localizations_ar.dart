@@ -1646,4 +1646,83 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get textSizeNote =>
       'يكبّر النص في Heliora. ولا يصغر أبدًا عن حجم النص الخاص بهاتفك.';
+
+  @override
+  String get skyOtherNight => 'سماء الليل';
+
+  @override
+  String get planetsThatNight => 'كواكب تلك الليلة';
+
+  @override
+  String get previousDay => 'اليوم السابق';
+
+  @override
+  String get nextDay => 'اليوم التالي';
+
+  @override
+  String get pickDate => 'اختر تاريخًا';
+
+  @override
+  String get backToTonight => 'العودة إلى الليلة';
+
+  @override
+  String get moonCalendar => 'تقويم القمر';
+
+  @override
+  String get moonCalendarHint => 'طور القمر في كل يوم';
+
+  @override
+  String get previousMonth => 'الشهر السابق';
+
+  @override
+  String get nextMonth => 'الشهر التالي';
+
+  @override
+  String get keyMoonDates => 'أطوار هذا الشهر الرئيسية';
+
+  @override
+  String get moonCalendarNote =>
+      'تُعرض تواريخ الأطوار وأوقاتها بالمنطقة الزمنية لهاتفك، وهي دقيقة خلال ساعة تقريبًا.';
+
+  @override
+  String get seeSkyThatDay => 'شاهد سماء هذا اليوم';
+
+  @override
+  String get sunLightTitle => 'الشمس والضوء';
+
+  @override
+  String get firstLight => 'أول ضوء';
+
+  @override
+  String get goldenMorningEnds => 'انتهاء الساعة الذهبية صباحًا';
+
+  @override
+  String get solarNoon => 'الشمس في أعلى نقطة';
+
+  @override
+  String get goldenEveningStarts => 'بدء الساعة الذهبية مساءً';
+
+  @override
+  String get lastLight => 'آخر ضوء';
+
+  @override
+  String get darkSky => 'سماء مظلمة تمامًا';
+
+  @override
+  String get sunDayLength => 'طول النهار';
+
+  @override
+  String durationHm(String hours, String minutes) {
+    return '$hours س $minutes د';
+  }
+
+  @override
+  String get sunNote =>
+      'الساعة الذهبية هي عندما تكون الشمس على ارتفاع أقل من 6° فوق الأفق. أول ضوء وآخر ضوء عندما تكون 6° تحته، وتصبح السماء مظلمة تمامًا عندما تكون 18° تحته. الأوقات محسوبة للتاريخ الذي تختاره.';
+
+  @override
+  String get sunStaysUp => 'في هذا اليوم لا تغيب الشمس.';
+
+  @override
+  String get sunStaysDown => 'في هذا اليوم لا تشرق الشمس.';
 }

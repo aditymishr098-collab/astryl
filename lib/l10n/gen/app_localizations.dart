@@ -2917,6 +2917,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Makes the text in Heliora bigger. It never goes below your phone\'s own text size.'**
   String get textSizeNote;
+
+  /// No description provided for @skyOtherNight.
+  ///
+  /// In en, this message translates to:
+  /// **'The night sky'**
+  String get skyOtherNight;
+
+  /// No description provided for @planetsThatNight.
+  ///
+  /// In en, this message translates to:
+  /// **'Planets that night'**
+  String get planetsThatNight;
+
+  /// No description provided for @previousDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous day'**
+  String get previousDay;
+
+  /// No description provided for @nextDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Next day'**
+  String get nextDay;
+
+  /// No description provided for @pickDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a date'**
+  String get pickDate;
+
+  /// No description provided for @backToTonight.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to tonight'**
+  String get backToTonight;
+
+  /// No description provided for @moonCalendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Moon calendar'**
+  String get moonCalendar;
+
+  /// No description provided for @moonCalendarHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The phase of the Moon on every day'**
+  String get moonCalendarHint;
+
+  /// No description provided for @previousMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous month'**
+  String get previousMonth;
+
+  /// No description provided for @nextMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Next month'**
+  String get nextMonth;
+
+  /// No description provided for @keyMoonDates.
+  ///
+  /// In en, this message translates to:
+  /// **'Main phases this month'**
+  String get keyMoonDates;
+
+  /// No description provided for @moonCalendarNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Phase dates and times are shown in your phone\'s time zone and are accurate to within about an hour.'**
+  String get moonCalendarNote;
+
+  /// No description provided for @seeSkyThatDay.
+  ///
+  /// In en, this message translates to:
+  /// **'See the sky on this day'**
+  String get seeSkyThatDay;
+
+  /// No description provided for @sunLightTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun and light'**
+  String get sunLightTitle;
+
+  /// No description provided for @firstLight.
+  ///
+  /// In en, this message translates to:
+  /// **'First light'**
+  String get firstLight;
+
+  /// No description provided for @goldenMorningEnds.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning golden hour ends'**
+  String get goldenMorningEnds;
+
+  /// No description provided for @solarNoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Solar noon'**
+  String get solarNoon;
+
+  /// No description provided for @goldenEveningStarts.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening golden hour starts'**
+  String get goldenEveningStarts;
+
+  /// No description provided for @lastLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Last light'**
+  String get lastLight;
+
+  /// No description provided for @darkSky.
+  ///
+  /// In en, this message translates to:
+  /// **'Fully dark sky'**
+  String get darkSky;
+
+  /// No description provided for @sunDayLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Day length'**
+  String get sunDayLength;
+
+  /// No description provided for @durationHm.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h {minutes} min'**
+  String durationHm(String hours, String minutes);
+
+  /// No description provided for @sunNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Golden hour is when the Sun is less than 6° above the horizon. First and last light are when it is 6° below, and the sky is fully dark when it is 18° below. Times are worked out for the date you choose.'**
+  String get sunNote;
+
+  /// No description provided for @sunStaysUp.
+  ///
+  /// In en, this message translates to:
+  /// **'On this day the Sun does not set.'**
+  String get sunStaysUp;
+
+  /// No description provided for @sunStaysDown.
+  ///
+  /// In en, this message translates to:
+  /// **'On this day the Sun does not rise.'**
+  String get sunStaysDown;
 }
 
 class _AppLocalizationsDelegate

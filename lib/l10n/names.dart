@@ -369,3 +369,26 @@ String spacecraftText(AppLocalizations l, String id) {
       return l.spacecraftMarsRovers;
   }
 }
+
+/// The name of a Moon phase: 0 new moon ... 7 waning crescent, as
+/// `phaseIndex` gives it.
+String moonPhaseName(AppLocalizations l, int index) {
+  switch (index) {
+    case 0:
+      return l.phaseNew;
+    case 1:
+      return l.phaseWaxingCrescent;
+    case 2:
+      return l.phaseFirstQuarter;
+    case 3:
+      return l.phaseWaxingGibbous;
+    case 4:
+      return l.phaseFull;
+    case 5:
+      return l.phaseWaningGibbous;
+    case 6:
+      return l.phaseLastQuarter;
+    default:
+      return l.phaseWaningCrescent;
+  }
+}

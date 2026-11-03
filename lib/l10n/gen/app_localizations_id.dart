@@ -1664,4 +1664,83 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get textSizeNote =>
       'Memperbesar teks di Heliora. Ukurannya tidak pernah lebih kecil dari ukuran teks bawaan ponselmu.';
+
+  @override
+  String get skyOtherNight => 'Langit malam';
+
+  @override
+  String get planetsThatNight => 'Planet pada malam itu';
+
+  @override
+  String get previousDay => 'Hari sebelumnya';
+
+  @override
+  String get nextDay => 'Hari berikutnya';
+
+  @override
+  String get pickDate => 'Pilih tanggal';
+
+  @override
+  String get backToTonight => 'Kembali ke malam ini';
+
+  @override
+  String get moonCalendar => 'Kalender Bulan';
+
+  @override
+  String get moonCalendarHint => 'Fase Bulan setiap hari';
+
+  @override
+  String get previousMonth => 'Bulan sebelumnya';
+
+  @override
+  String get nextMonth => 'Bulan berikutnya';
+
+  @override
+  String get keyMoonDates => 'Fase utama bulan ini';
+
+  @override
+  String get moonCalendarNote =>
+      'Tanggal dan jam fase ditampilkan dalam zona waktu ponsel Anda dan akurat dalam kisaran sekitar satu jam.';
+
+  @override
+  String get seeSkyThatDay => 'Lihat langit pada hari ini';
+
+  @override
+  String get sunLightTitle => 'Matahari dan cahaya';
+
+  @override
+  String get firstLight => 'Cahaya pertama';
+
+  @override
+  String get goldenMorningEnds => 'Jam emas pagi berakhir';
+
+  @override
+  String get solarNoon => 'Tengah hari matahari';
+
+  @override
+  String get goldenEveningStarts => 'Jam emas sore dimulai';
+
+  @override
+  String get lastLight => 'Cahaya terakhir';
+
+  @override
+  String get darkSky => 'Langit benar-benar gelap';
+
+  @override
+  String get sunDayLength => 'Panjang siang';
+
+  @override
+  String durationHm(String hours, String minutes) {
+    return '$hours j $minutes mnt';
+  }
+
+  @override
+  String get sunNote =>
+      'Jam emas adalah saat Matahari kurang dari 6° di atas cakrawala. Cahaya pertama dan terakhir terjadi saat Matahari 6° di bawah cakrawala, dan langit benar-benar gelap saat 18° di bawah. Waktunya dihitung untuk tanggal yang Anda pilih.';
+
+  @override
+  String get sunStaysUp => 'Pada hari ini Matahari tidak terbenam.';
+
+  @override
+  String get sunStaysDown => 'Pada hari ini Matahari tidak terbit.';
 }

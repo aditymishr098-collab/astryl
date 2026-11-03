@@ -1666,4 +1666,83 @@ class AppLocalizationsTa extends AppLocalizations {
   @override
   String get textSizeNote =>
       'Heliora-வின் எழுத்துகளைப் பெரிதாக்குகிறது. உங்கள் தொலைபேசியின் சொந்த எழுத்து அளவுக்குக் கீழே இது ஒருபோதும் செல்லாது.';
+
+  @override
+  String get skyOtherNight => 'இரவு வானம்';
+
+  @override
+  String get planetsThatNight => 'அந்த இரவின் கிரகங்கள்';
+
+  @override
+  String get previousDay => 'முந்தைய நாள்';
+
+  @override
+  String get nextDay => 'அடுத்த நாள்';
+
+  @override
+  String get pickDate => 'தேதியைத் தேர்ந்தெடுக்கவும்';
+
+  @override
+  String get backToTonight => 'இன்றிரவுக்குத் திரும்பு';
+
+  @override
+  String get moonCalendar => 'நிலவு நாட்காட்டி';
+
+  @override
+  String get moonCalendarHint => 'ஒவ்வொரு நாளும் நிலவின் கட்டம்';
+
+  @override
+  String get previousMonth => 'முந்தைய மாதம்';
+
+  @override
+  String get nextMonth => 'அடுத்த மாதம்';
+
+  @override
+  String get keyMoonDates => 'இந்த மாதத்தின் முக்கிய கட்டங்கள்';
+
+  @override
+  String get moonCalendarNote =>
+      'கட்டங்களின் தேதிகளும் நேரங்களும் உங்கள் தொலைபேசியின் நேர மண்டலத்தில் காட்டப்படுகின்றன; ஏறக்குறைய ஒரு மணி நேரத்திற்குள் துல்லியமானவை.';
+
+  @override
+  String get seeSkyThatDay => 'இந்த நாளின் வானத்தைப் பார்';
+
+  @override
+  String get sunLightTitle => 'சூரியனும் ஒளியும்';
+
+  @override
+  String get firstLight => 'முதல் ஒளி';
+
+  @override
+  String get goldenMorningEnds => 'காலைப் பொன் நேரம் முடிகிறது';
+
+  @override
+  String get solarNoon => 'சூரியன் உச்சத்தில்';
+
+  @override
+  String get goldenEveningStarts => 'மாலைப் பொன் நேரம் தொடங்குகிறது';
+
+  @override
+  String get lastLight => 'கடைசி ஒளி';
+
+  @override
+  String get darkSky => 'முழுவதும் இருண்ட வானம்';
+
+  @override
+  String get sunDayLength => 'பகல் நீளம்';
+
+  @override
+  String durationHm(String hours, String minutes) {
+    return '$hours மணி $minutes நிமிடம்';
+  }
+
+  @override
+  String get sunNote =>
+      'சூரியன் அடிவானத்திலிருந்து 6°க்கும் குறைவாக உயரத்தில் இருக்கும்போது பொன் நேரம். அது 6° கீழே இருக்கும்போது முதல் மற்றும் கடைசி ஒளி, 18° கீழே இருக்கும்போது வானம் முழுவதும் இருண்டிருக்கும். நேரங்கள் நீங்கள் தேர்ந்தெடுத்த தேதிக்காகக் கணக்கிடப்பட்டவை.';
+
+  @override
+  String get sunStaysUp => 'இந்த நாளில் சூரியன் மறைவதில்லை.';
+
+  @override
+  String get sunStaysDown => 'இந்த நாளில் சூரியன் உதிப்பதில்லை.';
 }

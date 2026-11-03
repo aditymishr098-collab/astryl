@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:heliora/core/birthday.dart';
+import 'package:heliora/core/daylight.dart';
 import 'package:heliora/core/eclipses.dart';
 import 'package:heliora/core/events.dart';
 import 'package:heliora/core/facts.dart';
@@ -10,6 +11,7 @@ import 'package:heliora/core/finder.dart';
 import 'package:heliora/core/format.dart';
 import 'package:heliora/core/habitability.dart';
 import 'package:heliora/core/iss.dart';
+import 'package:heliora/core/moon_calendar.dart';
 import 'package:heliora/core/orbits.dart';
 import 'package:heliora/core/sgp4.dart';
 import 'package:heliora/core/sky.dart';
@@ -26,7 +28,7 @@ import 'package:heliora/data/planets.dart';
 import 'package:heliora/data/settings.dart';
 import 'package:heliora/data/update_service.dart';
 import 'package:heliora/screens/events_screen.dart' show launchReminderTime;
-import 'package:heliora/widgets/common.dart' show IconStatTile, StatGrid;
+import 'package:heliora/widgets/common.dart' show IconStatTile, InfoRow, StatGrid;
 
 void main() {
   group('planet data', () {
@@ -1119,6 +1121,178 @@ void main() {
       expect(find.byType(IconStatTile), findsNWidgets(5));
       final big = tester.getSize(find.byType(StatGrid)).height;
       expect(big, greaterThan(normal));
+    });
+  });
+
+  group('sun times and Moon calendar', () {
+    Matcher near(DateTime expected, int minutes) => predicate<DateTime>(
+        (t) => t.difference(expected).inMinutes.abs() <= minutes,
+        'within $minutes minutes of $expected');
+
+    test('London on the shortest day, 21 December 2025', () {
+      final s = sunDay(DateTime(2025, 12, 21), 51.5074, -0.1278);
+      expect(s.firstLight, near(DateTime.utc(2025, 12, 21, 7, 22), 3));
+      expect(s.sunrise, near(DateTime.utc(2025, 12, 21, 8, 2), 3));
+      expect(s.goldenMorningEnds, near(DateTime.utc(2025, 12, 21, 9, 4), 3));
+      expect(s.solarNoon, near(DateTime.utc(2025, 12, 21, 11, 57), 3));
+      expect(s.goldenEveningStarts,
+          near(DateTime.utc(2025, 12, 21, 14, 50), 3));
+      expect(s.sunset, near(DateTime.utc(2025, 12, 21, 15, 52), 3));
+      expect(s.lastLight, near(DateTime.utc(2025, 12, 21, 16, 32), 3));
+      expect(s.darkStarts, near(DateTime.utc(2025, 12, 21, 17, 56), 3));
+      expect(s.darkEnds, near(DateTime.utc(2025, 12, 21, 5, 58), 3));
+      expect(s.dayLength.inMinutes, closeTo(7 * 60 + 50, 3));
+      expect(s.stayUp, isFalse);
+      expect(s.stayDown, isFalse);
+    });
+
+    test('the times come in the right order', () {
+      final s = sunDay(DateTime(2026, 3, 20), -0.18, -78.47);
+      final order = <DateTime?>[
+        s.firstLight,
+        s.sunrise,
+        s.goldenMorningEnds,
+        s.solarNoon,
+        s.goldenEveningStarts,
+        s.sunset,
+        s.lastLight,
+      ];
+      for (var i = 0; i < order.length; i++) {
+        expect(order[i], isNotNull);
+        if (i > 0) {
+          expect(order[i]!.isAfter(order[i - 1]!), isTrue, reason: '$i');
+        }
+      }
+      // Quito on the equinox: a day of about 12 hours.
+      expect(s.dayLength.inMinutes, closeTo(12 * 60 + 6, 3));
+    });
+
+    test('sunDay agrees with sunRiseSet', () {
+      final a = sunDay(DateTime(2025, 6, 21), 51.5074, -0.1278);
+      final b = sunRiseSet(DateTime.utc(2025, 6, 21), 51.5074, -0.1278);
+      expect(a.sunrise, near(b.rise!, 3));
+      expect(a.sunset, near(b.set!, 3));
+    });
+
+    test('a far city gets a sunrise and sunset that belong together', () {
+      // Yerevan, midsummer: about 15 hours of daylight, whatever the
+      // time zone of the phone.
+      final s = sunDay(DateTime(2026, 6, 21), 40.18, 44.51);
+      expect(s.sunrise, near(DateTime.utc(2026, 6, 21, 1, 31), 3));
+      expect(s.sunset, near(DateTime.utc(2026, 6, 21, 16, 33), 3));
+      expect(s.sunset!.isAfter(s.sunrise!), isTrue);
+      expect(s.dayLength.inMinutes, closeTo(15 * 60 + 2, 3));
+    });
+
+    test('midnight sun and polar night', () {
+      final summer = sunDay(DateTime(2026, 6, 21), 69.65, 18.96);
+      expect(summer.stayUp, isTrue);
+      expect(summer.sunrise, isNull);
+      expect(summer.sunset, isNull);
+      expect(summer.dayLength.inHours, 24);
+      final winter = sunDay(DateTime(2026, 12, 21), 69.65, 18.96);
+      expect(winter.stayDown, isTrue);
+      expect(winter.sunrise, isNull);
+      expect(winter.dayLength, Duration.zero);
+    });
+
+    test('the four main phases of November 2026', () {
+      final list =
+          phaseEvents(DateTime.utc(2026, 11, 1), DateTime.utc(2026, 12, 1));
+      expect(list.map((e) => e.kind).toList(), <int>[3, 0, 1, 2]);
+      expect(list[0].time, near(DateTime.utc(2026, 11, 1, 20, 27), 30));
+      expect(list[1].time, near(DateTime.utc(2026, 11, 9, 7, 1), 30));
+      expect(list[2].time, near(DateTime.utc(2026, 11, 17, 11, 49), 30));
+      expect(list[3].time, near(DateTime.utc(2026, 11, 24, 15, 2), 30));
+      expect(list[1].nameIndex, 0);
+      expect(list[3].nameIndex, 4);
+    });
+
+    test('a month of Moon days', () {
+      final days = moonMonth(2026, 11);
+      expect(days.length, 30);
+      expect(moonMonth(2028, 2).length, 29);
+      expect(days.first.date, DateTime(2026, 11, 1));
+      expect(days.last.date, DateTime(2026, 11, 30));
+      for (final d in days) {
+        expect(d.lit, inInclusiveRange(0.0, 1.0));
+        expect(d.age, inInclusiveRange(0.0, 360.0));
+      }
+      final marked = days.where((d) => d.event != null).toList();
+      expect(marked.length, inInclusiveRange(4, 5));
+      for (final d in marked) {
+        final local = d.event!.time.toLocal();
+        expect(d.date, DateTime(local.year, local.month, local.day));
+      }
+      final full = marked.firstWhere((d) => d.event!.kind == 2);
+      expect(full.lit, 1.0);
+      expect(phaseIndex(full.age), 4);
+      final fresh = marked.firstWhere((d) => d.event!.kind == 0);
+      expect(fresh.lit, 0.0);
+      expect(phaseIndex(fresh.age), 0);
+    });
+
+    test('moonrise falls on the horizon', () {
+      final city = cityById('yerevan')!;
+      var withRise = 0;
+      for (var d = 1; d <= 30; d++) {
+        final r = moonRiseSet(DateTime(2026, 11, d), city.lat, city.lon);
+        final rise = r.rise;
+        if (rise != null) {
+          withRise++;
+          final alt = toHorizontal(
+                  equatorialOf('moon', rise), rise, city.lat, city.lon)
+              .altitude;
+          expect(alt, closeTo(horizonFor('moon'), 0.3), reason: 'day $d');
+        }
+        final set = r.set;
+        if (set != null) {
+          final alt = toHorizontal(
+                  equatorialOf('moon', set), set, city.lat, city.lon)
+              .altitude;
+          expect(alt, closeTo(horizonFor('moon'), 0.3), reason: 'day $d');
+        }
+      }
+      // The Moon rises about 50 minutes later each day, so one day in
+      // about thirty has no moonrise.
+      expect(withRise, greaterThanOrEqualTo(26));
+    });
+
+    testWidgets('info rows wrap long text without overflow', (tester) async {
+      tester.view.physicalSize = const Size(640, 1400);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(tester.view.reset);
+      await tester.pumpWidget(
+        MaterialApp(
+          home: MediaQuery(
+            data: MediaQueryData(
+              size: const Size(320, 700),
+              textScaler: TextScaler.linear(1.3),
+            ),
+            child: const Scaffold(
+              body: Padding(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  children: <Widget>[
+                    InfoRow(
+                      icon: Icons.camera_alt_outlined,
+                      label: 'Evening golden hour starts',
+                      value: '4:50 PM',
+                    ),
+                    InfoRow(
+                      icon: Icons.dark_mode_outlined,
+                      label: 'Fully dark sky',
+                      value: '7:41 PM – 4:50 AM next morning',
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      expect(tester.takeException(), isNull);
+      expect(find.byType(InfoRow), findsNWidgets(2));
     });
   });
 

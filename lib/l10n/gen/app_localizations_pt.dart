@@ -1660,4 +1660,83 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get textSizeNote =>
       'Aumenta o texto no Heliora. Ele nunca fica menor que o tamanho de texto do seu próprio celular.';
+
+  @override
+  String get skyOtherNight => 'O céu da noite';
+
+  @override
+  String get planetsThatNight => 'Planetas naquela noite';
+
+  @override
+  String get previousDay => 'Dia anterior';
+
+  @override
+  String get nextDay => 'Dia seguinte';
+
+  @override
+  String get pickDate => 'Escolher uma data';
+
+  @override
+  String get backToTonight => 'Voltar para esta noite';
+
+  @override
+  String get moonCalendar => 'Calendário lunar';
+
+  @override
+  String get moonCalendarHint => 'A fase da Lua em cada dia';
+
+  @override
+  String get previousMonth => 'Mês anterior';
+
+  @override
+  String get nextMonth => 'Próximo mês';
+
+  @override
+  String get keyMoonDates => 'Principais fases deste mês';
+
+  @override
+  String get moonCalendarNote =>
+      'As datas e horas das fases aparecem no fuso horário do seu telefone e têm precisão de cerca de uma hora.';
+
+  @override
+  String get seeSkyThatDay => 'Ver o céu deste dia';
+
+  @override
+  String get sunLightTitle => 'Sol e luz';
+
+  @override
+  String get firstLight => 'Primeira luz';
+
+  @override
+  String get goldenMorningEnds => 'Fim da hora dourada da manhã';
+
+  @override
+  String get solarNoon => 'Meio-dia solar';
+
+  @override
+  String get goldenEveningStarts => 'Início da hora dourada da tarde';
+
+  @override
+  String get lastLight => 'Última luz';
+
+  @override
+  String get darkSky => 'Céu totalmente escuro';
+
+  @override
+  String get sunDayLength => 'Duração do dia';
+
+  @override
+  String durationHm(String hours, String minutes) {
+    return '$hours h $minutes min';
+  }
+
+  @override
+  String get sunNote =>
+      'A hora dourada é quando o Sol está a menos de 6° acima do horizonte. A primeira e a última luz acontecem quando ele está 6° abaixo, e o céu fica totalmente escuro quando ele está 18° abaixo. Os horários são calculados para a data que você escolher.';
+
+  @override
+  String get sunStaysUp => 'Neste dia o Sol não se põe.';
+
+  @override
+  String get sunStaysDown => 'Neste dia o Sol não nasce.';
 }
