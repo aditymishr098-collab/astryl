@@ -50,6 +50,97 @@ class IssTle {
   }
 }
 
+/// A satellite other than the space station whose passes Heliora can show.
+class TrackedSatellite {
+  const TrackedSatellite(this.id, this.noradId);
+
+  /// Short id used in file names and reminder ids.
+  final String id;
+
+  /// The NORAD catalogue number, which the orbit data must match.
+  final String noradId;
+}
+
+/// Tiangong (the Tianhe core module of the Chinese space station) and the
+/// Hubble Space Telescope.
+const List<TrackedSatellite> trackedSatellites = <TrackedSatellite>[
+  TrackedSatellite('css', '48274'),
+  TrackedSatellite('hst', '20580'),
+];
+
+TrackedSatellite? trackedSatelliteById(String id) {
+  for (final s in trackedSatellites) {
+    if (s.id == id) {
+      return s;
+    }
+  }
+  return null;
+}
+
+/// One space news article from the Spaceflight News API. Only text and the
+/// link are kept: no pictures are downloaded.
+class NewsItem {
+  const NewsItem({
+    required this.id,
+    required this.title,
+    required this.summary,
+    required this.url,
+    required this.site,
+    required this.publishedMs,
+  });
+
+  final String id;
+  final String title;
+  final String summary;
+
+  /// The article on the publisher's own site (always https).
+  final String url;
+  final String site;
+  final int publishedMs;
+
+  DateTime get published =>
+      DateTime.fromMillisecondsSinceEpoch(publishedMs, isUtc: true);
+
+  Map<String, Object> toJson() => <String, Object>{
+        'id': id,
+        'title': title,
+        'summary': summary,
+        'url': url,
+        'site': site,
+        'publishedMs': publishedMs,
+      };
+
+  static NewsItem? fromJson(Object? json) {
+    if (json is! Map<String, dynamic>) {
+      return null;
+    }
+    final id = json['id'];
+    final title = json['title'];
+    final url = json['url'];
+    final at = json['publishedMs'];
+    if (id is String &&
+        title is String &&
+        url is String &&
+        at is int &&
+        url.startsWith('https://')) {
+      String text(String key) {
+        final v = json[key];
+        return v is String ? v : '';
+      }
+
+      return NewsItem(
+        id: id,
+        title: title,
+        summary: text('summary'),
+        url: url,
+        site: text('site'),
+        publishedMs: at,
+      );
+    }
+    return null;
+  }
+}
+
 /// One upcoming rocket launch from Launch Library 2.
 class Launch {
   const Launch({
@@ -145,9 +236,10 @@ class Launch {
   }
 }
 
-/// Reads data from the internet for the two optional online features: the
-/// space station's orbit data and the list of rocket launches. Nothing about
-/// the user is sent; the services only see the phone's internet address.
+/// Reads data from the internet for the optional online features: orbit
+/// data of the space station, Tiangong and Hubble, the list of rocket
+/// launches and space news. Nothing about the user is sent; the services only
+/// see the phone's internet address.
 class OnlineService {
   OnlineService({this.userAgent = 'Heliora (github.com/lumio-apps/heliora)'});
 
@@ -158,6 +250,7 @@ class OnlineService {
     'api.wheretheiss.at',
     'celestrak.org',
     'll.thespacedevs.com',
+    'api.spaceflightnewsapi.net',
   };
 
   static const int _maxBytes = 3 * 1024 * 1024;
@@ -166,6 +259,8 @@ class OnlineService {
       'https://api.wheretheiss.at/v1/satellites/25544/tles';
   static const String _issTleFallbackUrl =
       'https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE';
+  static const String _newsUrl =
+      'https://api.spaceflightnewsapi.net/v4/articles/?limit=20';
   static const String _launchesUrl =
       'https://ll.thespacedevs.com/2.3.0/launches/upcoming/?limit=25&ordering=net';
 
@@ -211,6 +306,19 @@ class OnlineService {
     }
   }
 
+  /// Downloads the orbit data of [sat] from Celestrak. Throws on any problem.
+  Future<IssTle> fetchSatelliteTle(TrackedSatellite sat) async {
+    final url =
+        'https://celestrak.org/NORAD/elements/gp.php?CATNR=${sat.noradId}&FORMAT=TLE';
+    return parseCelestrak(await _get(url), DateTime.now().millisecondsSinceEpoch,
+        noradId: sat.noradId);
+  }
+
+  /// Downloads the latest space news. Throws on any problem.
+  Future<List<NewsItem>> fetchNews() async {
+    return parseNews(await _get(_newsUrl));
+  }
+
   /// Downloads the next rocket launches. Throws on any problem.
   Future<List<Launch>> fetchLaunches() async {
     return parseLaunches(await _get(_launchesUrl));
@@ -234,7 +342,8 @@ class OnlineService {
   }
 
   /// Plain text from Celestrak: a name line followed by the two TLE lines.
-  static IssTle parseCelestrak(String body, int fetchedAtMs) {
+  static IssTle parseCelestrak(String body, int fetchedAtMs,
+      {String noradId = '25544'}) {
     final lines = body
         .split(RegExp(r'\r?\n'))
         .map((l) => l.trimRight())
@@ -243,21 +352,23 @@ class OnlineService {
     for (var i = 0; i + 1 < lines.length; i++) {
       if (lines[i].startsWith('1 ') && lines[i + 1].startsWith('2 ')) {
         final name = i > 0 ? lines[i - 1].trim() : 'ISS';
-        return _checked(name, lines[i], lines[i + 1], fetchedAtMs);
+        return _checked(name, lines[i], lines[i + 1], fetchedAtMs,
+            noradId: noradId);
       }
     }
     throw const FormatException('No orbit lines');
   }
 
-  static IssTle _checked(String name, String l1, String l2, int at) {
+  static IssTle _checked(String name, String l1, String l2, int at,
+      {String noradId = '25544'}) {
     final tle = IssTle(name: name, line1: l1, line2: l2, fetchedAtMs: at);
     final sat = tle.toSgp4();
     if (sat == null) {
       throw const FormatException('Not a TLE');
     }
-    // The ISS is NORAD number 25544; refuse anything else.
-    if (!l1.substring(2).trimLeft().startsWith('25544')) {
-      throw const FormatException('Not the space station');
+    // The ISS is NORAD number 25544; refuse any other satellite.
+    if (!l1.substring(2).trimLeft().startsWith(noradId)) {
+      throw const FormatException('Not the expected satellite');
     }
     return tle;
   }
@@ -306,6 +417,50 @@ class OnlineService {
       ));
     }
     out.sort((a, b) => a.netMs.compareTo(b.netMs));
+    return out;
+  }
+
+  /// The JSON of the Spaceflight News API: an object with "results", each an
+  /// article. Articles without a title, an https link or a date are skipped.
+  static List<NewsItem> parseNews(String body) {
+    final json = jsonDecode(body);
+    if (json is! Map<String, dynamic>) {
+      throw const FormatException('Unexpected answer');
+    }
+    final results = json['results'];
+    if (results is! List) {
+      throw const FormatException('No results');
+    }
+    final out = <NewsItem>[];
+    for (final r in results) {
+      if (r is! Map<String, dynamic>) {
+        continue;
+      }
+      final id = r['id'];
+      final title = r['title'];
+      final url = r['url'];
+      final dateText = r['published_at'];
+      final date = dateText is String ? DateTime.tryParse(dateText) : null;
+      if (id == null ||
+          title is! String ||
+          title.trim().isEmpty ||
+          url is! String ||
+          !url.startsWith('https://') ||
+          date == null) {
+        continue;
+      }
+      final summary = r['summary'];
+      final site = r['news_site'];
+      out.add(NewsItem(
+        id: id.toString(),
+        title: title.trim(),
+        summary: summary is String ? summary.trim() : '',
+        url: url,
+        site: site is String ? site.trim() : '',
+        publishedMs: date.toUtc().millisecondsSinceEpoch,
+      ));
+    }
+    out.sort((a, b) => b.publishedMs.compareTo(a.publishedMs));
     return out;
   }
 

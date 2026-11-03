@@ -3,9 +3,10 @@ import 'package:flutter/foundation.dart';
 import '../core/sgp4.dart';
 import '../data/online_service.dart';
 
-/// The data for the optional online features: the space station's orbit and
-/// the list of rocket launches. It is kept on the phone, so both keep
-/// working offline with what was downloaded last.
+/// The data for the optional online features: the orbits of the space
+/// station, Tiangong and Hubble, the list of rocket launches and the space
+/// news. It is kept on the phone, so all of it keeps working offline with
+/// what was downloaded last.
 class OnlineState extends ChangeNotifier {
   OnlineState({OnlineService? service, OnlineStore? store})
       : _service = service ?? OnlineService(),
@@ -27,6 +28,17 @@ class OnlineState extends ChangeNotifier {
   bool _loadingLaunches = false;
   bool _launchesFailed = false;
 
+  // Tiangong and Hubble, by satellite id.
+  final Map<String, IssTle> _satTles = <String, IssTle>{};
+  final Map<String, Sgp4> _sats = <String, Sgp4>{};
+  final Set<String> _loadingSats = <String>{};
+  final Set<String> _failedSats = <String>{};
+
+  List<NewsItem> _news = const <NewsItem>[];
+  int _newsFetchedMs = 0;
+  bool _loadingNews = false;
+  bool _newsFailed = false;
+
   IssTle? get tle => _tle;
 
   /// The orbit of the station, or null until it was downloaded once.
@@ -37,8 +49,20 @@ class OnlineState extends ChangeNotifier {
   bool get loadingLaunches => _loadingLaunches;
   bool get launchesFailed => _launchesFailed;
 
+  /// The orbit of Tiangong or Hubble, or null until downloaded once.
+  Sgp4? satFor(String id) => _sats[id];
+  IssTle? tleFor(String id) => _satTles[id];
+  bool loadingSat(String id) => _loadingSats.contains(id);
+  bool satFailed(String id) => _failedSats.contains(id);
+
+  List<NewsItem> get news => _news;
+  int get newsFetchedMs => _newsFetchedMs;
+  bool get loadingNews => _loadingNews;
+  bool get newsFailed => _newsFailed;
+
   static const Duration _issMaxAge = Duration(hours: 12);
   static const Duration _launchMaxAge = Duration(hours: 3);
+  static const Duration _newsMaxAge = Duration(hours: 3);
 
   /// Reads what was saved by an earlier download.
   Future<void> loadCache() async {
@@ -62,6 +86,28 @@ class OnlineState extends ChangeNotifier {
       }
       if (at is int) {
         _launchesFetchedMs = at;
+      }
+    }
+    for (final sat in trackedSatellites) {
+      final tle = IssTle.fromJson(await _store.read('sat_${sat.id}.json'));
+      final orbit = tle?.toSgp4();
+      if (tle != null && orbit != null) {
+        _satTles[sat.id] = tle;
+        _sats[sat.id] = orbit;
+      }
+    }
+    final savedNews = await _store.read('news.json');
+    if (savedNews is Map<String, dynamic>) {
+      final list = savedNews['items'];
+      final at = savedNews['fetchedAtMs'];
+      if (list is List) {
+        _news = <NewsItem>[
+          for (final item in list)
+            if (NewsItem.fromJson(item) != null) NewsItem.fromJson(item)!,
+        ];
+      }
+      if (at is int) {
+        _newsFetchedMs = at;
       }
     }
     notifyListeners();
@@ -123,6 +169,67 @@ class OnlineState extends ChangeNotifier {
       _launchesFailed = true;
     } finally {
       _loadingLaunches = false;
+      notifyListeners();
+    }
+  }
+
+  /// Downloads the orbit of Tiangong or Hubble ([id] from
+  /// `trackedSatellites`) when there is none or it is over 12 hours old.
+  Future<void> refreshSatellite(String id, {bool force = false}) async {
+    final sat = trackedSatelliteById(id);
+    if (sat == null || _loadingSats.contains(id)) {
+      return;
+    }
+    final tle = _satTles[id];
+    if (!force && tle != null) {
+      final age = DateTime.now().millisecondsSinceEpoch - tle.fetchedAtMs;
+      if (age < _issMaxAge.inMilliseconds) {
+        return;
+      }
+    }
+    _loadingSats.add(id);
+    _failedSats.remove(id);
+    notifyListeners();
+    try {
+      final fresh = await _service.fetchSatelliteTle(sat);
+      final orbit = fresh.toSgp4();
+      if (orbit != null) {
+        _satTles[id] = fresh;
+        _sats[id] = orbit;
+        await _store.write('sat_$id.json', fresh.toJson());
+      }
+    } on Exception {
+      _failedSats.add(id);
+    } finally {
+      _loadingSats.remove(id);
+      notifyListeners();
+    }
+  }
+
+  /// Downloads the news when it is over 3 hours old (or [force]).
+  Future<void> refreshNews({bool force = false}) async {
+    if (_loadingNews) {
+      return;
+    }
+    final age = DateTime.now().millisecondsSinceEpoch - _newsFetchedMs;
+    if (!force && _news.isNotEmpty && age < _newsMaxAge.inMilliseconds) {
+      return;
+    }
+    _loadingNews = true;
+    _newsFailed = false;
+    notifyListeners();
+    try {
+      final list = await _service.fetchNews();
+      _news = list;
+      _newsFetchedMs = DateTime.now().millisecondsSinceEpoch;
+      await _store.write('news.json', <String, Object>{
+        'fetchedAtMs': _newsFetchedMs,
+        'items': <Object>[for (final n in list) n.toJson()],
+      });
+    } on Exception {
+      _newsFailed = true;
+    } finally {
+      _loadingNews = false;
       notifyListeners();
     }
   }

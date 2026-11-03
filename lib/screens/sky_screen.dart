@@ -18,8 +18,11 @@ import 'finder_screen.dart';
 import 'iss_screen.dart';
 import 'missions_screen.dart';
 import 'moon_calendar_screen.dart';
+import 'news_screen.dart';
+import 'satellites_screen.dart';
 import 'spacecraft_screen.dart';
 import 'star_map_screen.dart';
+import 'tonight_share_screen.dart';
 
 /// "Tonight's sky": the Moon's phase and which planets can be seen tonight
 /// from the chosen city, with rise and set times.
@@ -192,6 +195,8 @@ class _SkyScreenState extends State<SkyScreen> {
           const SizedBox(height: 12),
           const _EventsCard(),
           const SizedBox(height: 12),
+          const _NewsCard(),
+          const SizedBox(height: 12),
           const _MissionsCard(),
           const SizedBox(height: 12),
           const _SpacecraftCard(),
@@ -330,7 +335,14 @@ class _SkyScreenState extends State<SkyScreen> {
               night: night, city: city, time: _time, canFind: today),
           const SizedBox(height: 8),
         ],
-        const SizedBox(height: 8),
+        const SizedBox(height: 4),
+        _NavCard(
+          icon: Icons.ios_share_outlined,
+          title: l.tonightShareTitle,
+          hint: l.tonightShareHint,
+          builder: (_) => TonightShareScreen(city: city, day: day),
+        ),
+        const SizedBox(height: 12),
         Text(l.cityNote,
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 12, color: p.muted)),
@@ -338,6 +350,15 @@ class _SkyScreenState extends State<SkyScreen> {
         const _EventsCard(),
         const SizedBox(height: 12),
         _IssCard(city: city),
+        const SizedBox(height: 12),
+        _NavCard(
+          icon: Icons.satellite_alt_outlined,
+          title: l.satellitesTitle,
+          hint: l.satellitesCardHint,
+          builder: (_) => SatellitesScreen(city: city),
+        ),
+        const SizedBox(height: 12),
+        const _NewsCard(),
         const SizedBox(height: 12),
         const _MissionsCard(),
         const SizedBox(height: 12),
@@ -713,6 +734,22 @@ class _NavCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Opens the space news.
+class _NewsCard extends StatelessWidget {
+  const _NewsCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    return _NavCard(
+      icon: Icons.newspaper_outlined,
+      title: l.newsTitle,
+      hint: l.newsCardHint,
+      builder: (_) => const NewsScreen(),
     );
   }
 }

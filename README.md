@@ -33,7 +33,7 @@ and an honest answer to "could humans live here?"
   <tr>
     <td align="center"><img src="docs/screenshots/weight.jpg" width="220" alt="Your weight on other planets"><br><sub>Your weight everywhere</sub></td>
     <td align="center"><img src="docs/screenshots/age.jpg" width="220" alt="Your age on other planets"><br><sub>Your age on other planets</sub></td>
-    <td align="center"><img src="docs/screenshots/settings.jpg" width="220" alt="Settings with theme, language and updates"><br><sub>Theme, 20 languages, updates</sub></td>
+    <td align="center"><img src="docs/screenshots/settings.jpg" width="220" alt="Settings with theme, language and updates"><br><sub>Theme, English and Hindi, updates</sub></td>
   </tr>
 </table>
 
@@ -57,6 +57,9 @@ and an honest answer to "could humans live here?"
 - **Eclipses.** Total, annular, hybrid and partial solar eclipses and total, partial and penumbral lunar eclipses are in the events calendar for the next 12 months, with a bell for each. For your city, Heliora says whether the Moon is up during a lunar eclipse and gives a rough guess of how much of the Sun the Moon covers in a solar eclipse. It is only a guide: check an eclipse map before you travel, and never look at the Sun without eclipse glasses.
 - **Tonight in the sky, every evening (optional).** Switch it on in Settings and pick a time. Heliora shows a short note with the Moon's phase and the bright planets you can look for, using your chosen city. It is worked out on your phone. Android lets Heliora prepare about two weeks of notes ahead, so open the app now and then.
 - **Space station and rocket launches (optional, needs internet).** Turn on **Online features** in Settings and Heliora shows where the International Space Station is right now on a map, when it passes over your city (and whether you can see it), and the list of upcoming rocket launches inside the events calendar. All of it has bells for reminders. It is off until you switch it on.
+- **Tiangong and Hubble (optional, needs internet).** The same switch shows where China's Tiangong space station and the Hubble Space Telescope are now and when each flies over your city, with a bell for every pass. Hubble is faint, so it is a challenge for a clear night.
+- **Space news (optional, needs internet).** The latest space headlines from the [Spaceflight News API](https://spaceflightnewsapi.net) (English, no account or key). Only text is downloaded; a story opens on the publisher's own website.
+- **Share tonight's sky.** One tap makes a picture with the Moon and the planets you can see from your city tonight, made on the phone, ready to send to friends.
 - **Spacecraft now.** How far Voyager 1, Voyager 2, New Horizons, the James Webb telescope, the space station, Hubble and the Mars rovers are from Earth right now, with how long a radio signal needs to reach them. The far probes are estimates (about 1%), the rest are fixed or calculated for today.
 - **Find it with your compass.** Tap the compass button next to the Moon or a planet, hold your phone up, and Heliora shows which way to turn and tilt until you are pointing right at it. It uses your phone's motion sensors only: no camera, no location.
 
@@ -79,7 +82,7 @@ and an honest answer to "could humans live here?"
 
 ### ⚙️ Made for everyone
 - **Light, dark or system theme**, and a **text size** setting (Normal, Large, Larger) for easier reading.
-- **20 languages:** English, Hindi, Bengali, Gujarati, Kannada, Malayalam, Marathi, Punjabi, Tamil, Telugu, Urdu, Arabic, Chinese, Japanese, Spanish, French, Portuguese, Russian, Indonesian and Armenian. Planet names are translated too, and Arabic and Urdu read right to left.
+- **Two languages:** English and Hindi (हिन्दी), or the language of your phone. Planet and constellation names are translated too. Earlier versions had 20 languages; from 1.16.0 the app is kept in the two that are fully proofread.
 - **In-app updates.** New versions download inside the app with a progress bar, then the Android installer opens. Your settings are kept.
 
 ## Install
@@ -94,8 +97,8 @@ After that, Heliora updates itself: go to **Settings → Check for updates**, or
 
 Heliora is made by [Lumio Apps](https://github.com/lumio-apps): **no ads, no account, no tracking.**
 
-- Everything works without internet, except the two optional online features below. Planet data, positions and 3D surfaces are all calculated on your phone.
-- **Online features are off by default.** If you switch them on in Settings, Heliora contacts `api.wheretheiss.at` (or `celestrak.org`) for the station's orbit data and `ll.thespacedevs.com` (Launch Library 2) for the launch list. Nothing about you is sent; those services can only see your phone's internet address. The orbit data is saved on the phone, so the station keeps working offline for days. Switch the setting off and Heliora never contacts them.
+- Everything works without internet, except the optional online features below. Planet data, positions and 3D surfaces are all calculated on your phone.
+- **Online features are off by default.** If you switch them on in Settings, Heliora contacts `api.wheretheiss.at` (or `celestrak.org`) for the station's orbit data `ll.thespacedevs.com` (Launch Library 2) for the launch list, and `api.spaceflightnewsapi.net` for the news. The orbits of Tiangong and Hubble come from `celestrak.org`. Nothing about you is sent; those services can only see your phone's internet address. The orbit data is saved on the phone, so the station keeps working offline for days. Switch the setting off and Heliora never contacts them.
 - Besides that, the internet is used only for updates. The app asks GitHub for the latest release and, when you tap **Download and install**, downloads the signed APK from that release. Nothing about you is sent.
 - Your birth date and settings are saved only on your phone.
 - The daily update check can be turned off in Settings.
@@ -116,8 +119,9 @@ Heliora is made by [Lumio Apps](https://github.com/lumio-apps): **no ads, no acc
 | Moon calendar | The Moon's phase on each day is taken at noon. The four main phases are found by searching for the moment the Sun to Moon angle reaches 0, 90, 180 or 270 degrees, good to about an hour. |
 | Space events | The same orbits and Moon maths find each event on the phone: oppositions where a planet is opposite the Sun in longitude, greatest elongations, planet pairs closer than 2°, and equinoxes and solstices. Checked against 2025–2026: Mars (16 Jan 2025), Saturn (21 Sep 2025) and Jupiter (10 Jan 2026) oppositions, Venus at 47° on 10 Jan 2025 and 15 Aug 2026, and the 2026 equinoxes and solstices within 15 minutes. Meteor shower peaks are typical yearly dates. |
 | Space station | The station's orbit data (a TLE) is downloaded once and the position is computed on the phone with SGP4 (`lib/core/sgp4.dart`), checked against Vallado's published test vectors. A pass counts as easy to see when the Sun is more than 6° below the horizon and the station is still lit by the Sun. |
+| Tiangong and Hubble | The orbit of each one (a TLE from CelesTrak, kept on the phone) is checked to carry the right catalogue number, then used with the same SGP4 code and pass finder as the space station. Hubble is only about magnitude 2 to 3 at its best, so it is hard to see. |
 | Rocket launches | The list comes from [Launch Library 2](https://thespacedevs.com/llapi). Times are "no earlier than" and change often, so the list is refreshed at most every 3 hours. |
-| Star map | About 1,000 stars (down to magnitude 4.6), the constellation lines and 12 binocular targets come from the [d3-celestial](https://github.com/ofrohn/d3-celestial) data (Hipparcos-based, BSD 3-clause, see `assets/licenses`) and are stored in `lib/data/sky_catalog.dart`. Positions are for the year 2000, so Heliora turns them to today's equinox with the IAU 1976 precession (about 0.4° by now) before drawing them together with the Sun, Moon and planets. The sky is drawn with a stereographic projection. Checked on the phone-independent maths: Polaris stands at your latitude (within 1°), and Sirius reaches 33.1° from Yerevan. Stars fainter than magnitude 4.6 are not shown, so very dark skies will show more than the map. Names of stars and binocular objects stay in English, constellation names are translated for 8 languages and use the Latin name in the others. |
+| Star map | About 1,000 stars (down to magnitude 4.6), the constellation lines and 12 binocular targets come from the [d3-celestial](https://github.com/ofrohn/d3-celestial) data (Hipparcos-based, BSD 3-clause, see `assets/licenses`) and are stored in `lib/data/sky_catalog.dart`. Positions are for the year 2000, so Heliora turns them to today's equinox with the IAU 1976 precession (about 0.4° by now) before drawing them together with the Sun, Moon and planets. The sky is drawn with a stereographic projection. Checked on the phone-independent maths: Polaris stands at your latitude (within 1°), and Sirius reaches 33.1° from Yerevan. Stars fainter than magnitude 4.6 are not shown, so very dark skies will show more than the map. Names of stars and binocular objects stay in English, constellation names are translated into Hindi. |
 | Compass finder | The phone's rotation sensor gives where the back of the phone points; Android's magnetic-declination model turns magnetic north into true north. The target comes from the same orbit maths as Tonight's sky. |
 | Life score | Six simple rules in `lib/core/habitability.dart`. A teaching aid, not science. |
 
@@ -141,7 +145,7 @@ Releases are built and signed by GitHub Actions when a version tag such as `v1.4
 | 1.13.0 | Moon calendar, the sky on any date, sunrise, sunset and golden hour (done) |
 | 1.14.0 | New design: Space Grotesk and DM Sans fonts, big planet cards, a scrolling Explore page, a new planet page and bottom bar (done) |
 | 1.15.0 | Constellations and bright stars (kept in the app, offline), a star map you drag with your finger, constellation stories, binocular guide (done) |
-| 1.16.0 | Optional online features: daily space news, Tiangong and Hubble passes, a share card for tonight's sky |
+| 1.16.0 | Optional online features: space news, Tiangong and Hubble passes, a share card for tonight's sky; the app is kept in English and Hindi (done) |
 | 2.0.0 | Point your phone at the sky to find stars (motion sensors), all planets in one 3D scene |
 | 2.1.0 | Home-screen widget |
 
@@ -149,7 +153,7 @@ Plans can change. Nothing in the roadmap will ask for an account or collect your
 
 ## Fonts
 
-Titles use [Space Grotesk](https://fonts.google.com/specimen/Space+Grotesk) and the rest of the text uses [DM Sans](https://fonts.google.com/specimen/DM+Sans). Both are licensed under the SIL Open Font License (see `assets/fonts/OFL-*.txt`) and are kept inside the app, so nothing is downloaded. Scripts these two fonts do not cover (Indian scripts, Arabic, Chinese, Japanese, Armenian, Cyrillic) use the phone's own fonts.
+Titles use [Space Grotesk](https://fonts.google.com/specimen/Space+Grotesk) and the rest of the text uses [DM Sans](https://fonts.google.com/specimen/DM+Sans). Both are licensed under the SIL Open Font License (see `assets/fonts/OFL-*.txt`) and are kept inside the app, so nothing is downloaded. Devanagari (Hindi) uses the phone's own font.
 
 ## Star data
 
@@ -157,12 +161,13 @@ Stars, constellation lines, names and the Messier objects come from [d3-celestia
 
 ## Translations
 
-All texts live in `lib/l10n/app_<language>.arb`. Found a wrong word in your language? Edit the matching file and open a pull request. Help from native speakers is very welcome.
+All texts live in `lib/l10n/app_en.arb` and `lib/l10n/app_hi.arb`. Found a wrong word? Edit the matching file and open a pull request. Help from native speakers is very welcome.
 
 ## Changelog
 
 | Version | What's new |
 |---|---|
+| **1.16.0** | Space news, Tiangong and Hubble passes with reminders, and a share card for tonight's sky (all online parts are off until you switch them on; the share card works offline). The app is now in English and Hindi only: the other 18 languages are removed. Your saved settings are kept; a removed language falls back to the phone's |
 | **1.15.0** | Star map with about 1,000 stars, 89 constellations, the Moon and planets (drag, pinch, tap), stories for 11 constellations, a binocular guide with where to look tonight, and the time of the sky in steps of one hour. 29 new texts in 20 languages |
 | **1.14.0** | New design: Space Grotesk and DM Sans fonts (bundled, no download), big glowing planet cards, an Explore page that scrolls with the Solar System in its own card, a new planet page with a centred planet, life-score badge and a three-column stats card, round buttons, bordered cards and a flatter bottom bar |
 | **1.13.0** | Moon calendar, the sky on any date (1900 to 2049), and a Sun and light card with golden hour, twilight and the dark-sky window. The Sky tab now starts with the Moon and the planets, with the other cards below |

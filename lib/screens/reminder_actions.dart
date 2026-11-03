@@ -59,5 +59,6 @@ Future<void> toggleReminder(
 /// True for reminders that belong to the space events list.
 bool isEventReminder(String id) =>
     !id.startsWith('iss:') &&
+    !id.startsWith('sat:') &&
     !id.startsWith('launch:') &&
     !id.startsWith('tonight:');

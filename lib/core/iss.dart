@@ -117,7 +117,12 @@ class IssPass {
     required this.peakAzimuth,
     required this.setAzimuth,
     required this.visible,
+    this.satId = 'iss',
   });
+
+  /// Which satellite: 'iss' for the space station, or the id of another one
+  /// from `trackedSatellites`.
+  final String satId;
 
   final DateTime rise;
   final DateTime set;
@@ -139,7 +144,8 @@ class IssPass {
   String get id {
     final t = rise.toUtc();
     String two(int v) => v.toString().padLeft(2, '0');
-    return 'iss:${t.year}${two(t.month)}${two(t.day)}${two(t.hour)}${two(t.minute)}';
+    final prefix = satId == 'iss' ? 'iss:' : 'sat:$satId:';
+    return '$prefix${t.year}${two(t.month)}${two(t.day)}${two(t.hour)}${two(t.minute)}';
   }
 }
 
@@ -179,6 +185,7 @@ List<IssPass> findIssPasses(
   double lon, {
   int days = 5,
   double minElevation = 10,
+  String satId = 'iss',
 }) {
   double elevationAt(int ms) {
     final t = _at(ms);
@@ -230,7 +237,8 @@ List<IssPass> findIssPasses(
       riseMs = cross(t, next);
     } else if (above && !nextAbove && riseMs != null) {
       final setMs = cross(t, next);
-      final pass = _buildPass(sat, riseMs, setMs, lat, lon, elevationAt, azimuthAt);
+      final pass = _buildPass(
+          sat, riseMs, setMs, lat, lon, elevationAt, azimuthAt, satId);
       if (pass != null && pass.maxElevation >= minElevation) {
         out.add(pass);
       }
@@ -250,6 +258,7 @@ IssPass? _buildPass(
   double lon,
   double Function(int) elevationAt,
   double Function(int) azimuthAt,
+  String satId,
 ) {
   if (setMs <= riseMs) {
     return null;
@@ -276,6 +285,7 @@ IssPass? _buildPass(
     peakAzimuth: azimuthAt(peakMs),
     setAzimuth: azimuthAt(setMs - 1000 < riseMs ? setMs : setMs - 1000),
     visible: visibleSeconds >= 30,
+    satId: satId,
   );
 }
 

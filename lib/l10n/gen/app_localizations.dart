@@ -5,26 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
-import 'app_localizations_ar.dart';
-import 'app_localizations_bn.dart';
 import 'app_localizations_en.dart';
-import 'app_localizations_es.dart';
-import 'app_localizations_fr.dart';
-import 'app_localizations_gu.dart';
 import 'app_localizations_hi.dart';
-import 'app_localizations_hy.dart';
-import 'app_localizations_id.dart';
-import 'app_localizations_ja.dart';
-import 'app_localizations_kn.dart';
-import 'app_localizations_ml.dart';
-import 'app_localizations_mr.dart';
-import 'app_localizations_pa.dart';
-import 'app_localizations_pt.dart';
-import 'app_localizations_ru.dart';
-import 'app_localizations_ta.dart';
-import 'app_localizations_te.dart';
-import 'app_localizations_ur.dart';
-import 'app_localizations_zh.dart';
 
 // ignore_for_file: type=lint
 
@@ -112,26 +94,8 @@ abstract class AppLocalizations {
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
-    Locale('ar'),
-    Locale('bn'),
     Locale('en'),
-    Locale('es'),
-    Locale('fr'),
-    Locale('gu'),
-    Locale('hi'),
-    Locale('hy'),
-    Locale('id'),
-    Locale('ja'),
-    Locale('kn'),
-    Locale('ml'),
-    Locale('mr'),
-    Locale('pa'),
-    Locale('pt'),
-    Locale('ru'),
-    Locale('ta'),
-    Locale('te'),
-    Locale('ur'),
-    Locale('zh')
+    Locale('hi')
   ];
 
   /// No description provided for @appTitle.
@@ -1733,7 +1697,7 @@ abstract class AppLocalizations {
   /// No description provided for @onlineSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Show the space station and rocket launches. Heliora then contacts only wheretheiss.at, Celestrak and Launch Library 2, which can see your phone\'s internet address. Nothing else is sent. Off by default.'**
+  /// **'Show the space station, Tiangong, Hubble, rocket launches and space news. Heliora then contacts only wheretheiss.at, Celestrak, Launch Library 2 and the Spaceflight News API, which can see your phone’s internet address. Nothing else is sent. Off by default.'**
   String get onlineSubtitle;
 
   /// No description provided for @turnOnOnline.
@@ -3247,6 +3211,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Crux, the Southern Cross, is the smallest of all the constellations but one of the most famous. Four bright stars make a cross, and the two stars of its long arm point towards the south celestial pole, so it helps travellers find south. It cannot be seen from most of the northern half of the world.'**
   String get storyCru;
+
+  /// No description provided for @satellitesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tiangong and Hubble'**
+  String get satellitesTitle;
+
+  /// No description provided for @satellitesCardHint.
+  ///
+  /// In en, this message translates to:
+  /// **'When they fly over your city'**
+  String get satellitesCardHint;
+
+  /// No description provided for @tiangongName.
+  ///
+  /// In en, this message translates to:
+  /// **'Tiangong'**
+  String get tiangongName;
+
+  /// No description provided for @hubbleName.
+  ///
+  /// In en, this message translates to:
+  /// **'Hubble'**
+  String get hubbleName;
+
+  /// No description provided for @satNeedsOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'To show {name}, Heliora needs its orbit data from the internet. It is downloaded once and then works offline for days.'**
+  String satNeedsOnline(String name);
+
+  /// No description provided for @satPassTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} passing over you'**
+  String satPassTitle(String name);
+
+  /// No description provided for @satNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Positions are worked out on your phone from the orbit data. A pass is easy to see when the sky is dark and the satellite is lit by the Sun. Tiangong is bright, like a fast star. Hubble is much fainter, so binoculars help.'**
+  String get satNote;
+
+  /// No description provided for @newsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Space news'**
+  String get newsTitle;
+
+  /// No description provided for @newsCardHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The latest articles from space news sites'**
+  String get newsCardHint;
+
+  /// No description provided for @newsNeedsOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on online features to read the latest space news.'**
+  String get newsNeedsOnline;
+
+  /// No description provided for @newsFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update the news. Showing the saved articles.'**
+  String get newsFailed;
+
+  /// No description provided for @newsNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No news could be loaded. Check your internet and try again.'**
+  String get newsNone;
+
+  /// No description provided for @newsNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Articles come from the Spaceflight News API and are in English. Tapping one opens the publisher’s website in your browser. Heliora downloads no pictures.'**
+  String get newsNote;
+
+  /// No description provided for @newsOpenFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the link.'**
+  String get newsOpenFailed;
+
+  /// No description provided for @tonightShareTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share tonight’s sky'**
+  String get tonightShareTitle;
+
+  /// No description provided for @tonightShareHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A picture of the Moon and planets for your friends'**
+  String get tonightShareHint;
+
+  /// No description provided for @tonightShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'The sky over {city}, made with Heliora, the free offline Solar System app: https://github.com/lumio-apps/heliora'**
+  String tonightShareText(String city);
+
+  /// No description provided for @skyOverCity.
+  ///
+  /// In en, this message translates to:
+  /// **'The sky over {city}'**
+  String skyOverCity(String city);
 }
 
 class _AppLocalizationsDelegate
@@ -3259,28 +3331,8 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) => <String>[
-        'ar',
-        'bn',
-        'en',
-        'es',
-        'fr',
-        'gu',
-        'hi',
-        'hy',
-        'id',
-        'ja',
-        'kn',
-        'ml',
-        'mr',
-        'pa',
-        'pt',
-        'ru',
-        'ta',
-        'te',
-        'ur',
-        'zh'
-      ].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      <String>['en', 'hi'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -3289,46 +3341,10 @@ class _AppLocalizationsDelegate
 AppLocalizations lookupAppLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'ar':
-      return AppLocalizationsAr();
-    case 'bn':
-      return AppLocalizationsBn();
     case 'en':
       return AppLocalizationsEn();
-    case 'es':
-      return AppLocalizationsEs();
-    case 'fr':
-      return AppLocalizationsFr();
-    case 'gu':
-      return AppLocalizationsGu();
     case 'hi':
       return AppLocalizationsHi();
-    case 'hy':
-      return AppLocalizationsHy();
-    case 'id':
-      return AppLocalizationsId();
-    case 'ja':
-      return AppLocalizationsJa();
-    case 'kn':
-      return AppLocalizationsKn();
-    case 'ml':
-      return AppLocalizationsMl();
-    case 'mr':
-      return AppLocalizationsMr();
-    case 'pa':
-      return AppLocalizationsPa();
-    case 'pt':
-      return AppLocalizationsPt();
-    case 'ru':
-      return AppLocalizationsRu();
-    case 'ta':
-      return AppLocalizationsTa();
-    case 'te':
-      return AppLocalizationsTe();
-    case 'ur':
-      return AppLocalizationsUr();
-    case 'zh':
-      return AppLocalizationsZh();
   }
 
   throw FlutterError(

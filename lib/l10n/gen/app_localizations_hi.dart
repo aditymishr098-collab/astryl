@@ -921,7 +921,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get onlineSubtitle =>
-      'अंतरिक्ष स्टेशन और रॉकेट लॉन्च दिखाएँ। तब Heliora सिर्फ़ wheretheiss.at, Celestrak और Launch Library 2 से जुड़ता है, जो आपके फ़ोन का इंटरनेट पता देख सकते हैं। और कुछ नहीं भेजा जाता। शुरू में बंद रहता है।';
+      'अंतरिक्ष स्टेशन, तियांगोंग, हबल, रॉकेट लॉन्च और अंतरिक्ष समाचार दिखाएँ। तब Heliora सिर्फ़ wheretheiss.at, Celestrak, Launch Library 2 और Spaceflight News API से जुड़ता है, जो आपके फ़ोन का इंटरनेट पता देख सकते हैं। और कुछ नहीं भेजा जाता। शुरू में बंद रहता है।';
 
   @override
   String get turnOnOnline => 'ऑनलाइन सुविधाएँ चालू करें';
@@ -1842,4 +1842,72 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get storyCru =>
       'त्रिशंकु (क्रक्स, सदर्न क्रॉस) सभी तारामंडलों में सबसे छोटा है, पर सबसे मशहूर में से एक है। चार चमकीले तारे एक क्रॉस बनाते हैं और उसकी लंबी भुजा के दो तारे दक्षिणी खगोलीय ध्रुव की ओर इशारा करते हैं, इसलिए यह यात्रियों को दक्षिण दिशा खोजने में मदद करता है। दुनिया के उत्तरी आधे हिस्से के ज़्यादातर भागों से यह नहीं दिखता।';
+
+  @override
+  String get satellitesTitle => 'तियांगोंग और हबल';
+
+  @override
+  String get satellitesCardHint => 'जब वे आपके शहर के ऊपर से गुज़रते हैं';
+
+  @override
+  String get tiangongName => 'तियांगोंग';
+
+  @override
+  String get hubbleName => 'हबल';
+
+  @override
+  String satNeedsOnline(String name) {
+    return '$name दिखाने के लिए Heliora को इंटरनेट से उसका कक्षा-डेटा चाहिए। यह एक बार डाउनलोड होता है और फिर कई दिन बिना इंटरनेट चलता है।';
+  }
+
+  @override
+  String satPassTitle(String name) {
+    return '$name आपके ऊपर से गुज़र रहा है';
+  }
+
+  @override
+  String get satNote =>
+      'स्थितियाँ आपके फ़ोन पर कक्षा-डेटा से निकाली जाती हैं। जब आकाश अँधेरा हो और उपग्रह पर सूरज की रोशनी पड़ रही हो, तब उसे देखना आसान होता है। तियांगोंग चमकीला है, तेज़ चलते तारे जैसा। हबल बहुत धुँधला है, इसलिए दूरबीन (बाइनोकुलर) मदद करती है।';
+
+  @override
+  String get newsTitle => 'अंतरिक्ष समाचार';
+
+  @override
+  String get newsCardHint => 'अंतरिक्ष समाचार साइटों के ताज़ा लेख';
+
+  @override
+  String get newsNeedsOnline =>
+      'ताज़ा अंतरिक्ष समाचार पढ़ने के लिए ऑनलाइन सुविधाएँ चालू करें।';
+
+  @override
+  String get newsFailed =>
+      'समाचार अपडेट नहीं हो सके। सहेजे हुए लेख दिखाए जा रहे हैं।';
+
+  @override
+  String get newsNone =>
+      'कोई समाचार लोड नहीं हो सका। इंटरनेट जाँचें और फिर कोशिश करें।';
+
+  @override
+  String get newsNote =>
+      'लेख Spaceflight News API से आते हैं और अंग्रेज़ी में हैं। किसी लेख को छूने पर प्रकाशक की वेबसाइट आपके ब्राउज़र में खुलती है। Heliora कोई तस्वीर डाउनलोड नहीं करता।';
+
+  @override
+  String get newsOpenFailed => 'लिंक नहीं खुल सका।';
+
+  @override
+  String get tonightShareTitle => 'आज रात का आकाश साझा करें';
+
+  @override
+  String get tonightShareHint =>
+      'आपके दोस्तों के लिए चाँद और ग्रहों की एक तस्वीर';
+
+  @override
+  String tonightShareText(String city) {
+    return '$city के ऊपर का आकाश, Heliora से बना, जो मुफ़्त ऑफ़लाइन सौरमंडल ऐप है: https://github.com/lumio-apps/heliora';
+  }
+
+  @override
+  String skyOverCity(String city) {
+    return '$city के ऊपर का आकाश';
+  }
 }

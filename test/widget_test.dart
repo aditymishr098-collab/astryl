@@ -23,7 +23,8 @@ import 'package:heliora/data/missions.dart';
 import 'package:heliora/data/sky_catalog.dart';
 import 'package:heliora/data/tonight_alerts.dart';
 import 'package:heliora/l10n/gen/app_localizations.dart';
-import 'package:heliora/l10n/names.dart' show constellationStory;
+import 'package:heliora/l10n/names.dart'
+    show appLanguages, constellationStory, languageName;
 import 'package:heliora/core/quiz.dart';
 import 'package:heliora/core/version.dart';
 import 'package:heliora/data/online_service.dart';
@@ -32,6 +33,7 @@ import 'package:heliora/data/settings.dart';
 import 'package:heliora/data/update_service.dart';
 import 'package:heliora/screens/binocular_screen.dart' show bestView, nightWindow;
 import 'package:heliora/screens/events_screen.dart' show launchReminderTime;
+import 'package:heliora/screens/reminder_actions.dart' show isEventReminder;
 import 'package:heliora/widgets/common.dart' show BigStat, IconStatTile, InfoRow, StatGrid, StatPanel;
 
 void main() {
@@ -589,6 +591,20 @@ void main() {
       expect(again.first.id, passes.first.id);
     });
 
+    test('passes of another satellite get their own ids', () {
+      final sat = Sgp4.fromTle(iss1, iss2);
+      final passes =
+          findIssPasses(sat, sat.epoch, 40.18, 44.51, satId: 'hst');
+      expect(passes, isNotEmpty);
+      for (final pass in passes) {
+        expect(pass.satId, 'hst');
+        expect(pass.id, startsWith('sat:hst:'));
+        expect(isEventReminder(pass.id), isFalse);
+      }
+      expect(isEventReminder('iss:202611031200'), isFalse);
+      expect(isEventReminder('full-moon-20261124'), isTrue);
+    });
+
     test('the ground track has a point a minute', () {
       final sat = Sgp4.fromTle(iss1, iss2);
       final track = groundTrack(sat, sat.epoch);
@@ -628,6 +644,78 @@ void main() {
       final other = line1.replaceFirst('25544', '25545');
       expect(() => OnlineService.parseCelestrak('X\n$other\n$line2', 0),
           throwsFormatException);
+    });
+
+    test('the orbit of another satellite must match its number', () {
+      final hubble1 = line1.replaceFirst('25544', '20580');
+      final hubble2 = line2.replaceFirst('25544', '20580');
+      final body = 'HST\r\n$hubble1\r\n$hubble2\r\n';
+      final tle = OnlineService.parseCelestrak(body, 3, noradId: '20580');
+      expect(tle.name, 'HST');
+      expect(tle.toSgp4(), isNotNull);
+      // The space station's lines are refused for Hubble, and the other way.
+      expect(
+          () => OnlineService.parseCelestrak('X\n$line1\n$line2', 0,
+              noradId: '20580'),
+          throwsFormatException);
+      expect(() => OnlineService.parseCelestrak(body, 0), throwsFormatException);
+    });
+
+    test('tracked satellites are Tiangong and Hubble', () {
+      expect(trackedSatellites.map((s) => s.id), <String>['css', 'hst']);
+      expect(trackedSatelliteById('hst')!.noradId, '20580');
+      expect(trackedSatelliteById('css')!.noradId, '48274');
+      expect(trackedSatelliteById('iss'), isNull);
+    });
+
+    test('news is read, newest first, and unsafe links are dropped', () {
+      const body = r"""
+{"count":4,"results":[
+ {"id":11,"title":"  Older story ","url":"https://example.org/a",
+  "news_site":"Example","summary":"  Short text. ","published_at":"2026-11-01T08:00:00Z"},
+ {"id":12,"title":"Newest story","url":"https://example.org/b",
+  "published_at":"2026-11-03T09:30:00Z"},
+ {"id":13,"title":"Plain http","url":"http://example.org/c",
+  "published_at":"2026-11-03T10:00:00Z"},
+ {"id":14,"title":"","url":"https://example.org/d","published_at":"2026-11-03T10:00:00Z"},
+ {"id":15,"title":"No date","url":"https://example.org/e"},
+ "junk"
+]}""";
+      final list = OnlineService.parseNews(body);
+      expect(list.map((e) => e.id), <String>['12', '11']);
+      expect(list[0].site, '');
+      expect(list[0].summary, '');
+      expect(list[1].title, 'Older story');
+      expect(list[1].summary, 'Short text.');
+      expect(list[1].site, 'Example');
+      expect(list[0].published, DateTime.utc(2026, 11, 3, 9, 30));
+    });
+
+    test('a news answer of the wrong shape is refused', () {
+      expect(() => OnlineService.parseNews('{"detail":"x"}'),
+          throwsFormatException);
+      expect(() => OnlineService.parseNews('[]'), throwsFormatException);
+    });
+
+    test('saved news survives a round trip and refuses http links', () {
+      const item = NewsItem(
+          id: '1',
+          title: 'T',
+          summary: 'S',
+          url: 'https://example.org/x',
+          site: 'Site',
+          publishedMs: 99);
+      final back = NewsItem.fromJson(item.toJson())!;
+      expect(back.title, 'T');
+      expect(back.publishedMs, 99);
+      final bad = Map<String, Object>.of(item.toJson())..['url'] = 'http://x';
+      expect(NewsItem.fromJson(bad), isNull);
+      expect(NewsItem.fromJson('nope'), isNull);
+    });
+
+    test('the news host is one of the trusted hosts', () {
+      expect(OnlineService.trustedHosts,
+          contains('api.spaceflightnewsapi.net'));
     });
 
     test('launch list is read and sorted', () {
@@ -883,10 +971,22 @@ void main() {
       }
     });
 
-    test('planet lists use the separator of the language', () {
-      expect(listSeparator('en'), ', ');
-      expect(listSeparator('ar'), '، ');
-      expect(listSeparator('ja'), '、');
+    test('the app has English and Hindi only', () {
+      expect(appLanguages.map((e) => e.$1), <String>['en', 'hi']);
+      expect(languageName('hi'), 'हिन्दी');
+      expect(AppLocalizations.supportedLocales.map((e) => e.languageCode),
+          <String>['en', 'hi']);
+    });
+
+    test('a saved language that was removed falls back to the phone', () {
+      for (final code in <String>['ru', 'ar', 'zz']) {
+        final back = HelioraSettings.fromJson(<String, Object?>{'locale': code});
+        expect(back.localeCode, '');
+      }
+      for (final code in <String>['', 'en', 'hi']) {
+        final back = HelioraSettings.fromJson(<String, Object?>{'locale': code});
+        expect(back.localeCode, code);
+      }
     });
 
     test('the daily note is a setting', () {

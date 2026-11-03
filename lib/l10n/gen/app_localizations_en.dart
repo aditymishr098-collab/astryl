@@ -924,7 +924,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onlineSubtitle =>
-      'Show the space station and rocket launches. Heliora then contacts only wheretheiss.at, Celestrak and Launch Library 2, which can see your phone\'s internet address. Nothing else is sent. Off by default.';
+      'Show the space station, Tiangong, Hubble, rocket launches and space news. Heliora then contacts only wheretheiss.at, Celestrak, Launch Library 2 and the Spaceflight News API, which can see your phone’s internet address. Nothing else is sent. Off by default.';
 
   @override
   String get turnOnOnline => 'Turn on online features';
@@ -1841,4 +1841,72 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get storyCru =>
       'Crux, the Southern Cross, is the smallest of all the constellations but one of the most famous. Four bright stars make a cross, and the two stars of its long arm point towards the south celestial pole, so it helps travellers find south. It cannot be seen from most of the northern half of the world.';
+
+  @override
+  String get satellitesTitle => 'Tiangong and Hubble';
+
+  @override
+  String get satellitesCardHint => 'When they fly over your city';
+
+  @override
+  String get tiangongName => 'Tiangong';
+
+  @override
+  String get hubbleName => 'Hubble';
+
+  @override
+  String satNeedsOnline(String name) {
+    return 'To show $name, Heliora needs its orbit data from the internet. It is downloaded once and then works offline for days.';
+  }
+
+  @override
+  String satPassTitle(String name) {
+    return '$name passing over you';
+  }
+
+  @override
+  String get satNote =>
+      'Positions are worked out on your phone from the orbit data. A pass is easy to see when the sky is dark and the satellite is lit by the Sun. Tiangong is bright, like a fast star. Hubble is much fainter, so binoculars help.';
+
+  @override
+  String get newsTitle => 'Space news';
+
+  @override
+  String get newsCardHint => 'The latest articles from space news sites';
+
+  @override
+  String get newsNeedsOnline =>
+      'Turn on online features to read the latest space news.';
+
+  @override
+  String get newsFailed =>
+      'Could not update the news. Showing the saved articles.';
+
+  @override
+  String get newsNone =>
+      'No news could be loaded. Check your internet and try again.';
+
+  @override
+  String get newsNote =>
+      'Articles come from the Spaceflight News API and are in English. Tapping one opens the publisher’s website in your browser. Heliora downloads no pictures.';
+
+  @override
+  String get newsOpenFailed => 'Could not open the link.';
+
+  @override
+  String get tonightShareTitle => 'Share tonight’s sky';
+
+  @override
+  String get tonightShareHint =>
+      'A picture of the Moon and planets for your friends';
+
+  @override
+  String tonightShareText(String city) {
+    return 'The sky over $city, made with Heliora, the free offline Solar System app: https://github.com/lumio-apps/heliora';
+  }
+
+  @override
+  String skyOverCity(String city) {
+    return 'The sky over $city';
+  }
 }

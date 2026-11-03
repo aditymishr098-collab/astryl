@@ -5,28 +5,10 @@ import '../core/quiz.dart';
 import '../data/planets.dart';
 import 'gen/app_localizations.dart';
 
-/// The 20 app languages, shown in their own script in the picker.
+/// The app languages, shown in their own script in the picker.
 const List<(String, String)> appLanguages = <(String, String)>[
   ('en', 'English'),
   ('hi', 'हिन्दी'),
-  ('bn', 'বাংলা'),
-  ('gu', 'ગુજરાતી'),
-  ('kn', 'ಕನ್ನಡ'),
-  ('ml', 'മലയാളം'),
-  ('mr', 'मराठी'),
-  ('pa', 'ਪੰਜਾਬੀ'),
-  ('ta', 'தமிழ்'),
-  ('te', 'తెలుగు'),
-  ('ur', 'اردو'),
-  ('ar', 'العربية'),
-  ('zh', '中文'),
-  ('ja', '日本語'),
-  ('es', 'Español'),
-  ('fr', 'Français'),
-  ('pt', 'Português'),
-  ('ru', 'Русский'),
-  ('id', 'Bahasa Indonesia'),
-  ('hy', 'Հայերեն'),
 ];
 
 /// Native name of a language code, or the code itself.

@@ -631,7 +631,7 @@
     }
   },
   "onlineTitle": "Online features",
-  "onlineSubtitle": "Show the space station and rocket launches. Heliora then contacts only wheretheiss.at, Celestrak and Launch Library 2, which can see your phone's internet address. Nothing else is sent. Off by default.",
+  "onlineSubtitle": "Show the space station, Tiangong, Hubble, rocket launches and space news. Heliora then contacts only wheretheiss.at, Celestrak, Launch Library 2 and the Spaceflight News API, which can see your phone’s internet address. Nothing else is sent. Off by default.",
   "turnOnOnline": "Turn on online features",
   "issTitle": "Space station",
   "issCardHint": "Where it is now and when it passes over you",
@@ -1104,5 +1104,51 @@
   "storyTau": "Taurus the Bull has a V-shaped face, the Hyades cluster, with orange Aldebaran as its eye. Aldebaran looks as if it belongs to the cluster, but it is much closer to us. Higher up, the Pleiades, or Seven Sisters, is a tiny group of blue stars that most people see as six or seven. The Pleiades are known all over the world and appear in the stories of many cultures.",
   "storyGem": "Gemini the Twins are marked by two bright stars, Castor and Pollux, standing side by side like the heads of two brothers. Pollux is the brighter one and has an orange tint. Castor is really a system of six stars. Look for them high in the sky on winter and spring evenings in the north.",
   "storyLyr": "Lyra the Lyre is small but holds Vega, one of the brightest stars of the northern sky. Vega is blue-white and, together with Deneb in Cygnus and Altair in Aquila, forms the Summer Triangle. Right next to Vega, a small parallelogram of stars makes the body of the lyre.",
-  "storyCru": "Crux, the Southern Cross, is the smallest of all the constellations but one of the most famous. Four bright stars make a cross, and the two stars of its long arm point towards the south celestial pole, so it helps travellers find south. It cannot be seen from most of the northern half of the world."
+  "storyCru": "Crux, the Southern Cross, is the smallest of all the constellations but one of the most famous. Four bright stars make a cross, and the two stars of its long arm point towards the south celestial pole, so it helps travellers find south. It cannot be seen from most of the northern half of the world.",
+  "satellitesTitle": "Tiangong and Hubble",
+  "satellitesCardHint": "When they fly over your city",
+  "tiangongName": "Tiangong",
+  "hubbleName": "Hubble",
+  "satNeedsOnline": "To show {name}, Heliora needs its orbit data from the internet. It is downloaded once and then works offline for days.",
+  "@satNeedsOnline": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "satPassTitle": "{name} passing over you",
+  "@satPassTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "satNote": "Positions are worked out on your phone from the orbit data. A pass is easy to see when the sky is dark and the satellite is lit by the Sun. Tiangong is bright, like a fast star. Hubble is much fainter, so binoculars help.",
+  "newsTitle": "Space news",
+  "newsCardHint": "The latest articles from space news sites",
+  "newsNeedsOnline": "Turn on online features to read the latest space news.",
+  "newsFailed": "Could not update the news. Showing the saved articles.",
+  "newsNone": "No news could be loaded. Check your internet and try again.",
+  "newsNote": "Articles come from the Spaceflight News API and are in English. Tapping one opens the publisher’s website in your browser. Heliora downloads no pictures.",
+  "newsOpenFailed": "Could not open the link.",
+  "tonightShareTitle": "Share tonight’s sky",
+  "tonightShareHint": "A picture of the Moon and planets for your friends",
+  "tonightShareText": "The sky over {city}, made with Heliora, the free offline Solar System app: https://github.com/lumio-apps/heliora",
+  "@tonightShareText": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "skyOverCity": "The sky over {city}",
+  "@skyOverCity": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  }
 }

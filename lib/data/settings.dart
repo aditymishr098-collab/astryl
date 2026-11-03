@@ -12,6 +12,10 @@ enum ViewMode { flat, globe }
 /// the fixed layouts of some screens, so 130 is the limit.
 const List<int> textScaleChoices = <int>[100, 115, 130];
 
+/// The languages the app is translated into. An empty code means the
+/// language of the phone.
+const Set<String> supportedLocaleCodes = <String>{'', 'en', 'hi'};
+
 /// Everything Heliora remembers. Stored as one small JSON file in the app's
 /// private folder, which Android keeps when the app is updated.
 @immutable
@@ -175,7 +179,10 @@ class HelioraSettings {
     final scale = json['textScale'];
     return HelioraSettings(
       themeMode: theme,
-      localeCode: locale is String ? locale : d.localeCode,
+      // A language that was removed in an update falls back to the phone's.
+      localeCode: locale is String
+          ? (supportedLocaleCodes.contains(locale) ? locale : '')
+          : d.localeCode,
       viewMode: view,
       autoUpdateCheck: auto is bool ? auto : d.autoUpdateCheck,
       lastUpdateCheckMs: last is int ? last : d.lastUpdateCheckMs,

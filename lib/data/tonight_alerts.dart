@@ -59,20 +59,6 @@ String _moonName(AppLocalizations l, int index) {
   }
 }
 
-/// Separator between planet names in a list.
-String listSeparator(String languageCode) {
-  switch (languageCode) {
-    case 'ar':
-    case 'ur':
-      return '، ';
-    case 'ja':
-    case 'zh':
-      return '、';
-    default:
-      return ', ';
-  }
-}
-
 /// The notes for today and the days after it, in the phone's language.
 /// Evenings whose time has passed are left out. [city] can be null: the note
 /// then only tells about the Moon.
@@ -113,7 +99,7 @@ List<TonightAlert> buildTonightAlerts({
       ];
       parts.add(seen.isEmpty
           ? l.tonightNoPlanets
-          : l.tonightPlanets(seen.join(listSeparator(locale.languageCode))));
+          : l.tonightPlanets(seen.join(', ')));
     }
     out.add(TonightAlert(
       id: 'tonight:$i',
