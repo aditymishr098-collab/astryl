@@ -56,7 +56,7 @@ and an honest answer to "could humans live here?"
 - **Find it with your compass.** Tap the compass button next to the Moon or a planet, hold your phone up, and Heliora shows which way to turn and tilt until you are pointing right at it. It uses your phone's motion sensors only: no camera, no location.
 
 ### 🌍 Learn
-- **Planet facts.** Diameter, gravity, temperature, length of day and year, known moons, distance from the Sun and surface pressure.
+- **Planet facts.** Diameter, gravity, temperature, length of day and year, known moons, distance from the Sun and surface pressure, in an icon grid that grows with the text size.
 - **Atmosphere and oxygen.** What each atmosphere is made of, and how its oxygen compares with Earth's.
 - **Could humans live here?** A simple 0 to 10 life score for every world, worked out from temperature, air pressure, oxygen, water, surface and gravity. Earth scores 10, Mars 4, Jupiter 0.
 - **How far is it?** Today's real distance from Earth, and how long light, a spacecraft or a car would need to get there.
@@ -68,7 +68,7 @@ and an honest answer to "could humans live here?"
 - **Your age on other planets** and the date of your next birthday there.
 - **My birthday sky.** The Moon's phase and where the planets were on the day you were born, how many days old you are, and the dates of your 10,000th day, your 1 billionth second and other round numbers.
 - **Space missions.** A timeline of 15 famous missions from Sputnik 1 to Chandrayaan-3, each with a short story.
-- **Search and favourites.** Tap the magnifier on the home screen to search planets, moons, missions and spacecraft, in your own language or in English. Tap the star on anything to keep it in your favourites, which show when the search box is empty.
+- **Search and favourites.** Tap the search bar on the home screen to search planets, moons, missions and spacecraft, in your own language or in English. Tap the star on anything to keep it in your favourites, which show when the search box is empty. Starred planets also come first in the row of cards on the home screen.
 - **Quiz.** Three levels, 10 questions each: Easy (basics about planets), Medium (planets and moons) and Hard (tricky rankings). Answers are worked out from the data, and your best score for each level is saved.
 - **Share.** Turn a planet's card into a picture and send it to your friends.
 
@@ -125,6 +125,19 @@ flutter build apk --release
 
 Releases are built and signed by GitHub Actions when a version tag such as `v1.4.0` is pushed (see `.github/workflows/release.yml`). Every push to `main` is checked by `.github/workflows/ci.yml`.
 
+## Roadmap
+
+| Version | Plan |
+|---|---|
+| 1.12.0 | New look: search bar on the home screen, tinted planet cards with starred ones first, icon stats on the planet page |
+| 1.13.0 | Moon calendar, the sky on any date, sunrise, sunset and golden hour |
+| 1.14.0 | Constellations and bright stars (kept in the app, offline), a star map you drag with your finger, constellation stories, binocular guide |
+| 1.15.0 | Optional online features: daily space news, Tiangong and Hubble passes, a share card for tonight's sky |
+| 2.0.0 | Point your phone at the sky to find stars (motion sensors), all planets in one 3D scene |
+| 2.1.0 | Home-screen widget |
+
+Plans can change. Nothing in the roadmap will ask for an account or collect your data.
+
 ## Translations
 
 All texts live in `lib/l10n/app_<language>.arb`. Found a wrong word in your language? Edit the matching file and open a pull request. Help from native speakers is very welcome.
@@ -133,6 +146,7 @@ All texts live in `lib/l10n/app_<language>.arb`. Found a wrong word in your lang
 
 | Version | What's new |
 |---|---|
+| **1.12.0** | New look: search bar on the home screen, tinted planet cards (starred ones first), icon stats on the planet page that grow with the text size |
 | **1.11.0** | Spacecraft now (Voyager, New Horizons, JWST, ISS, Hubble, Mars rovers), search and favourites, and a text size setting |
 | **1.10.0** | Eclipse calendar (solar and lunar) with reminders and a rough local guide, a daily "tonight in the sky" notification, "My birthday sky" and a timeline of 15 space missions |
 | **1.9.0** | Quiz with Easy, Medium and Hard levels (now with moon questions), "Did you know?" facts for every world in 20 languages, jump height on every world |

@@ -199,7 +199,26 @@ class _PlanetScreenState extends State<PlanetScreen> {
                 children: <Widget>[
           Row(
             children: <Widget>[
-              PlanetBall(planet: planet, size: 88),
+              Stack(
+                alignment: Alignment.center,
+                children: <Widget>[
+                  // A soft glow in the planet's own colour.
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: planet.color.withValues(alpha: 0.38),
+                          blurRadius: 36,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: const SizedBox.square(dimension: 70),
+                  ),
+                  PlanetBall(planet: planet, size: 88),
+                ],
+              ),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
@@ -223,32 +242,54 @@ class _PlanetScreenState extends State<PlanetScreen> {
             ],
           ),
           const SizedBox(height: 20),
-          GridView.count(
-            crossAxisCount: 2,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 8,
-            childAspectRatio: 1.8,
-            children: <Widget>[
-              StatTile(label: l.diameter, value: t.diameter(planet)),
-              StatTile(label: l.gravity, value: t.gravity(planet)),
-              StatTile(label: l.avgTemp, value: t.temperature(planet)),
+          StatGrid(
+            tiles: <Widget>[
+              IconStatTile(
+                  icon: Icons.straighten,
+                  label: l.diameter,
+                  value: t.diameter(planet)),
+              IconStatTile(
+                  icon: Icons.vertical_align_bottom,
+                  label: l.gravity,
+                  value: t.gravity(planet)),
+              IconStatTile(
+                  icon: Icons.thermostat,
+                  label: l.avgTemp,
+                  value: t.temperature(planet)),
               if (!planet.isMoon && !planet.isStar)
-                StatTile(label: l.moons, value: t.moons(planet)),
-              StatTile(label: l.dayLength, value: t.day(planet)),
+                IconStatTile(
+                    icon: Icons.brightness_2_outlined,
+                    label: l.moons,
+                    value: t.moons(planet)),
+              IconStatTile(
+                  icon: Icons.wb_sunny_outlined,
+                  label: l.dayLength,
+                  value: t.day(planet)),
               if (planet.isMoon)
-                StatTile(label: l.orbitPeriod, value: t.year(planet))
+                IconStatTile(
+                    icon: Icons.autorenew,
+                    label: l.orbitPeriod,
+                    value: t.year(planet))
               else if (!planet.isStar)
-                StatTile(label: l.yearLength, value: t.year(planet)),
+                IconStatTile(
+                    icon: Icons.autorenew,
+                    label: l.yearLength,
+                    value: t.year(planet)),
               if (planet.isMoon)
-                StatTile(
+                IconStatTile(
+                  icon: Icons.swap_horiz,
                   label: l.distanceFrom(parentName),
                   value: t.parentDistance(planet),
                 )
               else if (!planet.isStar)
-                StatTile(label: l.distance, value: t.distance(planet)),
-              StatTile(label: l.pressure, value: t.pressure(planet)),
+                IconStatTile(
+                    icon: Icons.swap_horiz,
+                    label: l.distance,
+                    value: t.distance(planet)),
+              IconStatTile(
+                  icon: Icons.speed,
+                  label: l.pressure,
+                  value: t.pressure(planet)),
             ],
           ),
                 ],

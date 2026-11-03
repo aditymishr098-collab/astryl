@@ -226,10 +226,16 @@ class SurfaceCard extends StatelessWidget {
   }
 }
 
-/// A small label above a value, used in stat grids.
-class StatTile extends StatelessWidget {
-  const StatTile({super.key, required this.label, required this.value});
+/// A stat with an icon, a small label and a value.
+class IconStatTile extends StatelessWidget {
+  const IconStatTile({
+    super.key,
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
 
+  final IconData icon;
   final String label;
   final String value;
 
@@ -237,23 +243,62 @@ class StatTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final p = Palette.of(context);
     return SurfaceCard(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-      child: Column(
+      padding: const EdgeInsets.all(12),
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text(label,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: 11, color: p.muted)),
-          const SizedBox(height: 4),
-          Text(value,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  fontSize: 15, fontWeight: FontWeight.w600, color: p.text)),
+          Icon(icon, size: 22, color: p.accentText),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(label, style: TextStyle(fontSize: 12, color: p.muted)),
+                const SizedBox(height: 2),
+                Text(value,
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: p.text)),
+              ],
+            ),
+          ),
         ],
       ),
+    );
+  }
+}
+
+/// Tiles in two columns. Each row is as tall as its tallest tile, so it
+/// grows with the text size (a grid with a fixed shape would overflow).
+class StatGrid extends StatelessWidget {
+  const StatGrid({super.key, required this.tiles});
+
+  final List<Widget> tiles;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        for (var i = 0; i < tiles.length; i += 2) ...<Widget>[
+          if (i > 0) const SizedBox(height: 8),
+          IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Expanded(child: tiles[i]),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: i + 1 < tiles.length
+                      ? tiles[i + 1]
+                      : const SizedBox.shrink(),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ],
     );
   }
 }

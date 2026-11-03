@@ -265,20 +265,6 @@ class _ExploreTabState extends State<ExploreTab>
                 ),
               ),
               IconButton.filledTonal(
-                tooltip: l.searchTooltip,
-                visualDensity: VisualDensity.compact,
-                style: IconButton.styleFrom(
-                  backgroundColor: p.surface,
-                  foregroundColor: p.text,
-                ),
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                      builder: (_) => const SearchScreen()),
-                ),
-                icon: const Icon(Icons.search),
-              ),
-              const SizedBox(width: 4),
-              IconButton.filledTonal(
                 tooltip: l.settings,
                 visualDensity: VisualDensity.compact,
                 style: IconButton.styleFrom(
@@ -297,6 +283,45 @@ class _ExploreTabState extends State<ExploreTab>
                 onChanged: (m) => state.setViewMode(m),
               ),
             ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+          child: Semantics(
+            button: true,
+            label: l.searchTooltip,
+            child: Material(
+              color: p.surface,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+                side: BorderSide(color: p.border),
+              ),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(16),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                      builder: (_) => const SearchScreen()),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(Icons.search, color: p.muted),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          l.searchHint,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontSize: 15, color: p.muted),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
         Expanded(
@@ -506,7 +531,17 @@ class _PlanetCards extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final p = Palette.of(context);
-    final bodies = _bodies;
+    final favorites = AppScope.of(context).settings.favorites;
+    // Starred bodies come first, the rest keep their order.
+    final bodies = <Planet>[
+      for (final b in _bodies)
+        if (favorites.contains(b.id)) b,
+      for (final b in _bodies)
+        if (!favorites.contains(b.id)) b,
+    ];
+    // The cards grow with the text size so the words always fit.
+    final textScale =
+        (MediaQuery.textScalerOf(context).scale(10) / 10).clamp(1.0, 1.4);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -519,7 +554,7 @@ class _PlanetCards extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 128,
+          height: 142 * textScale,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -528,20 +563,23 @@ class _PlanetCards extends StatelessWidget {
             itemBuilder: (context, index) {
               final planet = bodies[index];
               final on = planet.id == selectedId;
+              final starred = favorites.contains(planet.id);
               return SizedBox(
-                width: 128,
+                width: 136,
                 child: Material(
-                  color: on ? p.surfaceHigh : p.surface,
+                  // A tint of the planet's own colour over the card colour.
+                  color: Color.alphaBlend(
+                      planet.color.withValues(alpha: on ? 0.26 : 0.14),
+                      p.surface),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(22),
                     side: on
                         ? BorderSide(color: p.accentText, width: 1.5)
-                        : (Theme.of(context).brightness == Brightness.light
-                            ? BorderSide(color: p.border)
-                            : BorderSide.none),
+                        : BorderSide(
+                            color: planet.color.withValues(alpha: 0.3)),
                   ),
                   child: InkWell(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(22),
                     onTap: () => onTap(planet),
                     child: Padding(
                       padding: const EdgeInsets.all(12),
@@ -549,19 +587,36 @@ class _PlanetCards extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          PlanetBall(planet: planet, size: 30),
-                          Text(
-                            planetName(l, planet),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15,
-                                color: p.text),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              PlanetBall(planet: planet, size: 38),
+                              const Spacer(),
+                              if (starred)
+                                Icon(Icons.star, size: 18, color: p.accentText),
+                            ],
                           ),
-                          Text(
-                            '${Gas.o2.formula} ${formatPercent(context, planet.oxygenPercent)}',
-                            style: TextStyle(fontSize: 12, color: p.muted),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Text(
+                                planetName(l, planet),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 16,
+                                    color: p.text),
+                              ),
+                              Text(
+                                bodySubtitle(l, planet),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 12, color: p.muted, height: 1.2),
+                              ),
+                            ],
                           ),
                         ],
                       ),

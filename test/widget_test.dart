@@ -26,6 +26,7 @@ import 'package:heliora/data/planets.dart';
 import 'package:heliora/data/settings.dart';
 import 'package:heliora/data/update_service.dart';
 import 'package:heliora/screens/events_screen.dart' show launchReminderTime;
+import 'package:heliora/widgets/common.dart' show IconStatTile, StatGrid;
 
 void main() {
   group('planet data', () {
@@ -1072,6 +1073,52 @@ void main() {
       expect(worse.textScalePercent, 100);
       expect(HelioraSettings.fromJson(<String, dynamic>{}).textScalePercent, 100);
       expect(textScaleChoices, <int>[100, 115, 130]);
+    });
+  });
+
+  group('stat grid', () {
+    Widget app(double scale, int count) {
+      return MaterialApp(
+        home: MediaQuery(
+          data: MediaQueryData(
+            size: const Size(360, 800),
+            textScaler: TextScaler.linear(scale),
+          ),
+          child: Scaffold(
+            body: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: StatGrid(
+                tiles: <Widget>[
+                  for (var i = 0; i < count; i++)
+                    const IconStatTile(
+                      icon: Icons.speed,
+                      label: 'Average temperature on the surface',
+                      value: '1,234,567 million km',
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    testWidgets('has every tile and grows with big text without overflow',
+        (tester) async {
+      tester.view.physicalSize = const Size(720, 1600);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(tester.view.reset);
+
+      await tester.pumpWidget(app(1.0, 5));
+      expect(tester.takeException(), isNull);
+      expect(find.byType(IconStatTile), findsNWidgets(5));
+      final normal = tester.getSize(find.byType(StatGrid)).height;
+
+      await tester.pumpWidget(app(1.3, 5));
+      expect(tester.takeException(), isNull);
+      expect(find.byType(IconStatTile), findsNWidgets(5));
+      final big = tester.getSize(find.byType(StatGrid)).height;
+      expect(big, greaterThan(normal));
     });
   });
 
