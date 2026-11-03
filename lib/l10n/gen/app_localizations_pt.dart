@@ -1742,4 +1742,107 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get solarSystemTitle => 'Sistema Solar';
+
+  @override
+  String get starMapTitle => 'Mapa estelar';
+
+  @override
+  String get starMapCardHint => 'Estrelas e constelações no seu céu';
+
+  @override
+  String get starMapHint =>
+      'Arraste para olhar ao redor, faça o gesto de pinça para dar zoom e toque numa estrela ou constelação.';
+
+  @override
+  String get starsLabel => 'Estrelas';
+
+  @override
+  String get constellationsLabel => 'Constelações';
+
+  @override
+  String get starMapFind => 'Encontrar';
+
+  @override
+  String get constellationsList => 'Todas as constelações';
+
+  @override
+  String magnitudeValue(String value) {
+    return 'Magnitude $value';
+  }
+
+  @override
+  String get starBelowHorizon => 'Abaixo do horizonte neste momento';
+
+  @override
+  String get starMapNow => 'Agora';
+
+  @override
+  String get starUnnamed => 'Estrela';
+
+  @override
+  String get binocularsTitle => 'Guia de binóculos';
+
+  @override
+  String get binocularsHint => 'O que procurar com binóculos comuns';
+
+  @override
+  String get binocularsIntro =>
+      'Segure os binóculos firmes, por exemplo apoiando os cotovelos num muro ou no teto de um carro. Longe das luzes da cidade, procure manchas fracas e difusas, e não estrelas nítidas.';
+
+  @override
+  String get binocularsNote =>
+      'Os horários mostram quando cada objeto está mais alto durante a parte escura da noite na cidade escolhida. Os nomes dos objetos são os usados no mundo todo. Toque em um para vê-lo no mapa estelar.';
+
+  @override
+  String get dsoCluster => 'Aglomerado estelar';
+
+  @override
+  String get dsoGalaxy => 'Galáxia';
+
+  @override
+  String get dsoNebula => 'Nebulosa';
+
+  @override
+  String get storyOri =>
+      'Órion, o Caçador, é fácil de achar: três estrelas numa linha reta curta formam o seu cinturão. Acima do cinturão, a alaranjada Betelgeuse marca um ombro; abaixo, a branco-azulada Rigel marca um pé. Sob o cinturão pende uma mancha fraca e difusa, a Nebulosa de Órion, uma nuvem onde nascem novas estrelas. Órion é visto à noite no inverno no norte e no verão no sul.';
+
+  @override
+  String get storyUMa =>
+      'As sete estrelas brilhantes da Grande Concha, também chamada de Carro ou Big Dipper, fazem parte da Ursa Maior. As duas estrelas da ponta da concha, Dubhe e Merak, apontam o caminho para Polaris: siga a linha para cima por cerca de cinco vezes a distância entre elas. De boa parte do norte, a Grande Concha gira em torno de Polaris a noite toda e nunca se põe.';
+
+  @override
+  String get storyUMi =>
+      'Polaris, a Estrela do Norte, fica na ponta da cauda da Ursa Menor. Ela quase não se move porque está quase exatamente sobre o polo norte da Terra, e por isso todo o céu parece girar ao seu redor. Sua altura acima do horizonte é igual à sua latitude. Não é uma estrela muito brilhante, mas é a mais útil para achar o norte. Não pode ser vista da metade sul do mundo.';
+
+  @override
+  String get storyCas =>
+      'Cassiopeia tem a forma de um W ou de um M, conforme a hora e a estação, e é feita de cinco estrelas bem brilhantes. Fica do outro lado de Polaris em relação à Grande Concha, então quando uma está baixa a outra está alta. Na história antiga, ela era uma rainha que se gabava da própria beleza.';
+
+  @override
+  String get storyCyg =>
+      'O Cisne voa ao longo da Via Láctea. Suas estrelas mais brilhantes formam o Cruzeiro do Norte, com Deneb no alto, a cauda do cisne. Longe das luzes da cidade, a Via Láctea parece um pálido rio de luz atravessando o cisne, e os binóculos mostram que ela é feita de incontáveis estrelas fracas. As noites de verão e outono são as melhores.';
+
+  @override
+  String get storySco =>
+      'Escorpião parece um escorpião com a cauda curva terminando num ferrão. Seu coração é a vermelha Antares, cujo nome significa rival de Marte, porque as duas se parecem na cor. É uma constelação de verão no norte, baixa no sul, e passa bem alto sobre a cabeça de quem vive na metade sul do mundo.';
+
+  @override
+  String get storyLeo =>
+      'Leão é uma das poucas constelações que realmente se parece com o seu animal. Um ponto de interrogação invertido de estrelas, a Foice, forma a cabeça e o peito e termina na brilhante Régulo, o coração do leão. O triângulo de estrelas a leste é a parte traseira. As noites de primavera são as melhores no norte.';
+
+  @override
+  String get storyTau =>
+      'Touro tem um rosto em forma de V, o aglomerado das Híades, com a alaranjada Aldebarã como olho. Aldebarã parece fazer parte do aglomerado, mas está muito mais perto de nós. Mais acima, as Plêiades, ou Sete Irmãs, são um pequeno grupo de estrelas azuis que a maioria das pessoas vê como seis ou sete. As Plêiades são conhecidas no mundo todo e aparecem nas histórias de muitas culturas.';
+
+  @override
+  String get storyGem =>
+      'Gêmeos é marcado por duas estrelas brilhantes, Castor e Pólux, lado a lado como as cabeças de dois irmãos. Pólux é a mais brilhante e tem um tom alaranjado. Castor é, na verdade, um sistema de seis estrelas. Procure-as no alto do céu nas noites de inverno e primavera no norte.';
+
+  @override
+  String get storyLyr =>
+      'Lira é pequena, mas abriga Vega, uma das estrelas mais brilhantes do céu do norte. Vega é branco-azulada e, junto com Deneb, em Cisne, e Altair, em Águia, forma o Triângulo de Verão. Bem ao lado de Vega, um pequeno paralelogramo de estrelas forma o corpo da lira.';
+
+  @override
+  String get storyCru =>
+      'O Cruzeiro do Sul (Crux) é a menor de todas as constelações, mas uma das mais famosas. Quatro estrelas brilhantes formam uma cruz, e as duas estrelas do seu braço mais longo apontam para o polo sul celeste, ajudando os viajantes a achar o sul. Não pode ser vista na maior parte da metade norte do mundo.';
 }

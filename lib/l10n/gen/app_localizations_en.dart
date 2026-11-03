@@ -1738,4 +1738,107 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get solarSystemTitle => 'Solar system';
+
+  @override
+  String get starMapTitle => 'Star map';
+
+  @override
+  String get starMapCardHint => 'Stars and constellations in your sky';
+
+  @override
+  String get starMapHint =>
+      'Drag to look around, pinch to zoom, tap a star or a constellation.';
+
+  @override
+  String get starsLabel => 'Stars';
+
+  @override
+  String get constellationsLabel => 'Constellations';
+
+  @override
+  String get starMapFind => 'Find it';
+
+  @override
+  String get constellationsList => 'All constellations';
+
+  @override
+  String magnitudeValue(String value) {
+    return 'Magnitude $value';
+  }
+
+  @override
+  String get starBelowHorizon => 'Below the horizon at this time';
+
+  @override
+  String get starMapNow => 'Now';
+
+  @override
+  String get starUnnamed => 'Star';
+
+  @override
+  String get binocularsTitle => 'Binocular guide';
+
+  @override
+  String get binocularsHint => 'What to look for with ordinary binoculars';
+
+  @override
+  String get binocularsIntro =>
+      'Hold the binoculars steady, for example with your elbows on a wall or a car roof. Away from city lights, look for dim, fuzzy patches rather than sharp stars.';
+
+  @override
+  String get binocularsNote =>
+      'Times show when each object is highest during the dark part of the night in your chosen city. Object names are the ones used worldwide. Tap one to see it on the star map.';
+
+  @override
+  String get dsoCluster => 'Star cluster';
+
+  @override
+  String get dsoGalaxy => 'Galaxy';
+
+  @override
+  String get dsoNebula => 'Nebula';
+
+  @override
+  String get storyOri =>
+      'Orion the Hunter is easy to find: three stars in a short straight line make his belt. Above the belt, orange Betelgeuse marks one shoulder; below it, blue-white Rigel marks one foot. Under the belt hangs a faint fuzzy patch, the Orion Nebula, a cloud where new stars are being born. Orion is an evening sight in winter in the north and in summer in the south.';
+
+  @override
+  String get storyUMa =>
+      'The seven bright stars of the Big Dipper, also called the Plough, are part of the Great Bear. The two stars at the end of the bowl, Dubhe and Merak, point the way to Polaris: follow the line upward for about five times the gap between them. From much of the north, the Big Dipper circles Polaris all night and never sets.';
+
+  @override
+  String get storyUMi =>
+      'Polaris, the North Star, sits at the tip of the Little Bear’s tail. It hardly moves because it lies almost exactly above Earth’s north pole, so the whole sky seems to turn around it. Its height above the horizon equals your latitude. It is not a very bright star, but it is the most useful one for finding north. It cannot be seen from the southern half of the world.';
+
+  @override
+  String get storyCas =>
+      'Cassiopeia is a W or an M, depending on the hour and the season, made of five fairly bright stars. It lies on the opposite side of Polaris from the Big Dipper, so when one is low the other is high. In the old story she was a queen who boasted of her beauty.';
+
+  @override
+  String get storyCyg =>
+      'Cygnus the Swan flies along the Milky Way. Its brightest stars form the Northern Cross, with Deneb at the top, the tail of the swan. Away from city lights the Milky Way looks like a pale river of light running through the swan, and binoculars show that it is made of countless faint stars. Summer and autumn evenings are the best time.';
+
+  @override
+  String get storySco =>
+      'Scorpius looks like a scorpion with a curved tail ending in a hook. Its heart is red Antares, whose name means rival of Mars because the two look alike in colour. It is a summer constellation in the north, low in the south, and it passes high overhead for people in the southern half of the world.';
+
+  @override
+  String get storyLeo =>
+      'Leo the Lion is one of the few constellations that really looks like its animal. A backward question mark of stars, the Sickle, forms the head and chest and ends at bright Regulus, the lion’s heart. The triangle of stars to the east is its hindquarters. Spring evenings are the best time in the north.';
+
+  @override
+  String get storyTau =>
+      'Taurus the Bull has a V-shaped face, the Hyades cluster, with orange Aldebaran as its eye. Aldebaran looks as if it belongs to the cluster, but it is much closer to us. Higher up, the Pleiades, or Seven Sisters, is a tiny group of blue stars that most people see as six or seven. The Pleiades are known all over the world and appear in the stories of many cultures.';
+
+  @override
+  String get storyGem =>
+      'Gemini the Twins are marked by two bright stars, Castor and Pollux, standing side by side like the heads of two brothers. Pollux is the brighter one and has an orange tint. Castor is really a system of six stars. Look for them high in the sky on winter and spring evenings in the north.';
+
+  @override
+  String get storyLyr =>
+      'Lyra the Lyre is small but holds Vega, one of the brightest stars of the northern sky. Vega is blue-white and, together with Deneb in Cygnus and Altair in Aquila, forms the Summer Triangle. Right next to Vega, a small parallelogram of stars makes the body of the lyre.';
+
+  @override
+  String get storyCru =>
+      'Crux, the Southern Cross, is the smallest of all the constellations but one of the most famous. Four bright stars make a cross, and the two stars of its long arm point towards the south celestial pole, so it helps travellers find south. It cannot be seen from most of the northern half of the world.';
 }

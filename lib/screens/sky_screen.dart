@@ -13,11 +13,13 @@ import '../theme.dart';
 import '../widgets/common.dart';
 import '../widgets/moon_view.dart';
 import 'events_screen.dart';
+import 'binocular_screen.dart';
 import 'finder_screen.dart';
 import 'iss_screen.dart';
 import 'missions_screen.dart';
 import 'moon_calendar_screen.dart';
 import 'spacecraft_screen.dart';
+import 'star_map_screen.dart';
 
 /// "Tonight's sky": the Moon's phase and which planets can be seen tonight
 /// from the chosen city, with rise and set times.
@@ -48,6 +50,13 @@ class _SkyScreenState extends State<SkyScreen> {
   }
 
   DateTime get _day => _picked ?? _today;
+
+  /// The middle of the dark part of the night that starts on [day], for
+  /// opening the star map on that night.
+  DateTime _nightMiddle(City city, DateTime day) {
+    final w = nightWindow(day, city.lat, city.lon);
+    return w.start.add(w.end.difference(w.start) ~/ 2).toLocal();
+  }
 
   /// Works the sky out once per city and day, not on every rebuild.
   void _compute(City city) {
@@ -289,6 +298,22 @@ class _SkyScreenState extends State<SkyScreen> {
         ),
         const SizedBox(height: 12),
         calendarCard,
+        const SizedBox(height: 12),
+        _NavCard(
+          icon: Icons.auto_awesome_outlined,
+          title: l.starMapTitle,
+          hint: l.starMapCardHint,
+          builder: (_) => StarMapScreen(
+            initialTime: today ? null : _nightMiddle(city, day),
+          ),
+        ),
+        const SizedBox(height: 12),
+        _NavCard(
+          icon: Icons.zoom_in_map_outlined,
+          title: l.binocularsTitle,
+          hint: l.binocularsHint,
+          builder: (_) => BinocularScreen(day: day),
+        ),
         const SizedBox(height: 12),
         _SunCard(
           sun: sun,

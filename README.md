@@ -50,6 +50,9 @@ and an honest answer to "could humans live here?"
 - **The sky on any date.** Step a day back or forward, or pick any date from 1900 to 2049. The Moon, the sun times and the planets are worked out for that night. "Back to tonight" brings you home.
 - **Moon calendar.** A month of Moon phases, with the dates and times of the new moon, first quarter, full moon and last quarter. Tap a day for its phase, moonrise and moonset, or to see the whole sky on that day.
 - **Sun and light.** First light, sunrise, the end of the morning golden hour, solar noon, the start of the evening golden hour, sunset, last light, when the sky is fully dark, and the length of the day.
+- **Star map.** The sky above your city with 1,000 stars, 89 constellations, the Moon, the Sun and the planets. Drag to look around, pinch to zoom, tap a star, a planet or a constellation for its name, how bright it is and where it is right now. Switch stars, constellation lines and planets on or off, step the time an hour at a time, or open the full list of constellations.
+- **Constellation stories.** Short stories for eleven famous constellations (Orion, the Big Dipper, Polaris, Cassiopeia, Cygnus, Scorpius, Leo, Taurus, Gemini, Lyra and the Southern Cross), with how to find them. Everything is kept in the app, so the star map works offline.
+- **Binocular guide.** Twelve sights for ordinary binoculars (the Pleiades, the Orion Nebula, the Andromeda Galaxy and more) with where each one is tonight, how high it gets and when. Tap one to see it on the star map.
 - **Space events.** The next 12 months of full and new moons, planet oppositions, the best evenings and mornings to see Mercury and Venus, close meetings of planets, equinoxes and solstices, and the yearly meteor showers (with how bright the Moon will be). Tap the bell on an event and Heliora reminds you the evening before. Reminders are made on your phone and need no internet.
 - **Eclipses.** Total, annular, hybrid and partial solar eclipses and total, partial and penumbral lunar eclipses are in the events calendar for the next 12 months, with a bell for each. For your city, Heliora says whether the Moon is up during a lunar eclipse and gives a rough guess of how much of the Sun the Moon covers in a solar eclipse. It is only a guide: check an eclipse map before you travel, and never look at the Sun without eclipse glasses.
 - **Tonight in the sky, every evening (optional).** Switch it on in Settings and pick a time. Heliora shows a short note with the Moon's phase and the bright planets you can look for, using your chosen city. It is worked out on your phone. Android lets Heliora prepare about two weeks of notes ahead, so open the app now and then.
@@ -114,6 +117,7 @@ Heliora is made by [Lumio Apps](https://github.com/lumio-apps): **no ads, no acc
 | Space events | The same orbits and Moon maths find each event on the phone: oppositions where a planet is opposite the Sun in longitude, greatest elongations, planet pairs closer than 2°, and equinoxes and solstices. Checked against 2025–2026: Mars (16 Jan 2025), Saturn (21 Sep 2025) and Jupiter (10 Jan 2026) oppositions, Venus at 47° on 10 Jan 2025 and 15 Aug 2026, and the 2026 equinoxes and solstices within 15 minutes. Meteor shower peaks are typical yearly dates. |
 | Space station | The station's orbit data (a TLE) is downloaded once and the position is computed on the phone with SGP4 (`lib/core/sgp4.dart`), checked against Vallado's published test vectors. A pass counts as easy to see when the Sun is more than 6° below the horizon and the station is still lit by the Sun. |
 | Rocket launches | The list comes from [Launch Library 2](https://thespacedevs.com/llapi). Times are "no earlier than" and change often, so the list is refreshed at most every 3 hours. |
+| Star map | About 1,000 stars (down to magnitude 4.6), the constellation lines and 12 binocular targets come from the [d3-celestial](https://github.com/ofrohn/d3-celestial) data (Hipparcos-based, BSD 3-clause, see `assets/licenses`) and are stored in `lib/data/sky_catalog.dart`. Positions are for the year 2000, so Heliora turns them to today's equinox with the IAU 1976 precession (about 0.4° by now) before drawing them together with the Sun, Moon and planets. The sky is drawn with a stereographic projection. Checked on the phone-independent maths: Polaris stands at your latitude (within 1°), and Sirius reaches 33.1° from Yerevan. Stars fainter than magnitude 4.6 are not shown, so very dark skies will show more than the map. Names of stars and binocular objects stay in English, constellation names are translated for 8 languages and use the Latin name in the others. |
 | Compass finder | The phone's rotation sensor gives where the back of the phone points; Android's magnetic-declination model turns magnetic north into true north. The target comes from the same orbit maths as Tonight's sky. |
 | Life score | Six simple rules in `lib/core/habitability.dart`. A teaching aid, not science. |
 
@@ -136,7 +140,7 @@ Releases are built and signed by GitHub Actions when a version tag such as `v1.4
 | 1.12.0 | New look: search bar on the home screen, tinted planet cards with starred ones first, icon stats on the planet page |
 | 1.13.0 | Moon calendar, the sky on any date, sunrise, sunset and golden hour (done) |
 | 1.14.0 | New design: Space Grotesk and DM Sans fonts, big planet cards, a scrolling Explore page, a new planet page and bottom bar (done) |
-| 1.15.0 | Constellations and bright stars (kept in the app, offline), a star map you drag with your finger, constellation stories, binocular guide |
+| 1.15.0 | Constellations and bright stars (kept in the app, offline), a star map you drag with your finger, constellation stories, binocular guide (done) |
 | 1.16.0 | Optional online features: daily space news, Tiangong and Hubble passes, a share card for tonight's sky |
 | 2.0.0 | Point your phone at the sky to find stars (motion sensors), all planets in one 3D scene |
 | 2.1.0 | Home-screen widget |
@@ -147,6 +151,10 @@ Plans can change. Nothing in the roadmap will ask for an account or collect your
 
 Titles use [Space Grotesk](https://fonts.google.com/specimen/Space+Grotesk) and the rest of the text uses [DM Sans](https://fonts.google.com/specimen/DM+Sans). Both are licensed under the SIL Open Font License (see `assets/fonts/OFL-*.txt`) and are kept inside the app, so nothing is downloaded. Scripts these two fonts do not cover (Indian scripts, Arabic, Chinese, Japanese, Armenian, Cyrillic) use the phone's own fonts.
 
+## Star data
+
+Stars, constellation lines, names and the Messier objects come from [d3-celestial](https://github.com/ofrohn/d3-celestial) by Olaf Frohn (BSD 3-clause licence, copy in `assets/licenses/d3-celestial-LICENSE.txt`), which is built on the Hipparcos catalogue.
+
 ## Translations
 
 All texts live in `lib/l10n/app_<language>.arb`. Found a wrong word in your language? Edit the matching file and open a pull request. Help from native speakers is very welcome.
@@ -155,6 +163,7 @@ All texts live in `lib/l10n/app_<language>.arb`. Found a wrong word in your lang
 
 | Version | What's new |
 |---|---|
+| **1.15.0** | Star map with about 1,000 stars, 89 constellations, the Moon and planets (drag, pinch, tap), stories for 11 constellations, a binocular guide with where to look tonight, and the time of the sky in steps of one hour. 29 new texts in 20 languages |
 | **1.14.0** | New design: Space Grotesk and DM Sans fonts (bundled, no download), big glowing planet cards, an Explore page that scrolls with the Solar System in its own card, a new planet page with a centred planet, life-score badge and a three-column stats card, round buttons, bordered cards and a flatter bottom bar |
 | **1.13.0** | Moon calendar, the sky on any date (1900 to 2049), and a Sun and light card with golden hour, twilight and the dark-sky window. The Sky tab now starts with the Moon and the planets, with the other cards below |
 | **1.12.0** | New look: search bar on the home screen, tinted planet cards (starred ones first), icon stats on the planet page that grow with the text size |

@@ -3073,6 +3073,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Solar system'**
   String get solarSystemTitle;
+
+  /// No description provided for @starMapTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Star map'**
+  String get starMapTitle;
+
+  /// No description provided for @starMapCardHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Stars and constellations in your sky'**
+  String get starMapCardHint;
+
+  /// No description provided for @starMapHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to look around, pinch to zoom, tap a star or a constellation.'**
+  String get starMapHint;
+
+  /// No description provided for @starsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Stars'**
+  String get starsLabel;
+
+  /// No description provided for @constellationsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Constellations'**
+  String get constellationsLabel;
+
+  /// No description provided for @starMapFind.
+  ///
+  /// In en, this message translates to:
+  /// **'Find it'**
+  String get starMapFind;
+
+  /// No description provided for @constellationsList.
+  ///
+  /// In en, this message translates to:
+  /// **'All constellations'**
+  String get constellationsList;
+
+  /// No description provided for @magnitudeValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Magnitude {value}'**
+  String magnitudeValue(String value);
+
+  /// No description provided for @starBelowHorizon.
+  ///
+  /// In en, this message translates to:
+  /// **'Below the horizon at this time'**
+  String get starBelowHorizon;
+
+  /// No description provided for @starMapNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get starMapNow;
+
+  /// No description provided for @starUnnamed.
+  ///
+  /// In en, this message translates to:
+  /// **'Star'**
+  String get starUnnamed;
+
+  /// No description provided for @binocularsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Binocular guide'**
+  String get binocularsTitle;
+
+  /// No description provided for @binocularsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What to look for with ordinary binoculars'**
+  String get binocularsHint;
+
+  /// No description provided for @binocularsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold the binoculars steady, for example with your elbows on a wall or a car roof. Away from city lights, look for dim, fuzzy patches rather than sharp stars.'**
+  String get binocularsIntro;
+
+  /// No description provided for @binocularsNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Times show when each object is highest during the dark part of the night in your chosen city. Object names are the ones used worldwide. Tap one to see it on the star map.'**
+  String get binocularsNote;
+
+  /// No description provided for @dsoCluster.
+  ///
+  /// In en, this message translates to:
+  /// **'Star cluster'**
+  String get dsoCluster;
+
+  /// No description provided for @dsoGalaxy.
+  ///
+  /// In en, this message translates to:
+  /// **'Galaxy'**
+  String get dsoGalaxy;
+
+  /// No description provided for @dsoNebula.
+  ///
+  /// In en, this message translates to:
+  /// **'Nebula'**
+  String get dsoNebula;
+
+  /// No description provided for @storyOri.
+  ///
+  /// In en, this message translates to:
+  /// **'Orion the Hunter is easy to find: three stars in a short straight line make his belt. Above the belt, orange Betelgeuse marks one shoulder; below it, blue-white Rigel marks one foot. Under the belt hangs a faint fuzzy patch, the Orion Nebula, a cloud where new stars are being born. Orion is an evening sight in winter in the north and in summer in the south.'**
+  String get storyOri;
+
+  /// No description provided for @storyUMa.
+  ///
+  /// In en, this message translates to:
+  /// **'The seven bright stars of the Big Dipper, also called the Plough, are part of the Great Bear. The two stars at the end of the bowl, Dubhe and Merak, point the way to Polaris: follow the line upward for about five times the gap between them. From much of the north, the Big Dipper circles Polaris all night and never sets.'**
+  String get storyUMa;
+
+  /// No description provided for @storyUMi.
+  ///
+  /// In en, this message translates to:
+  /// **'Polaris, the North Star, sits at the tip of the Little Bear’s tail. It hardly moves because it lies almost exactly above Earth’s north pole, so the whole sky seems to turn around it. Its height above the horizon equals your latitude. It is not a very bright star, but it is the most useful one for finding north. It cannot be seen from the southern half of the world.'**
+  String get storyUMi;
+
+  /// No description provided for @storyCas.
+  ///
+  /// In en, this message translates to:
+  /// **'Cassiopeia is a W or an M, depending on the hour and the season, made of five fairly bright stars. It lies on the opposite side of Polaris from the Big Dipper, so when one is low the other is high. In the old story she was a queen who boasted of her beauty.'**
+  String get storyCas;
+
+  /// No description provided for @storyCyg.
+  ///
+  /// In en, this message translates to:
+  /// **'Cygnus the Swan flies along the Milky Way. Its brightest stars form the Northern Cross, with Deneb at the top, the tail of the swan. Away from city lights the Milky Way looks like a pale river of light running through the swan, and binoculars show that it is made of countless faint stars. Summer and autumn evenings are the best time.'**
+  String get storyCyg;
+
+  /// No description provided for @storySco.
+  ///
+  /// In en, this message translates to:
+  /// **'Scorpius looks like a scorpion with a curved tail ending in a hook. Its heart is red Antares, whose name means rival of Mars because the two look alike in colour. It is a summer constellation in the north, low in the south, and it passes high overhead for people in the southern half of the world.'**
+  String get storySco;
+
+  /// No description provided for @storyLeo.
+  ///
+  /// In en, this message translates to:
+  /// **'Leo the Lion is one of the few constellations that really looks like its animal. A backward question mark of stars, the Sickle, forms the head and chest and ends at bright Regulus, the lion’s heart. The triangle of stars to the east is its hindquarters. Spring evenings are the best time in the north.'**
+  String get storyLeo;
+
+  /// No description provided for @storyTau.
+  ///
+  /// In en, this message translates to:
+  /// **'Taurus the Bull has a V-shaped face, the Hyades cluster, with orange Aldebaran as its eye. Aldebaran looks as if it belongs to the cluster, but it is much closer to us. Higher up, the Pleiades, or Seven Sisters, is a tiny group of blue stars that most people see as six or seven. The Pleiades are known all over the world and appear in the stories of many cultures.'**
+  String get storyTau;
+
+  /// No description provided for @storyGem.
+  ///
+  /// In en, this message translates to:
+  /// **'Gemini the Twins are marked by two bright stars, Castor and Pollux, standing side by side like the heads of two brothers. Pollux is the brighter one and has an orange tint. Castor is really a system of six stars. Look for them high in the sky on winter and spring evenings in the north.'**
+  String get storyGem;
+
+  /// No description provided for @storyLyr.
+  ///
+  /// In en, this message translates to:
+  /// **'Lyra the Lyre is small but holds Vega, one of the brightest stars of the northern sky. Vega is blue-white and, together with Deneb in Cygnus and Altair in Aquila, forms the Summer Triangle. Right next to Vega, a small parallelogram of stars makes the body of the lyre.'**
+  String get storyLyr;
+
+  /// No description provided for @storyCru.
+  ///
+  /// In en, this message translates to:
+  /// **'Crux, the Southern Cross, is the smallest of all the constellations but one of the most famous. Four bright stars make a cross, and the two stars of its long arm point towards the south celestial pole, so it helps travellers find south. It cannot be seen from most of the northern half of the world.'**
+  String get storyCru;
 }
 
 class _AppLocalizationsDelegate

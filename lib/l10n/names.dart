@@ -392,3 +392,33 @@ String moonPhaseName(AppLocalizations l, int index) {
       return l.phaseWaningCrescent;
   }
 }
+
+/// A short story to go with a constellation, or null if there is none yet.
+/// [id] is the IAU code, such as 'Ori'.
+String? constellationStory(AppLocalizations l, String id) {
+  switch (id) {
+    case 'Ori':
+      return l.storyOri;
+    case 'UMa':
+      return l.storyUMa;
+    case 'UMi':
+      return l.storyUMi;
+    case 'Cas':
+      return l.storyCas;
+    case 'Cyg':
+      return l.storyCyg;
+    case 'Sco':
+      return l.storySco;
+    case 'Leo':
+      return l.storyLeo;
+    case 'Tau':
+      return l.storyTau;
+    case 'Gem':
+      return l.storyGem;
+    case 'Lyr':
+      return l.storyLyr;
+    case 'Cru':
+      return l.storyCru;
+  }
+  return null;
+}

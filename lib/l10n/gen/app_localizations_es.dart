@@ -1747,4 +1747,107 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get solarSystemTitle => 'Sistema solar';
+
+  @override
+  String get starMapTitle => 'Mapa estelar';
+
+  @override
+  String get starMapCardHint => 'Estrellas y constelaciones de tu cielo';
+
+  @override
+  String get starMapHint =>
+      'Arrastra para mirar alrededor, junta los dedos para acercar y toca una estrella o una constelación.';
+
+  @override
+  String get starsLabel => 'Estrellas';
+
+  @override
+  String get constellationsLabel => 'Constelaciones';
+
+  @override
+  String get starMapFind => 'Encontrarla';
+
+  @override
+  String get constellationsList => 'Todas las constelaciones';
+
+  @override
+  String magnitudeValue(String value) {
+    return 'Magnitud $value';
+  }
+
+  @override
+  String get starBelowHorizon => 'Bajo el horizonte a esta hora';
+
+  @override
+  String get starMapNow => 'Ahora';
+
+  @override
+  String get starUnnamed => 'Estrella';
+
+  @override
+  String get binocularsTitle => 'Guía de prismáticos';
+
+  @override
+  String get binocularsHint => 'Qué buscar con unos prismáticos normales';
+
+  @override
+  String get binocularsIntro =>
+      'Sostén los prismáticos con firmeza, por ejemplo apoyando los codos en un muro o en el techo de un coche. Lejos de las luces de la ciudad, busca manchas tenues y difusas más que estrellas nítidas.';
+
+  @override
+  String get binocularsNote =>
+      'Las horas indican cuándo está más alto cada objeto durante la parte oscura de la noche en la ciudad que elegiste. Los nombres de los objetos son los que se usan en todo el mundo. Toca uno para verlo en el mapa estelar.';
+
+  @override
+  String get dsoCluster => 'Cúmulo estelar';
+
+  @override
+  String get dsoGalaxy => 'Galaxia';
+
+  @override
+  String get dsoNebula => 'Nebulosa';
+
+  @override
+  String get storyOri =>
+      'Orión el Cazador es fácil de encontrar: tres estrellas en una línea recta corta forman su cinturón. Sobre el cinturón, la anaranjada Betelgeuse marca un hombro; debajo, la blanquiazul Rigel marca un pie. Bajo el cinturón cuelga una mancha tenue y difusa, la nebulosa de Orión, una nube donde están naciendo estrellas nuevas. Orión se ve por la tarde en invierno en el norte y en verano en el sur.';
+
+  @override
+  String get storyUMa =>
+      'Las siete estrellas brillantes del Carro, también llamado Cazo o Big Dipper, forman parte de la Osa Mayor. Las dos estrellas del borde del cuenco, Dubhe y Merak, señalan el camino hacia Polaris: sigue la línea hacia arriba unas cinco veces la distancia entre ellas. Desde buena parte del norte, el Carro da vueltas alrededor de Polaris toda la noche y nunca se pone.';
+
+  @override
+  String get storyUMi =>
+      'Polaris, la estrella polar, está en la punta de la cola de la Osa Menor. Casi no se mueve porque está casi exactamente sobre el polo norte de la Tierra, así que todo el cielo parece girar a su alrededor. Su altura sobre el horizonte es igual a tu latitud. No es una estrella muy brillante, pero es la más útil para encontrar el norte. No se puede ver desde la mitad sur del mundo.';
+
+  @override
+  String get storyCas =>
+      'Casiopea tiene forma de W o de M, según la hora y la estación, y está hecha de cinco estrellas bastante brillantes. Está al otro lado de Polaris respecto al Carro, así que cuando una está baja, la otra está alta. En la historia antigua era una reina que presumía de su belleza.';
+
+  @override
+  String get storyCyg =>
+      'El Cisne vuela a lo largo de la Vía Láctea. Sus estrellas más brillantes forman la Cruz del Norte, con Deneb arriba, la cola del cisne. Lejos de las luces de la ciudad, la Vía Láctea parece un pálido río de luz que atraviesa al cisne, y los prismáticos muestran que está hecha de incontables estrellas débiles. Las tardes de verano y otoño son las mejores.';
+
+  @override
+  String get storySco =>
+      'Escorpio parece un escorpión con la cola curva que acaba en un gancho. Su corazón es la roja Antares, cuyo nombre significa rival de Marte porque los dos se parecen en el color. Es una constelación de verano en el norte, baja hacia el sur, y pasa alta sobre la cabeza de quienes viven en la mitad sur del mundo.';
+
+  @override
+  String get storyLeo =>
+      'Leo, el León, es una de las pocas constelaciones que de verdad se parece a su animal. Un signo de interrogación al revés hecho de estrellas, la Hoz, forma la cabeza y el pecho y termina en la brillante Régulo, el corazón del león. El triángulo de estrellas del este son sus cuartos traseros. Las tardes de primavera son las mejores en el norte.';
+
+  @override
+  String get storyTau =>
+      'Tauro, el Toro, tiene una cara en forma de V, el cúmulo de las Híades, con la anaranjada Aldebarán como ojo. Aldebarán parece pertenecer al cúmulo, pero está mucho más cerca de nosotros. Más arriba, las Pléyades, o Siete Hermanas, son un diminuto grupo de estrellas azules que la mayoría de la gente ve como seis o siete. Las Pléyades se conocen en todo el mundo y aparecen en las historias de muchas culturas.';
+
+  @override
+  String get storyGem =>
+      'Géminis, los Gemelos, se reconoce por dos estrellas brillantes, Cástor y Pólux, que están lado a lado como las cabezas de dos hermanos. Pólux es la más brillante y tiene un tono anaranjado. Cástor es en realidad un sistema de seis estrellas. Búscalas en lo alto del cielo en las tardes de invierno y primavera en el norte.';
+
+  @override
+  String get storyLyr =>
+      'La Lira es pequeña, pero contiene a Vega, una de las estrellas más brillantes del cielo del norte. Vega es blanquiazul y, junto con Deneb en Cisne y Altair en Águila, forma el Triángulo de Verano. Justo al lado de Vega, un pequeño paralelogramo de estrellas forma el cuerpo de la lira.';
+
+  @override
+  String get storyCru =>
+      'La Cruz del Sur (Crux) es la más pequeña de todas las constelaciones, pero una de las más famosas. Cuatro estrellas brillantes forman una cruz, y las dos estrellas de su brazo largo señalan hacia el polo sur celeste, así que ayuda a los viajeros a encontrar el sur. No se puede ver desde la mayor parte de la mitad norte del mundo.';
 }

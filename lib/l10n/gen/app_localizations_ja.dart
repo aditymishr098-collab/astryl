@@ -1667,4 +1667,106 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get solarSystemTitle => '太陽系';
+
+  @override
+  String get starMapTitle => '星図';
+
+  @override
+  String get starMapCardHint => 'あなたの空の星と星座';
+
+  @override
+  String get starMapHint => 'ドラッグで見回し、ピンチで拡大、星や星座をタップして詳しく見られます。';
+
+  @override
+  String get starsLabel => '星';
+
+  @override
+  String get constellationsLabel => '星座';
+
+  @override
+  String get starMapFind => '見つける';
+
+  @override
+  String get constellationsList => 'すべての星座';
+
+  @override
+  String magnitudeValue(String value) {
+    return '$value等級';
+  }
+
+  @override
+  String get starBelowHorizon => 'この時刻は地平線の下';
+
+  @override
+  String get starMapNow => '今';
+
+  @override
+  String get starUnnamed => '星';
+
+  @override
+  String get binocularsTitle => '双眼鏡ガイド';
+
+  @override
+  String get binocularsHint => 'ふつうの双眼鏡で何が見えるか';
+
+  @override
+  String get binocularsIntro =>
+      '双眼鏡はしっかり構えましょう。たとえば、ひじを壁や車の屋根に載せます。街の明かりから離れて、くっきりした星ではなく、ぼんやりとした淡いかたまりを探してください。';
+
+  @override
+  String get binocularsNote =>
+      '選んだ都市の夜の暗い時間帯に、それぞれの天体がいちばん高くなる時刻を表示します。天体の名前は世界共通で使われているものです。タップすると星図で見られます。';
+
+  @override
+  String get dsoCluster => '星団';
+
+  @override
+  String get dsoGalaxy => '銀河';
+
+  @override
+  String get dsoNebula => '星雲';
+
+  @override
+  String get storyOri =>
+      'オリオン座は見つけやすい星座です。短い直線に並ぶ3つの星が狩人のベルトです。ベルトの上のオレンジ色のベテルギウスは片方の肩、下の青白いリゲルは片方の足を示します。ベルトの下には、ぼんやりしたかたまり、オリオン大星雲が下がっています。新しい星が生まれている雲です。オリオン座は北半球では冬、南半球では夏の夕方に見られます。';
+
+  @override
+  String get storyUMa =>
+      '北斗七星の7つの明るい星は、おおぐま座の一部です。ひしゃくの先の2つの星、ドゥーベとメラクは北極星への道しるべです。2つの星の間隔の約5倍、その線を上にのばしてください。北半球の多くの場所では、北斗七星は一晩中北極星のまわりを回り、沈むことがありません。';
+
+  @override
+  String get storyUMi =>
+      '北極星は、こぐま座のしっぽの先にあります。地球の北極のほぼ真上にあるため、ほとんど動かず、空全体がこの星を中心に回って見えます。地平線からの高さはあなたのいる場所の緯度と同じです。とても明るい星ではありませんが、北を知るのにいちばん役立ちます。南半球からは見えません。';
+
+  @override
+  String get storyCas =>
+      'カシオペヤ座は、時刻や季節によってWやMの形に見え、わりあい明るい5つの星でできています。北斗七星とは北極星をはさんで反対側にあるので、一方が低いときは他方が高くなります。昔の物語では、自分の美しさを自慢した王妃でした。';
+
+  @override
+  String get storyCyg =>
+      'はくちょう座は天の川にそって飛びます。いちばん明るい星々が北十字を作り、いちばん上のデネブは白鳥の尾です。街の明かりから離れると、天の川は白鳥の中を流れる淡い光の川のように見え、双眼鏡を向ければ無数の暗い星の集まりだとわかります。夏から秋の夕方がベストです。';
+
+  @override
+  String get storySco =>
+      'さそり座は、曲がった尾の先にかぎ針のあるサソリのような形です。心臓は赤いアンタレスで、名前は「火星のライバル」という意味。二つの色が似ているからです。北半球では夏の星座で、南の低い空に見え、南半球では頭の真上高くを通ります。';
+
+  @override
+  String get storyLeo =>
+      'しし座は、本当にその動物らしく見える数少ない星座の一つです。星が作る逆向きのはてなマーク、「ししの大がま」が頭と胸を作り、先端は明るいレグルス、ライオンの心臓です。東側の星の三角形は後ろ足です。北半球では春の夕方がベストです。';
+
+  @override
+  String get storyTau =>
+      'おうし座の顔はV字形で、ヒアデス星団です。オレンジ色のアルデバランはその目にあたります。アルデバランは星団の一員のように見えますが、実際にはずっと近くにあります。さらに上にはプレアデス星団、すばる、青い星の小さな集まりがあり、ふつう6つか7つに見えます。プレアデスは世界中で知られ、多くの文化の物語に登場します。';
+
+  @override
+  String get storyGem =>
+      'ふたご座は、カストルとポルックスという2つの明るい星が目印です。二人の兄弟の頭のように並んでいます。ポルックスのほうが明るく、オレンジがかっています。カストルは実際には6つの星からなる系です。北半球では冬から春の夕方、空の高いところで探してください。';
+
+  @override
+  String get storyLyr =>
+      'こと座は小さいですが、北の空でもっとも明るい星の一つ、ベガがあります。ベガは青白く、はくちょう座のデネブ、わし座のアルタイルとともに、夏の大三角をなします。ベガのすぐそばの小さな平行四辺形が、琴の胴体です。';
+
+  @override
+  String get storyCru =>
+      'みなみじゅうじ座は、88の星座の中でいちばん小さいのですが、もっとも有名な星座の一つです。4つの明るい星が十字をつくり、長いほうの腕の2つの星は天の南極を指すので、旅人が南を知る助けになります。北半球のほとんどの場所からは見えません。';
 }

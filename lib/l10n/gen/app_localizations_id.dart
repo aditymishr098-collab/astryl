@@ -1746,4 +1746,107 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get solarSystemTitle => 'Tata surya';
+
+  @override
+  String get starMapTitle => 'Peta bintang';
+
+  @override
+  String get starMapCardHint => 'Bintang dan rasi di langit Anda';
+
+  @override
+  String get starMapHint =>
+      'Geser untuk melihat sekeliling, cubit untuk memperbesar, ketuk bintang atau rasi.';
+
+  @override
+  String get starsLabel => 'Bintang';
+
+  @override
+  String get constellationsLabel => 'Rasi bintang';
+
+  @override
+  String get starMapFind => 'Temukan';
+
+  @override
+  String get constellationsList => 'Semua rasi bintang';
+
+  @override
+  String magnitudeValue(String value) {
+    return 'Magnitudo $value';
+  }
+
+  @override
+  String get starBelowHorizon => 'Di bawah cakrawala pada saat ini';
+
+  @override
+  String get starMapNow => 'Sekarang';
+
+  @override
+  String get starUnnamed => 'Bintang';
+
+  @override
+  String get binocularsTitle => 'Panduan teropong';
+
+  @override
+  String get binocularsHint => 'Apa yang bisa dicari dengan teropong biasa';
+
+  @override
+  String get binocularsIntro =>
+      'Pegang teropong dengan mantap, misalnya dengan menyandarkan siku di tembok atau atap mobil. Jauh dari lampu kota, carilah bercak redup yang berkabut, bukan bintang yang tajam.';
+
+  @override
+  String get binocularsNote =>
+      'Waktu menunjukkan kapan tiap objek berada paling tinggi selama bagian gelap malam di kota yang Anda pilih. Nama objek adalah nama yang dipakai di seluruh dunia. Ketuk salah satunya untuk melihatnya di peta bintang.';
+
+  @override
+  String get dsoCluster => 'Gugus bintang';
+
+  @override
+  String get dsoGalaxy => 'Galaksi';
+
+  @override
+  String get dsoNebula => 'Nebula';
+
+  @override
+  String get storyOri =>
+      'Orion si Pemburu mudah ditemukan: tiga bintang dalam garis lurus pendek membentuk sabuknya. Di atas sabuk, Betelgeuse yang jingga menandai satu bahu; di bawahnya, Rigel yang putih kebiruan menandai satu kaki. Di bawah sabuk menggantung bercak redup yang berkabut, Nebula Orion, awan tempat bintang-bintang baru lahir. Orion terlihat pada malam hari saat musim dingin di utara dan saat musim panas di selatan.';
+
+  @override
+  String get storyUMa =>
+      'Tujuh bintang terang Biduk Besar, yang juga disebut Bajak, merupakan bagian dari Beruang Besar. Dua bintang di ujung mangkuknya, Dubhe dan Merak, menunjuk jalan ke Polaris: ikuti garis itu ke atas sejauh sekitar lima kali jarak di antara keduanya. Dari banyak tempat di utara, Biduk Besar mengelilingi Polaris sepanjang malam dan tidak pernah terbenam.';
+
+  @override
+  String get storyUMi =>
+      'Polaris, Bintang Utara, berada di ujung ekor Beruang Kecil. Bintang ini hampir tidak bergerak karena letaknya nyaris tepat di atas kutub utara Bumi, sehingga seluruh langit tampak berputar mengelilinginya. Tingginya di atas cakrawala sama dengan lintang tempat Anda berada. Bukan bintang yang sangat terang, tetapi paling berguna untuk menemukan arah utara. Polaris tidak bisa dilihat dari belahan selatan dunia.';
+
+  @override
+  String get storyCas =>
+      'Cassiopeia berbentuk W atau M, tergantung jam dan musim, dan terdiri dari lima bintang yang cukup terang. Rasi ini berada di sisi lain Polaris dari Biduk Besar, sehingga ketika yang satu rendah, yang lain tinggi. Dalam kisah lama, ia adalah seorang ratu yang membanggakan kecantikannya.';
+
+  @override
+  String get storyCyg =>
+      'Angsa (Cygnus) terbang menyusuri Bima Sakti. Bintang-bintang terangnya membentuk Salib Utara, dengan Deneb di puncaknya, yaitu ekor angsa. Jauh dari lampu kota, Bima Sakti tampak seperti sungai cahaya pucat yang mengalir melewati angsa, dan teropong memperlihatkan bahwa ia terdiri dari bintang-bintang redup yang tak terhitung. Malam musim panas dan musim gugur adalah waktu terbaik.';
+
+  @override
+  String get storySco =>
+      'Scorpius tampak seperti kalajengking dengan ekor melengkung yang berujung kait. Jantungnya adalah Antares yang merah, namanya berarti saingan Mars karena keduanya mirip warnanya. Di utara ini rasi musim panas yang rendah di arah selatan, sedangkan bagi orang di belahan selatan dunia ia melintas tinggi di atas kepala.';
+
+  @override
+  String get storyLeo =>
+      'Leo si Singa adalah salah satu dari sedikit rasi yang benar-benar mirip hewannya. Tanda tanya terbalik dari bintang-bintang, yaitu Sabit, membentuk kepala dan dada dan berakhir di Regulus yang terang, jantung singa. Segitiga bintang di timur adalah bagian belakang tubuhnya. Malam musim semi adalah waktu terbaik di utara.';
+
+  @override
+  String get storyTau =>
+      'Taurus si Banteng berwajah bentuk V, yaitu gugus Hyades, dengan Aldebaran yang jingga sebagai matanya. Aldebaran tampak seperti bagian dari gugus itu, padahal jauh lebih dekat dengan kita. Di atasnya, Pleiades, atau Tujuh Bersaudari, adalah kelompok kecil bintang biru yang oleh kebanyakan orang terlihat enam atau tujuh. Pleiades dikenal di seluruh dunia dan muncul dalam cerita banyak budaya.';
+
+  @override
+  String get storyGem =>
+      'Gemini si Kembar ditandai oleh dua bintang terang, Castor dan Pollux, yang berdiri berdampingan seperti kepala dua saudara. Pollux lebih terang dan bernuansa jingga. Castor sebenarnya sistem enam bintang. Carilah keduanya tinggi di langit pada malam musim dingin dan musim semi di utara.';
+
+  @override
+  String get storyLyr =>
+      'Lyra kecil, tetapi memuat Vega, salah satu bintang paling terang di langit utara. Vega putih kebiruan dan bersama Deneb di Cygnus serta Altair di Aquila membentuk Segitiga Musim Panas. Tepat di sebelah Vega, jajaran genjang kecil dari bintang-bintang membentuk badan kecapi.';
+
+  @override
+  String get storyCru =>
+      'Crux, Salib Selatan, adalah yang terkecil dari semua rasi bintang, tetapi salah satu yang paling terkenal. Empat bintang terang membentuk salib, dan dua bintang di lengan panjangnya menunjuk ke kutub selatan langit, sehingga membantu para pengelana menemukan arah selatan. Rasi ini tidak bisa dilihat dari sebagian besar belahan utara dunia.';
 }

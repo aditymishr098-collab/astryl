@@ -1755,4 +1755,107 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get solarSystemTitle => 'Système solaire';
+
+  @override
+  String get starMapTitle => 'Carte du ciel';
+
+  @override
+  String get starMapCardHint => 'Les étoiles et constellations de votre ciel';
+
+  @override
+  String get starMapHint =>
+      'Faites glisser pour regarder autour de vous, pincez pour zoomer, touchez une étoile ou une constellation.';
+
+  @override
+  String get starsLabel => 'Étoiles';
+
+  @override
+  String get constellationsLabel => 'Constellations';
+
+  @override
+  String get starMapFind => 'La trouver';
+
+  @override
+  String get constellationsList => 'Toutes les constellations';
+
+  @override
+  String magnitudeValue(String value) {
+    return 'Magnitude $value';
+  }
+
+  @override
+  String get starBelowHorizon => 'Sous l’horizon à cette heure';
+
+  @override
+  String get starMapNow => 'Maintenant';
+
+  @override
+  String get starUnnamed => 'Étoile';
+
+  @override
+  String get binocularsTitle => 'Guide des jumelles';
+
+  @override
+  String get binocularsHint => 'Que chercher avec des jumelles ordinaires';
+
+  @override
+  String get binocularsIntro =>
+      'Tenez les jumelles bien stables, par exemple en appuyant les coudes sur un mur ou sur le toit d’une voiture. Loin des lumières de la ville, cherchez des taches pâles et floues plutôt que des étoiles nettes.';
+
+  @override
+  String get binocularsNote =>
+      'Les heures indiquent quand chaque objet est le plus haut pendant la partie sombre de la nuit dans la ville choisie. Les noms des objets sont ceux utilisés dans le monde entier. Touchez-en un pour le voir sur la carte du ciel.';
+
+  @override
+  String get dsoCluster => 'Amas d’étoiles';
+
+  @override
+  String get dsoGalaxy => 'Galaxie';
+
+  @override
+  String get dsoNebula => 'Nébuleuse';
+
+  @override
+  String get storyOri =>
+      'Orion le Chasseur est facile à trouver : trois étoiles alignées en une courte ligne droite forment sa ceinture. Au-dessus de la ceinture, l’orange Bételgeuse marque une épaule ; en dessous, la blanc-bleu Rigel marque un pied. Sous la ceinture pend une tache pâle et floue, la nébuleuse d’Orion, un nuage où naissent de nouvelles étoiles. Orion se voit le soir en hiver dans le nord et en été dans le sud.';
+
+  @override
+  String get storyUMa =>
+      'Les sept étoiles brillantes de la Grande Casserole, aussi appelée le Grand Chariot, font partie de la Grande Ourse. Les deux étoiles du bord de la casserole, Dubhe et Merak, indiquent le chemin vers Polaris : prolongez la ligne vers le haut sur environ cinq fois leur écart. Depuis une grande partie du nord, la Grande Casserole tourne autour de Polaris toute la nuit et ne se couche jamais.';
+
+  @override
+  String get storyUMi =>
+      'Polaris, l’étoile polaire, est au bout de la queue de la Petite Ourse. Elle bouge à peine parce qu’elle se trouve presque exactement au-dessus du pôle Nord de la Terre, si bien que tout le ciel semble tourner autour d’elle. Sa hauteur au-dessus de l’horizon est égale à votre latitude. Ce n’est pas une étoile très brillante, mais c’est la plus utile pour trouver le nord. On ne peut pas la voir depuis la moitié sud du monde.';
+
+  @override
+  String get storyCas =>
+      'Cassiopée dessine un W ou un M, selon l’heure et la saison, avec cinq étoiles assez brillantes. Elle se trouve de l’autre côté de Polaris par rapport à la Grande Casserole : quand l’une est basse, l’autre est haute. Dans la légende, c’était une reine qui se vantait de sa beauté.';
+
+  @override
+  String get storyCyg =>
+      'Le Cygne vole le long de la Voie lactée. Ses étoiles les plus brillantes forment la Croix du Nord, avec Deneb en haut, la queue du cygne. Loin des lumières de la ville, la Voie lactée ressemble à un pâle fleuve de lumière qui traverse le cygne, et les jumelles montrent qu’elle est faite d’innombrables étoiles faibles. Les soirées d’été et d’automne sont idéales.';
+
+  @override
+  String get storySco =>
+      'Le Scorpion ressemble à un scorpion dont la queue recourbée se termine par un crochet. Son cœur est la rouge Antarès, dont le nom signifie rivale de Mars parce que les deux se ressemblent par la couleur. C’est une constellation d’été dans le nord, basse vers le sud, et elle passe haut au-dessus de la tête pour ceux qui vivent dans la moitié sud du monde.';
+
+  @override
+  String get storyLeo =>
+      'Le Lion est l’une des rares constellations qui ressemble vraiment à son animal. Un point d’interrogation à l’envers fait d’étoiles, la Faucille, forme la tête et la poitrine et se termine à la brillante Régulus, le cœur du lion. Le triangle d’étoiles à l’est est son arrière-train. Les soirées de printemps sont idéales dans le nord.';
+
+  @override
+  String get storyTau =>
+      'Le Taureau a un visage en forme de V, l’amas des Hyades, avec l’orange Aldébaran pour œil. Aldébaran semble faire partie de l’amas, mais elle est bien plus proche de nous. Plus haut, les Pléiades, ou Sept Sœurs, forment un minuscule groupe d’étoiles bleues que la plupart des gens voient au nombre de six ou sept. Les Pléiades sont connues dans le monde entier et apparaissent dans les récits de nombreuses cultures.';
+
+  @override
+  String get storyGem =>
+      'Les Gémeaux se repèrent grâce à deux étoiles brillantes, Castor et Pollux, côte à côte comme les têtes de deux frères. Pollux est la plus brillante et a une teinte orangée. Castor est en réalité un système de six étoiles. Cherchez-les haut dans le ciel les soirs d’hiver et de printemps dans le nord.';
+
+  @override
+  String get storyLyr =>
+      'La Lyre est petite mais elle contient Véga, l’une des étoiles les plus brillantes du ciel du nord. Véga est blanc-bleu et forme, avec Deneb dans le Cygne et Altaïr dans l’Aigle, le Triangle d’été. Juste à côté de Véga, un petit parallélogramme d’étoiles dessine le corps de la lyre.';
+
+  @override
+  String get storyCru =>
+      'La Croix du Sud est la plus petite de toutes les constellations, mais l’une des plus célèbres. Quatre étoiles brillantes forment une croix, et les deux étoiles de son grand bras pointent vers le pôle Sud céleste, ce qui aide les voyageurs à trouver le sud. On ne peut pas la voir depuis la majeure partie de la moitié nord du monde.';
 }

@@ -16,17 +16,21 @@ import 'package:heliora/core/orbits.dart';
 import 'package:heliora/core/sgp4.dart';
 import 'package:heliora/core/sky.dart';
 import 'package:heliora/core/spacecraft.dart';
+import 'package:heliora/core/starmap.dart';
 import 'package:heliora/data/cities.dart';
 import 'package:heliora/data/favorites.dart';
 import 'package:heliora/data/missions.dart';
+import 'package:heliora/data/sky_catalog.dart';
 import 'package:heliora/data/tonight_alerts.dart';
 import 'package:heliora/l10n/gen/app_localizations.dart';
+import 'package:heliora/l10n/names.dart' show constellationStory;
 import 'package:heliora/core/quiz.dart';
 import 'package:heliora/core/version.dart';
 import 'package:heliora/data/online_service.dart';
 import 'package:heliora/data/planets.dart';
 import 'package:heliora/data/settings.dart';
 import 'package:heliora/data/update_service.dart';
+import 'package:heliora/screens/binocular_screen.dart' show bestView, nightWindow;
 import 'package:heliora/screens/events_screen.dart' show launchReminderTime;
 import 'package:heliora/widgets/common.dart' show BigStat, IconStatTile, InfoRow, StatGrid, StatPanel;
 
@@ -1464,6 +1468,155 @@ void main() {
       expect(s.localeCode, '');
       expect(s.bestQuizScore, 0);
     });
+  });
+
+  group('star map', () {
+    final yerevan = cityById('yerevan')!;
+    final polaris = catalogStars.firstWhere((s) => s.name == 'Polaris');
+
+    double separation(Equatorial a, Equatorial b) {
+      final d1 = a.dec * pi / 180, d2 = b.dec * pi / 180;
+      final dr = (a.ra - b.ra) * pi / 180;
+      final c = sin(d1) * sin(d2) + cos(d1) * cos(d2) * cos(dr);
+      return acos(c.clamp(-1.0, 1.0).toDouble()) * 180 / pi;
+    }
+
+    test('the catalogue is complete and in order', () {
+      expect(catalogConstellations.length, 89);
+      expect(catalogStars.first.name, 'Sirius');
+      for (var i = 1; i < catalogStars.length; i++) {
+        expect(catalogStars[i].mag >= catalogStars[i - 1].mag, isTrue,
+            reason: 'star $i is out of order');
+      }
+      for (final c in catalogConstellations) {
+        expect(c.lines, isNotEmpty, reason: c.id);
+        for (final line in c.lines) {
+          expect(line.length.isEven, isTrue, reason: c.id);
+          expect(line.length >= 4, isTrue, reason: c.id);
+        }
+      }
+      expect(catalogDeepSky.length, 12);
+      expect(constellationIndex('Ori'), isNonNegative);
+      expect(constellationIndex('zzz'), -1);
+    });
+
+    test('precession is about 0.4 degrees today and nothing in 2000', () {
+      const sirius = Equatorial(101.2875, -16.7161);
+      final j2000 = DateTime.utc(2000, 1, 1, 12);
+      expect(separation(sirius, precessFromJ2000(sirius, j2000)), lessThan(0.01));
+      final now = precessFromJ2000(sirius, DateTime.utc(2026, 6, 1));
+      final shift = separation(sirius, now);
+      expect(shift, greaterThan(0.3));
+      expect(shift, lessThan(0.45));
+    });
+
+    test('Polaris stands as high as the latitude, all day long', () {
+      for (final city in <City>[yerevan, cityById('london')!]) {
+        for (var hour = 0; hour < 24; hour += 3) {
+          final date = DateTime.utc(2026, 11, 3, hour);
+          final eq = precessFromJ2000(Equatorial(polaris.ra, polaris.dec), date);
+          final h = toHorizontal(eq, date, city.lat, city.lon);
+          expect((h.altitude - city.lat).abs(), lessThan(1.0),
+              reason: '${city.id} at $hour');
+        }
+      }
+    });
+
+    test('Sirius reaches its expected height from Yerevan', () {
+      var best = -90.0;
+      for (var m = 0; m < 1440; m += 3) {
+        final date = DateTime.utc(2026, 1, 10).add(Duration(minutes: m));
+        final eq = precessFromJ2000(const Equatorial(101.2875, -16.7161), date);
+        best = max(best, toHorizontal(eq, date, yerevan.lat, yerevan.lon).altitude);
+      }
+      expect(best, closeTo(90 - yerevan.lat - 16.77, 0.3));
+    });
+
+    test('a frame has one entry for every star and constellation', () {
+      final f = SkyFrame.at(DateTime.utc(2026, 11, 3, 20), yerevan.lat, yerevan.lon);
+      expect(f.stars.length, catalogStars.length);
+      expect(f.lines.length, catalogConstellations.length);
+      expect(f.centres.length, catalogConstellations.length);
+      expect(f.bodies.keys, containsAll(<String>['sun', 'moon', 'mars']));
+      expect(f.bodies.length, 2 + skyPlanets.length);
+    });
+
+    test('the view puts the middle in the middle and the edge at the edge', () {
+      const v = SkyView(
+          centerAz: 90, centerAlt: 0, fov: 100, width: 400, height: 800);
+      final mid = v.project(const Horizontal(0, 90))!;
+      expect(mid.dx, closeTo(200, 1e-6));
+      expect(mid.dy, closeTo(400, 1e-6));
+      // Half the field of view to the east is the right edge.
+      expect(v.project(const Horizontal(0, 140))!.dx, closeTo(400, 1e-6));
+      expect(v.project(const Horizontal(0, 40))!.dx, closeTo(0, 1e-6));
+      // Straight behind you is not drawn.
+      expect(v.project(const Horizontal(0, 270)), isNull);
+    });
+
+    test('projecting and unprojecting gives the same direction back', () {
+      const v = SkyView(
+          centerAz: 200, centerAlt: 40, fov: 80, width: 360, height: 640);
+      for (final h in const <Horizontal>[
+        Horizontal(40, 200),
+        Horizontal(10, 170),
+        Horizontal(65, 250),
+        Horizontal(25, 220),
+      ]) {
+        final o = v.project(h)!;
+        final back = v.unproject(o);
+        expect(skyAngle(h, back), lessThan(1e-6));
+      }
+      expect(skyAngle(const Horizontal(0, 0), const Horizontal(0, 90)),
+          closeTo(90, 1e-9));
+    });
+
+    test('bright stars get bigger dots', () {
+      expect(starRadius(-1.4), greaterThan(starRadius(1)));
+      expect(starRadius(1), greaterThan(starRadius(4)));
+      expect(starRadius(9), 0.7);
+    });
+  });
+
+  group('binocular guide', () {
+    final london = cityById('london')!;
+    final pleiades = catalogDeepSky.firstWhere((d) => d.id == 'M45');
+    final lagoon = catalogDeepSky.firstWhere((d) => d.id == 'M8');
+
+    test('the night window is a long stretch of dark', () {
+      final w = nightWindow(DateTime(2026, 12, 15), london.lat, london.lon);
+      final hours = w.end.difference(w.start).inMinutes / 60;
+      expect(hours, greaterThan(8));
+      expect(hours, lessThan(16));
+    });
+
+    test('the window still exists when the sky never gets dark', () {
+      // Tromso at midsummer has no astronomical night.
+      final w = nightWindow(DateTime(2026, 6, 21), 69.65, 18.96);
+      expect(w.end.isAfter(w.start), isTrue);
+    });
+
+    test('the Pleiades are high on a December night, the Lagoon is not up', () {
+      final w = nightWindow(DateTime(2026, 12, 15), london.lat, london.lon);
+      final p = bestView(pleiades, w.start, w.end, london.lat, london.lon);
+      expect(p.visible, isTrue);
+      expect(p.position.altitude, greaterThan(55));
+      final m = bestView(lagoon, w.start, w.end, london.lat, london.lon);
+      expect(m.visible, isFalse);
+      expect(p.time.isAfter(w.start.subtract(const Duration(minutes: 1))), isTrue);
+      expect(p.time.isBefore(w.end.add(const Duration(minutes: 1))), isTrue);
+    });
+  });
+
+  test('every constellation story exists in English', () {
+    final l = lookupAppLocalizations(const Locale('en'));
+    for (final id in <String>[
+      'Ori', 'UMa', 'UMi', 'Cas', 'Cyg', 'Sco', 'Leo', 'Tau', 'Gem', 'Lyr', 'Cru'
+    ]) {
+      expect(constellationStory(l, id), isNotNull, reason: id);
+      expect(constellationIndex(id), isNonNegative, reason: id);
+    }
+    expect(constellationStory(l, 'And'), isNull);
   });
 
   test('numbers use the language format', () {
