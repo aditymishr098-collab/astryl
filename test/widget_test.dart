@@ -23,6 +23,7 @@ import 'package:heliora/data/missions.dart';
 import 'package:heliora/data/sky_catalog.dart';
 import 'package:heliora/data/tonight_alerts.dart';
 import 'package:heliora/l10n/gen/app_localizations.dart';
+import 'package:heliora/data/build_flavor.dart' show inAppUpdates;
 import 'package:heliora/l10n/names.dart'
     show appLanguages, constellationStory, languageName;
 import 'package:heliora/core/quiz.dart';
@@ -969,6 +970,11 @@ void main() {
             a.body.contains('Look for:') || a.body.contains(l.tonightNoPlanets),
             isTrue);
       }
+    });
+
+    test('the normal build updates itself, only F-Droid turns it off', () {
+      // The F-Droid build sets --dart-define=FDROID=true; tests do not.
+      expect(inAppUpdates, isTrue);
     });
 
     test('the app has English and Hindi only', () {

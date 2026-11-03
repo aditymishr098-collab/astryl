@@ -1,0 +1,38 @@
+# DRAFT metadata for F-Droid (copy to metadata/online.lumioapps.heliora.yml in
+# your fork of https://gitlab.com/fdroid/fdroiddata and open a merge request).
+# Not tested against the F-Droid build server: the reviewers may ask for changes,
+# and the Flutter version below must be set to a released version.
+Categories:
+  - Science & Education
+License: MIT
+AuthorName: Lumio Apps
+WebSite: https://github.com/lumio-apps/heliora
+SourceCode: https://github.com/lumio-apps/heliora
+IssueTracker: https://github.com/lumio-apps/heliora/issues
+
+AutoName: Heliora
+
+RepoType: git
+Repo: https://github.com/lumio-apps/heliora.git
+
+Builds:
+  - versionName: 1.16.1
+    versionCode: 18
+    commit: v1.16.1
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@FLUTTER_VERSION
+    prebuild:
+      - sed -i -e '/REQUEST_INSTALL_PACKAGES/d' android/app/src/main/AndroidManifest.xml
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter gen-l10n
+    build:
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter build apk --release --dart-define=FDROID=true
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.16.1
+CurrentVersionCode: 18

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../core/version.dart';
+import '../data/build_flavor.dart';
 import '../data/favorites.dart';
 import '../data/native_bridge.dart';
 import '../data/online_service.dart';
@@ -150,7 +151,7 @@ class AppState extends ChangeNotifier {
   /// Runs at most once a day when the user allows it, and never shows an
   /// error: a failed check just tries again tomorrow.
   Future<void> autoCheckForUpdate() async {
-    if (!_settings.autoUpdateCheck || _appVersion.isEmpty) {
+    if (!inAppUpdates || !_settings.autoUpdateCheck || _appVersion.isEmpty) {
       return;
     }
     final now = DateTime.now().millisecondsSinceEpoch;

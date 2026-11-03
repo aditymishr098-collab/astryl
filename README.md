@@ -105,6 +105,10 @@ and an honest answer to "could humans live here?"
 
 After that, Heliora updates itself: go to **Settings → Check for updates**, or let it check once a day.
 
+### F-Droid
+
+Heliora is prepared for [F-Droid](https://f-droid.org). That build is made from this source with `--dart-define=FDROID=true`, which removes the in-app updater and the permission to install apps: F-Droid brings the updates. The store texts and screenshots are in `fastlane/metadata/android` and a draft of the F-Droid recipe is in `fdroid/`. F-Droid signs its apps with its own key, so the F-Droid app and the GitHub APK cannot update each other: pick one source.
+
 ## Privacy
 
 Heliora is made by [Lumio Apps](https://github.com/lumio-apps): **no ads, no account, no tracking.**
@@ -179,6 +183,7 @@ All texts live in `lib/l10n/app_en.arb` and `lib/l10n/app_hi.arb`. Found a wrong
 
 | Version | What's new |
 |---|---|
+| **1.16.1** | Ready for F-Droid: store texts in English and Hindi, screenshots, and a build flag (`FDROID`) that turns the in-app updater off for that build. Nothing changes in the normal build |
 | **1.16.0** | Space news, Tiangong and Hubble passes with reminders, and a share card for tonight's sky (all online parts are off until you switch them on; the share card works offline). The app is now in English and Hindi only: the other 18 languages are removed. Your saved settings are kept; a removed language falls back to the phone's |
 | **1.15.0** | Star map with about 1,000 stars, 89 constellations, the Moon and planets (drag, pinch, tap), stories for 11 constellations, a binocular guide with where to look tonight, and the time of the sky in steps of one hour. 29 new texts in 20 languages |
 | **1.14.0** | New design: Space Grotesk and DM Sans fonts (bundled, no download), big glowing planet cards, an Explore page that scrolls with the Solar System in its own card, a new planet page with a centred planet, life-score badge and a three-column stats card, round buttons, bordered cards and a flatter bottom bar |

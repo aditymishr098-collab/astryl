@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../data/build_flavor.dart';
 import '../data/settings.dart';
 import '../l10n/names.dart';
 import '../state/app_state.dart';
@@ -278,39 +279,42 @@ class SettingsScreen extends StatelessWidget {
                         style: TextStyle(color: p.muted)),
                   ],
                 ),
-                const SizedBox(height: 12),
-                FilledButton.icon(
-                  style: FilledButton.styleFrom(
-                    minimumSize: const Size.fromHeight(48),
-                    backgroundColor: p.orbit,
-                    foregroundColor: Theme.of(context).brightness ==
-                            Brightness.dark
-                        ? p.background
-                        : Colors.white,
+                // The F-Droid build is updated by F-Droid, never by the app.
+                if (inAppUpdates) ...<Widget>[
+                  const SizedBox(height: 12),
+                  FilledButton.icon(
+                    style: FilledButton.styleFrom(
+                      minimumSize: const Size.fromHeight(48),
+                      backgroundColor: p.orbit,
+                      foregroundColor: Theme.of(context).brightness ==
+                              Brightness.dark
+                          ? p.background
+                          : Colors.white,
+                    ),
+                    onPressed: state.checkingForUpdate
+                        ? null
+                        : () => _checkUpdates(context),
+                    icon: state.checkingForUpdate
+                        ? const SizedBox.square(
+                            dimension: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2))
+                        : const Icon(Icons.refresh),
+                    label: Text(state.checkingForUpdate
+                        ? l.checking
+                        : l.checkForUpdates),
                   ),
-                  onPressed: state.checkingForUpdate
-                      ? null
-                      : () => _checkUpdates(context),
-                  icon: state.checkingForUpdate
-                      ? const SizedBox.square(
-                          dimension: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2))
-                      : const Icon(Icons.refresh),
-                  label: Text(state.checkingForUpdate
-                      ? l.checking
-                      : l.checkForUpdates),
-                ),
-                const SizedBox(height: 4),
-                SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(l.autoUpdateCheck,
-                      style: TextStyle(fontSize: 14, color: p.text)),
-                  value: settings.autoUpdateCheck,
-                  onChanged: state.setAutoUpdateCheck,
-                ),
-                Text(l.updateNote,
-                    style:
-                        TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
+                  const SizedBox(height: 4),
+                  SwitchListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(l.autoUpdateCheck,
+                        style: TextStyle(fontSize: 14, color: p.text)),
+                    value: settings.autoUpdateCheck,
+                    onChanged: state.setAutoUpdateCheck,
+                  ),
+                  Text(l.updateNote,
+                      style:
+                          TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
+                ],
               ],
             ),
           ),

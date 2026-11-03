@@ -1,0 +1,24 @@
+Heliora is an offline-first solar system app. Planet positions, the Moon, sunrise and sunset, eclipses and the star map are all calculated on your phone.
+
+<b>Explore</b>
+• 2D map with the real position of every planet on any date from 1800 to 2050
+• Rotating 3D worlds: the Sun, 8 planets, Pluto, our Moon and 7 famous moons
+• Facts, atmosphere and oxygen, "could humans live here?", compare two worlds
+• Your weight, jump height and age on other planets, and a quiz
+
+<b>Tonight's sky</b>
+• Which planets you can see tonight from your city, no location permission needed
+• Moon phase, moonrise and moonset, a Moon calendar and the sky on any date
+• Sun and light: first light, golden hours, sunset and the dark-sky window
+• Star map with about 1,000 stars and 89 constellations, drag and pinch to explore
+• Binocular guide with 12 sights and where to look tonight
+• Eclipse calendar and daily reminders
+• Share a picture of tonight's sky
+
+<b>Optional online features (off by default)</b>
+• Where the International Space Station, Tiangong and Hubble are, and when they pass over your city
+• Upcoming rocket launches and space news
+Nothing about you is sent. Switch the setting off and the app never goes online.
+
+<b>Private</b>
+No ads, no account, no tracking. Works in English and Hindi. Open source, MIT licence.
