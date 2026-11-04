@@ -91,12 +91,17 @@ class _HomeScreenState extends State<HomeScreen> {
         bottom: false,
         child: IndexedStack(
           index: _tab,
+          // The tabs stay alive, but only the one on screen may animate: a
+          // hidden 3D planet would otherwise wake the phone 60 times a second.
           children: <Widget>[
-            ExploreTab(active: _tab == 0),
-            const SkyScreen(),
-            const CompareScreen(),
-            const WeightScreen(),
-            const QuizScreen(),
+            for (final (i, tab) in <Widget>[
+              ExploreTab(active: _tab == 0),
+              const SkyScreen(),
+              const CompareScreen(),
+              const WeightScreen(),
+              const QuizScreen(),
+            ].indexed)
+              TickerMode(enabled: _tab == i, child: tab),
           ],
         ),
       ),
@@ -182,6 +187,11 @@ class _ExploreTabState extends State<ExploreTab>
   }
 
   void _tick(Duration elapsed) {
+    // The whole tab is rebuilt for every step, so 30 steps a second are
+    // plenty and use half the battery of 60.
+    if (elapsed - _last < const Duration(milliseconds: 33)) {
+      return;
+    }
     final seconds = (elapsed - _last).inMicroseconds / 1e6;
     _last = elapsed;
     final next = _date.add(Duration(

@@ -1150,5 +1150,17 @@
         "type": "String"
       }
     }
-  }
+  },
+  "cancel": "Cancel",
+  "backupTitle": "Backup",
+  "backupNote": "Your favourites, settings, quiz scores, city and birth date go into one small file. It stays on your phone until you send it somewhere. Bells for single events are not included: set them again after restoring.",
+  "backupSave": "Save a backup",
+  "backupRestore": "Restore a backup",
+  "backupShareText": "Heliora backup",
+  "backupSaveFailed": "The backup could not be made.",
+  "backupRestoreTitle": "Restore this backup?",
+  "backupRestoreAsk": "This replaces your favourites, settings, quiz scores, city and birth date on this phone.",
+  "backupRestoreConfirm": "Restore",
+  "backupRestored": "Backup restored.",
+  "backupBad": "That file is not a Heliora backup."
 }

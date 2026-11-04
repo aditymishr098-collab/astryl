@@ -3319,6 +3319,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The sky over {city}'**
   String skyOverCity(String city);
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @backupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup'**
+  String get backupTitle;
+
+  /// No description provided for @backupNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your favourites, settings, quiz scores, city and birth date go into one small file. It stays on your phone until you send it somewhere. Bells for single events are not included: set them again after restoring.'**
+  String get backupNote;
+
+  /// No description provided for @backupSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save a backup'**
+  String get backupSave;
+
+  /// No description provided for @backupRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore a backup'**
+  String get backupRestore;
+
+  /// No description provided for @backupShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'Heliora backup'**
+  String get backupShareText;
+
+  /// No description provided for @backupSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The backup could not be made.'**
+  String get backupSaveFailed;
+
+  /// No description provided for @backupRestoreTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore this backup?'**
+  String get backupRestoreTitle;
+
+  /// No description provided for @backupRestoreAsk.
+  ///
+  /// In en, this message translates to:
+  /// **'This replaces your favourites, settings, quiz scores, city and birth date on this phone.'**
+  String get backupRestoreAsk;
+
+  /// No description provided for @backupRestoreConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get backupRestoreConfirm;
+
+  /// No description provided for @backupRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup restored.'**
+  String get backupRestored;
+
+  /// No description provided for @backupBad.
+  ///
+  /// In en, this message translates to:
+  /// **'That file is not a Heliora backup.'**
+  String get backupBad;
 }
 
 class _AppLocalizationsDelegate

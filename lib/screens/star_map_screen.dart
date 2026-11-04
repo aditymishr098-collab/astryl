@@ -625,25 +625,37 @@ class _SkyPainter extends CustomPainter {
 
   static const Color _amber = Color(0xFFF5A524);
 
+  /// Laid-out names, kept between frames: shaping text is the most costly
+  /// part of drawing the map, and the same names come back every frame.
+  static final Map<String, TextPainter> _labels = <String, TextPainter>{};
+
   void _label(Canvas canvas, String text, Offset at,
       {double size = 11,
       Color color = const Color(0xFFC9D2EA),
       FontWeight weight = FontWeight.w500,
       bool centered = false,
       double spacing = 0}) {
-    final tp = TextPainter(
-      text: TextSpan(
-        text: text,
-        style: TextStyle(
-          fontFamily: bodyFont,
-          fontSize: size,
-          color: color,
-          fontWeight: weight,
-          letterSpacing: spacing,
+    final key = '$size|${color.toARGB32()}|${weight.value}|$spacing|$text';
+    var tp = _labels[key];
+    if (tp == null) {
+      if (_labels.length > 500) {
+        _labels.clear();
+      }
+      tp = TextPainter(
+        text: TextSpan(
+          text: text,
+          style: TextStyle(
+            fontFamily: bodyFont,
+            fontSize: size,
+            color: color,
+            fontWeight: weight,
+            letterSpacing: spacing,
+          ),
         ),
-      ),
-      textDirection: TextDirection.ltr,
-    )..layout();
+        textDirection: TextDirection.ltr,
+      )..layout();
+      _labels[key] = tp;
+    }
     tp.paint(canvas, centered ? at - Offset(tp.width / 2, tp.height / 2) : at);
   }
 

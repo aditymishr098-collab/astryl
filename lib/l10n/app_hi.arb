@@ -536,5 +536,17 @@
   "tonightShareTitle": "आज रात का आकाश साझा करें",
   "tonightShareHint": "आपके दोस्तों के लिए चाँद और ग्रहों की एक तस्वीर",
   "tonightShareText": "{city} के ऊपर का आकाश, Heliora से बना, जो मुफ़्त ऑफ़लाइन सौरमंडल ऐप है: https://github.com/aditymishr098-collab/heliora",
-  "skyOverCity": "{city} के ऊपर का आकाश"
+  "skyOverCity": "{city} के ऊपर का आकाश",
+  "cancel": "रद्द करें",
+  "backupTitle": "बैकअप",
+  "backupNote": "आपके पसंदीदा, सेटिंग्स, क्विज़ स्कोर, शहर और जन्मतिथि एक छोटी फ़ाइल में सेव होते हैं। जब तक आप उसे कहीं भेजें नहीं, वह आपके फ़ोन में ही रहती है। अलग-अलग घटनाओं की घंटियाँ इसमें शामिल नहीं हैं: restore के बाद उन्हें फिर से लगाएँ।",
+  "backupSave": "बैकअप सेव करें",
+  "backupRestore": "बैकअप restore करें",
+  "backupShareText": "Heliora बैकअप",
+  "backupSaveFailed": "बैकअप नहीं बन सका।",
+  "backupRestoreTitle": "यह बैकअप restore करें?",
+  "backupRestoreAsk": "इससे इस फ़ोन के पसंदीदा, सेटिंग्स, क्विज़ स्कोर, शहर और जन्मतिथि बदल जाएँगे।",
+  "backupRestoreConfirm": "Restore करें",
+  "backupRestored": "बैकअप restore हो गया।",
+  "backupBad": "यह फ़ाइल Heliora का बैकअप नहीं है।"
 }

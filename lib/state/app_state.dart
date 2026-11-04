@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../core/version.dart';
+import '../data/backup.dart';
 import '../data/build_flavor.dart';
 import '../data/favorites.dart';
 import '../data/native_bridge.dart';
@@ -118,6 +121,41 @@ class AppState extends ChangeNotifier {
   /// Stars or un-stars [key].
   Future<void> toggleFavorite(String key) => _update(_settings.copyWith(
       favorites: toggledFavorite(_settings.favorites, key)));
+
+  /// Writes a backup file to the share folder and returns its path, or null
+  /// when it could not be written.
+  Future<String?> writeBackup() async {
+    try {
+      final dir = await _bridge.sharedDir();
+      if (dir.isEmpty) {
+        return null;
+      }
+      final file = File('$dir${Platform.pathSeparator}Heliora-backup.json');
+      await file.writeAsString(
+          buildBackup(_settings, DateTime.now(), _appVersion),
+          flush: true);
+      return file.path;
+    } on Exception {
+      return null;
+    }
+  }
+
+  /// Puts the settings in the backup [text] in place of the current ones.
+  /// False, with nothing changed, when [text] is not a Heliora backup.
+  Future<bool> restoreBackup(String text) async {
+    final HelioraSettings backup;
+    try {
+      backup = parseBackup(text);
+    } on FormatException {
+      return false;
+    }
+    // The old bells would still ring although they are no longer listed.
+    for (final id in _settings.reminders) {
+      await _bridge.cancelReminder(id);
+    }
+    await _update(restoredSettings(_settings, backup));
+    return true;
+  }
 
   /// Sets the text size in percent (one of [textScaleChoices]).
   Future<void> setTextScale(int percent) =>

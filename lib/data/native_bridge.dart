@@ -62,6 +62,27 @@ class NativeBridge {
     }
   }
 
+  /// Opens the Android share sheet with the file at [path] of type [mime].
+  Future<bool> shareFile(String path, String mime, String text) async {
+    try {
+      final result = await _channel.invokeMethod<bool>('shareFile',
+          <String, String>{'path': path, 'mime': mime, 'text': text});
+      return result ?? false;
+    } on Exception {
+      return false;
+    }
+  }
+
+  /// Lets the user pick a backup file and returns its text, or null when
+  /// nothing was picked or the file could not be read.
+  Future<String?> pickBackup() async {
+    try {
+      return await _channel.invokeMethod<String>('pickBackup');
+    } on Exception {
+      return null;
+    }
+  }
+
   /// The installed version name, for example "1.0.0". Empty when unknown.
   Future<String> appVersion() async {
     try {

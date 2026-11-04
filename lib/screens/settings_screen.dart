@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../data/backup.dart';
 import '../data/build_flavor.dart';
 import '../data/settings.dart';
 import '../l10n/names.dart';
@@ -61,6 +62,59 @@ class SettingsScreen extends StatelessWidget {
     if (picked != null) {
       await state.setTonightMinutes(picked.hour * 60 + picked.minute);
     }
+  }
+
+  Future<void> _saveBackup(BuildContext context) async {
+    final l = context.l10n;
+    final state = AppScope.read(context);
+    final messenger = ScaffoldMessenger.of(context);
+    final path = await state.writeBackup();
+    final shared = path != null &&
+        await state.bridge
+            .shareFile(path, 'application/json', l.backupShareText);
+    if (!shared) {
+      messenger.showSnackBar(SnackBar(content: Text(l.backupSaveFailed)));
+    }
+  }
+
+  Future<void> _restoreBackup(BuildContext context) async {
+    final l = context.l10n;
+    final state = AppScope.read(context);
+    final messenger = ScaffoldMessenger.of(context);
+    final text = await state.bridge.pickBackup();
+    if (text == null) {
+      return;
+    }
+    if (!isHelioraBackup(text)) {
+      messenger.showSnackBar(SnackBar(content: Text(l.backupBad)));
+      return;
+    }
+    if (!context.mounted) {
+      return;
+    }
+    final yes = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l.backupRestoreTitle),
+        content: Text(l.backupRestoreAsk),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(l.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(l.backupRestoreConfirm),
+          ),
+        ],
+      ),
+    );
+    if (yes != true) {
+      return;
+    }
+    final done = await state.restoreBackup(text);
+    messenger.showSnackBar(
+        SnackBar(content: Text(done ? l.backupRestored : l.backupBad)));
   }
 
   Future<void> _pickLanguage(BuildContext context) async {
@@ -261,6 +315,34 @@ class SettingsScreen extends StatelessWidget {
                 Text(l.onlineSubtitle,
                     style:
                         TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+          SectionLabel(l.backupTitle),
+          SurfaceCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Text(l.backupNote,
+                    style:
+                        TextStyle(fontSize: 13, color: p.muted, height: 1.4)),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  style: OutlinedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(48)),
+                  onPressed: () => _saveBackup(context),
+                  icon: const Icon(Icons.upload_file_outlined),
+                  label: Text(l.backupSave),
+                ),
+                const SizedBox(height: 8),
+                OutlinedButton.icon(
+                  style: OutlinedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(48)),
+                  onPressed: () => _restoreBackup(context),
+                  icon: const Icon(Icons.download_outlined),
+                  label: Text(l.backupRestore),
+                ),
               ],
             ),
           ),

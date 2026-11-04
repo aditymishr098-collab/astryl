@@ -17,6 +17,7 @@ import 'package:heliora/core/sgp4.dart';
 import 'package:heliora/core/sky.dart';
 import 'package:heliora/core/spacecraft.dart';
 import 'package:heliora/core/starmap.dart';
+import 'package:heliora/data/backup.dart';
 import 'package:heliora/data/cities.dart';
 import 'package:heliora/data/favorites.dart';
 import 'package:heliora/data/missions.dart';
@@ -1738,5 +1739,74 @@ void main() {
     expect(formatNumberFor('en', 20.95, decimals: 2), '20.95');
     expect(formatNumberFor('en', 2.0, decimals: 2), '2');
     expect(formatNumberFor('zz', 5), '5');
+  });
+
+  group('backup', () {
+    const mine = HelioraSettings(
+      themeMode: ThemeMode.dark,
+      localeCode: 'hi',
+      viewMode: ViewMode.globe,
+      bestQuizScore: 6,
+      birthDateMs: 946728000000,
+      cityId: 'yerevan',
+      reminders: <String>['iss:202611051200', 'full-moon-20261124'],
+      onlineFeatures: true,
+      quizBests: <String, int>{'easy': 9, 'hard': 4},
+      tonightAlert: true,
+      tonightMinutes: 21 * 60,
+      favorites: <String>['mars', 'apollo-11'],
+      textScalePercent: 115,
+      lastUpdateCheckMs: 5,
+    );
+
+    test('a backup brings every setting back', () {
+      final text = buildBackup(mine, DateTime.utc(2026, 11, 5), '1.17.0');
+      final back = parseBackup(text);
+      expect(back.themeMode, ThemeMode.dark);
+      expect(back.localeCode, 'hi');
+      expect(back.viewMode, ViewMode.globe);
+      expect(back.birthDateMs, 946728000000);
+      expect(back.cityId, 'yerevan');
+      expect(back.onlineFeatures, isTrue);
+      expect(back.quizBests, <String, int>{'easy': 9, 'hard': 4});
+      expect(back.tonightAlert, isTrue);
+      expect(back.tonightMinutes, 21 * 60);
+      expect(back.favorites, <String>['mars', 'apollo-11']);
+      expect(back.textScalePercent, 115);
+      expect(isHelioraBackup(text), isTrue);
+    });
+
+    test('restoring drops event bells and keeps this phone\'s update time',
+        () {
+      final back = parseBackup(buildBackup(mine, DateTime.utc(2026, 11, 5), ''));
+      const current =
+          HelioraSettings(lastUpdateCheckMs: 77, reminders: <String>['x']);
+      final next = restoredSettings(current, back);
+      expect(next.reminders, isEmpty);
+      expect(next.lastUpdateCheckMs, 77);
+      expect(next.favorites, <String>['mars', 'apollo-11']);
+      expect(next.tonightAlert, isTrue);
+      expect(next.cityId, 'yerevan');
+    });
+
+    test('a language that no longer exists falls back to the phone', () {
+      const old = HelioraSettings(localeCode: 'ru');
+      final back = parseBackup(buildBackup(old, DateTime.utc(2026, 11, 5), ''));
+      expect(back.localeCode, '');
+    });
+
+    test('files that are not a Heliora backup are refused', () {
+      expect(() => parseBackup('nope'), throwsFormatException);
+      expect(() => parseBackup('[]'), throwsFormatException);
+      expect(() => parseBackup('{"app":"other","format":1,"settings":{}}'),
+          throwsFormatException);
+      expect(() => parseBackup('{"app":"heliora","format":99,"settings":{}}'),
+          throwsFormatException);
+      expect(() => parseBackup('{"app":"heliora","format":1}'),
+          throwsFormatException);
+      expect(() => parseBackup('x' * (maxBackupChars + 1)),
+          throwsFormatException);
+      expect(isHelioraBackup('{"app":"heliora"}'), isFalse);
+    });
   });
 }

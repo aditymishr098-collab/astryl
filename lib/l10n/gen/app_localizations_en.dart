@@ -1909,4 +1909,42 @@ class AppLocalizationsEn extends AppLocalizations {
   String skyOverCity(String city) {
     return 'The sky over $city';
   }
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get backupTitle => 'Backup';
+
+  @override
+  String get backupNote =>
+      'Your favourites, settings, quiz scores, city and birth date go into one small file. It stays on your phone until you send it somewhere. Bells for single events are not included: set them again after restoring.';
+
+  @override
+  String get backupSave => 'Save a backup';
+
+  @override
+  String get backupRestore => 'Restore a backup';
+
+  @override
+  String get backupShareText => 'Heliora backup';
+
+  @override
+  String get backupSaveFailed => 'The backup could not be made.';
+
+  @override
+  String get backupRestoreTitle => 'Restore this backup?';
+
+  @override
+  String get backupRestoreAsk =>
+      'This replaces your favourites, settings, quiz scores, city and birth date on this phone.';
+
+  @override
+  String get backupRestoreConfirm => 'Restore';
+
+  @override
+  String get backupRestored => 'Backup restored.';
+
+  @override
+  String get backupBad => 'That file is not a Heliora backup.';
 }

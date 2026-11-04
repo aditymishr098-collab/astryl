@@ -93,6 +93,7 @@ and an honest answer to "could humans live here?"
 - **Share.** Turn a planet's card into a picture and send it to your friends.
 
 ### ⚙️ Made for everyone
+- **Backup and restore.** Save your favourites, settings, quiz scores, city and birth date in one small file, send it to yourself, and restore it on another phone. It is made on the phone and goes nowhere unless you send it. Bells for single events are not included, so set them again after restoring.
 - **Light, dark or system theme**, and a **text size** setting (Normal, Large, Larger) for easier reading.
 - **Two languages:** English and Hindi (हिन्दी), or the language of your phone. Planet and constellation names are translated too. Earlier versions had 20 languages; from 1.16.0 the app is kept in the two that are fully proofread.
 - **In-app updates.** New versions download inside the app with a progress bar, then the Android installer opens. Your settings are kept.
@@ -162,8 +163,11 @@ Releases are built and signed by GitHub Actions when a version tag such as `v1.4
 | 1.14.0 | New design: Space Grotesk and DM Sans fonts, big planet cards, a scrolling Explore page, a new planet page and bottom bar (done) |
 | 1.15.0 | Constellations and bright stars (kept in the app, offline), a star map you drag with your finger, constellation stories, binocular guide (done) |
 | 1.16.0 | Optional online features: space news, Tiangong and Hubble passes, a share card for tonight's sky; the app is kept in English and Hindi (done) |
-| 2.0.0 | Point your phone at the sky to find stars (motion sensors), all planets in one 3D scene |
-| 2.1.0 | Home-screen widget |
+| 1.17.0 | Smoother animations and less battery use, backup and restore (done) |
+| 1.18.0 | Larger layout for tablets |
+| 1.19.0 | The big moons of Jupiter and Saturn, with their real positions |
+| 1.20.0 | Maps of Mars and the Moon with rover and Apollo landing sites |
+| 2.0.0 | All the planets in one 3D scene you can fly around |
 
 Plans can change. Nothing in the roadmap will ask for an account or collect your data.
 
@@ -183,6 +187,7 @@ All texts live in `lib/l10n/app_en.arb` and `lib/l10n/app_hi.arb`. Found a wrong
 
 | Version | What's new |
 |---|---|
+| **1.17.0** | Backup and restore (one small file with favourites, settings, quiz scores, city and birth date). Lighter on the battery: hidden tabs no longer animate, the 3D planet and the 2D play mode run at 30 frames a second when idle, the planet stands still when the phone asks for reduced motion, and the star map keeps its text layouts between frames |
 | **1.16.2** | The project moved to a personal GitHub account (github.com/aditymishr098-collab/heliora). The update check, share texts and links now point to the new address. Nothing else changes; your data and settings are kept |
 | **1.16.1** | Ready for F-Droid: store texts in English and Hindi, screenshots, and a build flag (`FDROID`) that turns the in-app updater off for that build. Nothing changes in the normal build |
 | **1.16.0** | Space news, Tiangong and Hubble passes with reminders, and a share card for tonight's sky (all online parts are off until you switch them on; the share card works offline). The app is now in English and Hindi only: the other 18 languages are removed. Your saved settings are kept; a removed language falls back to the phone's |

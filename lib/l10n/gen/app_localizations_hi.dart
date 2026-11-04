@@ -1910,4 +1910,42 @@ class AppLocalizationsHi extends AppLocalizations {
   String skyOverCity(String city) {
     return '$city के ऊपर का आकाश';
   }
+
+  @override
+  String get cancel => 'रद्द करें';
+
+  @override
+  String get backupTitle => 'बैकअप';
+
+  @override
+  String get backupNote =>
+      'आपके पसंदीदा, सेटिंग्स, क्विज़ स्कोर, शहर और जन्मतिथि एक छोटी फ़ाइल में सेव होते हैं। जब तक आप उसे कहीं भेजें नहीं, वह आपके फ़ोन में ही रहती है। अलग-अलग घटनाओं की घंटियाँ इसमें शामिल नहीं हैं: restore के बाद उन्हें फिर से लगाएँ।';
+
+  @override
+  String get backupSave => 'बैकअप सेव करें';
+
+  @override
+  String get backupRestore => 'बैकअप restore करें';
+
+  @override
+  String get backupShareText => 'Heliora बैकअप';
+
+  @override
+  String get backupSaveFailed => 'बैकअप नहीं बन सका।';
+
+  @override
+  String get backupRestoreTitle => 'यह बैकअप restore करें?';
+
+  @override
+  String get backupRestoreAsk =>
+      'इससे इस फ़ोन के पसंदीदा, सेटिंग्स, क्विज़ स्कोर, शहर और जन्मतिथि बदल जाएँगे।';
+
+  @override
+  String get backupRestoreConfirm => 'Restore करें';
+
+  @override
+  String get backupRestored => 'बैकअप restore हो गया।';
+
+  @override
+  String get backupBad => 'यह फ़ाइल Heliora का बैकअप नहीं है।';
 }

@@ -60,8 +60,24 @@ class _GlobeViewState extends State<GlobeView>
     _ticker = createTicker(_tick)..start();
   }
 
+  /// The slow spin needs no more than 30 frames a second, which halves the
+  /// work of the shader. Dragging still runs at the full rate.
+  static const Duration _idleFrameGap = Duration(milliseconds: 33);
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // "Remove animations" in the phone's settings: the planet stands still
+    // until it is touched.
+    _ticker.muted = MediaQuery.disableAnimationsOf(context);
+  }
+
   void _tick(Duration elapsed) {
-    final dt = (elapsed - _last).inMicroseconds / 1e6;
+    if (!_dragging && elapsed - _last < _idleFrameGap) {
+      return;
+    }
+    // After a pause the gap can be long; never jump the planet by it.
+    final dt = math.min((elapsed - _last).inMicroseconds / 1e6, 0.1);
     _last = elapsed;
     _state.time += dt;
     if (!_dragging) {
