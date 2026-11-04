@@ -524,7 +524,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String shareText(String planet) {
-    return '$planet in Heliora, the free offline Solar System app: https://github.com/lumio-apps/heliora';
+    return '$planet in Heliora, the free offline Solar System app: https://github.com/aditymishr098-collab/heliora';
   }
 
   @override
@@ -1902,7 +1902,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String tonightShareText(String city) {
-    return 'The sky over $city, made with Heliora, the free offline Solar System app: https://github.com/lumio-apps/heliora';
+    return 'The sky over $city, made with Heliora, the free offline Solar System app: https://github.com/aditymishr098-collab/heliora';
   }
 
   @override

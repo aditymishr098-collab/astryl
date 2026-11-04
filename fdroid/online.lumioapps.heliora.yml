@@ -6,14 +6,14 @@ Categories:
   - Science & Education
 License: MIT
 AuthorName: Lumio Apps
-WebSite: https://github.com/lumio-apps/heliora
-SourceCode: https://github.com/lumio-apps/heliora
-IssueTracker: https://github.com/lumio-apps/heliora/issues
+WebSite: https://github.com/aditymishr098-collab/heliora
+SourceCode: https://github.com/aditymishr098-collab/heliora
+IssueTracker: https://github.com/aditymishr098-collab/heliora/issues
 
 AutoName: Heliora
 
 RepoType: git
-Repo: https://github.com/lumio-apps/heliora.git
+Repo: https://github.com/aditymishr098-collab/heliora.git
 
 Builds:
   - versionName: 1.16.1

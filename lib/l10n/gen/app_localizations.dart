@@ -1043,7 +1043,7 @@ abstract class AppLocalizations {
   /// No description provided for @shareText.
   ///
   /// In en, this message translates to:
-  /// **'{planet} in Heliora, the free offline Solar System app: https://github.com/lumio-apps/heliora'**
+  /// **'{planet} in Heliora, the free offline Solar System app: https://github.com/aditymishr098-collab/heliora'**
   String shareText(String planet);
 
   /// No description provided for @shareFailed.
@@ -3311,7 +3311,7 @@ abstract class AppLocalizations {
   /// No description provided for @tonightShareText.
   ///
   /// In en, this message translates to:
-  /// **'The sky over {city}, made with Heliora, the free offline Solar System app: https://github.com/lumio-apps/heliora'**
+  /// **'The sky over {city}, made with Heliora, the free offline Solar System app: https://github.com/aditymishr098-collab/heliora'**
   String tonightShareText(String city);
 
   /// No description provided for @skyOverCity.

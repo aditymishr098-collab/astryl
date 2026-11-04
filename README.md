@@ -9,14 +9,14 @@
 Real planet positions, rotating 3D worlds, a star map for your sky,<br>
 and an honest answer to "could humans live here?"
 
-[![Latest release](https://img.shields.io/github/v/release/lumio-apps/heliora?label=release&color=F5A524)](https://github.com/lumio-apps/heliora/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/lumio-apps/heliora/total?color=7AA2FF)](https://github.com/lumio-apps/heliora/releases)
+[![Latest release](https://img.shields.io/github/v/release/aditymishr098-collab/heliora?label=release&color=F5A524)](https://github.com/aditymishr098-collab/heliora/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/aditymishr098-collab/heliora/total?color=7AA2FF)](https://github.com/aditymishr098-collab/heliora/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 ![Android](https://img.shields.io/badge/platform-Android-3DDC84?logo=android&logoColor=white)
 ![Flutter](https://img.shields.io/badge/built%20with-Flutter-02569B?logo=flutter&logoColor=white)
 ![Offline](https://img.shields.io/badge/works-offline-141B33)
 
-[**⬇ Download the latest APK**](https://github.com/lumio-apps/heliora/releases/latest)
+[**⬇ Download the latest APK**](https://github.com/aditymishr098-collab/heliora/releases/latest)
 
 </div>
 
@@ -99,7 +99,7 @@ and an honest answer to "could humans live here?"
 
 ## Install
 
-1. Open the [latest release](https://github.com/lumio-apps/heliora/releases/latest) on your Android phone.
+1. Open the [latest release](https://github.com/aditymishr098-collab/heliora/releases/latest) on your Android phone.
 2. Download the file `Heliora-vX.Y.Z.apk`.
 3. Open it and allow your browser to install apps if Android asks.
 
@@ -111,7 +111,7 @@ Heliora is prepared for [F-Droid](https://f-droid.org). That build is made from 
 
 ## Privacy
 
-Heliora is made by [Lumio Apps](https://github.com/lumio-apps): **no ads, no account, no tracking.**
+Heliora is made by [Adity Mishra](https://github.com/aditymishr098-collab) of Lumio Apps: **no ads, no account, no tracking.**
 
 - Everything works without internet, except the optional online features below. Planet data, positions and 3D surfaces are all calculated on your phone.
 - **Online features are off by default.** If you switch them on in Settings, Heliora contacts `api.wheretheiss.at` (or `celestrak.org`) for the station's orbit data, `ll.thespacedevs.com` (Launch Library 2) for the launch list, and `api.spaceflightnewsapi.net` for the news. The orbits of Tiangong and Hubble come from `celestrak.org`. Nothing about you is sent; those services can only see your phone's internet address. The orbit data is saved on the phone, so the station keeps working offline for days. Switch the setting off and Heliora never contacts them.
@@ -183,6 +183,7 @@ All texts live in `lib/l10n/app_en.arb` and `lib/l10n/app_hi.arb`. Found a wrong
 
 | Version | What's new |
 |---|---|
+| **1.16.2** | The project moved to a personal GitHub account (github.com/aditymishr098-collab/heliora). The update check, share texts and links now point to the new address. Nothing else changes; your data and settings are kept |
 | **1.16.1** | Ready for F-Droid: store texts in English and Hindi, screenshots, and a build flag (`FDROID`) that turns the in-app updater off for that build. Nothing changes in the normal build |
 | **1.16.0** | Space news, Tiangong and Hubble passes with reminders, and a share card for tonight's sky (all online parts are off until you switch them on; the share card works offline). The app is now in English and Hindi only: the other 18 languages are removed. Your saved settings are kept; a removed language falls back to the phone's |
 | **1.15.0** | Star map with about 1,000 stars, 89 constellations, the Moon and planets (drag, pinch, tap), stories for 11 constellations, a binocular guide with where to look tonight, and the time of the sky in steps of one hour. 29 new texts in 20 languages |

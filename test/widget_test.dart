@@ -1466,7 +1466,7 @@ void main() {
 
     test('release json', () {
       final info = UpdateService.parse(
-        '{"tag_name":"v1.0.1","html_url":"https://github.com/lumio-apps/heliora/releases/tag/v1.0.1","body":"Fixes","assets":[{"name":"Heliora-v1.0.1.apk","browser_download_url":"https://github.com/x/Heliora-v1.0.1.apk"}]}',
+        '{"tag_name":"v1.0.1","html_url":"https://github.com/aditymishr098-collab/heliora/releases/tag/v1.0.1","body":"Fixes","assets":[{"name":"Heliora-v1.0.1.apk","browser_download_url":"https://github.com/x/Heliora-v1.0.1.apk"}]}',
       );
       expect(info.version, '1.0.1');
       expect(info.apkUrl, 'https://github.com/x/Heliora-v1.0.1.apk');
@@ -1477,7 +1477,7 @@ void main() {
     test('updates download only from GitHub', () {
       expect(
           UpdateService.isTrustedDownload(
-              'https://github.com/lumio-apps/heliora/releases/download/v1.2.0/Heliora-v1.2.0.apk'),
+              'https://github.com/aditymishr098-collab/heliora/releases/download/v1.2.0/Heliora-v1.2.0.apk'),
           isTrue);
       expect(UpdateService.isTrustedDownload('http://github.com/x.apk'),
           isFalse);

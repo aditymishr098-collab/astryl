@@ -241,7 +241,7 @@ class Launch {
 /// launches and space news. Nothing about the user is sent; the services only
 /// see the phone's internet address.
 class OnlineService {
-  OnlineService({this.userAgent = 'Heliora (github.com/lumio-apps/heliora)'});
+  OnlineService({this.userAgent = 'Heliora (github.com/aditymishr098-collab/heliora)'});
 
   final String userAgent;
 

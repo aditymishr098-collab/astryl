@@ -282,7 +282,7 @@
     }
   },
   "share": "Share",
-  "shareText": "{planet} in Heliora, the free offline Solar System app: https://github.com/lumio-apps/heliora",
+  "shareText": "{planet} in Heliora, the free offline Solar System app: https://github.com/aditymishr098-collab/heliora",
   "shareFailed": "Could not share the picture.",
   "travelTitle": "How far is it?",
   "distanceFromEarth": "Distance from Earth today",
@@ -1135,7 +1135,7 @@
   "newsOpenFailed": "Could not open the link.",
   "tonightShareTitle": "Share tonight’s sky",
   "tonightShareHint": "A picture of the Moon and planets for your friends",
-  "tonightShareText": "The sky over {city}, made with Heliora, the free offline Solar System app: https://github.com/lumio-apps/heliora",
+  "tonightShareText": "The sky over {city}, made with Heliora, the free offline Solar System app: https://github.com/aditymishr098-collab/heliora",
   "@tonightShareText": {
     "placeholders": {
       "city": {

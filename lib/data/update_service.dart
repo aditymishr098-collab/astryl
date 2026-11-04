@@ -27,9 +27,9 @@ class UpdateInfo {
 /// call the app makes, and it sends nothing about the user.
 class UpdateService {
   static const String releasesPage =
-      'https://github.com/lumio-apps/heliora/releases';
+      'https://github.com/aditymishr098-collab/heliora/releases';
   static const String _api =
-      'https://api.github.com/repos/lumio-apps/heliora/releases/latest';
+      'https://api.github.com/repos/aditymishr098-collab/heliora/releases/latest';
 
   /// Throws on network or format errors.
   Future<UpdateInfo> latest() async {

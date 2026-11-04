@@ -157,7 +157,7 @@
   "nextBirthday": "अगला जन्मदिन {days} दिन में",
   "ageNote": "आपकी जन्मतिथि सिर्फ़ इसी फ़ोन में सेव होती है।",
   "share": "शेयर करें",
-  "shareText": "Heliora में {planet}, मुफ़्त ऑफ़लाइन सौरमंडल ऐप: https://github.com/lumio-apps/heliora",
+  "shareText": "Heliora में {planet}, मुफ़्त ऑफ़लाइन सौरमंडल ऐप: https://github.com/aditymishr098-collab/heliora",
   "shareFailed": "तस्वीर शेयर नहीं हो पाई।",
   "travelTitle": "कितनी दूर है?",
   "distanceFromEarth": "आज पृथ्वी से दूरी",
@@ -535,6 +535,6 @@
   "newsOpenFailed": "लिंक नहीं खुल सका।",
   "tonightShareTitle": "आज रात का आकाश साझा करें",
   "tonightShareHint": "आपके दोस्तों के लिए चाँद और ग्रहों की एक तस्वीर",
-  "tonightShareText": "{city} के ऊपर का आकाश, Heliora से बना, जो मुफ़्त ऑफ़लाइन सौरमंडल ऐप है: https://github.com/lumio-apps/heliora",
+  "tonightShareText": "{city} के ऊपर का आकाश, Heliora से बना, जो मुफ़्त ऑफ़लाइन सौरमंडल ऐप है: https://github.com/aditymishr098-collab/heliora",
   "skyOverCity": "{city} के ऊपर का आकाश"
 }

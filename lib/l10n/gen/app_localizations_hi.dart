@@ -523,7 +523,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String shareText(String planet) {
-    return 'Heliora में $planet, मुफ़्त ऑफ़लाइन सौरमंडल ऐप: https://github.com/lumio-apps/heliora';
+    return 'Heliora में $planet, मुफ़्त ऑफ़लाइन सौरमंडल ऐप: https://github.com/aditymishr098-collab/heliora';
   }
 
   @override
@@ -1903,7 +1903,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String tonightShareText(String city) {
-    return '$city के ऊपर का आकाश, Heliora से बना, जो मुफ़्त ऑफ़लाइन सौरमंडल ऐप है: https://github.com/lumio-apps/heliora';
+    return '$city के ऊपर का आकाश, Heliora से बना, जो मुफ़्त ऑफ़लाइन सौरमंडल ऐप है: https://github.com/aditymishr098-collab/heliora';
   }
 
   @override
