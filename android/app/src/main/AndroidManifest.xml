@@ -9,7 +9,12 @@
     <!-- Sets the reminders again after the phone restarts. -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <!-- No Android cloud backup: favourites, city and birth date stay on this
+         phone. The app has its own backup file, which the user sends only
+         where they choose. -->
     <application
+        android:allowBackup="false"
+        android:usesCleartextTraffic="false"
         android:label="Heliora"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

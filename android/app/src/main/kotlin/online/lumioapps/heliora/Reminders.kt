@@ -140,6 +140,12 @@ class ReminderReceiver : BroadcastReceiver() {
 /** Sets the alarms again after a restart or after the app was updated. */
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        Reminders.rescheduleAll(context)
+        // Only the two system broadcasts this receiver is for; anything else
+        // is ignored.
+        if (intent.action == Intent.ACTION_BOOT_COMPLETED ||
+            intent.action == Intent.ACTION_MY_PACKAGE_REPLACED
+        ) {
+            Reminders.rescheduleAll(context)
+        }
     }
 }

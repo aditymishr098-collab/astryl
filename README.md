@@ -45,7 +45,7 @@ and an honest answer to "could humans live here?"
 |---|---|
 | 🔭 **Real sky, real maths** | Planet positions, the Moon, sunrise and sunset, eclipses and the star map are all calculated on your phone, not copied from a website. |
 | 📴 **Offline first** | Everything works without internet. The few online extras are off until you switch them on. |
-| 🔒 **Private** | No ads, no account, no tracking. Nothing about you leaves your phone. |
+| 🔒 **Private** | No ads, no account, no tracking. No personal data leaves your phone. |
 | 🌍 **English and हिन्दी** | The whole app is in English and Hindi, or follows your phone. |
 | 🆓 **Open source** | MIT licence. Read it, change it, build it yourself. |
 
@@ -112,12 +112,12 @@ Heliora is prepared for [F-Droid](https://f-droid.org). That build is made from 
 
 ## Privacy
 
-Heliora is made by [Adity Mishra](https://github.com/aditymishr098-collab) of Lumio Apps: **no ads, no account, no tracking.**
+Heliora is made by [Lumio Apps](https://github.com/lumio-apps): **no ads, no account, no tracking.**
 
 - Everything works without internet, except the optional online features below. Planet data, positions and 3D surfaces are all calculated on your phone.
 - **Online features are off by default.** If you switch them on in Settings, Heliora contacts `api.wheretheiss.at` (or `celestrak.org`) for the station's orbit data, `ll.thespacedevs.com` (Launch Library 2) for the launch list, and `api.spaceflightnewsapi.net` for the news. The orbits of Tiangong and Hubble come from `celestrak.org`. Nothing about you is sent; those services can only see your phone's internet address. The orbit data is saved on the phone, so the station keeps working offline for days. Switch the setting off and Heliora never contacts them.
-- Besides that, the internet is used only for updates. The app asks GitHub for the latest release and, when you tap **Download and install**, downloads the signed APK from that release. Nothing about you is sent.
-- Your birth date and settings are saved only on your phone.
+- Besides that, the internet is used only for updates. The app asks GitHub for the latest release and, when you tap **Download and install**, downloads the signed APK from that release. No account, location or identifier is sent; like any web request, GitHub sees your phone's internet address. Android only installs the APK if it is signed with the same key as the app you already have.
+- Your birth date and settings are saved only on your phone. Android's cloud backup is switched off for Heliora; the backup file in Settings is made only when you ask and goes only where you send it.
 - The daily update check can be turned off in Settings.
 
 ## How it works
@@ -187,6 +187,7 @@ All texts live in `lib/l10n/app_en.arb` and `lib/l10n/app_hi.arb`. Found a wrong
 
 | Version | What's new |
 |---|---|
+| **1.17.1** | Safer updates and storage: every address on the way to an update must be GitHub (redirects are checked one by one), Android's cloud backup and plain-http traffic are switched off, and the boot receiver ignores any other broadcast. README privacy text made more exact. Your data is kept |
 | **1.17.0** | Backup and restore (one small file with favourites, settings, quiz scores, city and birth date). Lighter on the battery: hidden tabs no longer animate, the 3D planet and the 2D play mode run at 30 frames a second when idle, the planet stands still when the phone asks for reduced motion, and the star map keeps its text layouts between frames |
 | **1.16.2** | The project moved to a personal GitHub account (github.com/aditymishr098-collab/heliora). The update check, share texts and links now point to the new address. Nothing else changes; your data and settings are kept |
 | **1.16.1** | Ready for F-Droid: store texts in English and Hindi, screenshots, and a build flag (`FDROID`) that turns the in-app updater off for that build. Nothing changes in the normal build |

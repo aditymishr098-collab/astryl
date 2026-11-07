@@ -1487,6 +1487,20 @@ void main() {
       expect(UpdateService.isTrustedDownload('not a link'), isFalse);
     });
 
+    test('every address on the way to an update must be GitHub', () {
+      bool ok(String url, Set<String> hosts) =>
+          UpdateService.isTrustedHost(Uri.parse(url), hosts);
+      const dl = UpdateService.downloadHosts;
+      expect(ok('https://github.com/a/b/releases/download/v1/x.apk', dl), isTrue);
+      expect(ok('https://objects.githubusercontent.com/x', dl), isTrue);
+      expect(ok('https://release-assets.githubusercontent.com/x', dl), isTrue);
+      expect(ok('http://objects.githubusercontent.com/x', dl), isFalse);
+      expect(ok('https://github.com.evil.example/x.apk', dl), isFalse);
+      expect(ok('https://evil.example/github.com', dl), isFalse);
+      expect(ok('https://api.github.com/repos/x', UpdateService.apiHosts), isTrue);
+      expect(ok('https://github.com/x', UpdateService.apiHosts), isFalse);
+    });
+
     test('release without apk opens the release page', () {
       final info = UpdateService.parse('{"tag_name":"v1.2.0","assets":[]}');
       expect(info.apkUrl, isNull);

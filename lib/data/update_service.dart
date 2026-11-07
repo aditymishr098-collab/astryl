@@ -31,16 +31,70 @@ class UpdateService {
   static const String _api =
       'https://api.github.com/repos/aditymishr098-collab/heliora/releases/latest';
 
+  /// The only places a release or its APK may come from: GitHub itself and
+  /// the servers GitHub uses to hand out release files.
+  static const Set<String> apiHosts = <String>{'api.github.com'};
+  static const Set<String> downloadHosts = <String>{
+    'github.com',
+    'objects.githubusercontent.com',
+    'release-assets.githubusercontent.com',
+    'github-releases.githubusercontent.com',
+  };
+
+  /// True when [uri] is an https address on one of [hosts] (the exact host,
+  /// so "github.com.evil.example" does not count).
+  static bool isTrustedHost(Uri uri, Set<String> hosts) =>
+      uri.scheme == 'https' && hosts.contains(uri.host);
+
+  /// Opens [first] and follows redirects by hand, so that every address on
+  /// the way is checked against [hosts] before anything is requested.
+  Future<HttpClientResponse> _get(
+    HttpClient client,
+    Uri first,
+    Set<String> hosts,
+    Map<String, String> headers,
+    Duration timeout,
+  ) async {
+    var uri = first;
+    for (var hop = 0; hop < 6; hop++) {
+      if (!isTrustedHost(uri, hosts)) {
+        throw const HttpException('Unexpected address');
+      }
+      final request = await client.getUrl(uri);
+      request.followRedirects = false;
+      for (final entry in headers.entries) {
+        request.headers.set(entry.key, entry.value);
+      }
+      final response = await request.close().timeout(timeout);
+      if (response.isRedirect) {
+        final location = response.headers.value(HttpHeaders.locationHeader);
+        await response.drain<void>();
+        if (location == null) {
+          throw const HttpException('Redirect without an address');
+        }
+        uri = uri.resolve(location);
+        continue;
+      }
+      return response;
+    }
+    throw const HttpException('Too many redirects');
+  }
+
   /// Throws on network or format errors.
   Future<UpdateInfo> latest() async {
     final client = HttpClient()
       ..connectionTimeout = const Duration(seconds: 10);
     try {
-      final request = await client.getUrl(Uri.parse(_api));
-      request.headers.set('Accept', 'application/vnd.github+json');
-      request.headers.set('User-Agent', 'Heliora');
-      final response =
-          await request.close().timeout(const Duration(seconds: 15));
+      final response = await _get(
+        client,
+        Uri.parse(_api),
+        apiHosts,
+        const <String, String>{
+          'Accept': 'application/vnd.github+json',
+          'User-Agent': 'Heliora',
+        },
+        const Duration(seconds: 15),
+      );
       if (response.statusCode != 200) {
         await response.drain<void>();
         throw HttpException('GitHub answered ${response.statusCode}');
@@ -76,10 +130,13 @@ class UpdateService {
       ..connectionTimeout = const Duration(seconds: 10);
     final part = File('$path.part');
     try {
-      final request = await client.getUrl(Uri.parse(url));
-      request.headers.set('User-Agent', 'Heliora');
-      final response =
-          await request.close().timeout(const Duration(seconds: 20));
+      final response = await _get(
+        client,
+        Uri.parse(url),
+        downloadHosts,
+        const <String, String>{'User-Agent': 'Heliora'},
+        const Duration(seconds: 20),
+      );
       if (response.statusCode != 200) {
         await response.drain<void>();
         throw HttpException('GitHub answered ${response.statusCode}');
