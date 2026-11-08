@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -176,15 +177,16 @@ class _PlanetScreenState extends State<PlanetScreen> {
       appBar: AppBar(
         actions: <Widget>[
           FavoriteButton(favoriteKey: widget.planet.id),
-          IconButton(
-            tooltip: l.share,
-            onPressed: _sharing ? null : _share,
-            icon: _sharing
-                ? const SizedBox.square(
-                    dimension: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2))
-                : const Icon(Icons.share_outlined),
-          ),
+          if (!kIsWeb)
+            IconButton(
+              tooltip: l.share,
+              onPressed: _sharing ? null : _share,
+              icon: _sharing
+                  ? const SizedBox.square(
+                      dimension: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2))
+                  : const Icon(Icons.share_outlined),
+            ),
         ],
       ),
       body: ListView(

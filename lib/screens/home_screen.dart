@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -44,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
   /// the switch, the time, the city or the language changes, and once a day.
   void _syncTonightAlerts(AppState state) {
     final settings = state.settings;
-    if (!settings.tonightAlert) {
+    if (kIsWeb || !settings.tonightAlert) {
       _alertKey = '';
       return;
     }

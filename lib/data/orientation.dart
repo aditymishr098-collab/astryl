@@ -19,7 +19,7 @@ class PhoneDirection {
 /// Listens to the phone's compass and motion sensors through
 /// OrientationStream.kt. [lat] and [lon] turn magnetic north into true north.
 Stream<PhoneDirection> phoneDirections(double lat, double lon) {
-  const channel = EventChannel('online.lumioapps.heliora/orientation');
+  const channel = EventChannel('space.astryl.app/orientation');
   return channel
       .receiveBroadcastStream(<String, double>{'lat': lat, 'lon': lon})
       .map((event) {

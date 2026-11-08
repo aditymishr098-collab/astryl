@@ -1,0 +1,68 @@
+name: Website
+
+# Builds the Flutter web app and the website in site/, and publishes both on
+# GitHub Pages: the website at the root (astryl.space) and the web app at /app/.
+# It never touches the Android release (that is release.yml, on version tags).
+#
+# One-time setup: Settings > Pages > Source = "GitHub Actions", and set the
+# custom domain astryl.space there.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'lib/**'
+      - 'web/**'
+      - 'site/**'
+      - 'shaders/**'
+      - 'assets/**'
+      - 'pubspec.yaml'
+      - '.github/workflows/web.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - run: flutter pub get
+
+      - run: flutter gen-l10n
+
+      # --no-web-resources-cdn keeps the Flutter engine on our own site,
+      # so the browser does not load it from Google's servers.
+      - run: flutter build web --release --base-href /app/ --no-web-resources-cdn
+
+      - name: Put the website and the app together
+        run: |
+          mkdir -p _site/app
+          cp -r site/. _site/
+          cp -r build/web/. _site/app/
+          touch _site/.nojekyll
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

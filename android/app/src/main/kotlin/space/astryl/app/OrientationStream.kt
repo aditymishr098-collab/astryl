@@ -1,4 +1,4 @@
-package online.lumioapps.heliora
+package space.astryl.app
 
 import android.content.Context
 import android.hardware.GeomagneticField

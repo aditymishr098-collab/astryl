@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 import '../theme.dart';
@@ -73,16 +74,18 @@ class EventTile extends StatelessWidget {
               ],
             ),
           ),
-          IconButton(
-            tooltip: tooltip,
-            onPressed: onToggle,
-            icon: Icon(
-              reminderOn
-                  ? Icons.notifications_active
-                  : Icons.notifications_none,
-              color: reminderOn ? p.accentText : p.muted,
+          // Reminders are Android alarms, so the web version has no bell.
+          if (!kIsWeb)
+            IconButton(
+              tooltip: tooltip,
+              onPressed: onToggle,
+              icon: Icon(
+                reminderOn
+                    ? Icons.notifications_active
+                    : Icons.notifications_none,
+                color: reminderOn ? p.accentText : p.muted,
+              ),
             ),
-          ),
         ],
       ),
     );

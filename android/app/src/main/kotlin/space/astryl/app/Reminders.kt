@@ -1,4 +1,4 @@
-package online.lumioapps.heliora
+package space.astryl.app
 
 import android.app.AlarmManager
 import android.app.NotificationChannel
@@ -25,7 +25,7 @@ object Reminders {
 
     private fun pendingIntent(context: Context, id: String): PendingIntent {
         val intent = Intent(context, ReminderReceiver::class.java)
-            .setAction("online.lumioapps.heliora.REMINDER.$id")
+            .setAction("space.astryl.app.REMINDER.$id")
             .putExtra("id", id)
         val flags = PendingIntent.FLAG_UPDATE_CURRENT or
             (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0)

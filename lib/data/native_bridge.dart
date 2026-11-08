@@ -6,7 +6,7 @@ class NativeBridge {
   const NativeBridge();
 
   static const MethodChannel _channel =
-      MethodChannel('online.lumioapps.heliora/native');
+      MethodChannel('space.astryl.app/native');
 
   /// The app's private files folder. It survives app updates and is only
   /// removed when the app is uninstalled. Empty when unknown.

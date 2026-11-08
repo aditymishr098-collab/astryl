@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 import '../core/daylight.dart';
@@ -336,12 +337,13 @@ class _SkyScreenState extends State<SkyScreen> {
           const SizedBox(height: 8),
         ],
         const SizedBox(height: 4),
-        _NavCard(
-          icon: Icons.ios_share_outlined,
-          title: l.tonightShareTitle,
-          hint: l.tonightShareHint,
-          builder: (_) => TonightShareScreen(city: city, day: day),
-        ),
+        if (!kIsWeb)
+          _NavCard(
+            icon: Icons.ios_share_outlined,
+            title: l.tonightShareTitle,
+            hint: l.tonightShareHint,
+            builder: (_) => TonightShareScreen(city: city, day: day),
+          ),
         const SizedBox(height: 12),
         Text(l.cityNote,
             textAlign: TextAlign.center,
@@ -349,17 +351,20 @@ class _SkyScreenState extends State<SkyScreen> {
         const SizedBox(height: 20),
         const _EventsCard(),
         const SizedBox(height: 12),
-        _IssCard(city: city),
-        const SizedBox(height: 12),
-        _NavCard(
-          icon: Icons.satellite_alt_outlined,
-          title: l.satellitesTitle,
-          hint: l.satellitesCardHint,
-          builder: (_) => SatellitesScreen(city: city),
-        ),
-        const SizedBox(height: 12),
-        const _NewsCard(),
-        const SizedBox(height: 12),
+        // The online cards need the Android app.
+        if (!kIsWeb) ...<Widget>[
+          _IssCard(city: city),
+          const SizedBox(height: 12),
+          _NavCard(
+            icon: Icons.satellite_alt_outlined,
+            title: l.satellitesTitle,
+            hint: l.satellitesCardHint,
+            builder: (_) => SatellitesScreen(city: city),
+          ),
+          const SizedBox(height: 12),
+          const _NewsCard(),
+          const SizedBox(height: 12),
+        ],
         const _MissionsCard(),
         const SizedBox(height: 12),
         const _SpacecraftCard(),
@@ -845,6 +850,10 @@ class _FindButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // The compass finder needs the phone's motion sensors.
+    if (kIsWeb) {
+      return const SizedBox.shrink();
+    }
     final l = context.l10n;
     final p = Palette.of(context);
     return IconButton(

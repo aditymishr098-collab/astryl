@@ -109,6 +109,8 @@ and an honest answer to "could humans live here?"
 2. Download the file `Astryl-vX.Y.Z.apk`.
 3. Open it and allow your browser to install apps if Android asks.
 
+If you have a version older than 1.17.5, see the 1.17.5 line in the changelog: the app id changed, so it installs as a new app and you move your data with Backup and Restore.
+
 After that, Astryl updates itself: go to **Settings → Check for updates**, or let it check once a day.
 
 ### F-Droid
@@ -192,6 +194,7 @@ All texts live in `lib/l10n/app_en.arb` and `lib/l10n/app_hi.arb`. Found a wrong
 
 | Version | What's new |
 |---|---|
+| **1.17.5** | New app id `space.astryl.app` (it was `online.lumioapps.heliora`), after the website astryl.space. Android sees this as a **new app**, so it installs next to the old one instead of updating it. To move over: in the old app open Settings → Backup → Save, install 1.17.5, open Settings → Backup → Restore in the new app, then uninstall the old one. Reminders for single events are not kept, set them again |
 | **1.17.4** | The licence is now AGPL-3.0 (versions up to 1.17.3 stay under MIT). The name "Lumio Apps" is gone from the project texts; the copyright line is now Astryl and astryl.space. Settings → About has a new link to the website. Your data and settings are kept |
 | **1.17.3** | The app is now called **Astryl** (it was Heliora). New name on the home screen, in the update dialog, in shared texts and in file names; the repository is now github.com/aditymishr098-collab/astryl and the website is astryl.space. It installs over Heliora as an update: your data, settings and old backups are kept |
 | **1.17.2** | The project moved to an organisation account (github.com/lumio-apps/heliora). The update check, share texts and links point to it. Nothing else changes; your data and settings are kept |

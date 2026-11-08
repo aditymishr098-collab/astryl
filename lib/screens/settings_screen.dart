@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 import '../data/backup.dart';
@@ -265,89 +266,92 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          SectionLabel(l.alertsTitle),
-          SurfaceCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(l.tonightAlertSwitch,
-                      style: TextStyle(fontSize: 15, color: p.text)),
-                  value: settings.tonightAlert,
-                  onChanged: (value) => _toggleTonight(context, value),
-                ),
-                if (settings.tonightAlert)
-                  ListTile(
+          // Reminders, online features and backup files need the Android app.
+          if (!kIsWeb) ...<Widget>[
+            SectionLabel(l.alertsTitle),
+            SurfaceCard(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SwitchListTile(
                     contentPadding: EdgeInsets.zero,
-                    title: Text(l.tonightAlertTime,
+                    title: Text(l.tonightAlertSwitch,
                         style: TextStyle(fontSize: 15, color: p.text)),
-                    trailing: Text(
-                      MaterialLocalizations.of(context).formatTimeOfDay(
-                          TimeOfDay(
-                              hour: settings.tonightMinutes ~/ 60,
-                              minute: settings.tonightMinutes % 60)),
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: p.accentText),
-                    ),
-                    onTap: () => _pickTonightTime(context),
+                    value: settings.tonightAlert,
+                    onChanged: (value) => _toggleTonight(context, value),
                   ),
-                Text(l.tonightAlertNote,
-                    style:
-                        TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
-              ],
+                  if (settings.tonightAlert)
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(l.tonightAlertTime,
+                          style: TextStyle(fontSize: 15, color: p.text)),
+                      trailing: Text(
+                        MaterialLocalizations.of(context).formatTimeOfDay(
+                            TimeOfDay(
+                                hour: settings.tonightMinutes ~/ 60,
+                                minute: settings.tonightMinutes % 60)),
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: p.accentText),
+                      ),
+                      onTap: () => _pickTonightTime(context),
+                    ),
+                  Text(l.tonightAlertNote,
+                      style:
+                          TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          SectionLabel(l.onlineTitle),
-          SurfaceCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(l.onlineTitle,
-                      style: TextStyle(fontSize: 15, color: p.text)),
-                  value: settings.onlineFeatures,
-                  onChanged: state.setOnlineFeatures,
-                ),
-                Text(l.onlineSubtitle,
-                    style:
-                        TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
-              ],
+            const SizedBox(height: 20),
+            SectionLabel(l.onlineTitle),
+            SurfaceCard(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SwitchListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(l.onlineTitle,
+                        style: TextStyle(fontSize: 15, color: p.text)),
+                    value: settings.onlineFeatures,
+                    onChanged: state.setOnlineFeatures,
+                  ),
+                  Text(l.onlineSubtitle,
+                      style:
+                          TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          SectionLabel(l.backupTitle),
-          SurfaceCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Text(l.backupNote,
-                    style:
-                        TextStyle(fontSize: 13, color: p.muted, height: 1.4)),
-                const SizedBox(height: 12),
-                OutlinedButton.icon(
-                  style: OutlinedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(48)),
-                  onPressed: () => _saveBackup(context),
-                  icon: const Icon(Icons.upload_file_outlined),
-                  label: Text(l.backupSave),
-                ),
-                const SizedBox(height: 8),
-                OutlinedButton.icon(
-                  style: OutlinedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(48)),
-                  onPressed: () => _restoreBackup(context),
-                  icon: const Icon(Icons.download_outlined),
-                  label: Text(l.backupRestore),
-                ),
-              ],
+            const SizedBox(height: 20),
+            SectionLabel(l.backupTitle),
+            SurfaceCard(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Text(l.backupNote,
+                      style:
+                          TextStyle(fontSize: 13, color: p.muted, height: 1.4)),
+                  const SizedBox(height: 12),
+                  OutlinedButton.icon(
+                    style: OutlinedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(48)),
+                    onPressed: () => _saveBackup(context),
+                    icon: const Icon(Icons.upload_file_outlined),
+                    label: Text(l.backupSave),
+                  ),
+                  const SizedBox(height: 8),
+                  OutlinedButton.icon(
+                    style: OutlinedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(48)),
+                    onPressed: () => _restoreBackup(context),
+                    icon: const Icon(Icons.download_outlined),
+                    label: Text(l.backupRestore),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
+            const SizedBox(height: 20),
+          ],
           SectionLabel(l.updates),
           SurfaceCard(
             child: Column(

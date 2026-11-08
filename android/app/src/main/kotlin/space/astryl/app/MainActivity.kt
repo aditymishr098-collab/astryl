@@ -1,4 +1,4 @@
-package online.lumioapps.heliora
+package space.astryl.app
 
 import android.Manifest
 import android.content.ClipData
@@ -19,11 +19,11 @@ class MainActivity : FlutterActivity() {
         super.configureFlutterEngine(flutterEngine)
         EventChannel(
             flutterEngine.dartExecutor.binaryMessenger,
-            "online.lumioapps.heliora/orientation"
+            "space.astryl.app/orientation"
         ).setStreamHandler(OrientationStream(this))
         MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
-            "online.lumioapps.heliora/native"
+            "space.astryl.app/native"
         ).setMethodCallHandler { call, result ->
             when (call.method) {
                 "filesDir" -> result.success(filesDir.absolutePath)
