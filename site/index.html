@@ -1,184 +1,50 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Astryl | Explore the Solar System, offline first</title>
-  <meta name="description" content="Astryl shows real planet positions, 3D worlds, a star map and tonight's sky. Try it in your browser or download the Android app. No ads, no account, no tracking.">
-  <meta name="theme-color" content="#0E1116">
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Explore the Solar System, fully offline · Astryl</title>
+<meta name="description" content="Astryl is a free, open-source Android app to explore the Solar System offline: planets, moons, sky, quiz and space missions. No ads, no tracking.">
+<link rel="canonical" href="https://astryl.space/">
+<meta property="og:title" content="Explore the Solar System, fully offline · Astryl"><meta property="og:description" content="Astryl is a free, open-source Android app to explore the Solar System offline: planets, moons, sky, quiz and space missions. No ads, no tracking."><meta property="og:type" content="website"><meta property="og:url" content="https://astryl.space/"><meta name="theme-color" content="#0a0d1a">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<script>try{var s=localStorage,l=s.getItem("astryl-lang")||((navigator.language||"en").slice(0,2)==="hi"?"hi":"en"),h=s.getItem("astryl-theme");document.documentElement.lang=l==="hi"?"hi":"en";if(h)document.documentElement.setAttribute("data-theme",h)}catch(e){}</script>
 </head>
-<body>
-
-<header class="wrap nav">
-  <a class="brand" href="./"><img src="img/icon.png" alt="">Astryl</a>
-  <nav class="nav-links" aria-label="Main">
-    <a href="app/">Try it</a>
-    <a href="#screens">Screens</a>
-    <a href="#features">Features</a>
-    <a href="#web-vs-android">Web or Android</a>
-    <a href="#install">Install</a>
-    <a href="privacy.html">Privacy</a>
-  </nav>
-</header>
-
-<main>
-
-<section class="wrap hero">
-  <div class="hero-text">
-    <span class="pill">Open source · Offline first · Android and web</span>
-    <h1>Explore the Solar System, <span>offline first.</span></h1>
-    <p>Real planet positions, rotating 3D worlds, a star map for your sky, and an honest answer to "could humans live here?"</p>
-    <div class="btn-row">
-      <a class="btn btn-amber" href="app/">Try it in your browser</a>
-      <a class="btn btn-ghost" href="https://github.com/aditymishr098-collab/astryl/releases/latest">Download the Android APK</a>
-    </div>
-    <p class="fine">No ads. No account. No tracking.</p>
-  </div>
-  <div class="phone-wrap">
-    <div class="phone"><img src="img/star-map.jpg" alt="Astryl star map with constellations and planets" width="540" height="1170"></div>
-  </div>
+<body data-page="home">
+<div class="stars"></div>
+<header class="top"><div class="wrap bar">
+<a class="brand" href="index.html"><svg viewBox="-60 -60 120 120" aria-hidden="true"><circle r="34" fill="#f2b84b"/><ellipse rx="56" ry="17" fill="none" stroke="#7aa2ff" stroke-width="6" transform="rotate(-24)"/><circle cx="46" cy="-22" r="7" fill="#eef0fb"/></svg>Astryl</a>
+<nav class="links"><a href="index.html" class=on><span class="t" lang="en">Home</span><span class="t" lang="hi">होम</span></a><a href="planets.html"><span class="t" lang="en">Planets</span><span class="t" lang="hi">ग्रह</span></a><a href="solar-system.html"><span class="t" lang="en">Solar system</span><span class="t" lang="hi">सौर मंडल</span></a><a href="compare.html"><span class="t" lang="en">Compare</span><span class="t" lang="hi">तुलना</span></a><a href="you.html"><span class="t" lang="en">You</span><span class="t" lang="hi">आप</span></a><a href="quiz.html"><span class="t" lang="en">Quiz</span><span class="t" lang="hi">क्विज़</span></a><a href="sky.html"><span class="t" lang="en">Tonight&#x27;s sky</span><span class="t" lang="hi">आज रात का आकाश</span></a><a href="constellations.html"><span class="t" lang="en">Constellations</span><span class="t" lang="hi">तारामंडल</span></a><a href="missions.html"><span class="t" lang="en">Space missions</span><span class="t" lang="hi">अंतरिक्ष मिशन</span></a><a href="get.html"><span class="t" lang="en">Get the app</span><span class="t" lang="hi">App पाएँ</span></a></nav>
+<div class="tools"><button id="langBtn" aria-label="Language">हिन्दी</button><button id="themeBtn" aria-label="Theme">☀</button></div>
+</div></header>
+<main class="wrap">
+<section class="hero">
+<div>
+<h1><span class="t" lang="en">Explore the Solar System, fully offline.</span><span class="t" lang="hi">सौरमंडल को ऑफ़लाइन देखिए और जानिए।</span></h1>
+<p class="lead"><span class="t" lang="en">Astryl is a free, open-source Android app for the planets, moons, sky and space missions. No ads, no tracking, no sign-up. Everything on this website is the same data and maths as the app.</span><span class="t" lang="hi">Astryl ग्रहों, चाँदों, आसमान और अंतरिक्ष missions का मुफ़्त open-source Android app है। न विज्ञापन, न tracking, न sign-up। इस website पर वही data और गणित है जो app में है।</span></p>
+<div class="btns"><a class="btn primary dl-btn" href="https://github.com/aditymishr098-collab/astryl/releases/latest">⬇ <span class="t" lang="en">Download for Android</span><span class="t" lang="hi">Android के लिए download करें</span></a><a class="btn" href="planets.html"><span class="t" lang="en">Explore on the web</span><span class="t" lang="hi">Web पर देखें</span></a></div>
+<p class="note"><span class="ver"></span></p>
+<div class="chips"><span class="chip"><span class="t" lang="en">Offline-first</span><span class="t" lang="hi">Offline-first</span></span><span class="chip"><span class="t" lang="en">No ads</span><span class="t" lang="hi">कोई विज्ञापन नहीं</span></span><span class="chip"><span class="t" lang="en">No tracking</span><span class="t" lang="hi">कोई tracking नहीं</span></span><span class="chip"><span class="t" lang="en">English + हिन्दी</span><span class="t" lang="hi">English + हिन्दी</span></span><span class="chip">AGPL-3.0</span></div>
+</div>
+<div class="sun-art"><svg viewBox="-60 -60 120 120" role="img" aria-label="Saturn"><defs><radialGradient id="gsaturnh" cx="35%" cy="32%" r="75%"><stop offset="0" stop-color="#f5e9c6"/><stop offset=".45" stop-color="#e9d59e"/><stop offset="1" stop-color="#c6a766"/></radialGradient><clipPath id="cgsaturnh"><circle r="40"/></clipPath></defs><ellipse rx="58" ry="16" fill="none" stroke="#e6d4a0" stroke-width="7" opacity=".55" transform="rotate(-18)"/><ellipse rx="49" ry="13" fill="none" stroke="#c8b27a" stroke-width="3" opacity=".6" transform="rotate(-18)"/><circle r="40" fill="url(#gsaturnh)"/><g clip-path="url(#cgsaturnh)"><rect x="-44" y="-26" width="88" height="5" fill="#f5e9c6" opacity=".28"/><rect x="-44" y="-14" width="88" height="7" fill="#c6a766" opacity=".28"/><rect x="-44" y="-3" width="88" height="9" fill="#f5e9c6" opacity=".28"/><rect x="-44" y="9" width="88" height="5" fill="#c6a766" opacity=".28"/><rect x="-44" y="21" width="88" height="7" fill="#f5e9c6" opacity=".28"/><rect x="-44" y="31" width="88" height="9" fill="#c6a766" opacity=".28"/></g><g transform="rotate(-18)"><path d="M-58,0 A58,16 0 0 0 58,0" fill="none" stroke="#e6d4a0" stroke-width="7" opacity=".9"/><path d="M-49,0 A49,13 0 0 0 49,0" fill="none" stroke="#c8b27a" stroke-width="3" opacity=".9"/></g></svg></div>
 </section>
-
-<section class="try">
-  <div class="wrap">
-    <div>
-      <h2>Open Astryl right now.</h2>
-      <p>The same app runs in your browser: the planets, the quiz, tonight's sky and the star map. Nothing to install.</p>
-    </div>
-    <a class="btn btn-dark" href="app/">Try it in your browser</a>
-  </div>
-</section>
-
-<section class="section" id="screens">
-  <div class="wrap">
-    <h2>A look inside</h2>
-    <p class="lead">Screens from the Android app.</p>
-    <div class="shots">
-      <figure><img src="img/tonight.jpg" alt="Tonight's sky with the Moon phase" loading="lazy"><figcaption>Tonight's sky</figcaption></figure>
-      <figure><img src="img/star-map.jpg" alt="Star map" loading="lazy"><figcaption>Star map</figcaption></figure>
-      <figure><img src="img/binocular.jpg" alt="Binocular guide" loading="lazy"><figcaption>Binocular guide</figcaption></figure>
-      <figure><img src="img/compare.jpg" alt="Compare Earth and Mars" loading="lazy"><figcaption>Compare worlds</figcaption></figure>
-      <figure><img src="img/weight-v16.jpg" alt="Your weight on other planets" loading="lazy"><figcaption>Your weight everywhere</figcaption></figure>
-      <figure><img src="img/age.jpg" alt="Your age on other planets" loading="lazy"><figcaption>Your age on other planets</figcaption></figure>
-      <figure><img src="img/sky-links.jpg" alt="Space events, missions and spacecraft" loading="lazy"><figcaption>Events, missions, spacecraft</figcaption></figure>
-      <figure><img src="img/news.jpg" alt="Space news" loading="lazy"><figcaption>Space news (Android, optional)</figcaption></figure>
-    </div>
-  </div>
-</section>
-
-<section class="section white" id="features">
-  <div class="wrap">
-    <h2>Everything in the app</h2>
-    <p class="lead">All of it is calculated on your device from NASA and JPL data.</p>
-    <div class="cols">
-      <div class="card">
-        <h3>Explore</h3>
-        <ul class="list">
-          <li><strong>2D map with real positions.</strong> Every planet sits where it really is. Pick any date from 1800 to 2050, or press play.</li>
-          <li><strong>3D worlds.</strong> Rotate and zoom Earth, Jupiter's Great Red Spot, Saturn's rings, the Sun and Europa's ice.</li>
-          <li><strong>18 worlds.</strong> The Sun, 8 planets, Pluto, our Moon and 7 famous moons.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Tonight's sky</h3>
-        <ul class="list">
-          <li><strong>Which planets can I see?</strong> Pick your city and see what is up after dark, with times and directions.</li>
-          <li><strong>The Moon.</strong> Phase, moonrise and moonset, and a calendar for the whole month.</li>
-          <li><strong>Sun and light.</strong> Sunrise, golden hour, twilight and the dark-sky window.</li>
-          <li><strong>Star map.</strong> About 1,000 stars and 89 constellations, with stories for eleven of them.</li>
-          <li><strong>Binocular guide.</strong> Twelve sights for ordinary binoculars.</li>
-          <li><strong>Space events and eclipses.</strong> The next 12 months.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Learn</h3>
-        <ul class="list">
-          <li><strong>Planet facts.</strong> Size, gravity, temperature, day, year, moons.</li>
-          <li><strong>Atmosphere and oxygen.</strong> What each air is made of, compared with Earth's.</li>
-          <li><strong>Could humans live here?</strong> A 0 to 10 life score for every world.</li>
-          <li><strong>Compare.</strong> Any two worlds side by side, in true size.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>You</h3>
-        <ul class="list">
-          <li><strong>Your weight and jump</strong> on every world.</li>
-          <li><strong>Your age</strong> on other planets, and My birthday sky.</li>
-          <li><strong>Quiz.</strong> Three levels, ten questions each.</li>
-          <li><strong>Missions and spacecraft.</strong> From Sputnik 1 to Chandrayaan-3, and how far Voyager is today.</li>
-          <li><strong>Search and favourites.</strong></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="web-vs-android">
-  <div class="wrap">
-    <h2>Web or Android?</h2>
-    <p class="lead">The web version is the same app, so you can try it before you install anything. A few things need a phone.</p>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Feature</th><th>In your browser</th><th>Android app</th></tr></thead>
-        <tbody>
-          <tr><td>Planets, 2D and 3D, facts, compare, life score</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
-          <tr><td>Quiz, weight, age, birthday sky, missions, spacecraft</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
-          <tr><td>Tonight's sky, Moon calendar, star map, binocular guide, events</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
-          <tr><td>Remembers your city, favourites and quiz scores</td><td class="no">No, they reset when you close the tab</td><td class="yes">Yes</td></tr>
-          <tr><td>Reminders and the daily "tonight" note</td><td class="no">No</td><td class="yes">Yes</td></tr>
-          <tr><td>Compass finder for the Moon and planets</td><td class="no">No (needs motion sensors)</td><td class="yes">Yes</td></tr>
-          <tr><td>Space station, Tiangong, Hubble, launches, news (optional)</td><td class="no">No</td><td class="yes">Yes</td></tr>
-          <tr><td>Share cards, backup and restore</td><td class="no">No</td><td class="yes">Yes</td></tr>
-          <tr><td>Works with no internet</td><td class="no">Needs internet to open</td><td class="yes">Yes</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<section class="try" id="install">
-  <div class="wrap" style="display:block">
-    <h2>Android: no store, three steps.</h2>
-    <div class="steps" style="margin-top:28px">
-      <div><b>1</b><p>Open the <a href="https://github.com/aditymishr098-collab/astryl/releases/latest" style="color:var(--ink)">latest release</a> on your phone.</p></div>
-      <div><b>2</b><p>Download the file <code>Astryl-vX.Y.Z.apk</code>.</p></div>
-      <div><b>3</b><p>Open it and allow the install. After that, Astryl updates itself from inside the app.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="section white">
-  <div class="wrap">
-    <h2>Built the same way as every app I make</h2>
-    <p class="lead">Open source under the MIT licence. Read it, change it, build it yourself.</p>
-    <div class="grid">
-      <div class="card"><div class="num">01</div><h3>Offline first</h3><p>Positions, the Moon, sunrise and the star map are calculated on your device.</p></div>
-      <div class="card"><div class="num">02</div><h3>Private</h3><p>No ads, no account, no tracking. No personal data leaves your phone.</p></div>
-      <div class="card"><div class="num">03</div><h3>English and हिन्दी</h3><p>The whole app is in English and Hindi, or follows your phone.</p></div>
-      <div class="card"><div class="num">04</div><h3>Open source</h3><p>All the code is on <a href="https://github.com/aditymishr098-collab/astryl">GitHub</a>.</p></div>
-    </div>
-    <p class="lead" style="margin-top:36px;margin-bottom:0;font-size:15px">Data: <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/">NASA Planetary Fact Sheet</a>, JPL <a href="https://ssd.jpl.nasa.gov/planets/approx_pos.html">approximate positions</a>, stars from <a href="https://github.com/ofrohn/d3-celestial">d3-celestial</a> (Hipparcos). Fonts: Space Grotesk and DM Sans (SIL Open Font License).</p>
-  </div>
-</section>
-
+<section class="blk"><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))"><div class="card" id="dailyFact"></div><div class="card pcard" id="homeMoon"></div></div></section>
+<section class="blk"><h2><span class="t" lang="en">What is inside</span><span class="t" lang="hi">अंदर क्या है</span></h2><p class="sub"><span class="t" lang="en">Everything below works on this website. The app has more and works without internet.</span><span class="t" lang="hi">नीचे सब कुछ इस website पर चलता है। App में इससे ज़्यादा है और वह बिना internet के चलता है।</span></p><div class="grid"><a class="card" href="planets.html"><div class="ico">🪐</div><h3><span class="t" lang="en">Planets</span><span class="t" lang="hi">ग्रह</span></h3><p><span class="t" lang="en">Every planet, dwarf planet and 9 major moons: size, gravity, temperature, atmosphere and a &quot;could we live here&quot; score.</span><span class="t" lang="hi">हर ग्रह, बौना ग्रह और 9 बड़े चाँद: आकार, गुरुत्वाकर्षण, तापमान, वायुमंडल और &quot;क्या हम यहाँ रह सकते हैं&quot; score।</span></p></a><a class="card" href="solar-system.html"><div class="ico">🌌</div><h3><span class="t" lang="en">Solar system</span><span class="t" lang="hi">सौर मंडल</span></h3><p><span class="t" lang="en">Real positions of the planets on any date, with 2D and 3D views in the app.</span><span class="t" lang="hi">किसी भी तारीख़ पर ग्रहों की असली स्थिति। App में 2D और 3D दोनों views हैं।</span></p></a><a class="card" href="sky.html"><div class="ico">🌙</div><h3><span class="t" lang="en">Tonight&#x27;s sky</span><span class="t" lang="hi">आज रात का आकाश</span></h3><p><span class="t" lang="en">Tonight&#x27;s Moon, a Moon calendar and meteor showers. The app adds your city, sunrise and planets you can see.</span><span class="t" lang="hi">आज रात का चाँद, चाँद का calendar और उल्कापात। App में आपका शहर, सूर्योदय और दिखने वाले ग्रह भी हैं।</span></p></a><a class="card" href="you.html"><div class="ico">⚖️</div><h3><span class="t" lang="en">Your weight on other planets</span><span class="t" lang="hi">दूसरे ग्रहों पर आपका वज़न</span></h3><p><span class="t" lang="en">Your weight, jump height and age on every world, and the sky on your birthday.</span><span class="t" lang="hi">हर दुनिया पर आपका वज़न, कूद की ऊँचाई और उम्र, और आपके जन्मदिन का आसमान।</span></p></a><a class="card" href="quiz.html"><div class="ico">🧠</div><h3><span class="t" lang="en">Planet quiz</span><span class="t" lang="hi">ग्रह क्विज़</span></h3><p><span class="t" lang="en">Ten questions in three levels, built from the planet data.</span><span class="t" lang="hi">तीन levels में दस सवाल, ग्रहों के data से बने।</span></p></a><a class="card" href="constellations.html"><div class="ico">⭐</div><h3><span class="t" lang="en">Star map</span><span class="t" lang="hi">तारा-मानचित्र</span></h3><p><span class="t" lang="en">89 constellations with their stories. The app has a live star map, a compass planet finder and a binocular guide.</span><span class="t" lang="hi">89 तारामंडल और उनकी कहानियाँ। App में live star map, compass से ग्रह ढूँढना और दूरबीन guide भी है।</span></p></a><a class="card" href="missions.html"><div class="ico">🚀</div><h3><span class="t" lang="en">Space missions</span><span class="t" lang="hi">अंतरिक्ष मिशन</span></h3><p><span class="t" lang="en">Sputnik to Chandrayaan-3: famous moments in space exploration.</span><span class="t" lang="hi">Sputnik से Chandrayaan-3 तक: अंतरिक्ष खोज के मशहूर पल।</span></p></a><a class="card" href="spacecraft.html"><div class="ico">🛰️</div><h3><span class="t" lang="en">Spacecraft now</span><span class="t" lang="hi">अंतरिक्ष यान अभी</span></h3><p><span class="t" lang="en">How far Voyager, JWST and the Mars rovers are from Earth, right now.</span><span class="t" lang="hi">Voyager, JWST और Mars rovers इस वक़्त Earth से कितनी दूर हैं।</span></p></a></div></section>
+<section class="blk"><h2><span class="t" lang="en">Only in the app</span><span class="t" lang="hi">सिर्फ़ app में</span></h2>
+<div class="grid">
+<div class="card"><h3>🧭 <span class="t" lang="en">Planet finder</span><span class="t" lang="hi">ग्रह खोजक</span></h3><p><span class="t" lang="en">Point your phone at the sky and the compass guides you to a planet.</span><span class="t" lang="hi">फ़ोन आसमान की तरफ़ करें, compass आपको ग्रह तक ले जाता है।</span></p></div>
+<div class="card"><h3>🔔 <span class="t" lang="en">Reminders</span><span class="t" lang="hi">Reminders</span></h3><p><span class="t" lang="en">Notes for eclipses, meteor showers, planet views and a nightly sky note.</span><span class="t" lang="hi">ग्रहण, उल्कापात, ग्रह दिखने और हर रात के आसमान के लिए याद दिलाने वाले notes।</span></p></div>
+<div class="card"><h3>📍 <span class="t" lang="en">Your city</span><span class="t" lang="hi">आपका शहर</span></h3><p><span class="t" lang="en">Moonrise, sunset, golden hour and the planets above your horizon.</span><span class="t" lang="hi">चाँद का उगना, सूर्यास्त, golden hour और आपके क्षितिज के ऊपर के ग्रह।</span></p></div>
+<div class="card"><h3>🛰️ <span class="t" lang="en">Space station</span><span class="t" lang="hi">अंतरिक्ष station</span></h3><p><span class="t" lang="en">ISS, Tiangong and Hubble passes over your city (optional online data).</span><span class="t" lang="hi">आपके शहर के ऊपर ISS, Tiangong और Hubble का गुज़रना (optional online data)।</span></p></div>
+<div class="card"><h3>💾 <span class="t" lang="en">Backup</span><span class="t" lang="hi">Backup</span></h3><p><span class="t" lang="en">Favourites, scores and settings in one small file that stays on your phone.</span><span class="t" lang="hi">Favourites, scores और settings एक छोटी file में, जो आपके फ़ोन में ही रहती है।</span></p></div>
+<div class="card"><h3>🔄 <span class="t" lang="en">Updates</span><span class="t" lang="hi">Updates</span></h3><p><span class="t" lang="en">Download and install new versions from inside the app, straight from GitHub.</span><span class="t" lang="hi">नए versions app के अंदर से ही, सीधे GitHub से download और install करें।</span></p></div>
+</div><div class="btns"><a class="btn primary dl-btn" href="https://github.com/aditymishr098-collab/astryl/releases/latest">⬇ <span class="t" lang="en">Download</span><span class="t" lang="hi">Download</span></a><a class="btn" href="get.html"><span class="t" lang="en">How to install</span><span class="t" lang="hi">Install कैसे करें</span></a></div></section>
 </main>
-
-<footer class="footer">
-  <div class="wrap">
-    <p class="big">Say hello.</p>
-    <div class="btn-row">
-      <a class="btn btn-amber" href="mailto:aditym02@outlook.com">aditym02@outlook.com</a>
-      <a class="btn btn-ghost" href="https://instagram.com/adity_m09">Instagram</a>
-      <a class="btn btn-ghost" href="https://github.com/aditymishr098-collab/astryl">GitHub</a>
-    </div>
-    <div class="row" style="margin-top:56px">
-      <span>© 2026 Adity Mishra · Astryl is released under the MIT licence</span>
-      <span><a href="privacy.html">Privacy policy</a></span>
-    </div>
-  </div>
-</footer>
-
-</body>
-</html>
+<footer><div class="wrap cols">
+<div><b>Astryl</b><br><span class="t" lang="en">Explore the Solar System, fully offline.</span><span class="t" lang="hi">सौरमंडल को ऑफ़लाइन देखिए और जानिए।</span><br>© 2026 Astryl · <a href="https://astryl.space">astryl.space</a></div>
+<div><span class="t" lang="en">Free and open source</span><span class="t" lang="hi">मुफ़्त और open source</span><br><a href="https://github.com/aditymishr098-collab/astryl"><span class="t" lang="en">Source code on GitHub</span><span class="t" lang="hi">GitHub पर source code</span></a><br><a href="https://github.com/aditymishr098-collab/astryl/blob/main/LICENSE">AGPL-3.0</a> · <a href="privacy.html"><span class="t" lang="en">Privacy</span><span class="t" lang="hi">Privacy</span></a></div>
+<div><span class="t" lang="en">Facts: NASA Planetary Fact Sheet</span><span class="t" lang="hi">तथ्य: NASA Planetary Fact Sheet</span><br><a href="https://github.com/aditymishr098-collab/astryl/releases"><span class="t" lang="en">All versions</span><span class="t" lang="hi">सभी versions</span></a></div>
+</div></footer>
+<script src="assets/data.js"></script><script src="assets/app.js"></script>
+</body></html>

@@ -223,6 +223,7 @@ All texts live in `lib/l10n/app_en.arb` and `lib/l10n/app_hi.arb`. Found a wrong
 ## Links
 
 - Website: [astryl.space](https://astryl.space)
+- Website source: the folder `site/`, built from the app's own data by `python3 tools/build_site.py` and published by GitHub Pages (`.github/workflows/pages.yml`)
 - Source code: [github.com/aditymishr098-collab/astryl](https://github.com/aditymishr098-collab/astryl)
 - Downloads: [latest release](https://github.com/aditymishr098-collab/astryl/releases/latest)
 - Bugs and ideas: [issues](https://github.com/aditymishr098-collab/astryl/issues)
