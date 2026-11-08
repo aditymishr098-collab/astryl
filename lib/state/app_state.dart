@@ -130,7 +130,7 @@ class AppState extends ChangeNotifier {
       if (dir.isEmpty) {
         return null;
       }
-      final file = File('$dir${Platform.pathSeparator}Heliora-backup.json');
+      final file = File('$dir${Platform.pathSeparator}Astryl-backup.json');
       await file.writeAsString(
           buildBackup(_settings, DateTime.now(), _appVersion),
           flush: true);
@@ -141,7 +141,7 @@ class AppState extends ChangeNotifier {
   }
 
   /// Puts the settings in the backup [text] in place of the current ones.
-  /// False, with nothing changed, when [text] is not a Heliora backup.
+  /// False, with nothing changed, when [text] is not an Astryl backup.
   Future<bool> restoreBackup(String text) async {
     final HelioraSettings backup;
     try {

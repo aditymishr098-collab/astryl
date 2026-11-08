@@ -47,7 +47,7 @@ class HelioraApp extends StatelessWidget {
           final settings = state.settings;
           final code = settings.localeCode;
           return MaterialApp(
-            title: 'Heliora',
+            title: 'Astryl',
             debugShowCheckedModeBanner: false,
             theme: buildTheme(Brightness.light),
             darkTheme: buildTheme(Brightness.dark),

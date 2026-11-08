@@ -54,12 +54,12 @@ jobs:
             --ks-key-alias "$KEY_ALIAS" \
             --ks-pass env:KEYSTORE_PASSWORD \
             --key-pass env:KEY_PASSWORD \
-            --out "Heliora-${GITHUB_REF_NAME}.apk" \
+            --out "Astryl-${GITHUB_REF_NAME}.apk" \
             aligned.apk
-          "$BT/apksigner" verify --print-certs "Heliora-${GITHUB_REF_NAME}.apk"
+          "$BT/apksigner" verify --print-certs "Astryl-${GITHUB_REF_NAME}.apk"
           rm -f "$RUNNER_TEMP/release.jks"
 
       - uses: softprops/action-gh-release@v2
         with:
-          files: Heliora-*.apk
+          files: Astryl-*.apk
           generate_release_notes: true

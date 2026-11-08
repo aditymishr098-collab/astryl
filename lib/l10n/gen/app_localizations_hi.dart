@@ -9,7 +9,7 @@ class AppLocalizationsHi extends AppLocalizations {
   AppLocalizationsHi([String locale = 'hi']) : super(locale);
 
   @override
-  String get appTitle => 'Heliora';
+  String get appTitle => 'Astryl';
 
   @override
   String get tagline => 'सौरमंडल की सैर, पूरी तरह ऑफ़लाइन';
@@ -470,7 +470,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get allowInstalls =>
-      'जो स्क्रीन खुली है उसमें Heliora को ऐप इंस्टॉल करने की अनुमति दें, फिर वापस आकर इंस्टॉल दबाएँ।';
+      'जो स्क्रीन खुली है उसमें Astryl को ऐप इंस्टॉल करने की अनुमति दें, फिर वापस आकर इंस्टॉल दबाएँ।';
 
   @override
   String get downloadFailed =>
@@ -523,7 +523,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String shareText(String planet) {
-    return 'Heliora में $planet, मुफ़्त ऑफ़लाइन सौरमंडल ऐप: https://github.com/aditymishr098-collab/heliora';
+    return 'Astryl में $planet, मुफ़्त ऑफ़लाइन सौरमंडल ऐप: https://github.com/aditymishr098-collab/astryl';
   }
 
   @override
@@ -908,7 +908,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get notificationsOff =>
-      'Heliora की सूचनाएँ बंद हैं। Android सेटिंग में इन्हें चालू करें।';
+      'Astryl की सूचनाएँ बंद हैं। Android सेटिंग में इन्हें चालू करें।';
 
   @override
   String get reminderTomorrow => 'कल होने वाला है';
@@ -921,7 +921,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get onlineSubtitle =>
-      'अंतरिक्ष स्टेशन, तियांगोंग, हबल, रॉकेट लॉन्च और अंतरिक्ष समाचार दिखाएँ। तब Heliora सिर्फ़ wheretheiss.at, Celestrak, Launch Library 2 और Spaceflight News API से जुड़ता है, जो आपके फ़ोन का इंटरनेट पता देख सकते हैं। और कुछ नहीं भेजा जाता। शुरू में बंद रहता है।';
+      'अंतरिक्ष स्टेशन, तियांगोंग, हबल, रॉकेट लॉन्च और अंतरिक्ष समाचार दिखाएँ। तब Astryl सिर्फ़ wheretheiss.at, Celestrak, Launch Library 2 और Spaceflight News API से जुड़ता है, जो आपके फ़ोन का इंटरनेट पता देख सकते हैं। और कुछ नहीं भेजा जाता। शुरू में बंद रहता है।';
 
   @override
   String get turnOnOnline => 'ऑनलाइन सुविधाएँ चालू करें';
@@ -934,7 +934,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get issNeedsOnline =>
-      'स्टेशन दिखाने के लिए Heliora को इंटरनेट से उसका ऑर्बिट डेटा चाहिए। यह एक बार डाउनलोड होता है और फिर कई दिन ऑफ़लाइन चलता है।';
+      'स्टेशन दिखाने के लिए Astryl को इंटरनेट से उसका ऑर्बिट डेटा चाहिए। यह एक बार डाउनलोड होता है और फिर कई दिन ऑफ़लाइन चलता है।';
 
   @override
   String get issLoading => 'ऑर्बिट डेटा लिया जा रहा है…';
@@ -1349,7 +1349,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get eclipseNoCity =>
-      'Heliora में कोई शहर चुनें, ताकि पता चले कि वहाँ से यह दिखेगा या नहीं।';
+      'Astryl में कोई शहर चुनें, ताकि पता चले कि वहाँ से यह दिखेगा या नहीं।';
 
   @override
   String eclipseLunarUp(String city) {
@@ -1401,7 +1401,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get tonightAlertNote =>
-      'आपके चुने समय पर चंद्रमा और दिखने वाले ग्रहों के बारे में एक छोटा सा संदेश। यह आपके फ़ोन पर ही बनता है, इंटरनेट नहीं चाहिए। Android Heliora को सिर्फ़ करीब दो हफ़्ते के संदेश पहले से तैयार करने देता है, इसलिए ऐप बीच-बीच में खोलते रहें।';
+      'आपके चुने समय पर चंद्रमा और दिखने वाले ग्रहों के बारे में एक छोटा सा संदेश। यह आपके फ़ोन पर ही बनता है, इंटरनेट नहीं चाहिए। Android Astryl को सिर्फ़ करीब दो हफ़्ते के संदेश पहले से तैयार करने देता है, इसलिए ऐप बीच-बीच में खोलते रहें।';
 
   @override
   String get tonightNotifTitle => 'आज रात का आसमान';
@@ -1420,7 +1420,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get tonightNoPlanets => 'शाम के आसमान में कोई चमकीला ग्रह नहीं है।';
 
   @override
-  String get tonightNoCity => 'ग्रह देखने के लिए Heliora में शहर चुनें।';
+  String get tonightNoCity => 'ग्रह देखने के लिए Astryl में शहर चुनें।';
 
   @override
   String get birthdayTitle => 'मेरे जन्मदिन का आसमान';
@@ -1462,7 +1462,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get birthdayNote =>
-      'यह आपके फ़ोन पर ही Heliora की बाकी चीज़ों जैसी कक्षाओं से निकाला जाता है। आपकी जन्मतिथि फ़ोन से बाहर नहीं जाती।';
+      'यह आपके फ़ोन पर ही Astryl की बाकी चीज़ों जैसी कक्षाओं से निकाला जाता है। आपकी जन्मतिथि फ़ोन से बाहर नहीं जाती।';
 
   @override
   String get missionsTitle => 'अंतरिक्ष मिशन';
@@ -1656,7 +1656,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get textSizeNote =>
-      'Heliora के अक्षर बड़े कर देता है। यह आपके फ़ोन के अपने अक्षर-आकार से कभी छोटा नहीं होता।';
+      'Astryl के अक्षर बड़े कर देता है। यह आपके फ़ोन के अपने अक्षर-आकार से कभी छोटा नहीं होता।';
 
   @override
   String get skyOtherNight => 'रात का आकाश';
@@ -1857,7 +1857,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String satNeedsOnline(String name) {
-    return '$name दिखाने के लिए Heliora को इंटरनेट से उसका कक्षा-डेटा चाहिए। यह एक बार डाउनलोड होता है और फिर कई दिन बिना इंटरनेट चलता है।';
+    return '$name दिखाने के लिए Astryl को इंटरनेट से उसका कक्षा-डेटा चाहिए। यह एक बार डाउनलोड होता है और फिर कई दिन बिना इंटरनेट चलता है।';
   }
 
   @override
@@ -1889,7 +1889,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get newsNote =>
-      'लेख Spaceflight News API से आते हैं और अंग्रेज़ी में हैं। किसी लेख को छूने पर प्रकाशक की वेबसाइट आपके ब्राउज़र में खुलती है। Heliora कोई तस्वीर डाउनलोड नहीं करता।';
+      'लेख Spaceflight News API से आते हैं और अंग्रेज़ी में हैं। किसी लेख को छूने पर प्रकाशक की वेबसाइट आपके ब्राउज़र में खुलती है। Astryl कोई तस्वीर डाउनलोड नहीं करता।';
 
   @override
   String get newsOpenFailed => 'लिंक नहीं खुल सका।';
@@ -1903,7 +1903,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String tonightShareText(String city) {
-    return '$city के ऊपर का आकाश, Heliora से बना, जो मुफ़्त ऑफ़लाइन सौरमंडल ऐप है: https://github.com/aditymishr098-collab/heliora';
+    return '$city के ऊपर का आकाश, Astryl से बना, जो मुफ़्त ऑफ़लाइन सौरमंडल ऐप है: https://github.com/aditymishr098-collab/astryl';
   }
 
   @override
@@ -1928,7 +1928,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get backupRestore => 'बैकअप restore करें';
 
   @override
-  String get backupShareText => 'Heliora बैकअप';
+  String get backupShareText => 'Astryl बैकअप';
 
   @override
   String get backupSaveFailed => 'बैकअप नहीं बन सका।';
@@ -1947,5 +1947,5 @@ class AppLocalizationsHi extends AppLocalizations {
   String get backupRestored => 'बैकअप restore हो गया।';
 
   @override
-  String get backupBad => 'यह फ़ाइल Heliora का बैकअप नहीं है।';
+  String get backupBad => 'यह फ़ाइल Astryl का बैकअप नहीं है।';
 }

@@ -1,4 +1,4 @@
-Heliora is an offline-first solar system app. Planet positions, the Moon, sunrise and sunset, eclipses and the star map are all calculated on your phone.
+Astryl is an offline-first solar system app. Planet positions, the Moon, sunrise and sunset, eclipses and the star map are all calculated on your phone.
 
 <b>Explore</b>
 • 2D map with the real position of every planet on any date from 1800 to 2050

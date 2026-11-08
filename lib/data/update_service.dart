@@ -23,13 +23,13 @@ class UpdateInfo {
   String get downloadUrl => apkUrl ?? pageUrl;
 }
 
-/// Looks up the newest release of Heliora on GitHub. This is the only network
+/// Looks up the newest release of Astryl on GitHub. This is the only network
 /// call the app makes, and it sends nothing about the user.
 class UpdateService {
   static const String releasesPage =
-      'https://github.com/lumio-apps/heliora/releases';
+      'https://github.com/aditymishr098-collab/astryl/releases';
   static const String _api =
-      'https://api.github.com/repos/lumio-apps/heliora/releases/latest';
+      'https://api.github.com/repos/aditymishr098-collab/astryl/releases/latest';
 
   /// The only places a release or its APK may come from: GitHub itself and
   /// the servers GitHub uses to hand out release files.
@@ -91,7 +91,7 @@ class UpdateService {
         apiHosts,
         const <String, String>{
           'Accept': 'application/vnd.github+json',
-          'User-Agent': 'Heliora',
+          'User-Agent': 'Astryl',
         },
         const Duration(seconds: 15),
       );
@@ -134,7 +134,7 @@ class UpdateService {
         client,
         Uri.parse(url),
         downloadHosts,
-        const <String, String>{'User-Agent': 'Heliora'},
+        const <String, String>{'User-Agent': 'Astryl'},
         const Duration(seconds: 20),
       );
       if (response.statusCode != 200) {

@@ -1467,18 +1467,18 @@ void main() {
 
     test('release json', () {
       final info = UpdateService.parse(
-        '{"tag_name":"v1.0.1","html_url":"https://github.com/lumio-apps/heliora/releases/tag/v1.0.1","body":"Fixes","assets":[{"name":"Heliora-v1.0.1.apk","browser_download_url":"https://github.com/x/Heliora-v1.0.1.apk"}]}',
+        '{"tag_name":"v1.0.1","html_url":"https://github.com/aditymishr098-collab/astryl/releases/tag/v1.0.1","body":"Fixes","assets":[{"name":"Astryl-v1.0.1.apk","browser_download_url":"https://github.com/x/Astryl-v1.0.1.apk"}]}',
       );
       expect(info.version, '1.0.1');
-      expect(info.apkUrl, 'https://github.com/x/Heliora-v1.0.1.apk');
-      expect(info.downloadUrl, 'https://github.com/x/Heliora-v1.0.1.apk');
+      expect(info.apkUrl, 'https://github.com/x/Astryl-v1.0.1.apk');
+      expect(info.downloadUrl, 'https://github.com/x/Astryl-v1.0.1.apk');
       expect(info.notes, 'Fixes');
     });
 
     test('updates download only from GitHub', () {
       expect(
           UpdateService.isTrustedDownload(
-              'https://github.com/lumio-apps/heliora/releases/download/v1.2.0/Heliora-v1.2.0.apk'),
+              'https://github.com/aditymishr098-collab/astryl/releases/download/v1.2.0/Astryl-v1.2.0.apk'),
           isTrue);
       expect(UpdateService.isTrustedDownload('http://github.com/x.apk'),
           isFalse);
@@ -1809,7 +1809,7 @@ void main() {
       expect(back.localeCode, '');
     });
 
-    test('files that are not a Heliora backup are refused', () {
+    test('files that are not an Astryl backup are refused', () {
       expect(() => parseBackup('nope'), throwsFormatException);
       expect(() => parseBackup('[]'), throwsFormatException);
       expect(() => parseBackup('{"app":"other","format":1,"settings":{}}'),

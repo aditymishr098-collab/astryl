@@ -60,7 +60,7 @@ class _UpdateDialogState extends State<_UpdateDialog> {
         throw const FileSystemException('No updates folder');
       }
       final path = '$dir${Platform.pathSeparator}'
-          'Heliora-${widget.info.version}.apk';
+          'Astryl-${widget.info.version}.apk';
 
       // Remove older downloads so the cache does not fill up.
       await for (final entry in Directory(dir).list()) {

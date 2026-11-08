@@ -16,7 +16,7 @@ TextStyle headingStyle(double size, Color color,
       height: height,
     );
 
-/// Heliora's colours, from the approved design (dark "deep space" and a
+/// Astryl's colours, from the approved design (dark "deep space" and a
 /// light cream theme).
 @immutable
 class Palette extends ThemeExtension<Palette> {

@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "Heliora",
+  "appTitle": "Astryl",
   "tagline": "Explore the Solar System, fully offline",
   "navExplore": "Explore",
   "navCompare": "Compare",
@@ -252,7 +252,7 @@
   "downloadInstall": "Download and install",
   "downloadingPercent": "Downloading… {percent}%",
   "installNow": "Install",
-  "allowInstalls": "Allow Heliora to install apps on the screen that opened, then come back and tap Install.",
+  "allowInstalls": "Allow Astryl to install apps on the screen that opened, then come back and tap Install.",
   "downloadFailed": "The download did not finish. Check your internet and try again.",
   "tryAgain": "Try again",
   "@downloadingPercent": {
@@ -282,7 +282,7 @@
     }
   },
   "share": "Share",
-  "shareText": "{planet} in Heliora, the free offline Solar System app: https://github.com/lumio-apps/heliora",
+  "shareText": "{planet} in Astryl, the free offline Solar System app: https://github.com/aditymishr098-collab/astryl",
   "shareFailed": "Could not share the picture.",
   "travelTitle": "How far is it?",
   "distanceFromEarth": "Distance from Earth today",
@@ -521,7 +521,7 @@
   "reminderSet": "Okay, I will remind you on {date}.",
   "reminderOff": "Reminder removed.",
   "reminderTooLate": "This event is too close to set a reminder.",
-  "notificationsOff": "Notifications are off for Heliora. Turn them on in Android settings.",
+  "notificationsOff": "Notifications are off for Astryl. Turn them on in Android settings.",
   "reminderTomorrow": "Coming up tomorrow",
   "reminderToday": "Happening today",
   "@eventsNext": {
@@ -631,11 +631,11 @@
     }
   },
   "onlineTitle": "Online features",
-  "onlineSubtitle": "Show the space station, Tiangong, Hubble, rocket launches and space news. Heliora then contacts only wheretheiss.at, Celestrak, Launch Library 2 and the Spaceflight News API, which can see your phone’s internet address. Nothing else is sent. Off by default.",
+  "onlineSubtitle": "Show the space station, Tiangong, Hubble, rocket launches and space news. Astryl then contacts only wheretheiss.at, Celestrak, Launch Library 2 and the Spaceflight News API, which can see your phone’s internet address. Nothing else is sent. Off by default.",
   "turnOnOnline": "Turn on online features",
   "issTitle": "Space station",
   "issCardHint": "Where it is now and when it passes over you",
-  "issNeedsOnline": "To show the station, Heliora needs its orbit data from the internet. It is downloaded once and then works offline for days.",
+  "issNeedsOnline": "To show the station, Astryl needs its orbit data from the internet. It is downloaded once and then works offline for days.",
   "issLoading": "Getting the orbit data…",
   "issFailed": "Could not get the orbit data. Check your internet and try again.",
   "issStale": "The orbit data is {days} days old, so positions may be off. Connect to the internet to refresh it.",
@@ -839,7 +839,7 @@
   "eclipseAnnularSolarDesc": "The Moon is a little too far away to cover the Sun fully, so a bright ring is left. The ring shows along a narrow path; outside it the eclipse is partial.",
   "eclipseHybridSolarDesc": "Along its path this eclipse is total in some places and ring-shaped in others. Outside the path it is partial.",
   "eclipsePartialSolarDesc": "The Moon covers only a part of the Sun, and nowhere on Earth is the Sun fully covered.",
-  "eclipseNoCity": "Choose a city in Heliora to see if you can watch it from there.",
+  "eclipseNoCity": "Choose a city in Astryl to see if you can watch it from there.",
   "eclipseLunarUp": "The Moon is above the horizon in {city} at the middle of the eclipse.",
   "@eclipseLunarUp": {
     "placeholders": {
@@ -903,7 +903,7 @@
   "alertsTitle": "Alerts",
   "tonightAlertSwitch": "Tonight in the sky, every evening",
   "tonightAlertTime": "Time",
-  "tonightAlertNote": "A short note about the Moon and the planets you can see, at the time you choose. It is worked out on your phone, with no internet. Android only lets Heliora prepare about two weeks of notes ahead, so open the app now and then.",
+  "tonightAlertNote": "A short note about the Moon and the planets you can see, at the time you choose. It is worked out on your phone, with no internet. Android only lets Astryl prepare about two weeks of notes ahead, so open the app now and then.",
   "tonightNotifTitle": "Tonight in the sky",
   "tonightMoon": "Moon: {phase}, {percent}% lit.",
   "@tonightMoon": {
@@ -925,7 +925,7 @@
     }
   },
   "tonightNoPlanets": "No bright planets in the evening sky.",
-  "tonightNoCity": "Choose a city in Heliora to see the planets.",
+  "tonightNoCity": "Choose a city in Astryl to see the planets.",
   "birthdayTitle": "My birthday sky",
   "birthdaySubtitle": "The Moon and the planets on the day you were born, and the big days of your life.",
   "birthdayCardHint": "Moon phase, planets and milestones",
@@ -951,7 +951,7 @@
   },
   "birthdayBillion": "1 billion seconds old",
   "birthdayPassed": "Done",
-  "birthdayNote": "Worked out on your phone from the same orbits as the rest of Heliora. Your birth date never leaves it.",
+  "birthdayNote": "Worked out on your phone from the same orbits as the rest of Astryl. Your birth date never leaves it.",
   "missionsTitle": "Space missions",
   "missionsSubtitle": "Famous moments in the exploration of space, oldest first.",
   "missionsCardHint": "Famous missions through time",
@@ -1032,7 +1032,7 @@
   "textSizeNormal": "Normal",
   "textSizeLarge": "Large",
   "textSizeLarger": "Larger",
-  "textSizeNote": "Makes the text in Heliora bigger. It never goes below your phone's own text size.",
+  "textSizeNote": "Makes the text in Astryl bigger. It never goes below your phone's own text size.",
   "skyOtherNight": "The night sky",
   "planetsThatNight": "Planets that night",
   "previousDay": "Previous day",
@@ -1109,7 +1109,7 @@
   "satellitesCardHint": "When they fly over your city",
   "tiangongName": "Tiangong",
   "hubbleName": "Hubble",
-  "satNeedsOnline": "To show {name}, Heliora needs its orbit data from the internet. It is downloaded once and then works offline for days.",
+  "satNeedsOnline": "To show {name}, Astryl needs its orbit data from the internet. It is downloaded once and then works offline for days.",
   "@satNeedsOnline": {
     "placeholders": {
       "name": {
@@ -1131,11 +1131,11 @@
   "newsNeedsOnline": "Turn on online features to read the latest space news.",
   "newsFailed": "Could not update the news. Showing the saved articles.",
   "newsNone": "No news could be loaded. Check your internet and try again.",
-  "newsNote": "Articles come from the Spaceflight News API and are in English. Tapping one opens the publisher’s website in your browser. Heliora downloads no pictures.",
+  "newsNote": "Articles come from the Spaceflight News API and are in English. Tapping one opens the publisher’s website in your browser. Astryl downloads no pictures.",
   "newsOpenFailed": "Could not open the link.",
   "tonightShareTitle": "Share tonight’s sky",
   "tonightShareHint": "A picture of the Moon and planets for your friends",
-  "tonightShareText": "The sky over {city}, made with Heliora, the free offline Solar System app: https://github.com/lumio-apps/heliora",
+  "tonightShareText": "The sky over {city}, made with Astryl, the free offline Solar System app: https://github.com/aditymishr098-collab/astryl",
   "@tonightShareText": {
     "placeholders": {
       "city": {
@@ -1156,11 +1156,11 @@
   "backupNote": "Your favourites, settings, quiz scores, city and birth date go into one small file. It stays on your phone until you send it somewhere. Bells for single events are not included: set them again after restoring.",
   "backupSave": "Save a backup",
   "backupRestore": "Restore a backup",
-  "backupShareText": "Heliora backup",
+  "backupShareText": "Astryl backup",
   "backupSaveFailed": "The backup could not be made.",
   "backupRestoreTitle": "Restore this backup?",
   "backupRestoreAsk": "This replaces your favourites, settings, quiz scores, city and birth date on this phone.",
   "backupRestoreConfirm": "Restore",
   "backupRestored": "Backup restored.",
-  "backupBad": "That file is not a Heliora backup."
+  "backupBad": "That file is not an Astryl backup."
 }

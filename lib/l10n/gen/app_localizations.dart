@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'Heliora'**
+  /// **'Astryl'**
   String get appTitle;
 
   /// No description provided for @tagline.
@@ -947,7 +947,7 @@ abstract class AppLocalizations {
   /// No description provided for @allowInstalls.
   ///
   /// In en, this message translates to:
-  /// **'Allow Heliora to install apps on the screen that opened, then come back and tap Install.'**
+  /// **'Allow Astryl to install apps on the screen that opened, then come back and tap Install.'**
   String get allowInstalls;
 
   /// No description provided for @downloadFailed.
@@ -1043,7 +1043,7 @@ abstract class AppLocalizations {
   /// No description provided for @shareText.
   ///
   /// In en, this message translates to:
-  /// **'{planet} in Heliora, the free offline Solar System app: https://github.com/aditymishr098-collab/heliora'**
+  /// **'{planet} in Astryl, the free offline Solar System app: https://github.com/aditymishr098-collab/astryl'**
   String shareText(String planet);
 
   /// No description provided for @shareFailed.
@@ -1673,7 +1673,7 @@ abstract class AppLocalizations {
   /// No description provided for @notificationsOff.
   ///
   /// In en, this message translates to:
-  /// **'Notifications are off for Heliora. Turn them on in Android settings.'**
+  /// **'Notifications are off for Astryl. Turn them on in Android settings.'**
   String get notificationsOff;
 
   /// No description provided for @reminderTomorrow.
@@ -1697,7 +1697,7 @@ abstract class AppLocalizations {
   /// No description provided for @onlineSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Show the space station, Tiangong, Hubble, rocket launches and space news. Heliora then contacts only wheretheiss.at, Celestrak, Launch Library 2 and the Spaceflight News API, which can see your phone’s internet address. Nothing else is sent. Off by default.'**
+  /// **'Show the space station, Tiangong, Hubble, rocket launches and space news. Astryl then contacts only wheretheiss.at, Celestrak, Launch Library 2 and the Spaceflight News API, which can see your phone’s internet address. Nothing else is sent. Off by default.'**
   String get onlineSubtitle;
 
   /// No description provided for @turnOnOnline.
@@ -1721,7 +1721,7 @@ abstract class AppLocalizations {
   /// No description provided for @issNeedsOnline.
   ///
   /// In en, this message translates to:
-  /// **'To show the station, Heliora needs its orbit data from the internet. It is downloaded once and then works offline for days.'**
+  /// **'To show the station, Astryl needs its orbit data from the internet. It is downloaded once and then works offline for days.'**
   String get issNeedsOnline;
 
   /// No description provided for @issLoading.
@@ -2387,7 +2387,7 @@ abstract class AppLocalizations {
   /// No description provided for @eclipseNoCity.
   ///
   /// In en, this message translates to:
-  /// **'Choose a city in Heliora to see if you can watch it from there.'**
+  /// **'Choose a city in Astryl to see if you can watch it from there.'**
   String get eclipseNoCity;
 
   /// No description provided for @eclipseLunarUp.
@@ -2459,7 +2459,7 @@ abstract class AppLocalizations {
   /// No description provided for @tonightAlertNote.
   ///
   /// In en, this message translates to:
-  /// **'A short note about the Moon and the planets you can see, at the time you choose. It is worked out on your phone, with no internet. Android only lets Heliora prepare about two weeks of notes ahead, so open the app now and then.'**
+  /// **'A short note about the Moon and the planets you can see, at the time you choose. It is worked out on your phone, with no internet. Android only lets Astryl prepare about two weeks of notes ahead, so open the app now and then.'**
   String get tonightAlertNote;
 
   /// No description provided for @tonightNotifTitle.
@@ -2489,7 +2489,7 @@ abstract class AppLocalizations {
   /// No description provided for @tonightNoCity.
   ///
   /// In en, this message translates to:
-  /// **'Choose a city in Heliora to see the planets.'**
+  /// **'Choose a city in Astryl to see the planets.'**
   String get tonightNoCity;
 
   /// No description provided for @birthdayTitle.
@@ -2561,7 +2561,7 @@ abstract class AppLocalizations {
   /// No description provided for @birthdayNote.
   ///
   /// In en, this message translates to:
-  /// **'Worked out on your phone from the same orbits as the rest of Heliora. Your birth date never leaves it.'**
+  /// **'Worked out on your phone from the same orbits as the rest of Astryl. Your birth date never leaves it.'**
   String get birthdayNote;
 
   /// No description provided for @missionsTitle.
@@ -2879,7 +2879,7 @@ abstract class AppLocalizations {
   /// No description provided for @textSizeNote.
   ///
   /// In en, this message translates to:
-  /// **'Makes the text in Heliora bigger. It never goes below your phone\'s own text size.'**
+  /// **'Makes the text in Astryl bigger. It never goes below your phone\'s own text size.'**
   String get textSizeNote;
 
   /// No description provided for @skyOtherNight.
@@ -3239,7 +3239,7 @@ abstract class AppLocalizations {
   /// No description provided for @satNeedsOnline.
   ///
   /// In en, this message translates to:
-  /// **'To show {name}, Heliora needs its orbit data from the internet. It is downloaded once and then works offline for days.'**
+  /// **'To show {name}, Astryl needs its orbit data from the internet. It is downloaded once and then works offline for days.'**
   String satNeedsOnline(String name);
 
   /// No description provided for @satPassTitle.
@@ -3287,7 +3287,7 @@ abstract class AppLocalizations {
   /// No description provided for @newsNote.
   ///
   /// In en, this message translates to:
-  /// **'Articles come from the Spaceflight News API and are in English. Tapping one opens the publisher’s website in your browser. Heliora downloads no pictures.'**
+  /// **'Articles come from the Spaceflight News API and are in English. Tapping one opens the publisher’s website in your browser. Astryl downloads no pictures.'**
   String get newsNote;
 
   /// No description provided for @newsOpenFailed.
@@ -3311,7 +3311,7 @@ abstract class AppLocalizations {
   /// No description provided for @tonightShareText.
   ///
   /// In en, this message translates to:
-  /// **'The sky over {city}, made with Heliora, the free offline Solar System app: https://github.com/aditymishr098-collab/heliora'**
+  /// **'The sky over {city}, made with Astryl, the free offline Solar System app: https://github.com/aditymishr098-collab/astryl'**
   String tonightShareText(String city);
 
   /// No description provided for @skyOverCity.
@@ -3353,7 +3353,7 @@ abstract class AppLocalizations {
   /// No description provided for @backupShareText.
   ///
   /// In en, this message translates to:
-  /// **'Heliora backup'**
+  /// **'Astryl backup'**
   String get backupShareText;
 
   /// No description provided for @backupSaveFailed.
@@ -3389,7 +3389,7 @@ abstract class AppLocalizations {
   /// No description provided for @backupBad.
   ///
   /// In en, this message translates to:
-  /// **'That file is not a Heliora backup.'**
+  /// **'That file is not an Astryl backup.'**
   String get backupBad;
 }
 

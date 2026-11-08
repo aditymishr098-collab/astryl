@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Heliora';
+  String get appTitle => 'Astryl';
 
   @override
   String get tagline => 'Explore the Solar System, fully offline';
@@ -471,7 +471,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get allowInstalls =>
-      'Allow Heliora to install apps on the screen that opened, then come back and tap Install.';
+      'Allow Astryl to install apps on the screen that opened, then come back and tap Install.';
 
   @override
   String get downloadFailed =>
@@ -524,7 +524,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String shareText(String planet) {
-    return '$planet in Heliora, the free offline Solar System app: https://github.com/aditymishr098-collab/heliora';
+    return '$planet in Astryl, the free offline Solar System app: https://github.com/aditymishr098-collab/astryl';
   }
 
   @override
@@ -911,7 +911,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationsOff =>
-      'Notifications are off for Heliora. Turn them on in Android settings.';
+      'Notifications are off for Astryl. Turn them on in Android settings.';
 
   @override
   String get reminderTomorrow => 'Coming up tomorrow';
@@ -924,7 +924,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onlineSubtitle =>
-      'Show the space station, Tiangong, Hubble, rocket launches and space news. Heliora then contacts only wheretheiss.at, Celestrak, Launch Library 2 and the Spaceflight News API, which can see your phone’s internet address. Nothing else is sent. Off by default.';
+      'Show the space station, Tiangong, Hubble, rocket launches and space news. Astryl then contacts only wheretheiss.at, Celestrak, Launch Library 2 and the Spaceflight News API, which can see your phone’s internet address. Nothing else is sent. Off by default.';
 
   @override
   String get turnOnOnline => 'Turn on online features';
@@ -937,7 +937,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get issNeedsOnline =>
-      'To show the station, Heliora needs its orbit data from the internet. It is downloaded once and then works offline for days.';
+      'To show the station, Astryl needs its orbit data from the internet. It is downloaded once and then works offline for days.';
 
   @override
   String get issLoading => 'Getting the orbit data…';
@@ -1348,7 +1348,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get eclipseNoCity =>
-      'Choose a city in Heliora to see if you can watch it from there.';
+      'Choose a city in Astryl to see if you can watch it from there.';
 
   @override
   String eclipseLunarUp(String city) {
@@ -1400,7 +1400,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tonightAlertNote =>
-      'A short note about the Moon and the planets you can see, at the time you choose. It is worked out on your phone, with no internet. Android only lets Heliora prepare about two weeks of notes ahead, so open the app now and then.';
+      'A short note about the Moon and the planets you can see, at the time you choose. It is worked out on your phone, with no internet. Android only lets Astryl prepare about two weeks of notes ahead, so open the app now and then.';
 
   @override
   String get tonightNotifTitle => 'Tonight in the sky';
@@ -1419,7 +1419,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tonightNoPlanets => 'No bright planets in the evening sky.';
 
   @override
-  String get tonightNoCity => 'Choose a city in Heliora to see the planets.';
+  String get tonightNoCity => 'Choose a city in Astryl to see the planets.';
 
   @override
   String get birthdayTitle => 'My birthday sky';
@@ -1461,7 +1461,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get birthdayNote =>
-      'Worked out on your phone from the same orbits as the rest of Heliora. Your birth date never leaves it.';
+      'Worked out on your phone from the same orbits as the rest of Astryl. Your birth date never leaves it.';
 
   @override
   String get missionsTitle => 'Space missions';
@@ -1655,7 +1655,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get textSizeNote =>
-      'Makes the text in Heliora bigger. It never goes below your phone\'s own text size.';
+      'Makes the text in Astryl bigger. It never goes below your phone\'s own text size.';
 
   @override
   String get skyOtherNight => 'The night sky';
@@ -1856,7 +1856,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String satNeedsOnline(String name) {
-    return 'To show $name, Heliora needs its orbit data from the internet. It is downloaded once and then works offline for days.';
+    return 'To show $name, Astryl needs its orbit data from the internet. It is downloaded once and then works offline for days.';
   }
 
   @override
@@ -1888,7 +1888,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newsNote =>
-      'Articles come from the Spaceflight News API and are in English. Tapping one opens the publisher’s website in your browser. Heliora downloads no pictures.';
+      'Articles come from the Spaceflight News API and are in English. Tapping one opens the publisher’s website in your browser. Astryl downloads no pictures.';
 
   @override
   String get newsOpenFailed => 'Could not open the link.';
@@ -1902,7 +1902,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String tonightShareText(String city) {
-    return 'The sky over $city, made with Heliora, the free offline Solar System app: https://github.com/aditymishr098-collab/heliora';
+    return 'The sky over $city, made with Astryl, the free offline Solar System app: https://github.com/aditymishr098-collab/astryl';
   }
 
   @override
@@ -1927,7 +1927,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get backupRestore => 'Restore a backup';
 
   @override
-  String get backupShareText => 'Heliora backup';
+  String get backupShareText => 'Astryl backup';
 
   @override
   String get backupSaveFailed => 'The backup could not be made.';
@@ -1946,5 +1946,5 @@ class AppLocalizationsEn extends AppLocalizations {
   String get backupRestored => 'Backup restored.';
 
   @override
-  String get backupBad => 'That file is not a Heliora backup.';
+  String get backupBad => 'That file is not an Astryl backup.';
 }

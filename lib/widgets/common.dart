@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../data/planets.dart';
 import '../theme.dart';
 
-/// The Heliora mark: a golden sun with a blue planet on a tilted orbit.
+/// The Astryl mark: a golden sun with a blue planet on a tilted orbit.
 class HelioraLogo extends StatelessWidget {
   const HelioraLogo({super.key, this.size = 32});
 

@@ -7,7 +7,7 @@ import '../theme.dart';
 import 'common.dart';
 
 /// Turns the planet card on screen into a PNG for sharing, with a small
-/// Heliora footer underneath.
+/// Astryl footer underneath.
 Future<Uint8List> renderShareCard(
     RenderRepaintBoundary boundary, Palette palette) async {
   const ratio = 3.0;
@@ -31,7 +31,7 @@ Future<Uint8List> renderShareCard(
 
   final title = TextPainter(
     text: TextSpan(
-      text: 'Heliora',
+      text: 'Astryl',
       style: TextStyle(
           color: palette.text, fontSize: 42, fontWeight: FontWeight.w700),
     ),
@@ -40,7 +40,7 @@ Future<Uint8List> renderShareCard(
   title.paint(canvas, Offset(pad + 104, top));
   final link = TextPainter(
     text: TextSpan(
-      text: 'github.com/lumio-apps/heliora',
+      text: 'github.com/aditymishr098-collab/astryl',
       style: TextStyle(color: palette.muted, fontSize: 26),
     ),
     textDirection: TextDirection.ltr,

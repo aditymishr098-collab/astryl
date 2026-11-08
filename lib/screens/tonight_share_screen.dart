@@ -51,7 +51,7 @@ class _TonightShareScreenState extends State<TonightShareScreen> {
         final dir = await bridge.sharedDir();
         if (dir.isNotEmpty) {
           final file =
-              File('$dir${Platform.pathSeparator}Heliora-tonight.png');
+              File('$dir${Platform.pathSeparator}Astryl-tonight.png');
           await file.writeAsBytes(bytes, flush: true);
           shared = await bridge.shareImage(file.path, text);
         }

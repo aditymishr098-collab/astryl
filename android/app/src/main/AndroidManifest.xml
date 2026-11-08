@@ -15,7 +15,7 @@
     <application
         android:allowBackup="false"
         android:usesCleartextTraffic="false"
-        android:label="Heliora"
+        android:label="Astryl"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

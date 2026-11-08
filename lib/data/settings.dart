@@ -16,7 +16,7 @@ const List<int> textScaleChoices = <int>[100, 115, 130];
 /// language of the phone.
 const Set<String> supportedLocaleCodes = <String>{'', 'en', 'hi'};
 
-/// Everything Heliora remembers. Stored as one small JSON file in the app's
+/// Everything Astryl remembers. Stored as one small JSON file in the app's
 /// private folder, which Android keeps when the app is updated.
 @immutable
 class HelioraSettings {

@@ -143,7 +143,7 @@ class _PlanetScreenState extends State<PlanetScreen> {
         final dir = await bridge.sharedDir();
         if (dir.isNotEmpty) {
           final file = File('$dir${Platform.pathSeparator}'
-              'Heliora-${widget.planet.id}.png');
+              'Astryl-${widget.planet.id}.png');
           await file.writeAsBytes(bytes, flush: true);
           shared = await bridge.shareImage(file.path, l.shareText(name));
         }

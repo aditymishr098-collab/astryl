@@ -1,8 +1,8 @@
 name: heliora
-description: "Heliora - explore the Solar System offline. Planet facts, atmospheres and oxygen, in 2D and 3D."
+description: "Astryl - explore the Solar System offline. Planet facts, atmospheres and oxygen, in 2D and 3D."
 publish_to: 'none'
 
-version: 1.17.2+22
+version: 1.17.3+23
 
 environment:
   sdk: ^3.5.0

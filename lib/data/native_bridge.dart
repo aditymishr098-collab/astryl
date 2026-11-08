@@ -30,7 +30,7 @@ class NativeBridge {
   }
 
   /// Opens the Android installer for [path]. Returns "ok", "permission"
-  /// (the user must first allow installs from Heliora) or "error".
+  /// (the user must first allow installs from Astryl) or "error".
   Future<String> installApk(String path) async {
     try {
       final result = await _channel

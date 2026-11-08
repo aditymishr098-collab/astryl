@@ -50,7 +50,7 @@ class IssTle {
   }
 }
 
-/// A satellite other than the space station whose passes Heliora can show.
+/// A satellite other than the space station whose passes Astryl can show.
 class TrackedSatellite {
   const TrackedSatellite(this.id, this.noradId);
 
@@ -241,11 +241,11 @@ class Launch {
 /// launches and space news. Nothing about the user is sent; the services only
 /// see the phone's internet address.
 class OnlineService {
-  OnlineService({this.userAgent = 'Heliora (github.com/lumio-apps/heliora)'});
+  OnlineService({this.userAgent = 'Astryl (github.com/aditymishr098-collab/astryl)'});
 
   final String userAgent;
 
-  /// The only hosts Heliora talks to for these features.
+  /// The only hosts Astryl talks to for these features.
   static const Set<String> trustedHosts = <String>{
     'api.wheretheiss.at',
     'celestrak.org',

@@ -12,6 +12,9 @@ const int backupFormat = 1;
 /// A backup is a few kilobytes; anything much bigger is not one.
 const int maxBackupChars = 256 * 1024;
 
+// The "app" key stays "heliora": it is the app's old name, and backups made
+// by earlier versions must keep restoring.
+
 /// The text of a backup file for [settings].
 String buildBackup(HelioraSettings settings, DateTime now, String appVersion) {
   return const JsonEncoder.withIndent('  ').convert(<String, Object>{
@@ -24,14 +27,14 @@ String buildBackup(HelioraSettings settings, DateTime now, String appVersion) {
 }
 
 /// Reads a backup file. Throws [FormatException] when [text] is not a
-/// Heliora backup this version can read.
+/// Astryl backup this version can read.
 HelioraSettings parseBackup(String text) {
   if (text.length > maxBackupChars) {
     throw const FormatException('Too big for a backup');
   }
   final json = jsonDecode(text);
   if (json is! Map<String, dynamic> || json['app'] != 'heliora') {
-    throw const FormatException('Not a Heliora backup');
+    throw const FormatException('Not an Astryl backup');
   }
   final format = json['format'];
   if (format is! int || format < 1 || format > backupFormat) {

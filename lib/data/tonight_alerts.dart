@@ -8,7 +8,7 @@ import 'cities.dart';
 import 'native_bridge.dart';
 import 'planets.dart';
 
-/// How many evenings are set up ahead. Android has no way to run Heliora
+/// How many evenings are set up ahead. Android has no way to run Astryl
 /// every evening, so a fortnight of notes is prepared each time the app is
 /// opened.
 const int tonightAlertDays = 15;
