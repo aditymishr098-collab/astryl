@@ -2,7 +2,7 @@ name: heliora
 description: "Astryl - explore the Solar System offline. Planet facts, atmospheres and oxygen, in 2D and 3D."
 publish_to: 'none'
 
-version: 1.17.3+23
+version: 1.17.4+24
 
 environment:
   sdk: ^3.5.0

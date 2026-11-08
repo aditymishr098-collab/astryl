@@ -14,7 +14,7 @@ and an honest answer to "could humans live here?"
 [![Latest release](https://img.shields.io/github/v/release/aditymishr098-collab/astryl?label=release&color=F5A524)](https://github.com/aditymishr098-collab/astryl/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/aditymishr098-collab/astryl/total?color=7AA2FF)](https://github.com/aditymishr098-collab/astryl/releases)
 [![Website](https://img.shields.io/badge/website-astryl.space-7AA2FF)](https://astryl.space)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![License: AGPL v3](https://img.shields.io/badge/license-AGPL--3.0-blue)](LICENSE)
 ![Android](https://img.shields.io/badge/platform-Android-3DDC84?logo=android&logoColor=white)
 ![Flutter](https://img.shields.io/badge/built%20with-Flutter-02569B?logo=flutter&logoColor=white)
 ![Offline](https://img.shields.io/badge/works-offline-141B33)
@@ -52,7 +52,7 @@ and an honest answer to "could humans live here?"
 | 📴 **Offline first** | Everything works without internet. The few online extras are off until you switch them on. |
 | 🔒 **Private** | No ads, no account, no tracking. No personal data leaves your phone. |
 | 🌍 **English and हिन्दी** | The whole app is in English and Hindi, or follows your phone. |
-| 🆓 **Open source** | MIT licence. Read it, change it, build it yourself. |
+| 🆓 **Open source** | AGPL-3.0 licence. Read it, change it, build it yourself; if you share a changed version, share its source too. |
 
 ## Features
 
@@ -117,7 +117,7 @@ Astryl is prepared for [F-Droid](https://f-droid.org). That build is made from t
 
 ## Privacy
 
-[Astryl](https://astryl.space) is made by [Lumio Apps](https://github.com/lumio-apps): **no ads, no account, no tracking.**
+[Astryl](https://astryl.space): **no ads, no account, no tracking.**
 
 - Everything works without internet, except the optional online features below. Planet data, positions and 3D surfaces are all calculated on your phone.
 - **Online features are off by default.** If you switch them on in Settings, Astryl contacts `api.wheretheiss.at` (or `celestrak.org`) for the station's orbit data, `ll.thespacedevs.com` (Launch Library 2) for the launch list, and `api.spaceflightnewsapi.net` for the news. The orbits of Tiangong and Hubble come from `celestrak.org`. Nothing about you is sent; those services can only see your phone's internet address. The orbit data is saved on the phone, so the station keeps working offline for days. Switch the setting off and Astryl never contacts them.
@@ -192,8 +192,9 @@ All texts live in `lib/l10n/app_en.arb` and `lib/l10n/app_hi.arb`. Found a wrong
 
 | Version | What's new |
 |---|---|
+| **1.17.4** | The licence is now AGPL-3.0 (versions up to 1.17.3 stay under MIT). The name "Lumio Apps" is gone from the project texts; the copyright line is now Astryl and astryl.space. Settings → About has a new link to the website. Your data and settings are kept |
 | **1.17.3** | The app is now called **Astryl** (it was Heliora). New name on the home screen, in the update dialog, in shared texts and in file names; the repository is now github.com/aditymishr098-collab/astryl and the website is astryl.space. It installs over Heliora as an update: your data, settings and old backups are kept |
-| **1.17.2** | The project is back in the Lumio Apps organisation (github.com/lumio-apps/heliora). The update check, share texts and links point to it. Nothing else changes; your data and settings are kept |
+| **1.17.2** | The project moved to an organisation account (github.com/lumio-apps/heliora). The update check, share texts and links point to it. Nothing else changes; your data and settings are kept |
 | **1.17.1** | Safer updates and storage: every address on the way to an update must be GitHub (redirects are checked one by one), Android's cloud backup and plain-http traffic are switched off, and the boot receiver ignores any other broadcast. README privacy text made more exact. Your data is kept |
 | **1.17.0** | Backup and restore (one small file with favourites, settings, quiz scores, city and birth date). Lighter on the battery: hidden tabs no longer animate, the 3D planet and the 2D play mode run at 30 frames a second when idle, the planet stands still when the phone asks for reduced motion, and the star map keeps its text layouts between frames |
 | **1.16.2** | The project moved to a personal GitHub account (github.com/aditymishr098-collab/heliora). The update check, share texts and links now point to the new address. Nothing else changes; your data and settings are kept |
@@ -225,4 +226,6 @@ All texts live in `lib/l10n/app_en.arb` and `lib/l10n/app_hi.arb`. Found a wrong
 
 ## License
 
-[MIT](LICENSE) © Lumio Apps
+[AGPL-3.0](LICENSE) © 2026 Astryl · [astryl.space](https://astryl.space)
+
+Versions up to 1.17.3 were released under the MIT licence and stay under it. From 1.17.4 the code is under the GNU Affero General Public License v3.0: you may use, study, change and share it, and if you share a changed version (or run one as a service for others) you must share its source under the same licence.

@@ -722,6 +722,12 @@ abstract class AppLocalizations {
   /// **'Source code on GitHub'**
   String get sourceCode;
 
+  /// No description provided for @websiteLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Website: astryl.space'**
+  String get websiteLink;
+
   /// No description provided for @privacyLine.
   ///
   /// In en, this message translates to:

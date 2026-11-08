@@ -21,4 +21,4 @@ Astryl is an offline-first solar system app. Planet positions, the Moon, sunrise
 Nothing about you is sent. Switch the setting off and the app never goes online.
 
 <b>Private</b>
-No ads, no account, no tracking. Works in English and Hindi. Open source, MIT licence.
+No ads, no account, no tracking. Works in English and Hindi. Open source, AGPL-3.0 licence.

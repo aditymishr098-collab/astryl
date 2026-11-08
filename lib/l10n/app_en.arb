@@ -201,6 +201,7 @@
   "later": "Later",
   "about": "About",
   "sourceCode": "Source code on GitHub",
+  "websiteLink": "Website: astryl.space",
   "privacyLine": "Offline · No ads · No tracking",
   "dataSource": "Facts: NASA Planetary Fact Sheet",
   "openFailed": "Could not open the link.",

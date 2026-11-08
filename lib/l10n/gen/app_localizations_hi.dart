@@ -351,6 +351,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get sourceCode => 'GitHub पर सोर्स कोड';
 
   @override
+  String get websiteLink => 'वेबसाइट: astryl.space';
+
+  @override
   String get privacyLine => 'ऑफ़लाइन · कोई विज्ञापन नहीं · कोई ट्रैकिंग नहीं';
 
   @override

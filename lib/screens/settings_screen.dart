@@ -13,6 +13,7 @@ class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
   static const String _sourceUrl = 'https://github.com/aditymishr098-collab/astryl';
+  static const String _websiteUrl = 'https://astryl.space';
 
   Future<void> _checkUpdates(BuildContext context) async {
     final l = context.l10n;
@@ -411,6 +412,12 @@ class SettingsScreen extends StatelessWidget {
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(20)),
                   ),
+                  title: Text(l.websiteLink, style: TextStyle(color: p.text)),
+                  trailing: Icon(Icons.open_in_new, color: p.muted, size: 20),
+                  onTap: () => _open(context, _websiteUrl),
+                ),
+                const Divider(),
+                ListTile(
                   title: Text(l.sourceCode, style: TextStyle(color: p.text)),
                   trailing: Icon(Icons.open_in_new, color: p.muted, size: 20),
                   onTap: () => _open(context, _sourceUrl),
