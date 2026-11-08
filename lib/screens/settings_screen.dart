@@ -12,7 +12,7 @@ import 'update_dialog.dart';
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
-  static const String _sourceUrl = 'https://github.com/aditymishr098-collab/heliora';
+  static const String _sourceUrl = 'https://github.com/lumio-apps/heliora';
 
   Future<void> _checkUpdates(BuildContext context) async {
     final l = context.l10n;

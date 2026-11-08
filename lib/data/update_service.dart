@@ -27,9 +27,9 @@ class UpdateInfo {
 /// call the app makes, and it sends nothing about the user.
 class UpdateService {
   static const String releasesPage =
-      'https://github.com/aditymishr098-collab/heliora/releases';
+      'https://github.com/lumio-apps/heliora/releases';
   static const String _api =
-      'https://api.github.com/repos/aditymishr098-collab/heliora/releases/latest';
+      'https://api.github.com/repos/lumio-apps/heliora/releases/latest';
 
   /// The only places a release or its APK may come from: GitHub itself and
   /// the servers GitHub uses to hand out release files.

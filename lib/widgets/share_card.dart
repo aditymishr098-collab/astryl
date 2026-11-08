@@ -40,7 +40,7 @@ Future<Uint8List> renderShareCard(
   title.paint(canvas, Offset(pad + 104, top));
   final link = TextPainter(
     text: TextSpan(
-      text: 'github.com/aditymishr098-collab/heliora',
+      text: 'github.com/lumio-apps/heliora',
       style: TextStyle(color: palette.muted, fontSize: 26),
     ),
     textDirection: TextDirection.ltr,

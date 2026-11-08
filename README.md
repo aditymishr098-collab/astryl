@@ -9,14 +9,14 @@
 Real planet positions, rotating 3D worlds, a star map for your sky,<br>
 and an honest answer to "could humans live here?"
 
-[![Latest release](https://img.shields.io/github/v/release/aditymishr098-collab/heliora?label=release&color=F5A524)](https://github.com/aditymishr098-collab/heliora/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/aditymishr098-collab/heliora/total?color=7AA2FF)](https://github.com/aditymishr098-collab/heliora/releases)
+[![Latest release](https://img.shields.io/github/v/release/lumio-apps/heliora?label=release&color=F5A524)](https://github.com/lumio-apps/heliora/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/lumio-apps/heliora/total?color=7AA2FF)](https://github.com/lumio-apps/heliora/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 ![Android](https://img.shields.io/badge/platform-Android-3DDC84?logo=android&logoColor=white)
 ![Flutter](https://img.shields.io/badge/built%20with-Flutter-02569B?logo=flutter&logoColor=white)
 ![Offline](https://img.shields.io/badge/works-offline-141B33)
 
-[**⬇ Download the latest APK**](https://github.com/aditymishr098-collab/heliora/releases/latest)
+[**⬇ Download the latest APK**](https://github.com/lumio-apps/heliora/releases/latest)
 
 </div>
 
@@ -100,7 +100,7 @@ and an honest answer to "could humans live here?"
 
 ## Install
 
-1. Open the [latest release](https://github.com/aditymishr098-collab/heliora/releases/latest) on your Android phone.
+1. Open the [latest release](https://github.com/lumio-apps/heliora/releases/latest) on your Android phone.
 2. Download the file `Heliora-vX.Y.Z.apk`.
 3. Open it and allow your browser to install apps if Android asks.
 
@@ -187,6 +187,7 @@ All texts live in `lib/l10n/app_en.arb` and `lib/l10n/app_hi.arb`. Found a wrong
 
 | Version | What's new |
 |---|---|
+| **1.17.2** | The project is back in the Lumio Apps organisation (github.com/lumio-apps/heliora). The update check, share texts and links point to it. Nothing else changes; your data and settings are kept |
 | **1.17.1** | Safer updates and storage: every address on the way to an update must be GitHub (redirects are checked one by one), Android's cloud backup and plain-http traffic are switched off, and the boot receiver ignores any other broadcast. README privacy text made more exact. Your data is kept |
 | **1.17.0** | Backup and restore (one small file with favourites, settings, quiz scores, city and birth date). Lighter on the battery: hidden tabs no longer animate, the 3D planet and the 2D play mode run at 30 frames a second when idle, the planet stands still when the phone asks for reduced motion, and the star map keeps its text layouts between frames |
 | **1.16.2** | The project moved to a personal GitHub account (github.com/aditymishr098-collab/heliora). The update check, share texts and links now point to the new address. Nothing else changes; your data and settings are kept |
