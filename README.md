@@ -13,12 +13,15 @@ and an honest answer to "could humans live here?"
 
 [![Latest release](https://img.shields.io/github/v/release/aditymishr098-collab/astryl?label=release&color=F5A524)](https://github.com/aditymishr098-collab/astryl/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/aditymishr098-collab/astryl/total?color=7AA2FF)](https://github.com/aditymishr098-collab/astryl/releases)
+[![Website](https://img.shields.io/badge/website-astryl.space-7AA2FF)](https://astryl.space)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 ![Android](https://img.shields.io/badge/platform-Android-3DDC84?logo=android&logoColor=white)
 ![Flutter](https://img.shields.io/badge/built%20with-Flutter-02569B?logo=flutter&logoColor=white)
 ![Offline](https://img.shields.io/badge/works-offline-141B33)
 
 [**⬇ Download the latest APK**](https://github.com/aditymishr098-collab/astryl/releases/latest)
+
+[Website: astryl.space](https://astryl.space) · [Source: github.com/aditymishr098-collab/astryl](https://github.com/aditymishr098-collab/astryl) · [All releases](https://github.com/aditymishr098-collab/astryl/releases) · [Report a problem](https://github.com/aditymishr098-collab/astryl/issues)
 
 </div>
 
@@ -114,7 +117,7 @@ Astryl is prepared for [F-Droid](https://f-droid.org). That build is made from t
 
 ## Privacy
 
-Astryl is made by [Lumio Apps](https://github.com/lumio-apps): **no ads, no account, no tracking.**
+[Astryl](https://astryl.space) is made by [Lumio Apps](https://github.com/lumio-apps): **no ads, no account, no tracking.**
 
 - Everything works without internet, except the optional online features below. Planet data, positions and 3D surfaces are all calculated on your phone.
 - **Online features are off by default.** If you switch them on in Settings, Astryl contacts `api.wheretheiss.at` (or `celestrak.org`) for the station's orbit data, `ll.thespacedevs.com` (Launch Library 2) for the launch list, and `api.spaceflightnewsapi.net` for the news. The orbits of Tiangong and Hubble come from `celestrak.org`. Nothing about you is sent; those services can only see your phone's internet address. The orbit data is saved on the phone, so the station keeps working offline for days. Switch the setting off and Astryl never contacts them.
@@ -189,7 +192,7 @@ All texts live in `lib/l10n/app_en.arb` and `lib/l10n/app_hi.arb`. Found a wrong
 
 | Version | What's new |
 |---|---|
-| **1.17.3** | The app is now called **Astryl** (it was Heliora). New name on the home screen, in the update dialog, in shared texts and in file names; the repository is now github.com/aditymishr098-collab/astryl. It installs over Heliora as an update: your data, settings and old backups are kept |
+| **1.17.3** | The app is now called **Astryl** (it was Heliora). New name on the home screen, in the update dialog, in shared texts and in file names; the repository is now github.com/aditymishr098-collab/astryl and the website is astryl.space. It installs over Heliora as an update: your data, settings and old backups are kept |
 | **1.17.2** | The project is back in the Lumio Apps organisation (github.com/lumio-apps/heliora). The update check, share texts and links point to it. Nothing else changes; your data and settings are kept |
 | **1.17.1** | Safer updates and storage: every address on the way to an update must be GitHub (redirects are checked one by one), Android's cloud backup and plain-http traffic are switched off, and the boot receiver ignores any other broadcast. README privacy text made more exact. Your data is kept |
 | **1.17.0** | Backup and restore (one small file with favourites, settings, quiz scores, city and birth date). Lighter on the battery: hidden tabs no longer animate, the 3D planet and the 2D play mode run at 30 frames a second when idle, the planet stands still when the phone asks for reduced motion, and the star map keeps its text layouts between frames |
@@ -212,6 +215,13 @@ All texts live in `lib/l10n/app_en.arb` and `lib/l10n/app_hi.arb`. Found a wrong
 | **1.2.0** | Updates download and install inside the app |
 | **1.1.0** | The Sun, Pluto, the Moon and 7 major moons, "Could humans live here?" life score |
 | **1.0.0** | First release: 2D and 3D views, planet facts, atmosphere and oxygen, compare, weight, quiz, 20 languages |
+
+## Links
+
+- Website: [astryl.space](https://astryl.space)
+- Source code: [github.com/aditymishr098-collab/astryl](https://github.com/aditymishr098-collab/astryl)
+- Downloads: [latest release](https://github.com/aditymishr098-collab/astryl/releases/latest)
+- Bugs and ideas: [issues](https://github.com/aditymishr098-collab/astryl/issues)
 
 ## License
 
