@@ -175,3 +175,38 @@ html.js .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,tra
 html.js .rv.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){body{animation:none}.hero2 .rise,.orrery,.orrery .orb,.orrery .keep{animation:none}.btn,.card,a.sc{transition:none}}
 .duo p{margin:.6em 0 14px}
+/* welcome window */
+body.gate-open{overflow:hidden}
+.gate{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:16px;background:var(--bg);overflow:auto;animation:pagein .5s ease both;transition:opacity .4s,transform .4s}
+.gate.out{opacity:0;transform:scale(1.03);pointer-events:none}
+.gate-art{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.gate-art i{position:absolute;left:50%;top:50%;translate:-50% -50%;border:1px solid var(--line);border-radius:50%;animation:spin linear infinite}
+.gate-art i:after{content:"";position:absolute;top:-7px;left:50%;margin-left:-7px;width:14px;height:14px;border-radius:50%;background:var(--accent)}
+.gate-art i:nth-child(1){width:min(70vmin,620px);height:min(70vmin,620px);animation-duration:60s}
+.gate-art i:nth-child(2){width:min(100vmin,880px);height:min(100vmin,880px);animation-duration:95s;animation-direction:reverse}
+.gate-art i:nth-child(2):after{background:var(--violet)}
+.gate-art i:nth-child(3){width:min(135vmin,1180px);height:min(135vmin,1180px);animation-duration:140s}
+.gate-art i:nth-child(3):after{background:#f2b84b}
+.gate-art b{position:absolute;left:50%;top:50%;width:150px;height:150px;translate:-50% -50%;border-radius:50%;background:radial-gradient(circle,#fff3c4,#f2b84b 45%,transparent 70%);opacity:.5}
+.gate-card{position:relative;width:min(460px,100%);max-height:calc(100vh - 32px);overflow:auto;background:color-mix(in srgb,var(--card) 93%,transparent);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:22px;padding:26px 24px;box-shadow:var(--shadow);animation:rise .7s .15s cubic-bezier(.2,.7,.2,1) both}
+.gate-card h1{font-size:1.7rem;margin:0 84px .3em 0}
+.gate-lang{position:absolute;right:16px;top:16px;padding:6px 12px;font-size:.85rem}
+.gate-skip{text-align:center;margin:14px 0 0}
+@media(prefers-reduced-motion:reduce){.gate,.gate-card,.gate-art i{animation:none}.gate{transition:none}}
+/* privacy page */
+.policy-head{max-width:900px}
+.glance{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin-top:18px}
+.glance .card{padding:16px}.glance h3{font-size:1rem}
+.policy-layout{display:grid;grid-template-columns:220px 1fr;gap:34px;max-width:1000px;align-items:start}
+@media(max-width:860px){.policy-layout{grid-template-columns:1fr}}
+.toc{position:sticky;top:76px;display:flex;flex-direction:column;gap:2px;font-size:.92rem}
+@media(max-width:860px){.toc{position:static;flex-direction:row;flex-wrap:wrap;gap:6px}.toc b{width:100%}}
+.toc b{margin-bottom:6px;color:var(--muted);font-weight:500}
+.toc a{color:var(--muted);padding:5px 10px;border-radius:8px}.toc a:hover{background:var(--card);color:var(--text);text-decoration:none}
+.policy{max-width:720px}
+.policy h2{font-size:1.35rem;margin-top:1.8em;padding-top:.2em;scroll-margin-top:76px}
+.policy h2:first-child{margin-top:0}
+.policy h3{margin-top:1.4em}
+.policy table{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
+.policy th{background:var(--card2)}
+.policy li{margin:.35em 0}

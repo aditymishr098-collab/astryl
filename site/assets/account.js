@@ -30,6 +30,8 @@
       statsNote: 'Active means people who chose to be counted. Downloads are counted by GitHub.',
       webNote: 'On this website your language, theme and quiz scores sync. Sharing your location is only in the app.',
       loading: 'Loading…', showPassword: 'Show password',
+      statsViews: 'Page views (30 days)',
+      welcomeTitle: 'Welcome to Astryl', welcomeSub: 'Make a free account to keep your favourites, quiz scores and rank in step between the app and this website. Or just look around.', welcomeSkip: 'Continue without account',
       webIntro: 'Optional. A username and a password, no e-mail. Your favourites, quiz scores and settings then follow you between the Astryl app and this website.'
     },
     hi: {
@@ -38,6 +40,8 @@
       statsNote: 'Active यानी वे लोग जिन्होंने गिने जाना चुना है। Downloads की गिनती GitHub करता है।',
       webNote: 'इस website पर आपकी भाषा, theme और quiz scores sync होते हैं। Location साझा करना सिर्फ़ app में है।',
       loading: 'Loading…', showPassword: 'Password दिखाएँ',
+      statsViews: 'Page views (30 दिन)',
+      welcomeTitle: 'Astryl में स्वागत है', welcomeSub: 'मुफ़्त खाता बनाइए, ताकि आपके favourites, quiz scores और rank app और इस website में एक जैसे रहें। या बस घूमकर देखिए।', welcomeSkip: 'बिना खाते के आगे बढ़ें',
       webIntro: 'ज़रूरी नहीं। बस एक username और password, e-mail नहीं। फिर आपके favourites, quiz scores और settings Astryl app और इस website के बीच आपके साथ चलते हैं।'
     }
   };
@@ -71,7 +75,7 @@
 
   /* ---------- what is kept in this browser ---------- */
   function getSession() { try { return JSON.parse(store.get('astryl-session') || 'null'); } catch (e) { return null; } }
-  function setSession(s) { store.set('astryl-session', JSON.stringify(s)); }
+  function setSession(s) { store.set('astryl-session', JSON.stringify(s)); store.set('astryl-gate', '1'); }
   function clearSession() { store.del('astryl-session'); }
   function getPrefs() {
     var p = {};
@@ -165,19 +169,51 @@
     api('ping', { device: deviceId(), country: p.shareCountry ? country() : null }).then(function () { patchPrefs({ lastPing: Date.now() }); }, function () {});
   }
 
-  /* ---------- banner ---------- */
-  function banner() {
+  /* ---------- welcome: create an account, log in, or carry on without ---------- */
+  var gateEl = null;
+  function closeGate(remember) {
+    if (remember) store.set('astryl-gate', '1');
+    if (!gateEl) return;
+    var g = gateEl; gateEl = null;
+    document.body.classList.remove('gate-open');
+    g.classList.add('out');
+    setTimeout(function () { if (g.parentNode) g.parentNode.removeChild(g); }, 400);
+  }
+  function welcome() {
     var page = document.body.dataset.page;
-    if (page === 'account' || getSession() || store.get('astryl-banner') === '1') return;
-    var main = $('main'); if (!main) return;
-    main.insertAdjacentHTML('beforebegin', '<div class="acct-banner" id="acctBanner"><div class="wrap"><span id="bannerText"></span><span class="acts"><a class="btn primary" id="bannerGo"></a><button class="btn" id="bannerLater" type="button"></button></span></div></div>');
+    if (page === 'account' || page === 'get' || $('#acct') || getSession() || store.get('astryl-gate') === '1') return;
+    if (navigator.webdriver && !/[?&]gate=1/.test(location.search)) return;
+    var el = document.createElement('div');
+    el.className = 'gate'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-labelledby', 'gateTitle');
+    el.innerHTML = '<div class="gate-art" aria-hidden="true"><i></i><i></i><i></i><b></b></div>' +
+      '<div class="gate-card"><button class="btn gate-lang" id="gateLang" type="button"></button>' +
+      '<h1 id="gateTitle"></h1><p class="sub" id="gateSub"></p>' +
+      '<div id="acct"></div>' +
+      '<p class="gate-skip"><button class="btn" id="gateSkip" type="button"></button></p></div>';
+    document.body.appendChild(el); gateEl = el; document.body.classList.add('gate-open');
     function paint() {
-      $('#bannerText').textContent = w('webIntro');
-      var go = $('#bannerGo'); go.textContent = t('acctTabCreate'); go.href = ROOT + 'account.html';
-      $('#bannerLater').textContent = w('bannerLater');
+      $('#gateTitle').textContent = w('welcomeTitle'); $('#gateSub').textContent = w('welcomeSub');
+      $('#gateSkip').textContent = w('welcomeSkip') + ' →';
+      $('#gateLang').textContent = lang() === 'hi' ? 'English' : 'हिन्दी';
     }
     paint(); onLang(paint);
-    $('#bannerLater').addEventListener('click', function () { store.set('astryl-banner', '1'); var b = $('#acctBanner'); if (b) b.remove(); });
+    $('#gateSkip').addEventListener('click', function () { closeGate(true); });
+    $('#gateLang').addEventListener('click', function () { var b = $('#langBtn'); if (b) b.click(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && gateEl) closeGate(true); });
+  }
+
+
+  /* ---------- page views: counted, never tied to a person ---------- */
+  function track() {
+    try {
+      if (navigator.doNotTrack === '1' || window.doNotTrack === '1' || navigator.globalPrivacyControl) return;
+      if (navigator.webdriver || location.protocol === 'file:' || /^(localhost|127\.)/.test(location.hostname)) return;
+    } catch (e) { return; }
+    var page = (location.pathname.replace(/^\/+/, '') || 'index.html').slice(0, 60);
+    var ref = '';
+    try { var u = new URL(document.referrer); if (u.hostname && u.hostname !== location.hostname) ref = u.hostname.replace(/^www\./, '').slice(0, 80); } catch (e) {}
+    var wd = window.innerWidth || 1000;
+    api('visit', { page: page, lang: lang(), ref: ref, device: wd < 640 ? 's' : wd < 1024 ? 'm' : 'l' }).catch(function () {});
   }
 
   /* ---------- account page ---------- */
@@ -196,6 +232,7 @@
   function draw() {
     var root = $('#acct'); if (!root) return;
     var s = getSession(), h = '';
+    if (s && !ui.code && gateEl) { closeGate(true); }
     if (ui.code) {
       h = '<h2>' + esc(t('acctCodeTitle')) + '</h2><p>' + esc(t('acctCodeWarn')) + '</p>' + codeCard(ui.code) +
         check('saved', t('acctCodeSaved'), '', ui.saved) +
@@ -219,7 +256,7 @@
         (ui.delMsg ? '<p class="no">' + esc(ui.delMsg) + '</p>' : '') + '</div>';
     } else {
       var create = ui.mode === 'create', recover = ui.mode === 'recover';
-      h = '<p class="sub">' + esc(w('webIntro')) + '</p>';
+      h = gateEl ? '' : '<p class="sub">' + esc(w('webIntro')) + '</p>';
       if (!recover) h += '<div class="tabs"><button type="button" class="' + (create ? 'on' : '') + '" data-act="mode:create">' + esc(t('acctTabCreate')) + '</button><button type="button" class="' + (!create ? 'on' : '') + '" data-act="mode:login">' + esc(t('acctTabLogin')) + '</button></div>';
       else h += '<h2>' + esc(t('acctRecoverTitle')) + '</h2>';
       h += field('user', t('acctUsername'), 'text', create || recover ? t('acctUsernameHint') : '', 'username');
@@ -335,7 +372,7 @@
     var data = {};
     function paint() {
       var n = function (v) { return v === undefined ? '–' : Number(v).toLocaleString(lang() === 'hi' ? 'hi-IN' : 'en-US'); };
-      var h = '<div class="stat"><b>' + n(data.registered) + '</b><span>' + esc(w('statsRegistered')) + '</span></div><div class="stat"><b>' + n(data.active) + '</b><span>' + esc(w('statsActive')) + '</span></div><div class="stat"><b>' + n(data.downloads) + '</b><span>' + esc(w('statsDownloads')) + '</span></div>';
+      var h = '<div class="stat"><b>' + n(data.registered) + '</b><span>' + esc(w('statsRegistered')) + '</span></div><div class="stat"><b>' + n(data.active) + '</b><span>' + esc(w('statsActive')) + '</span></div><div class="stat"><b>' + n(data.views) + '</b><span>' + esc(w('statsViews')) + '</span></div><div class="stat"><b>' + n(data.downloads) + '</b><span>' + esc(w('statsDownloads')) + '</span></div>';
       box.innerHTML = h;
       var c = $('#statsCountries');
       if (c) {
@@ -347,7 +384,7 @@
     }
     paint(); onLang(paint);
     fetch(API + '?action=stats', { headers: { apikey: KEY } }).then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (j) {
-      data.registered = j.registered; data.active = j.active_30d; data.countries = j.countries; paint();
+      data.registered = j.registered; data.active = j.active_30d; data.views = j.views_30d; data.countries = j.countries; paint();
     }).catch(function () {});
     fetch('https://api.github.com/repos/' + REPO + '/releases?per_page=100').then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (rs) {
       var total = 0;
@@ -356,6 +393,6 @@
     }).catch(function () {});
   }
 
-  banner(); accountPage(); statsBlock(); ping();
+  welcome(); accountPage(); statsBlock(); ping(); track();
   if (getSession() && !$('#acct')) sync();
 })();
