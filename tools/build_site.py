@@ -5,7 +5,7 @@ Reads lib/data/*.dart, lib/core/*.dart and lib/l10n/app_{en,hi}.arb, so the
 website shows the same planets, texts and numbers as the app. Run it from the
 project root:  python3 tools/build_site.py
 """
-import html, json, math, re, shutil
+import hashlib, html, json, math, re, shutil
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -338,6 +338,20 @@ NAV = [('index.html', 'home', bt('Home', 'होम')), ('planets.html', 'planet
        ('you.html', 'you', bt('You', 'आप')), ('quiz.html', 'quiz', bi('navQuiz')), ('sky.html', 'sky', bi('skyTitle')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')), ('missions.html', 'missions', bi('missionsTitle'))]
 
 
+_ASSET_V = []
+
+
+def asset_v():
+    '''A short hash of the scripts and styles, so a changed file is never served from an old cache.'''
+    if not _ASSET_V:
+        h = hashlib.md5()
+        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'fx.js'):
+            h.update((SRC / name).read_bytes())
+        h.update(data_js().encode('utf-8'))
+        _ASSET_V.append(h.hexdigest()[:10])
+    return _ASSET_V[0]
+
+
 def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', scripts=True, extra_head=''):
     p = '../' * depth
     nav = ''.join(f'<a href="{p}{h}"{" class=on" if k == page else ""}>{label}</a>' for h, k, label in NAV)
@@ -352,7 +366,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 <link rel="canonical" href="{url}">
 <meta property="og:title" content="{esc(title_en)} · Astryl"><meta property="og:description" content="{esc(desc_en)}"><meta property="og:type" content="website"><meta property="og:url" content="{url}"><meta name="theme-color" content="#fbf7ee">
 <link rel="icon" href="{p}assets/icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="{p}assets/style.css">
+<link rel="stylesheet" href="{p}assets/style.css?v={asset_v()}">
 <script>try{{var s=localStorage,l=s.getItem("astryl-lang")||((navigator.language||"en").slice(0,2)==="hi"?"hi":"en");document.documentElement.lang=l==="hi"?"hi":"en";if(s.getItem("astryl-theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}}catch(e){{}}if(window.IntersectionObserver&&!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))document.documentElement.classList.add("js")</script>
 {extra_head}</head>
 <body data-page="{page}" data-root="{p}">
@@ -370,7 +384,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 <div>{bt("Free and open source", "मुफ़्त और open source")}<br><a href="{REPO}">{bt("Source code on GitHub", "GitHub पर source code")}</a><br><a href="{REPO}/blob/main/LICENSE">AGPL-3.0</a> · <a href="{p}privacy.html">{bt("Privacy Policy", "Privacy Policy")}</a><br><a href="{p}account.html">{bt("Account", "खाता")}</a></div>
 <div>{bt("Facts: NASA Planetary Fact Sheet", "तथ्य: NASA Planetary Fact Sheet")}<br><a href="{p}get.html">{bt("Download the app", "App download करें")}</a></div>
 </div></footer>
-{"<script src=\"" + p + "assets/data.js\"></script><script src=\"" + p + "assets/app.js\"></script><script src=\"" + p + "assets/account.js\"></script><script src=\"" + p + "assets/fx.js\"></script>" if scripts else ""}
+{"<script src=\"" + p + "assets/data.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/app.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/account.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/fx.js?v=" + asset_v() + "\"></script>" if scripts else ""}
 </body></html>
 '''
 
@@ -476,13 +490,13 @@ def orrery_svg():
         planet = f'<g class="keep" style="animation-duration:{dur}s">{ring}{body}</g>' if ring else body
         orbs += f'<g transform="rotate({ang})"><g class="orb" style="animation-duration:{dur}s"><g transform="translate({r} 0)"><title>{esc(tr("en", NAME_KEY[pid]))}</title>{planet}</g></g></g>'
     sun = '<circle r="58" fill="url(#orSun)" opacity=".55"/><circle r="22" fill="#f2b84b"/><circle r="22" fill="url(#orSun)"/>'
-    return f'<svg class="orrery" viewBox="-256 -256 512 512" role="img" aria-label="{esc("The planets going round the Sun")}"><defs>{defs}</defs>{rings}{sun}{orbs}</svg>'
+    return f'<svg class="orrery" width="520" height="520" viewBox="-256 -256 512 512" role="img" aria-label="{esc("The planets going round the Sun")}"><defs>{defs}</defs>{rings}{sun}{orbs}</svg>'
 
 
 def index_page():
     # (icon html, title key, English line, Hindi line, link)
     def pic(i):
-        return planet_svg(BY[i], 42, 'h')
+        return planet_svg(BY[i], 42, 'h').replace('<svg ', '<svg width="42" height="42" ', 1)
     tiles = [(pic('saturn'), 'planetsTitle', 'All planets, Pluto and the big moons', 'सारे ग्रह, Pluto और बड़े चाँद', 'planets.html'),
              (pic('sun'), 'solarSystemTitle', 'Real positions on any date', 'किसी भी तारीख़ की असली स्थिति', 'solar-system.html'),
              (pic('moon'), 'skyTitle', 'Moon phase, calendar, meteor showers', 'चाँद की कला, calendar, उल्कापात', 'sky.html'),
@@ -521,7 +535,7 @@ def index_page():
 </section>
 <section class="blk"><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))"><div class="card" id="dailyFact"></div></div></section>
 <section class="blk"><h2>{bt("This website in numbers", "यह website आँकड़ों में")}</h2><div class="stats" id="stats"></div><p class="note" id="statsCountries"></p><p class="note" id="statsNote"></p></section>'''
-    write('index.html', shell('Explore the Universe', 'ब्रह्मांड खोजिए', 'home', body, 'Astryl: planets, moons, stars and space missions. Real positions and real numbers for any date, free and open source, in English and Hindi.', canonical='', extra_head='<script defer src="assets/cosmos.js"></script>'))
+    write('index.html', shell('Explore the Universe', 'ब्रह्मांड खोजिए', 'home', body, 'Astryl: planets, moons, stars and space missions. Real positions and real numbers for any date, free and open source, in English and Hindi.', canonical='', extra_head=f'<script defer src="assets/cosmos.js?v={asset_v()}"></script>'))
 
 
 def planets_page():
