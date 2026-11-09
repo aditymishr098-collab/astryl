@@ -316,7 +316,7 @@ class _ExploreTabState extends State<ExploreTab>
         // Big planet cards.
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
-          child: Text(l.planetsTitle, style: headingStyle(20, p.text)),
+          child: Text(l.planetsTitle, style: headingStyle(17, p.text)),
         ),
         _PopularCards(selectedId: _selectedId, onTap: _openPlanet),
         // The Solar System, flat or 3D.
@@ -326,7 +326,7 @@ class _ExploreTabState extends State<ExploreTab>
             children: <Widget>[
               Expanded(
                 child: Text(l.solarSystemTitle,
-                    style: headingStyle(20, p.text)),
+                    style: headingStyle(17, p.text)),
               ),
               _ViewToggle(
                 mode: mode,
@@ -335,6 +335,19 @@ class _ExploreTabState extends State<ExploreTab>
             ],
           ),
         ),
+        if (mode == ViewMode.globe) ...<Widget>[
+          _PlanetChips(
+            selectedId: _selectedId,
+            onSelect: (planet) => setState(() => _selectedId = planet.id),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
+            child: _GlobeInfoCard(
+              planet: selected,
+              onOpen: () => _openPlanet(selected),
+            ),
+          ),
+        ],
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Container(
@@ -378,20 +391,6 @@ class _ExploreTabState extends State<ExploreTab>
             style: TextStyle(fontSize: 12, color: p.muted),
           ),
         ),
-        if (mode == ViewMode.globe) ...<Widget>[
-          const SizedBox(height: 6),
-          _PlanetChips(
-            selectedId: _selectedId,
-            onSelect: (planet) => setState(() => _selectedId = planet.id),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-            child: _GlobeInfoCard(
-              planet: selected,
-              onOpen: () => _openPlanet(selected),
-            ),
-          ),
-        ],
       ],
     );
   }
@@ -563,7 +562,7 @@ class _PopularCards extends StatelessWidget {
     final textScale =
         (MediaQuery.textScalerOf(context).scale(10) / 10).clamp(1.0, 1.4);
     return SizedBox(
-      height: 196 * textScale,
+      height: 164 * textScale,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -574,7 +573,7 @@ class _PopularCards extends StatelessWidget {
           final on = planet.id == selectedId;
           final starred = favorites.contains(planet.id);
           return SizedBox(
-            width: 156,
+            width: 140,
             child: Material(
               color: Color.alphaBlend(
                   planet.color.withValues(alpha: on ? 0.24 : 0.15),
@@ -589,24 +588,24 @@ class _PopularCards extends StatelessWidget {
                 borderRadius: BorderRadius.circular(26),
                 onTap: () => onTap(planet),
                 child: Padding(
-                  padding: const EdgeInsets.all(14),
+                  padding: const EdgeInsets.all(12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.only(top: 6, left: 4),
+                            padding: const EdgeInsets.only(top: 2, left: 2),
                             child: SizedBox(
-                              height: 78,
+                              height: 64,
                               child: Stack(
                                 alignment: Alignment.center,
                                 children: <Widget>[
                                   Container(
-                                    width: 70,
-                                    height: 70,
+                                    width: 58,
+                                    height: 58,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       boxShadow: <BoxShadow>[
@@ -618,7 +617,7 @@ class _PopularCards extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  PlanetBall(planet: planet, size: 70),
+                                  PlanetBall(planet: planet, size: 58),
                                 ],
                               ),
                             ),
@@ -628,6 +627,7 @@ class _PopularCards extends StatelessWidget {
                             Icon(Icons.star, size: 20, color: p.accentText),
                         ],
                       ),
+                      const SizedBox(height: 8),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
@@ -636,15 +636,15 @@ class _PopularCards extends StatelessWidget {
                             planetName(l, planet),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: headingStyle(19, p.text),
+                            style: headingStyle(15, p.text),
                           ),
-                          const SizedBox(height: 2),
+                          const SizedBox(height: 1),
                           Text(
                             bodySubtitle(l, planet),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                                fontSize: 13, color: p.muted, height: 1.2),
+                                fontSize: 11.5, color: p.muted, height: 1.2),
                           ),
                         ],
                       ),
@@ -741,7 +741,7 @@ class _GlobeInfoCard extends StatelessWidget {
                 child: Text(
                   planetName(l, planet),
                   style: TextStyle(
-                      fontSize: 22, fontWeight: FontWeight.w700, color: p.text),
+                      fontSize: 18, fontWeight: FontWeight.w700, color: p.text),
                 ),
               ),
               Flexible(
@@ -750,7 +750,7 @@ class _GlobeInfoCard extends StatelessWidget {
                   textAlign: TextAlign.end,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 13, color: p.muted),
+                  style: TextStyle(fontSize: 12, color: p.muted),
                 ),
               ),
             ],
