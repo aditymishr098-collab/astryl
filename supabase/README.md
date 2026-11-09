@@ -6,7 +6,7 @@ policy), so the public key cannot read or write anything by itself.
 
 | Part | File |
 |---|---|
-| Tables, locks, counter functions | `migrations/001_init.sql` |
+| Tables, locks, counter functions | `migrations/001_init.sql`, then `migrations/002_service_role_grants.sql` |
 | The only door: signup, login, recovery, sync, delete, counter | `functions/account/index.ts` |
 | Keeps the free project awake | `../.github/workflows/keepalive.yml` |
 
@@ -19,7 +19,8 @@ set automatically.
 ## One-time setup (about 10 minutes, in the Supabase dashboard)
 
 1. **Tables.** SQL Editor → New query → paste all of `migrations/001_init.sql` →
-   Run. It says "Success". Running it again is harmless.
+   Run, then do the same with `migrations/002_service_role_grants.sql` (it gives
+   the function's own role access again). Both are harmless to run twice.
 2. **Sign-in settings.** Authentication → Sign In / Providers → Email:
    *Confirm email* **off** (usernames have no real e-mail; the function marks
    them confirmed itself). Leave *Allow new users to sign up* on.
