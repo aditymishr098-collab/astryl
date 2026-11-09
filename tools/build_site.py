@@ -639,7 +639,7 @@ def privacy_page():
     def tr(a_en, a_hi, b_en, b_hi, c_en, c_hi):
         return f'<tr><td>{bt(a_en, a_hi)}</td><td>{bt(b_en, b_hi)}</td><td>{bt(c_en, c_hi)}</td></tr>'
     body = f"""<section class="blk policy" style="max-width:800px"><h1>{bt("Privacy Policy", "Privacy Policy")}</h1>
-<p class="note">{bt("Last updated 9 November 2026 · applies to the Astryl app (version 1.19.0 and later; account features from 1.18.0) and to astryl.space", "आख़िरी बार 9 नवंबर 2026 को बदली गई · Astryl app (version 1.19.0 और बाद के; खाते की सुविधाएँ 1.18.0 से) और astryl.space पर लागू")}</p>
+<p class="note">{bt("Last updated 9 November 2026 · applies to the Astryl app (version 1.19.1 and later; account features from 1.18.0) and to astryl.space", "आख़िरी बार 9 नवंबर 2026 को बदली गई · Astryl app (version 1.19.1 और बाद के; खाते की सुविधाएँ 1.18.0 से) और astryl.space पर लागू")}</p>
 <p class="sub">{bt("Short version: no ads, nothing is sold. The app works without an account. If you make one, or if the app crashes, we keep only what is listed below, you choose every optional switch, and you can delete everything yourself at any time.", "छोटे में: कोई विज्ञापन नहीं, कुछ बेचा नहीं जाता। App खाते के बिना चलता है। खाता बनाएँ, या app crash हो, तो हम सिर्फ़ वही रखते हैं जो नीचे लिखा है, हर वैकल्पिक switch आप चुनते हैं, और आप कभी भी सब कुछ ख़ुद मिटा सकते हैं।")}</p>
 
 <h2>{bt("1. Who is responsible", "1. ज़िम्मेदार कौन है")}</h2>
@@ -647,10 +647,10 @@ def privacy_page():
 
 <h2>{bt("2. Without an account", "2. खाते के बिना")}</h2>
 <ul>
-{li("Planet facts, the Moon, planet positions, eclipses, the star map and the quiz are worked out on your phone or in your browser. No internet is needed for the app.", "ग्रहों के तथ्य, चाँद, ग्रहों की स्थिति, ग्रहण, star map और quiz आपके फ़ोन या browser में ही निकाले जाते हैं। App के लिए internet ज़रूरी नहीं।")}
+{li("Planet facts, the Moon, planet positions, eclipses, the star map and the quiz are worked out on your phone or in your browser.", "ग्रहों के तथ्य, चाँद, ग्रहों की स्थिति, ग्रहण, star map और quiz आपके फ़ोन या browser में ही निकाले जाते हैं।")}
 {li("Your city, birth date, favourites, quiz scores and settings are saved on your phone. The Backup file is made by you and goes only where you send it.", "आपका शहर, जन्मतिथि, favourites, quiz scores और settings आपके फ़ोन में save होते हैं। Backup file आप बनाते हैं और वह वहीं जाती है जहाँ आप भेजें।")}
 {li("Update check: each time the app opens, it asks GitHub for the newest release and, if there is one, offers it first (you can tap Skip). GitHub sees your IP address, like in any web request.", "Update check: app हर बार खुलने पर GitHub से सबसे नया release पूछता है और नया हो तो सबसे पहले वही दिखाता है (आप Skip दबा सकते हैं)। जैसे हर web request में होता है, GitHub आपका IP address देख सकता है।")}
-{li("Online features are off until you turn them on. Then the app downloads orbit data, the rocket launch list and space news from public services (wheretheiss.at, Celestrak, Launch Library 2, Spaceflight News API), which can see your IP address. Nothing about you is sent.", "Online features आप चालू करें तभी चलते हैं। तब app public services (wheretheiss.at, Celestrak, Launch Library 2, Spaceflight News API) से orbit data, rocket launch की list और space news लेता है, जो आपका IP address देख सकती हैं। आपके बारे में कुछ नहीं भेजा जाता।")}
+{li("Live features are always on. The app downloads orbit data, the rocket launch list and space news from public services (wheretheiss.at, Celestrak, Launch Library 2, Spaceflight News API), which can see your IP address. Nothing about you is sent.", "Live features हमेशा चालू रहते हैं। App public services (wheretheiss.at, Celestrak, Launch Library 2, Spaceflight News API) से orbit data, rocket launch की list और space news लेता है, जो आपका IP address देख सकती हैं। आपके बारे में कुछ नहीं भेजा जाता।")}
 {li("“Use my location” in the city list asks Android for your approximate location, once, and uses it only on your phone to work out the sky. Nothing is sent for this.", "शहर की list में “मेरी location इस्तेमाल करें” Android से आपकी अनुमानित location एक बार माँगता है और उसे सिर्फ़ आपके फ़ोन पर आसमान निकालने में इस्तेमाल करता है। इसके लिए कुछ नहीं भेजा जाता।")}
 </ul>
 
