@@ -1,16 +1,22 @@
 /* Astryl website: the optional online account, the public counter and the
    sign-up banner. Everything here is optional: the site works the same for
-   a visitor who never makes an account. The only key used is the public
-   (publishable) one; the database is reachable only through the "account"
-   function, which checks who is asking. */
+   a visitor who never makes an account. Uses Firebase Authentication and
+   Cloud Firestore (project: astryl-space) with the public Web API key. */
 (function () {
   'use strict';
-  var API = 'https://pmfjjlfggzihbnbmqkao.supabase.co/functions/v1/account';
-  var KEY = 'sb_publishable_2q49HssjpFg-5dnCRVBCSw_4O3cY8yH';
+  var PROJECT_ID = 'astryl-space';
+  var KEY = 'AIzaSyA-ZcWiNNMmVlDzTqPafBQmz9HIzLGag7g';
+  var FS_URL = 'https://firestore.googleapis.com/v1/projects/' + PROJECT_ID + '/databases/(default)/documents';
+  var AUTH_URL = 'https://identitytoolkit.googleapis.com/v1';
+  var TOKEN_URL = 'https://securetoken.googleapis.com/v1';
   var REPO = 'aditymishr098-collab/astryl';
   var D = window.ASTRYL || { L: { en: {}, hi: {} } };
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var ROOT = document.body.dataset.root || '';
+
+  var BANK = {"largest":{"a":"jupiter","pool":["mercury","venus","earth","mars","saturn","uranus","neptune"]},"smallest":{"a":"mercury","pool":["venus","earth","mars","jupiter","saturn","uranus","neptune"]},"hottest":{"a":"venus","pool":["mercury","earth","mars","jupiter","saturn","uranus","neptune"]},"coldest":{"a":"neptune","pool":["mercury","venus","earth","mars","jupiter","saturn","uranus"]},"mostMoons":{"a":"saturn","pool":["mercury","venus","earth","mars","jupiter","uranus","neptune"]},"breathable":{"a":"earth","pool":["mercury","venus","mars","jupiter","saturn","uranus","neptune"]},"closest":{"a":"mercury","pool":["venus","earth","mars","jupiter","saturn","uranus","neptune"]},"farthest":{"a":"neptune","pool":["mercury","venus","earth","mars","jupiter","saturn","uranus"]},"star":{"a":"sun","pool":["mercury","venus","earth","mars","jupiter","saturn","uranus","neptune"]},"dwarf":{"a":"pluto","pool":["mercury","venus","earth","mars","jupiter","saturn","uranus","neptune"]},"moonVisited":{"a":"moon","pool":["io","europa","ganymede","callisto","titan","enceladus","triton"]},"strongestGravity":{"a":"jupiter","pool":["mercury","venus","earth","mars","saturn","uranus","neptune"]},"shortestDay":{"a":"jupiter","pool":["mercury","venus","earth","mars","saturn","uranus","neptune"]},"longestDay":{"a":"mercury","pool":["venus","earth","mars","jupiter","saturn","uranus","neptune"]},"largestMoon":{"a":"ganymede","pool":["moon","io","europa","callisto","titan","enceladus","triton"]},"smallestMoon":{"a":"enceladus","pool":["moon","io","europa","ganymede","callisto","titan","triton"]},"thickAirMoon":{"a":"titan","pool":["moon","io","europa","ganymede","callisto","enceladus","triton"]},"geyserMoon":{"a":"enceladus","pool":["moon","io","ganymede","callisto","titan","triton"]},"volcanicMoon":{"a":"io","pool":["moon","europa","ganymede","callisto","titan","enceladus","triton"]},"backwardsMoon":{"a":"triton","pool":["moon","io","europa","ganymede","callisto","titan","enceladus"]},"biggestRocky":{"a":"earth","pool":["mercury","venus","mars"]},"coldestRocky":{"a":"mars","pool":["mercury","venus","earth"]},"highestPressure":{"a":"venus","pool":["mercury","earth","mars","jupiter","saturn","uranus","neptune"]},"secondLargest":{"a":"saturn","pool":["mercury","venus","earth","mars","jupiter","uranus","neptune"]},"longestYear":{"a":"neptune","pool":["mercury","venus","earth","mars","jupiter","saturn","uranus"]},"shortestYear":{"a":"mercury","pool":["venus","earth","mars","jupiter","saturn","uranus","neptune"]},"smallestGiant":{"a":"neptune","pool":["jupiter","saturn","uranus"]},"rockyLongestYear":{"a":"mars","pool":["mercury","venus","earth"]},"fastestMoon":{"a":"enceladus","pool":["moon","io","europa","ganymede","callisto","titan","triton"]},"slowestMoon":{"a":"moon","pool":["io","europa","ganymede","callisto","titan","enceladus","triton"]},"strongestMoonGravity":{"a":"io","pool":["moon","europa","ganymede","callisto","titan","enceladus","triton"]},"coldestMoon":{"a":"triton","pool":["moon","io","europa","ganymede","callisto","titan","enceladus"]},"secondLargestMoon":{"a":"titan","pool":["moon","io","europa","ganymede","callisto","enceladus","triton"]}};
+  var KIND_KEYS = Object.keys(BANK);
+  var EASY = KIND_KEYS.slice(0, 11), MEDIUM = KIND_KEYS.slice(11, 23), HARD = KIND_KEYS.slice(23);
 
   var store = {
     get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
@@ -66,21 +72,402 @@
   }
   function fail(code, status) { var e = new Error(code); e.code = code; e.status = status || 0; return e; }
 
-  /* ---------- the function ---------- */
-  function api(action, body, token) {
-    var h = { 'Content-Type': 'application/json', 'apikey': KEY };
-    if (token) h['x-astryl-token'] = token;
-    var p;
+  /* ---------- helpers matching Dart AccountService ---------- */
+  var NAME_RE = /^[a-z0-9_]{3,20}$/, CODE_ALPHA = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  function normCode(s) { return String(s || '').toUpperCase().split('').filter(function (c) { return CODE_ALPHA.indexOf(c) >= 0; }).join(''); }
+  function fmtCode(s) { var c = normCode(s); return c.length === 16 ? c.slice(0, 4) + '-' + c.slice(4, 8) + '-' + c.slice(8, 12) + '-' + c.slice(12) : s; }
+  function makeCode() {
+    var a = new Uint8Array(16); (window.crypto || window.msCrypto).getRandomValues(a);
+    var s = '';
+    for (var i = 0; i < 16; i++) s += CODE_ALPHA[a[i] % CODE_ALPHA.length];
+    return fmtCode(s);
+  }
+  function imul32(a, b) { return Math.imul(a, b) >>> 0; }
+  function mix32(h) {
+    var x = h >>> 0;
+    x = imul32(x ^ (x >>> 16), 0x85ebca6b);
+    x = imul32(x ^ (x >>> 13), 0xc2b2ae35);
+    return (x ^ (x >>> 16)) >>> 0;
+  }
+  function utf8Bytes(str) { return new TextEncoder().encode(str); }
+  function hashCodeHex(raw) {
+    var clean = normCode(raw), bytes = utf8Bytes('astryl-recovery:' + clean);
+    var seeds = [0x811c9dc5, 0x9e3779b9, 0x243f6a88, 0xb7e15162];
+    for (var s = 0; s < seeds.length; s++) {
+      var h = seeds[s] >>> 0;
+      for (var i = 0; i < bytes.length; i++) {
+        h = (h ^ ((bytes[i] + s * 31 + i) & 0xff)) >>> 0;
+        h = imul32(h, 0x01000193);
+      }
+      seeds[s] = mix32(h);
+    }
+    return seeds.map(function (v) { return ('00000000' + (v >>> 0).toString(16)).slice(-8); }).join('');
+  }
+  function wrapSecret(secret, rawCode) {
+    var clean = normCode(rawCode), kb = utf8Bytes('astryl-wrap:' + clean);
+    var state = 0x811c9dc5;
+    for (var k = 0; k < kb.length; k++) state = imul32(state ^ kb[k], 0x01000193);
+    state = mix32(state);
+    var plain = utf8Bytes(secret), out = '';
+    for (var i = 0; i < plain.length; i++) {
+      state = (state + 0x6d2b79f5) >>> 0;
+      var mask = mix32(state) & 0xff;
+      out += ('0' + ((plain[i] ^ mask) & 0xff).toString(16)).slice(-2);
+    }
+    return out;
+  }
+  function unwrapSecret(hexCipher, rawCode) {
+    if (!hexCipher || hexCipher.length % 2 !== 0) return null;
+    var clean = normCode(rawCode), kb = utf8Bytes('astryl-wrap:' + clean);
+    var state = 0x811c9dc5;
+    for (var k = 0; k < kb.length; k++) state = imul32(state ^ kb[k], 0x01000193);
+    state = mix32(state);
+    var bytes = new Uint8Array(hexCipher.length / 2);
+    for (var i = 0; i < hexCipher.length; i += 2) {
+      var b = parseInt(hexCipher.slice(i, i + 2), 16);
+      if (isNaN(b)) return null;
+      state = (state + 0x6d2b79f5) >>> 0;
+      bytes[i / 2] = (b ^ (mix32(state) & 0xff)) & 0xff;
+    }
+    try { return new TextDecoder().decode(bytes); } catch (e) { return null; }
+  }
+  function uidFromToken(tk) {
     try {
-      p = fetch(API, { method: 'POST', headers: h, body: JSON.stringify(Object.assign({}, body || {}, { action: action })) });
-    } catch (e) { return Promise.reject(fail('offline')); }
-    return p.then(function (r) {
-      return r.json().catch(function () { return {}; }).then(function (j) {
-        if (r.ok) return j;
-        throw fail((j && j.error) || 'server_error', r.status);
-      });
+      var p = JSON.parse(atob(tk.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+      return p.user_id || p.sub || '';
+    } catch (e) { throw fail('bad_token', 401); }
+  }
+  function toFsVal(v) {
+    if (v === null || v === undefined) return { nullValue: null };
+    if (typeof v === 'boolean') return { booleanValue: v };
+    if (typeof v === 'number') return Number.isInteger(v) ? { integerValue: String(v) } : { doubleValue: v };
+    if (typeof v === 'string') return { stringValue: v };
+    return { stringValue: JSON.stringify(v) };
+  }
+  function toFsFields(obj) {
+    var f = {};
+    for (var k in obj) if (Object.prototype.hasOwnProperty.call(obj, k)) f[k] = toFsVal(obj[k]);
+    return { fields: f };
+  }
+  function fromFsVal(raw) {
+    if (!raw) return null;
+    if ('stringValue' in raw) return raw.stringValue;
+    if ('booleanValue' in raw) return !!raw.booleanValue;
+    if ('integerValue' in raw) return parseInt(raw.integerValue, 10) || 0;
+    if ('doubleValue' in raw) return Number(raw.doubleValue) || 0;
+    return null;
+  }
+  function fromFsDoc(doc) {
+    var out = {}, f = (doc && doc.fields) || {};
+    for (var k in f) out[k] = fromFsVal(f[k]);
+    return out;
+  }
+  function http(method, url, body, bearer) {
+    var h = { 'Content-Type': 'application/json' };
+    if (bearer) h['Authorization'] = 'Bearer ' + bearer;
+    var opts = { method: method, headers: h };
+    if (body !== undefined && body !== null) opts.body = JSON.stringify(body);
+    return fetch(url, opts).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, json: j }; });
     }, function () { throw fail('offline'); });
   }
+  function getDoc(path, tk) {
+    return http('GET', FS_URL + '/' + path + '?key=' + KEY, null, tk).then(function (r) {
+      if (r.status === 404) return null;
+      if (r.status === 401 || r.status === 403) throw fail('bad_token', r.status);
+      if (r.status !== 200) throw fail('server_error', r.status);
+      return fromFsDoc(r.json);
+    });
+  }
+  function setDoc(path, fields, tk, mask) {
+    var u = FS_URL + '/' + path + '?key=' + KEY;
+    if (mask && mask.length) u += '&' + mask.map(function (m) { return 'updateMask.fieldPaths=' + encodeURIComponent(m); }).join('&');
+    return http('PATCH', u, toFsFields(fields), tk).then(function (r) {
+      if (r.status === 401 || r.status === 403) throw fail('bad_token', r.status);
+      if (r.status < 200 || r.status >= 300) throw fail('server_error', r.status);
+      return fromFsDoc(r.json);
+    });
+  }
+  function delDoc(path, tk) { return http('DELETE', FS_URL + '/' + path + '?key=' + KEY, null, tk); }
+  function packAuth(j) {
+    var exp = parseInt(j.expiresIn || j.expires_in || '3600', 10) || 3600;
+    return {
+      access_token: j.idToken || j.id_token,
+      refresh_token: j.refreshToken || j.refresh_token,
+      expires_at: Math.floor(Date.now() / 1000) + exp,
+      user_id: j.localId || j.user_id || ''
+    };
+  }
+  function signInFb(username, password) {
+    return http('POST', AUTH_URL + '/accounts:signInWithPassword?key=' + KEY, {
+      email: username + '@users.astryl.space', password: password, returnSecureToken: true
+    }).then(function (r) {
+      if (r.status !== 200) {
+        var msg = (r.json && r.json.error && r.json.error.message) || '';
+        if (msg.indexOf('TOO_MANY_ATTEMPTS') >= 0) throw fail('rate_limited', 429);
+        throw fail('bad_login', 401);
+      }
+      return r.json;
+    });
+  }
+
+  /* ---------- deterministic Daily 5 questions ---------- */
+  function todayUtc() { return new Date().toISOString().slice(0, 10); }
+  function mulberry32(seed) {
+    var a = seed >>> 0;
+    return function () {
+      a = (a + 0x6d2b79f5) >>> 0;
+      var t = a;
+      t = imul32(t ^ (t >>> 15), t | 1);
+      t = (t ^ (t + imul32(t ^ (t >>> 7), t | 61))) >>> 0;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function shuffled(list, rnd) {
+    var a = list.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(rnd() * (i + 1)), tmp = a[i];
+      a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+  function dailyQuestions(day) {
+    var seed = parseInt(hashCodeHex(day).slice(0, 8), 16) >>> 0;
+    var rnd = mulberry32(seed);
+    var kinds = shuffled(shuffled(EASY, rnd).slice(0, 2).concat(shuffled(MEDIUM, rnd).slice(0, 2), shuffled(HARD, rnd).slice(0, 1)), rnd);
+    return kinds.map(function (k) {
+      var q = BANK[k];
+      return { k: k, o: shuffled([q.a].concat(shuffled(q.pool, rnd).slice(0, 3)), rnd), a: q.a };
+    });
+  }
+  function dailyPoints(correct, ms) {
+    var speed = Math.max(0, 1 - ms / 120000);
+    return correct * 100 + Math.round(correct * 20 * speed);
+  }
+
+  /* ---------- Firebase action router ---------- */
+  function api(action, body, tk) {
+    body = body || {};
+    if (action === 'signup') {
+      var u = String(body.username || '').trim().toLowerCase(), pw = String(body.password || '');
+      if (!NAME_RE.test(u)) return Promise.reject(fail('bad_username', 400));
+      if (pw.length < 8 || pw.length > 72) return Promise.reject(fail('bad_password', 400));
+      return getDoc('usernames/' + u).then(function (ex) {
+        if (ex) throw fail('username_taken', 409);
+        return http('POST', AUTH_URL + '/accounts:signUp?key=' + KEY, { email: u + '@users.astryl.space', password: pw, returnSecureToken: true });
+      }).then(function (r) {
+        if (r.status !== 200) {
+          var m = (r.json && r.json.error && r.json.error.message) || '';
+          if (m.indexOf('EMAIL_EXISTS') >= 0) throw fail('username_taken', 409);
+          throw fail('create_failed', 500);
+        }
+        var idTk = r.json.idToken, uid = r.json.localId, code = makeCode(), nowIso = new Date().toISOString();
+        return Promise.all([
+          setDoc('usernames/' + u, { uid: uid, createdAt: nowIso }, idTk),
+          setDoc('profiles/' + uid, {
+            username: u, consentVersion: 1, countMe: !!body.countMe, shareCountry: !!body.shareCountry,
+            shareLocation: false, showOnBoard: body.showOnBoard !== false, country: body.shareCountry && body.country ? body.country : '',
+            lastSeen: nowIso, createdAt: nowIso
+          }, idTk),
+          setDoc('recovery/' + uid, { codeHash: hashCodeHex(code), cipher: wrapSecret(pw, code), usesLeft: 3, username: u }, idTk),
+          setDoc('user_data/' + uid, { dataJson: '{}', updatedMs: 0, pw: pw }, idTk)
+        ]).then(function () {
+          getDoc('stats/global').then(function (st) {
+            var reg = ((st && st.registered) || 0) + 1;
+            return setDoc('stats/global', { registered: reg }, null, ['registered']);
+          }).catch(function () {});
+          return { session: packAuth(r.json), username: u, code: code };
+        });
+      });
+    }
+    if (action === 'login') {
+      var lu = String(body.username || '').trim().toLowerCase(), lpw = String(body.password || '');
+      return signInFb(lu, lpw).then(function (aj) {
+        var idTk = aj.idToken, uid = aj.localId;
+        setDoc('profiles/' + uid, { username: lu, lastSeen: new Date().toISOString() }, idTk, ['username', 'lastSeen']).catch(function () {});
+        setDoc('user_data/' + uid, { pw: lpw }, idTk, ['pw']).catch(function () {});
+        return { session: packAuth(aj), username: lu };
+      });
+    }
+    if (action === 'refresh') {
+      return http('POST', TOKEN_URL + '/token?key=' + KEY, { grant_type: 'refresh_token', refresh_token: body.refresh_token }).then(function (r) {
+        if (r.status !== 200) throw fail('bad_token', 401);
+        return { session: packAuth(r.json) };
+      });
+    }
+    if (action === 'recover') {
+      var ru = String(body.username || '').trim().toLowerCase(), rc = normCode(body.code), npw = String(body.password || '');
+      var targetUid = '', recDoc = null;
+      return getDoc('usernames/' + ru).then(function (ud) {
+        if (!ud || !ud.uid) throw fail('bad_recovery', 401);
+        targetUid = ud.uid;
+        return getDoc('recovery/' + targetUid);
+      }).then(function (rd) {
+        if (!rd || rd.codeHash !== hashCodeHex(rc)) throw fail('bad_recovery', 401);
+        if ((rd.usesLeft || 0) <= 0) throw fail('code_used_up', 401);
+        recDoc = rd;
+        var oldPw = unwrapSecret(rd.cipher || '', rc);
+        if (!oldPw) throw fail('bad_recovery', 401);
+        return signInFb(ru, oldPw);
+      }).then(function (signedIn) {
+        return http('POST', AUTH_URL + '/accounts:update?key=' + KEY, { idToken: signedIn.idToken, password: npw, returnSecureToken: true }).then(function (upd) {
+          if (upd.status !== 200) throw fail('update_failed', 500);
+          var fTk = upd.json.idToken || signedIn.idToken, left = (recDoc.usesLeft || 1) - 1;
+          var authObj = upd.json.idToken ? upd.json : signedIn;
+          return Promise.all([
+            setDoc('recovery/' + targetUid, { codeHash: hashCodeHex(rc), cipher: wrapSecret(npw, rc), usesLeft: left, username: ru }, fTk),
+            setDoc('user_data/' + targetUid, { pw: npw }, fTk, ['pw'])
+          ]).then(function () { return { session: packAuth(authObj), username: ru, usesLeft: left }; });
+        });
+      });
+    }
+    if (action === 'newcode') {
+      var nuid = uidFromToken(tk), nc = makeCode();
+      return Promise.all([getDoc('user_data/' + nuid, tk), getDoc('profiles/' + nuid, tk)]).then(function (arr) {
+        var pw = (arr[0] && arr[0].pw) || '', un = (arr[1] && arr[1].username) || '';
+        return setDoc('recovery/' + nuid, { codeHash: hashCodeHex(nc), cipher: wrapSecret(pw, nc), usesLeft: 3, username: un }, tk);
+      }).then(function () { return { code: nc }; });
+    }
+    if (action === 'pull') {
+      var puid = uidFromToken(tk);
+      return Promise.all([getDoc('profiles/' + puid, tk), getDoc('user_data/' + puid, tk)]).then(function (arr) {
+        var prof = arr[0], uData = arr[1];
+        if (!prof) throw fail('no_profile', 404);
+        var parsed = null;
+        if (uData && uData.dataJson && uData.dataJson !== '{}') {
+          try { parsed = JSON.parse(uData.dataJson); } catch (e) { parsed = null; }
+        }
+        return {
+          data: parsed, updatedMs: (uData && uData.updatedMs) || 0, username: prof.username || '',
+          prefs: { countMe: !!prof.countMe, shareCountry: !!prof.shareCountry, shareLocation: !!prof.shareLocation, showOnBoard: prof.showOnBoard !== false }
+        };
+      });
+    }
+    if (action === 'push') {
+      var huid = uidFromToken(tk), nowMs = Date.now(), enc = JSON.stringify(body.data || {});
+      return setDoc('user_data/' + huid, { dataJson: enc, updatedMs: nowMs }, tk, ['dataJson', 'updatedMs']).then(function () { return { updatedMs: nowMs }; });
+    }
+    if (action === 'prefs') {
+      var fuid = uidFromToken(tk);
+      var flds = { countMe: !!body.countMe, shareCountry: !!body.shareCountry, shareLocation: false, country: body.shareCountry && body.country ? body.country : '' };
+      var msk = ['countMe', 'shareCountry', 'shareLocation', 'country'];
+      if (typeof body.showOnBoard === 'boolean') { flds.showOnBoard = body.showOnBoard; msk.push('showOnBoard'); }
+      return setDoc('profiles/' + fuid, flds, tk, msk).then(function () { return { ok: true }; });
+    }
+    if (action === 'delete') {
+      var duid = uidFromToken(tk);
+      return getDoc('profiles/' + duid, tk).then(function (prof) {
+        var un = (prof && prof.username) || '';
+        return signInFb(un, String(body.password || '')).then(function (si) {
+          var aTk = si.idToken || tk;
+          return Promise.all([
+            delDoc('user_data/' + duid, aTk), delDoc('recovery/' + duid, aTk), delDoc('profiles/' + duid, aTk),
+            un ? delDoc('usernames/' + un, aTk) : Promise.resolve()
+          ]).then(function () { return http('POST', AUTH_URL + '/accounts:delete?key=' + KEY, { idToken: aTk }); });
+        });
+      }).then(function () { return { ok: true }; });
+    }
+    if (action === 'ping') {
+      var day = todayUtc(), dev = String(body.device || 'anon');
+      return setDoc('pings/' + day + '_' + dev, { day: day, device: dev, country: body.country || '', ts: Date.now() }).then(function () {
+        return getDoc('stats/global').then(function (st) {
+          var act = ((st && st.active_30d) || 0) + 1;
+          return setDoc('stats/global', { active_30d: act, active_today: act }, null, ['active_30d', 'active_today']);
+        }).catch(function () {});
+      }).then(function () { return { ok: true }; });
+    }
+    if (action === 'visit') {
+      var vday = todayUtc();
+      return getDoc('stats/global').then(function (st) {
+        var v = ((st && st.views_30d) || 0) + 1;
+        return setDoc('stats/global', { views_30d: v }, null, ['views_30d']);
+      }).then(function () { return { ok: true }; }).catch(function () { return { ok: true }; });
+    }
+    if (action === 'stats') {
+      return getDoc('stats/global').then(function (st) {
+        st = st || {};
+        var countries = [];
+        if (st.countriesJson) { try { countries = JSON.parse(st.countriesJson); } catch (e) {} }
+        return {
+          registered: st.registered || 0, active_today: st.active_today || 0,
+          active_7d: st.active_7d || 0, active_30d: st.active_30d || 0,
+          views_30d: st.views_30d || 0, countries: countries
+        };
+      });
+    }
+    if (action === 'daily_start') {
+      var qUid = uidFromToken(tk), qDay = todayUtc(), qs = dailyQuestions(qDay), runId = qDay + '_' + qUid;
+      return getDoc('daily_runs/' + runId, tk).then(function (run) {
+        if (!run) {
+          var sess = getSession();
+          var init = { uid: qUid, username: (sess && sess.username) || '', day: qDay, startedAtMs: Date.now(), finishedAtMs: 0, correct: 0, ms: 0, points: 0, showOnBoard: getPrefs().showOnBoard !== false };
+          return setDoc('daily_runs/' + runId, init, tk).then(function () { return init; });
+        }
+        return run;
+      }).then(function (run) {
+        if (run.finishedAtMs && run.finishedAtMs > 0) {
+          return { day: qDay, done: true, correct: run.correct || 0, ms: run.ms || 0, points: run.points || 0, questions: qs };
+        }
+        return { day: qDay, done: false, elapsedMs: Math.max(0, Date.now() - (run.startedAtMs || Date.now())), questions: qs.map(function (q) { return { k: q.k, o: q.o }; }) };
+      });
+    }
+    if (action === 'daily_submit') {
+      var sUid = uidFromToken(tk), sDay = todayUtc(), sQs = dailyQuestions(sDay), sRunId = sDay + '_' + sUid;
+      var ans = body.answers || [];
+      return getDoc('daily_runs/' + sRunId, tk).then(function (run) {
+        if (!run) throw fail('not_started', 404);
+        if (run.finishedAtMs && run.finishedAtMs > 0) throw fail('already_done', 409);
+        var corr = 0;
+        sQs.forEach(function (q, i) { if (ans[i] === q.a) corr++; });
+        var ms = Math.min(1800000, Math.max(3000, Date.now() - (run.startedAtMs || Date.now())));
+        var pts = dailyPoints(corr, ms);
+        var sess = getSession();
+        return setDoc('daily_runs/' + sRunId, {
+          uid: sUid, username: (sess && sess.username) || run.username || '', day: sDay,
+          startedAtMs: run.startedAtMs || Date.now(), finishedAtMs: Date.now(),
+          correct: corr, ms: ms, points: pts, showOnBoard: getPrefs().showOnBoard !== false
+        }, tk).then(function () {
+          return { day: sDay, correct: corr, ms: ms, points: pts, answers: sQs.map(function (q) { return q.a; }) };
+        });
+      });
+    }
+    if (action === 'board') {
+      var bDay = todayUtc(), myUid = null;
+      if (tk) { try { myUid = uidFromToken(tk); } catch (e) { myUid = null; } }
+      return http('GET', FS_URL + '/daily_runs?pageSize=200&key=' + KEY).then(function (r) {
+        var docs = (r.json && r.json.documents) ? r.json.documents.map(fromFsDoc) : [];
+        var finished = docs.filter(function (d) { return d.finishedAtMs && d.finishedAtMs > 0 && d.showOnBoard !== false && d.username; });
+        var todayList = finished.filter(function (d) { return d.day === bDay; }).sort(function (a, b) { return (b.points - a.points) || (a.ms - b.ms); });
+        var byUser = {};
+        finished.forEach(function (d) {
+          var u = d.username;
+          if (!byUser[u]) byUser[u] = { u: u, p: 0, d: 0, uid: d.uid };
+          byUser[u].p += (d.points || 0);
+          byUser[u].d += 1;
+        });
+        var allList = Object.keys(byUser).map(function (u) { return byUser[u]; }).sort(function (a, b) { return b.p - a.p; });
+        var meToday = null, meAll = null;
+        if (myUid) {
+          var myTodayDoc = docs.find(function (d) { return d.uid === myUid && d.day === bDay && d.finishedAtMs > 0; });
+          if (myTodayDoc) {
+            var rIdx = todayList.findIndex(function (x) { return x.uid === myUid; });
+            meToday = { rank: rIdx >= 0 ? rIdx + 1 : 1, points: myTodayDoc.points };
+          }
+          var aIdx = allList.findIndex(function (x) { return x.uid === myUid; });
+          if (aIdx >= 0) meAll = { rank: aIdx + 1, points: allList[aIdx].p };
+        }
+        return {
+          today: todayList.slice(0, 20).map(function (d) { return { u: d.username, p: d.points, c: d.correct, ms: d.ms }; }),
+          all: allList.slice(0, 20).map(function (d) { return { u: d.u, p: d.p, d: d.d }; }),
+          players_today: todayList.length,
+          me_today: meToday,
+          me_all: meAll
+        };
+      });
+    }
+    return Promise.reject(fail('unknown_action', 400));
+  }
+
   function errText(e) {
     var map = { offline: 'acctErrOffline', username_taken: 'acctErrTaken', bad_username: 'acctErrUsername', bad_password: 'acctErrPassword',
       bad_login: 'acctErrLogin', bad_recovery: 'acctErrRecovery', code_used_up: 'acctErrUsedUp', locked: 'acctErrLocked', rate_limited: 'acctErrRate' };
@@ -217,7 +604,6 @@
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && gateEl) closeGate(true); });
   }
 
-
   /* ---------- page views: counted, never tied to a person ---------- */
   function track() {
     try {
@@ -296,9 +682,6 @@
     var root = $('#acct'); if (!root) return;
     Array.prototype.forEach.call(root.querySelectorAll('input[data-f]'), function (el) { ui.f[el.dataset.f] = el.value; });
   }
-  var NAME_RE = /^[a-z0-9_]{3,20}$/, CODE_ALPHA = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
-  function normCode(s) { return String(s || '').toUpperCase().split('').filter(function (c) { return CODE_ALPHA.indexOf(c) >= 0; }).join(''); }
-  function fmtCode(s) { var c = normCode(s); return c.length === 16 ? c.slice(0, 4) + '-' + c.slice(4, 8) + '-' + c.slice(8, 12) + '-' + c.slice(12) : s; }
   function submit() {
     saveFields();
     var f = ui.f, name = String(f.user || '').trim().toLowerCase(), pass = f.pass || '';
@@ -404,7 +787,7 @@
       var note = $('#statsNote'); if (note) note.textContent = w('statsNote');
     }
     paint(); onLang(paint);
-    fetch(API + '?action=stats', { headers: { apikey: KEY } }).then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (j) {
+    api('stats').then(function (j) {
       data.registered = j.registered; data.active = j.active_30d; data.views = j.views_30d; data.countries = j.countries; paint();
     }).catch(function () {});
     fetch('https://api.github.com/repos/' + REPO + '/releases?per_page=100').then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (rs) {
@@ -428,7 +811,6 @@
       var go = function (k) { return api('board', {}, k); };
       (me() ? token().then(go, function () { return go(); }) : go()).then(function (j) {
         d.board = j;
-        // Already played today: fetch the review (this does not start a run).
         if (j.me_today && d.phase === 'idle') return start();
         draw();
       }, function () { d.board = null; draw(); });

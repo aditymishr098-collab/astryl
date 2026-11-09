@@ -320,7 +320,8 @@ void main() {
       final text = File('lib/data/sync.dart').readAsStringSync();
       expect(text.contains('service_role'), isFalse);
       expect(text.contains('sb_secret'), isFalse);
-      expect(accountApiKey.startsWith('sb_publishable_'), isTrue);
+      expect(accountApiKey.startsWith('AIza'), isTrue);
+      expect(firebaseProjectId, 'astryl-space');
     });
   });
 }

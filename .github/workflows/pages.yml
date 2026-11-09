@@ -1,7 +1,6 @@
 name: Website
 
-# Publishes the folder site/ to https://astryl.space with GitHub Pages.
-# Needs Settings > Pages > Source = "GitHub Actions" (set once).
+# Publishes the folder site/ to Firebase Hosting (astryl-space) and GitHub Pages.
 # site/ is made by `python3 tools/build_site.py` from the app's own data.
 
 on:
@@ -9,6 +8,8 @@ on:
     branches: [main]
     paths:
       - 'site/**'
+      - 'firebase.json'
+      - '.firebaserc'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -29,6 +30,16 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Deploy to Firebase Hosting
+        if: ${{ secrets.FIREBASE_SERVICE_ACCOUNT != '' }}
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+          channelId: live
+          projectId: astryl-space
+
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
