@@ -1,5 +1,5 @@
-/// A city to see the sky from. Only latitude and longitude are used; no
-/// location permission is needed.
+/// A city to see the sky from. Only latitude and longitude are used. The
+/// list needs no permission; "my location" asks for the approximate location.
 class City {
   const City(this.id, this.name, this.country, this.lat, this.lon);
 
@@ -126,8 +126,24 @@ const List<City> cities = <City>[
   City('auckland', 'Auckland', 'New Zealand', -36.85, 174.76),
 ];
 
+/// The id of the "my location" city made from the phone's location.
+const String gpsCityId = 'gps';
+
+City? _myLocation;
+
+/// Sets (or, with null, clears) the place the phone found. It is what
+/// [cityById] answers for [gpsCityId].
+void setMyLocation(double? lat, double? lon) {
+  _myLocation = lat == null || lon == null
+      ? null
+      : City(gpsCityId, 'My location', '', lat, lon);
+}
+
 /// The city with [id], or null.
 City? cityById(String id) {
+  if (id == gpsCityId) {
+    return _myLocation;
+  }
   for (final city in cities) {
     if (city.id == id) {
       return city;

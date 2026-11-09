@@ -275,7 +275,7 @@ class _IssScreenState extends State<IssScreen> {
           children: <Widget>[
             _Line(
               icon: Icons.public,
-              label: city.name,
+              label: cityName(l, city),
               value: l.altitudeDir(
                 directionName(l, compassIndex(look.azimuth)),
                 formatNumber(context, look.elevation.round()),
@@ -308,7 +308,7 @@ class _IssScreenState extends State<IssScreen> {
         ),
       ),
       const SizedBox(height: 20),
-      Text(l.issPassesTitle(city.name),
+      Text(l.issPassesTitle(cityName(l, city)),
           style: TextStyle(fontFamily: headingFont, fontSize: 18, fontWeight: FontWeight.w700, color: p.text)),
       const SizedBox(height: 12),
     ];

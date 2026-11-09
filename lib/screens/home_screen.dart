@@ -38,7 +38,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _autoUpdate());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _autoUpdate();
+      AppScope.read(context).account.onAppOpen();
+    });
   }
 
   /// Prepares the next evenings' "tonight in the sky" notes. Done again when

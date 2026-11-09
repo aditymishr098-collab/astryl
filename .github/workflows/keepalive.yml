@@ -1,0 +1,18 @@
+# Supabase's free plan pauses a project that nobody has used for about a week.
+# This asks the public counter once every few days, so the project stays awake.
+name: Keep Supabase awake
+
+on:
+  schedule:
+    - cron: '17 6 */3 * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ask for the public counter
+        run: |
+          curl --fail --silent --show-error --max-time 30 \
+            -H "apikey: sb_publishable_2q49HssjpFg-5dnCRVBCSw_4O3cY8yH" \
+            "https://pmfjjlfggzihbnbmqkao.supabase.co/functions/v1/account?action=stats"

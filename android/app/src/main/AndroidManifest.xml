@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Internet is used only to look for and download a newer release on GitHub. -->
+    <!-- Internet: update check on GitHub, the optional online features, and the optional Astryl account. -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Lets the in-app updater hand the downloaded APK to the Android installer. -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
@@ -8,6 +8,10 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <!-- Sets the reminders again after the phone restarts. -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- Approximate location, asked only when the user taps "Use my location"
+         or switches on sharing their location in the account. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <!-- No Android cloud backup: favourites, city and birth date stay on this
          phone. The app has its own backup file, which the user sends only

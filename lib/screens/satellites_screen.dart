@@ -302,7 +302,7 @@ class _SatellitesScreenState extends State<SatellitesScreen> {
         ),
       ),
       const SizedBox(height: 20),
-      Text(l.issPassesTitle(city.name),
+      Text(l.issPassesTitle(cityName(l, city)),
           style: headingStyle(18, p.text)),
       const SizedBox(height: 12),
     ];

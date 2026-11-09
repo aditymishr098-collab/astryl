@@ -136,11 +136,11 @@ String _eclipseDescription(
     } else {
       switch (lunarView(eclipse, city.lat, city.lon)) {
         case LunarView.up:
-          lines.add(l.eclipseLunarUp(city.name));
+          lines.add(l.eclipseLunarUp(cityName(l, city)));
         case LunarView.partly:
-          lines.add(l.eclipseLunarPartly(city.name));
+          lines.add(l.eclipseLunarPartly(cityName(l, city)));
         case LunarView.down:
-          lines.add(l.eclipseLunarDown(city.name));
+          lines.add(l.eclipseLunarDown(cityName(l, city)));
       }
     }
     return lines.join('\n');
@@ -160,15 +160,15 @@ String _eclipseDescription(
   } else {
     final mag = solarLocalMagnitude(eclipse, city.lat, city.lon);
     if (mag == null || mag < 0.02) {
-      lines.add(l.eclipseSolarNone(city.name));
+      lines.add(l.eclipseSolarNone(cityName(l, city)));
     } else if (mag < 0.12) {
-      lines.add(l.eclipseSolarSlight(city.name));
+      lines.add(l.eclipseSolarSlight(cityName(l, city)));
     } else if (mag < 0.9) {
       final percent = (mag * 10).round() * 10;
       lines.add(l.eclipseSolarPartial(
-          city.name, formatNumber(context, percent)));
+          cityName(l, city), formatNumber(context, percent)));
     } else {
-      lines.add(l.eclipseSolarNear(city.name));
+      lines.add(l.eclipseSolarNear(cityName(l, city)));
     }
   }
   lines.add(l.eclipseSolarSafety);

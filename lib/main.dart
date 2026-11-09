@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'l10n/gen/app_localizations.dart';
+import 'screens/account_screen.dart';
 import 'screens/home_screen.dart';
 import 'state/app_state.dart';
 import 'theme.dart';
@@ -62,7 +64,14 @@ class HelioraApp extends StatelessWidget {
             ],
             builder: (context, child) =>
                 _withTextSize(context, child, settings.textScalePercent),
-            home: const HomeScreen(),
+            // The first time, the optional account page comes first ("Skip
+            // now" leaves it); after that the app opens directly.
+            home: ListenableBuilder(
+              listenable: state.account,
+              builder: (context, _) => state.account.needsPrompt && !kIsWeb
+                  ? const AccountScreen(firstRun: true)
+                  : const HomeScreen(),
+            ),
           );
         },
       ),
