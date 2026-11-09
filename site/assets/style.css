@@ -210,3 +210,13 @@ body.gate-open{overflow:hidden}
 .policy table{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
 .policy th{background:var(--card2)}
 .policy li{margin:.35em 0}
+
+/* Daily 5 leaderboard */
+.lb{list-style:none;margin:10px 0;padding:0;counter-reset:rank}
+.lb li{counter-increment:rank;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;margin:6px 0;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.lb li::before{content:counter(rank);font-weight:700;min-width:1.6em;color:var(--accent)}
+.lb li .nm{flex:1;display:flex;flex-direction:column;min-width:0;overflow-wrap:anywhere}
+.lb li small{color:var(--muted,inherit);opacity:.75}
+.lb li.me{border-color:var(--accent2);background:color-mix(in srgb,var(--accent2) 10%,var(--card))}
+.lb li b{font-variant-numeric:tabular-nums}
+.daily .ok{color:var(--good)}.daily .no{color:var(--bad)}
