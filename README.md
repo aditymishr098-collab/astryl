@@ -182,9 +182,9 @@ Releases are built and signed by GitHub Actions when a version tag such as `v1.4
 | 1.19.1 | Always online, account settings in the You tab (done) |
 | 1.19.2 | All settings inside the You tab, soft animations (done) |
 | 1.19.3 | More compact Home (done) |
-| 1.19.0 | The big moons of Jupiter and Saturn, with their real positions |
+| 1.19.4 | All the planets in one 3D scene you can fly around (Space), weight, jump and age calculators moved to Compare (done) |
+| 1.20.0 | The big moons of Jupiter and Saturn, with their real positions |
 | 1.21.0 | Larger layout for tablets |
-| 2.0.0 | All the planets in one 3D scene you can fly around |
 
 Plans can change. An account stays optional, and nothing is collected unless you agree to it.
 
@@ -209,6 +209,7 @@ All texts live in `lib/l10n/app_en.arb` and `lib/l10n/app_hi.arb`. Found a wrong
 | **1.19.1** | Astryl is always online now: the *Online features* switch is gone and the space station, launches and news are always on. The Account card and the crash-report switch moved from Settings to the **You** tab. |
 | **1.19.2** | The Settings screen is gone: everything moved into the **You** tab (Account, weight and age, then Appearance, Language, Daily sky note, Backup, About) and the gear button was removed. New *Report a bug* link. Soft fade-and-slide animations on the You tab and the start screen (off when the phone's "remove animations" is on). |
 | **1.19.3** | Home is more compact: smaller names and headings, shorter planet cards with the text right under the planet, and in the 3D view the details (oxygen, temperature, life score) now sit above the globe. |
+| **1.19.4** | New **Space** view next to 2D and 3D on Explore: all the planets in one 3D scene at their real directions from the Sun on the chosen date. Drag to look around, pinch to zoom, tap a planet (or its chip) and the camera flies to it, lit by the Sun, with a *Whole Solar System* button to fly back. Sizes and distances are not to scale. The weight, jump-height and age calculators moved from You to the bottom of **Compare**; You now holds just the account and the settings. |
 | **1.17.6** | Surface maps for the Moon and Mars with 25 landing sites. Open the Moon or Mars and tap Surface map. Your data and settings are kept |
 | **1.17.5** | New app id `space.astryl.app` (it was `online.lumioapps.heliora`), after the website astryl.space. Android sees this as a **new app**, so it installs next to the old one instead of updating it. To move over: in the old app open Settings → Backup → Save, install 1.17.5, open Settings → Backup → Restore in the new app, then uninstall the old one. Reminders for single events are not kept, set them again |
 | **1.17.4** | The licence is now AGPL-3.0 (versions up to 1.17.3 stay under MIT). The name "Lumio Apps" is gone from the project texts; the copyright line is now Astryl and astryl.space. Settings → About has a new link to the website. Your data and settings are kept |

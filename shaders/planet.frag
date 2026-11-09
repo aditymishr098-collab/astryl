@@ -24,6 +24,8 @@ uniform float uSeed;       // 18
 uniform vec3 uGlow;        // 19, 20, 21  atmosphere colour
 uniform float uGlowAmount; // 22
 uniform float uTime;       // 23  seconds, moves Earth's clouds
+uniform vec2 uCenter;      // 24, 25  planet centre in the drawn area
+uniform vec3 uLight;       // 26, 27, 28  direction to the light, view space
 
 out vec4 fragColor;
 
@@ -63,7 +65,7 @@ float fbm(vec3 p) {
 
 void main() {
   vec2 frag = FlutterFragCoord().xy;
-  vec2 center = uSize * 0.5;
+  vec2 center = uCenter;
   float radius = min(uSize.x, uSize.y) * 0.5 * uZoom;
   vec2 d = (frag - center) / radius;
   float r2 = dot(d, d);
@@ -147,9 +149,9 @@ void main() {
     col = mix(col, vec3(0.95, 0.96, 0.98), cap);
   }
 
-  // Sunlight from the upper left, plus a little ambient light. The Sun makes
+  // Sunlight from uLight, plus a little ambient light. The Sun makes
   // its own light, so it only gets darker towards its edge.
-  vec3 light = normalize(vec3(-0.55, 0.45, 0.7));
+  vec3 light = normalize(uLight);
   float diffuse = max(dot(n, light), 0.0);
   if (uStyle > 3.5 && uStyle < 4.5) {
     diffuse = 1.0;

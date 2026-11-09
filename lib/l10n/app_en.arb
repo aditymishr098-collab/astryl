@@ -1337,5 +1337,8 @@
   "locOff": "Turn on location in your phone’s settings.",
   "locError": "Could not find your location. Try again.",
   "settingsAccountSubtitle": "Optional. Sync your data with astryl.space.",
-  "anonymousTitle": "Without an account"
+  "anonymousTitle": "Without an account",
+  "spaceMode": "Space",
+  "spaceBack": "Whole Solar System",
+  "spaceHint": "Drag to look around · Pinch to zoom · Tap a planet to fly to it · Sizes and distances not to scale"
 }
