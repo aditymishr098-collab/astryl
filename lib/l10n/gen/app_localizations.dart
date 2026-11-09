@@ -3397,6 +3397,396 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'That file is not an Astryl backup.'**
   String get backupBad;
+
+  /// No description provided for @surfaceMapTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Surface map'**
+  String get surfaceMapTitle;
+
+  /// No description provided for @surfaceMapOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{body}: surface map'**
+  String surfaceMapOf(String body);
+
+  /// No description provided for @surfaceMapMoonHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Where Apollo, Chang\'e, Chandrayaan and others landed.'**
+  String get surfaceMapMoonHint;
+
+  /// No description provided for @surfaceMapMarsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Where Viking, Curiosity, Perseverance and other landers and rovers touched down.'**
+  String get surfaceMapMarsHint;
+
+  /// No description provided for @surfaceMapTap.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a marker to read the story. Pinch to zoom in.'**
+  String get surfaceMapTap;
+
+  /// No description provided for @surfaceMapNote.
+  ///
+  /// In en, this message translates to:
+  /// **'A simplified map, not a photo: the big seas, basins, craters and volcanoes are drawn in the right places, and every landing site is at its real latitude and longitude.'**
+  String get surfaceMapNote;
+
+  /// No description provided for @surfaceMapSites.
+  ///
+  /// In en, this message translates to:
+  /// **'Landing sites'**
+  String get surfaceMapSites;
+
+  /// No description provided for @siteKindCrewed.
+  ///
+  /// In en, this message translates to:
+  /// **'Crewed landing'**
+  String get siteKindCrewed;
+
+  /// No description provided for @siteKindLander.
+  ///
+  /// In en, this message translates to:
+  /// **'Lander'**
+  String get siteKindLander;
+
+  /// No description provided for @siteKindRover.
+  ///
+  /// In en, this message translates to:
+  /// **'Rover'**
+  String get siteKindRover;
+
+  /// No description provided for @siteKindSample.
+  ///
+  /// In en, this message translates to:
+  /// **'Sample return'**
+  String get siteKindSample;
+
+  /// No description provided for @mapNearSide.
+  ///
+  /// In en, this message translates to:
+  /// **'Near side'**
+  String get mapNearSide;
+
+  /// No description provided for @mapFarSide.
+  ///
+  /// In en, this message translates to:
+  /// **'Far side'**
+  String get mapFarSide;
+
+  /// No description provided for @siteLuna9.
+  ///
+  /// In en, this message translates to:
+  /// **'Luna 9 made the first soft landing on another world and sent back the first photos taken on the Moon\'s surface.'**
+  String get siteLuna9;
+
+  /// No description provided for @siteSurveyor1.
+  ///
+  /// In en, this message translates to:
+  /// **'Surveyor 1 was the first American soft landing on the Moon. It sent back more than 11,000 photos and showed that the ground was firm enough to land on.'**
+  String get siteSurveyor1;
+
+  /// No description provided for @siteApollo11.
+  ///
+  /// In en, this message translates to:
+  /// **'The first people on the Moon, Neil Armstrong and Buzz Aldrin, landed here at Tranquility Base in July 1969.'**
+  String get siteApollo11;
+
+  /// No description provided for @siteApollo12.
+  ///
+  /// In en, this message translates to:
+  /// **'Apollo 12 landed close to the old probe Surveyor 3, and the crew brought some of its parts back to Earth.'**
+  String get siteApollo12;
+
+  /// No description provided for @siteLuna16.
+  ///
+  /// In en, this message translates to:
+  /// **'Luna 16 was the first robot to bring Moon soil back to Earth, about 100 grams, with no crew on board.'**
+  String get siteLuna16;
+
+  /// No description provided for @siteLunokhod1.
+  ///
+  /// In en, this message translates to:
+  /// **'Lunokhod 1 was the first rover on another world. It drove about 10 km over the Sea of Rains in eleven months.'**
+  String get siteLunokhod1;
+
+  /// No description provided for @siteApollo14.
+  ///
+  /// In en, this message translates to:
+  /// **'Apollo 14 landed in the Fra Mauro highlands. Alan Shepard hit two golf balls on the Moon.'**
+  String get siteApollo14;
+
+  /// No description provided for @siteApollo15.
+  ///
+  /// In en, this message translates to:
+  /// **'Apollo 15 was the first mission with a Moon buggy, and explored the foot of the Apennine mountains.'**
+  String get siteApollo15;
+
+  /// No description provided for @siteApollo16.
+  ///
+  /// In en, this message translates to:
+  /// **'Apollo 16 explored the Descartes highlands by rover and brought back about 95 kg of rocks.'**
+  String get siteApollo16;
+
+  /// No description provided for @siteApollo17.
+  ///
+  /// In en, this message translates to:
+  /// **'Apollo 17, in December 1972, is the most recent time people walked on the Moon. Geologist Harrison Schmitt was one of the two walkers.'**
+  String get siteApollo17;
+
+  /// No description provided for @siteChange3.
+  ///
+  /// In en, this message translates to:
+  /// **'China\'s Chang\'e 3 put the Yutu rover on the Moon in December 2013, the first soft landing there since 1976.'**
+  String get siteChange3;
+
+  /// No description provided for @siteChange4.
+  ///
+  /// In en, this message translates to:
+  /// **'Chang\'e 4 made the first soft landing on the far side of the Moon, inside the huge South Pole-Aitken basin, in January 2019.'**
+  String get siteChange4;
+
+  /// No description provided for @siteChange5.
+  ///
+  /// In en, this message translates to:
+  /// **'Chang\'e 5 brought back about 1.7 kg of Moon samples in December 2020, the first new samples in 44 years.'**
+  String get siteChange5;
+
+  /// No description provided for @siteChandrayaan3.
+  ///
+  /// In en, this message translates to:
+  /// **'India\'s Chandrayaan-3 landed near the Moon\'s south pole on 23 August 2023, making India the fourth country to land on the Moon.'**
+  String get siteChandrayaan3;
+
+  /// No description provided for @siteSlim.
+  ///
+  /// In en, this message translates to:
+  /// **'Japan\'s SLIM landed in January 2024 within about 100 metres of its target, a very precise landing.'**
+  String get siteSlim;
+
+  /// No description provided for @siteViking1.
+  ///
+  /// In en, this message translates to:
+  /// **'Viking 1 made the first successful Mars landing in July 1976 and worked on the surface for more than six years.'**
+  String get siteViking1;
+
+  /// No description provided for @siteViking2.
+  ///
+  /// In en, this message translates to:
+  /// **'Viking 2 landed in Utopia Planitia in September 1976 and photographed frost on the red ground.'**
+  String get siteViking2;
+
+  /// No description provided for @sitePathfinder.
+  ///
+  /// In en, this message translates to:
+  /// **'Mars Pathfinder landed in July 1997 and carried Sojourner, the first rover on Mars, about the size of a microwave oven.'**
+  String get sitePathfinder;
+
+  /// No description provided for @siteSpirit.
+  ///
+  /// In en, this message translates to:
+  /// **'Spirit landed in Gusev crater in January 2004 and found signs that water once shaped the rocks there.'**
+  String get siteSpirit;
+
+  /// No description provided for @siteOpportunity.
+  ///
+  /// In en, this message translates to:
+  /// **'Opportunity landed in January 2004 and worked for almost 15 years, though it was built for 90 days.'**
+  String get siteOpportunity;
+
+  /// No description provided for @sitePhoenix.
+  ///
+  /// In en, this message translates to:
+  /// **'Phoenix landed near the north pole in May 2008 and confirmed that there is water ice just under the soil.'**
+  String get sitePhoenix;
+
+  /// No description provided for @siteCuriosity.
+  ///
+  /// In en, this message translates to:
+  /// **'Curiosity landed in Gale crater in August 2012 and showed that the place could once have supported microbial life.'**
+  String get siteCuriosity;
+
+  /// No description provided for @siteInsight.
+  ///
+  /// In en, this message translates to:
+  /// **'InSight landed in November 2018 and recorded hundreds of marsquakes, listening to the inside of the planet.'**
+  String get siteInsight;
+
+  /// No description provided for @sitePerseverance.
+  ///
+  /// In en, this message translates to:
+  /// **'Perseverance landed in Jezero crater in February 2021 with the helicopter Ingenuity, and collects rock samples for a future trip to Earth.'**
+  String get sitePerseverance;
+
+  /// No description provided for @siteZhurong.
+  ///
+  /// In en, this message translates to:
+  /// **'China\'s Zhurong landed in May 2021, making China the second country to drive a rover on Mars.'**
+  String get siteZhurong;
+
+  /// No description provided for @featImbrium.
+  ///
+  /// In en, this message translates to:
+  /// **'Mare Imbrium (Sea of Showers)'**
+  String get featImbrium;
+
+  /// No description provided for @featSerenitatis.
+  ///
+  /// In en, this message translates to:
+  /// **'Mare Serenitatis (Sea of Serenity)'**
+  String get featSerenitatis;
+
+  /// No description provided for @featTranquillitatis.
+  ///
+  /// In en, this message translates to:
+  /// **'Mare Tranquillitatis (Sea of Tranquility)'**
+  String get featTranquillitatis;
+
+  /// No description provided for @featCrisium.
+  ///
+  /// In en, this message translates to:
+  /// **'Mare Crisium (Sea of Crises)'**
+  String get featCrisium;
+
+  /// No description provided for @featFecunditatis.
+  ///
+  /// In en, this message translates to:
+  /// **'Mare Fecunditatis (Sea of Fertility)'**
+  String get featFecunditatis;
+
+  /// No description provided for @featNectaris.
+  ///
+  /// In en, this message translates to:
+  /// **'Mare Nectaris (Sea of Nectar)'**
+  String get featNectaris;
+
+  /// No description provided for @featNubium.
+  ///
+  /// In en, this message translates to:
+  /// **'Mare Nubium (Sea of Clouds)'**
+  String get featNubium;
+
+  /// No description provided for @featHumorum.
+  ///
+  /// In en, this message translates to:
+  /// **'Mare Humorum (Sea of Moisture)'**
+  String get featHumorum;
+
+  /// No description provided for @featProcellarum.
+  ///
+  /// In en, this message translates to:
+  /// **'Oceanus Procellarum (Ocean of Storms)'**
+  String get featProcellarum;
+
+  /// No description provided for @featFrigoris.
+  ///
+  /// In en, this message translates to:
+  /// **'Mare Frigoris (Sea of Cold)'**
+  String get featFrigoris;
+
+  /// No description provided for @featOrientale.
+  ///
+  /// In en, this message translates to:
+  /// **'Orientale basin'**
+  String get featOrientale;
+
+  /// No description provided for @featAitken.
+  ///
+  /// In en, this message translates to:
+  /// **'South Pole-Aitken basin'**
+  String get featAitken;
+
+  /// No description provided for @featTycho.
+  ///
+  /// In en, this message translates to:
+  /// **'Tycho crater'**
+  String get featTycho;
+
+  /// No description provided for @featCopernicus.
+  ///
+  /// In en, this message translates to:
+  /// **'Copernicus crater'**
+  String get featCopernicus;
+
+  /// No description provided for @featOlympus.
+  ///
+  /// In en, this message translates to:
+  /// **'Olympus Mons'**
+  String get featOlympus;
+
+  /// No description provided for @featTharsis.
+  ///
+  /// In en, this message translates to:
+  /// **'Tharsis volcanoes'**
+  String get featTharsis;
+
+  /// No description provided for @featValles.
+  ///
+  /// In en, this message translates to:
+  /// **'Valles Marineris'**
+  String get featValles;
+
+  /// No description provided for @featHellas.
+  ///
+  /// In en, this message translates to:
+  /// **'Hellas Planitia'**
+  String get featHellas;
+
+  /// No description provided for @featArgyre.
+  ///
+  /// In en, this message translates to:
+  /// **'Argyre Planitia'**
+  String get featArgyre;
+
+  /// No description provided for @featUtopia.
+  ///
+  /// In en, this message translates to:
+  /// **'Utopia Planitia'**
+  String get featUtopia;
+
+  /// No description provided for @featIsidis.
+  ///
+  /// In en, this message translates to:
+  /// **'Isidis Planitia'**
+  String get featIsidis;
+
+  /// No description provided for @featSyrtis.
+  ///
+  /// In en, this message translates to:
+  /// **'Syrtis Major'**
+  String get featSyrtis;
+
+  /// No description provided for @featChryse.
+  ///
+  /// In en, this message translates to:
+  /// **'Chryse Planitia'**
+  String get featChryse;
+
+  /// No description provided for @featAcidalia.
+  ///
+  /// In en, this message translates to:
+  /// **'Acidalia Planitia'**
+  String get featAcidalia;
+
+  /// No description provided for @featElysium.
+  ///
+  /// In en, this message translates to:
+  /// **'Elysium Mons'**
+  String get featElysium;
+
+  /// No description provided for @featNorthCap.
+  ///
+  /// In en, this message translates to:
+  /// **'North polar cap'**
+  String get featNorthCap;
+
+  /// No description provided for @featSouthCap.
+  ///
+  /// In en, this message translates to:
+  /// **'South polar cap'**
+  String get featSouthCap;
 }
 
 class _AppLocalizationsDelegate

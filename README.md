@@ -93,6 +93,7 @@ and an honest answer to "could humans live here?"
 - **Your age on other planets** and the date of your next birthday there.
 - **My birthday sky.** The Moon's phase and where the planets were on the day you were born, how many days old you are, and the dates of your 10,000th day, your 1 billionth second and other round numbers.
 - **Space missions.** A timeline of 15 famous missions from Sputnik 1 to Chandrayaan-3, each with a short story.
+- **Surface maps of the Moon and Mars.** Open the Moon or Mars and tap *Surface map*: a flat map with 15 landing sites on the Moon (Luna 9, Apollo 11 to 17, Chang'e 3, 4 and 5, Chandrayaan-3, SLIM and more) and 10 on Mars (Viking, Sojourner, Spirit, Opportunity, Phoenix, Curiosity, InSight, Perseverance, Zhurong). Pinch to zoom, tap a marker for the story, coordinates and who sent it. The map is drawn, not a photo: seas, basins, craters and volcanoes sit in the right places and every site is at its real latitude and longitude.
 - **Search and favourites.** Tap the search bar on the home screen to search planets, moons, missions and spacecraft, in your own language or in English. Tap the star on anything to keep it in your favourites, which show when the search box is empty. Starred planets also come first in the row of cards on the home screen.
 - **Quiz.** Three levels, 10 questions each: Easy (basics about planets), Medium (planets and moons) and Hard (tricky rankings). Answers are worked out from the data, and your best score for each level is saved.
 - **Share.** Turn a planet's card into a picture and send it to your friends.
@@ -194,6 +195,7 @@ All texts live in `lib/l10n/app_en.arb` and `lib/l10n/app_hi.arb`. Found a wrong
 
 | Version | What's new |
 |---|---|
+| **1.17.6** | Surface maps for the Moon and Mars with 25 landing sites. Open the Moon or Mars and tap Surface map. Your data and settings are kept |
 | **1.17.5** | New app id `space.astryl.app` (it was `online.lumioapps.heliora`), after the website astryl.space. Android sees this as a **new app**, so it installs next to the old one instead of updating it. To move over: in the old app open Settings → Backup → Save, install 1.17.5, open Settings → Backup → Restore in the new app, then uninstall the old one. Reminders for single events are not kept, set them again |
 | **1.17.4** | The licence is now AGPL-3.0 (versions up to 1.17.3 stay under MIT). The name "Lumio Apps" is gone from the project texts; the copyright line is now Astryl and astryl.space. Settings → About has a new link to the website. Your data and settings are kept |
 | **1.17.3** | The app is now called **Astryl** (it was Heliora). New name on the home screen, in the update dialog, in shared texts and in file names; the repository is now github.com/aditymishr098-collab/astryl and the website is astryl.space. It installs over Heliora as an update: your data, settings and old backups are kept |

@@ -113,6 +113,17 @@ def parse_meteors():
     return [[a, int(b), int(c), int(d)] for a, b, c, d in re.findall(r"\('(\w+)', (\d+), (\d+), (\d+)\),", text)]
 
 
+def parse_surface():
+    text = (ROOT / 'lib/data/surface_sites.dart').read_text(encoding='utf-8')
+    sites = []
+    for m in re.finditer(r"SurfaceSite\(id: '(\w+)', world: SurfaceWorld\.(\w+), name: (?:'([^']*)'|\"([^\"]*)\"), agency: '([^']+)', year: (\d+), lat: ([-\d.]+), lon: ([-\d.]+), kind: SiteKind\.(\w+)\)", text):
+        sites.append(dict(id=m.group(1), world=m.group(2), name=m.group(3) or m.group(4), agency=m.group(5), year=int(m.group(6)), lat=float(m.group(7)), lon=float(m.group(8)), kind=m.group(9)))
+    feats = []
+    for m in re.finditer(r"SurfaceFeature\(id: '(\w+)', world: SurfaceWorld\.(\w+), lat: ([-\d.]+), lon: ([-\d.]+), rx: ([\d.]+), ry: ([\d.]+), kind: FeatureKind\.(\w+)(?:, tilt: ([-\d.]+))?(?:, major: (true))?\)", text):
+        feats.append(dict(id=m.group(1), world=m.group(2), lat=float(m.group(3)), lon=float(m.group(4)), rx=float(m.group(5)), ry=float(m.group(6)), kind=m.group(7), tilt=float(m.group(8) or 0), major=bool(m.group(9))))
+    return sites, feats
+
+
 def parse_fact_ids():
     text = (ROOT / 'lib/core/facts.dart').read_text(encoding='utf-8')
     return re.findall(r"^  '(\w+)',$", text, re.M)
@@ -130,12 +141,14 @@ CRAFT = parse_spacecraft()
 CONS = parse_constellations()
 METEORS = parse_meteors()
 FACT_IDS = parse_fact_ids()
+SITES, FEATS = parse_surface()
 MILESTONES = parse_milestones()
 BY = {b['id']: b for b in BODIES}
 NAME_KEY = dict(mercury='planetMercury', venus='planetVenus', earth='planetEarth', mars='planetMars', jupiter='planetJupiter', saturn='planetSaturn', uranus='planetUranus', neptune='planetNeptune', sun='bodySun', moon='bodyMoon', pluto='bodyPluto', io='moonIo', europa='moonEuropa', ganymede='moonGanymede', callisto='moonCallisto', titan='moonTitan', enceladus='moonEnceladus', triton='moonTriton')
 
 assert len(BODIES) == 18, len(BODIES)
 assert len(ORBITS) == 9 and len(MISSIONS) == 15 and len(CRAFT) == 7 and len(CONS) == 89, (len(ORBITS), len(MISSIONS), len(CRAFT), len(CONS))
+assert len(SITES) == 25 and len(FEATS) == 27, (len(SITES), len(FEATS))
 assert len(METEORS) == 8 and len(FACT_IDS) == 18 and MILESTONES
 
 # ------------------------------------------------------------------ text helpers
@@ -317,7 +330,7 @@ def cons_svg(c):
 
 # ------------------------------------------------------------------ page shell
 NAV = [('index.html', 'home', bt('Home', 'होम')), ('planets.html', 'planets', bi('planetsTitle')), ('solar-system.html', 'solar', bi('solarSystemTitle')), ('compare.html', 'compare', bi('navCompare')),
-       ('you.html', 'you', bt('You', 'आप')), ('quiz.html', 'quiz', bi('navQuiz')), ('sky.html', 'sky', bi('skyTitle')), ('constellations.html', 'cons', bi('constellationsLabel')), ('missions.html', 'missions', bi('missionsTitle')), ('get.html', 'get', bt('Get the app', 'App पाएँ'))]
+       ('you.html', 'you', bt('You', 'आप')), ('quiz.html', 'quiz', bi('navQuiz')), ('sky.html', 'sky', bi('skyTitle')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')), ('missions.html', 'missions', bi('missionsTitle')), ('get.html', 'get', bt('Get the app', 'App पाएँ'))]
 
 
 def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', scripts=True, extra_head=''):
@@ -449,6 +462,7 @@ def index_page():
              ('⚖️', 'weightTitle', 'Your weight, jump height and age on every world, and the sky on your birthday.', 'हर दुनिया पर आपका वज़न, कूद की ऊँचाई और उम्र, और आपके जन्मदिन का आसमान।', 'you.html'),
              ('🧠', 'quizTitle', 'Ten questions in three levels, built from the planet data.', 'तीन levels में दस सवाल, ग्रहों के data से बने।', 'quiz.html'),
              ('⭐', 'starMapTitle', '89 constellations with their stories. The app has a live star map, a compass planet finder and a binocular guide.', '89 तारामंडल और उनकी कहानियाँ। App में live star map, compass से ग्रह ढूँढना और दूरबीन guide भी है।', 'constellations.html'),
+             ('🗺️', 'surfaceMapTitle', 'Landing sites on the Moon and Mars, at their real coordinates, from Luna 9 to Chandrayaan-3 and Perseverance.', 'चाँद और मंगल पर उतरने की जगहें, असली coordinates पर, Luna 9 से Chandrayaan-3 और Perseverance तक।', 'maps.html'),
              ('🚀', 'missionsTitle', 'Sputnik to Chandrayaan-3: famous moments in space exploration.', 'Sputnik से Chandrayaan-3 तक: अंतरिक्ष खोज के मशहूर पल।', 'missions.html'),
              ('🛰️', 'spacecraftTitle', 'How far Voyager, JWST and the Mars rovers are from Earth, right now.', 'Voyager, JWST और Mars rovers इस वक़्त Earth से कितनी दूर हैं।', 'spacecraft.html')]
     cards = ''.join(f'<a class="card" href="{h}"><div class="ico">{ic}</div><h3>{bi(k)}</h3><p>{bt(en, hi)}</p></a>' for ic, k, en, hi, h in feats)
@@ -533,6 +547,55 @@ def simple_pages():
     write('constellations.html', shell('Constellations', 'तारामंडल', 'cons', body, '89 constellations with line drawings and stories, from the Astryl star map.', canonical='constellations.html'))
 
 
+def maps_page():
+    colors = dict(crewed='#f5a524', lander='#5b8cff', rover='#2fbf71', sample='#b07cff')
+    kind_key = dict(crewed='siteKindCrewed', lander='siteKindLander', rover='siteKindRover', sample='siteKindSample')
+
+    def svg(world):
+        moon = world == 'moon'
+        base, shade, high = ('#9c978e', '#55524d', '#c4bfb5') if moon else ('#b5683f', '#6e3a22', '#d9915f')
+        o = f'<svg viewBox="0 0 360 180" role="img" aria-label="{esc(tr("en", "surfaceMapOf", body=tr("en", "bodyMoon" if moon else "planetMars")))}" style="width:100%;height:auto;border-radius:16px;display:block"><rect width="360" height="180" fill="{base}"/>'
+        for f in [f for f in FEATS if f['world'] == world]:
+            cx, cy = f['lon'] + 180, 90 - f['lat']
+            for dx in (-360, 0, 360):
+                x = cx + dx
+                if x + f['rx'] < 0 or x - f['rx'] > 360:
+                    continue
+                tf = f'transform="rotate({-f["tilt"]} {x:.2f} {cy:.2f})"' if f['tilt'] else ''
+                e = f'cx="{x:.2f}" cy="{cy:.2f}" rx="{f["rx"]}" ry="{f["ry"]}" {tf}'
+                k = f['kind']
+                if k == 'sea': o += f'<ellipse {e} fill="{shade}" fill-opacity=".62"/>'
+                elif k == 'basin': o += f'<ellipse {e} fill="{shade}" fill-opacity=".42" stroke="{shade}" stroke-opacity=".7" stroke-width=".8"/>'
+                elif k in ('crater', 'volcano'): o += f'<ellipse {e} fill="{high}" fill-opacity=".9" stroke="{shade}" stroke-opacity=".8" stroke-width=".8"/>'
+                elif k == 'canyon': o += f'<ellipse {e} fill="{shade}" fill-opacity=".85"/>'
+                elif k == 'highland': o += f'<ellipse {e} fill="{high}" fill-opacity=".5"/>'
+                elif k == 'cap': o += f'<ellipse {e} fill="#fff" fill-opacity=".9"/>'
+        for lon in range(0, 361, 30):
+            o += f'<line x1="{lon}" y1="0" x2="{lon}" y2="180" stroke="#fff" stroke-opacity=".16" stroke-width=".4"/>'
+        for lat in range(0, 181, 30):
+            o += f'<line x1="0" y1="{lat}" x2="360" y2="{lat}" stroke="#fff" stroke-opacity=".16" stroke-width=".4"/>'
+        for f in [f for f in FEATS if f['world'] == world and f['major'] and f['kind'] != 'cap']:
+            en = L['en']['feat' + f['id']].split(' (')[0]
+            tx = min(max(f["lon"] + 180, 30), 330)
+            o += f'<text x="{tx:.1f}" y="{90 - f["lat"]:.1f}" font-size="5" fill="#fff" text-anchor="middle" stroke="#000" stroke-opacity=".5" stroke-width=".6" paint-order="stroke" class="t" lang="en">{esc(en)}</text>'
+            hi = L['hi']['feat' + f['id']].split(' (')[0]
+            o += f'<text x="{tx:.1f}" y="{90 - f["lat"]:.1f}" font-size="5" fill="#fff" text-anchor="middle" stroke="#000" stroke-opacity=".5" stroke-width=".6" paint-order="stroke" class="t" lang="hi">{esc(hi)}</text>'
+        for si in [x for x in SITES if x['world'] == world]:
+            o += f'<a href="#site-{si["id"]}"><circle cx="{si["lon"] + 180:.2f}" cy="{90 - si["lat"]:.2f}" r="2.6" fill="{colors[si["kind"]]}" stroke="#fff" stroke-width="1"><title>{esc(si["name"])}</title></circle></a>'
+        return o + '</svg>'
+
+    def fmtll(lat, lon):
+        return f'{abs(lat):.2f}° {"N" if lat >= 0 else "S"}, {abs(lon):.2f}° {"E" if lon >= 0 else "W"}'
+    legend = ''.join(f'<span style="display:inline-flex;align-items:center;gap:6px;margin-right:14px"><i style="width:12px;height:12px;border-radius:50%;background:{c};border:1.5px solid #fff;display:inline-block"></i>{bi(kind_key[k])}</span>' for k, c in colors.items())
+    secs = ''
+    for world, title_key in (('moon', 'bodyMoon'), ('mars', 'planetMars')):
+        cards = ''.join(f'<div class="card" id="site-{x["id"]}"><div class="y" style="font:700 1rem Space Grotesk;color:var(--accent)">{x["year"]}</div><h3>{esc(x["name"])} <small class="note">· {x["agency"]} · {bi(kind_key[x["kind"]])}</small></h3><p class="note">{fmtll(x["lat"], x["lon"])}</p><p style="color:var(--text)">{bi("site" + x["id"])}</p></div>' for x in sorted([x for x in SITES if x['world'] == world], key=lambda x: (x['year'], x['name'])))
+        secs += f'<section class="blk"><h2>{bi(title_key)}</h2><p class="sub">{bi("surfaceMapMoonHint" if world == "moon" else "surfaceMapMarsHint")}</p>{svg(world)}<p style="margin-top:10px">{legend}</p><div class="grid" style="margin-top:14px">{cards}</div></section>'
+    body = f'''<section class="blk"><h1>{bi("surfaceMapTitle")}</h1><p class="sub">{bi("surfaceMapNote")}</p></section>{secs}
+<style>.card:target{{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}}</style>'''
+    write('maps.html', shell('Moon and Mars surface maps', 'चाँद और मंगल के नक़्शे', 'maps', body, 'Landing sites on the Moon and Mars at their real coordinates: Apollo, Chang\'e, Chandrayaan, Viking, Curiosity, Perseverance and more.', canonical='maps.html'))
+
+
 def get_page():
     body = f'''<section class="blk"><h1>{bt("Get Astryl", "Astryl पाएँ")}</h1>
 <p class="sub">{bt("Astryl is only on GitHub Releases. There is no Play Store or other store listing, so nobody else controls it.", "Astryl सिर्फ़ GitHub Releases पर है। Play Store या किसी और store पर नहीं, इसलिए इस पर किसी और का control नहीं।")}</p>
@@ -603,8 +666,8 @@ def main():
     (OUT / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n', encoding='utf-8')
     for i, b in enumerate(BODIES):
         body_page(b, i)
-    index_page(); planets_page(); simple_pages(); get_page(); privacy_page(); not_found()
-    urls = ['', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'missions.html', 'spacecraft.html', 'get.html', 'privacy.html'] + [f'body/{b["id"]}.html' for b in BODIES]
+    index_page(); planets_page(); simple_pages(); maps_page(); get_page(); privacy_page(); not_found()
+    urls = ['', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'get.html', 'privacy.html'] + [f'body/{b["id"]}.html' for b in BODIES]
     (OUT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}/{u}</loc></url>\n' for u in urls) + '</urlset>\n', encoding='utf-8')
     print('pages:', len(list(OUT.rglob('*.html'))))
 

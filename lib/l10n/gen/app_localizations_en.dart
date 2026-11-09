@@ -1950,4 +1950,230 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get backupBad => 'That file is not an Astryl backup.';
+
+  @override
+  String get surfaceMapTitle => 'Surface map';
+
+  @override
+  String surfaceMapOf(String body) {
+    return '$body: surface map';
+  }
+
+  @override
+  String get surfaceMapMoonHint =>
+      'Where Apollo, Chang\'e, Chandrayaan and others landed.';
+
+  @override
+  String get surfaceMapMarsHint =>
+      'Where Viking, Curiosity, Perseverance and other landers and rovers touched down.';
+
+  @override
+  String get surfaceMapTap =>
+      'Tap a marker to read the story. Pinch to zoom in.';
+
+  @override
+  String get surfaceMapNote =>
+      'A simplified map, not a photo: the big seas, basins, craters and volcanoes are drawn in the right places, and every landing site is at its real latitude and longitude.';
+
+  @override
+  String get surfaceMapSites => 'Landing sites';
+
+  @override
+  String get siteKindCrewed => 'Crewed landing';
+
+  @override
+  String get siteKindLander => 'Lander';
+
+  @override
+  String get siteKindRover => 'Rover';
+
+  @override
+  String get siteKindSample => 'Sample return';
+
+  @override
+  String get mapNearSide => 'Near side';
+
+  @override
+  String get mapFarSide => 'Far side';
+
+  @override
+  String get siteLuna9 =>
+      'Luna 9 made the first soft landing on another world and sent back the first photos taken on the Moon\'s surface.';
+
+  @override
+  String get siteSurveyor1 =>
+      'Surveyor 1 was the first American soft landing on the Moon. It sent back more than 11,000 photos and showed that the ground was firm enough to land on.';
+
+  @override
+  String get siteApollo11 =>
+      'The first people on the Moon, Neil Armstrong and Buzz Aldrin, landed here at Tranquility Base in July 1969.';
+
+  @override
+  String get siteApollo12 =>
+      'Apollo 12 landed close to the old probe Surveyor 3, and the crew brought some of its parts back to Earth.';
+
+  @override
+  String get siteLuna16 =>
+      'Luna 16 was the first robot to bring Moon soil back to Earth, about 100 grams, with no crew on board.';
+
+  @override
+  String get siteLunokhod1 =>
+      'Lunokhod 1 was the first rover on another world. It drove about 10 km over the Sea of Rains in eleven months.';
+
+  @override
+  String get siteApollo14 =>
+      'Apollo 14 landed in the Fra Mauro highlands. Alan Shepard hit two golf balls on the Moon.';
+
+  @override
+  String get siteApollo15 =>
+      'Apollo 15 was the first mission with a Moon buggy, and explored the foot of the Apennine mountains.';
+
+  @override
+  String get siteApollo16 =>
+      'Apollo 16 explored the Descartes highlands by rover and brought back about 95 kg of rocks.';
+
+  @override
+  String get siteApollo17 =>
+      'Apollo 17, in December 1972, is the most recent time people walked on the Moon. Geologist Harrison Schmitt was one of the two walkers.';
+
+  @override
+  String get siteChange3 =>
+      'China\'s Chang\'e 3 put the Yutu rover on the Moon in December 2013, the first soft landing there since 1976.';
+
+  @override
+  String get siteChange4 =>
+      'Chang\'e 4 made the first soft landing on the far side of the Moon, inside the huge South Pole-Aitken basin, in January 2019.';
+
+  @override
+  String get siteChange5 =>
+      'Chang\'e 5 brought back about 1.7 kg of Moon samples in December 2020, the first new samples in 44 years.';
+
+  @override
+  String get siteChandrayaan3 =>
+      'India\'s Chandrayaan-3 landed near the Moon\'s south pole on 23 August 2023, making India the fourth country to land on the Moon.';
+
+  @override
+  String get siteSlim =>
+      'Japan\'s SLIM landed in January 2024 within about 100 metres of its target, a very precise landing.';
+
+  @override
+  String get siteViking1 =>
+      'Viking 1 made the first successful Mars landing in July 1976 and worked on the surface for more than six years.';
+
+  @override
+  String get siteViking2 =>
+      'Viking 2 landed in Utopia Planitia in September 1976 and photographed frost on the red ground.';
+
+  @override
+  String get sitePathfinder =>
+      'Mars Pathfinder landed in July 1997 and carried Sojourner, the first rover on Mars, about the size of a microwave oven.';
+
+  @override
+  String get siteSpirit =>
+      'Spirit landed in Gusev crater in January 2004 and found signs that water once shaped the rocks there.';
+
+  @override
+  String get siteOpportunity =>
+      'Opportunity landed in January 2004 and worked for almost 15 years, though it was built for 90 days.';
+
+  @override
+  String get sitePhoenix =>
+      'Phoenix landed near the north pole in May 2008 and confirmed that there is water ice just under the soil.';
+
+  @override
+  String get siteCuriosity =>
+      'Curiosity landed in Gale crater in August 2012 and showed that the place could once have supported microbial life.';
+
+  @override
+  String get siteInsight =>
+      'InSight landed in November 2018 and recorded hundreds of marsquakes, listening to the inside of the planet.';
+
+  @override
+  String get sitePerseverance =>
+      'Perseverance landed in Jezero crater in February 2021 with the helicopter Ingenuity, and collects rock samples for a future trip to Earth.';
+
+  @override
+  String get siteZhurong =>
+      'China\'s Zhurong landed in May 2021, making China the second country to drive a rover on Mars.';
+
+  @override
+  String get featImbrium => 'Mare Imbrium (Sea of Showers)';
+
+  @override
+  String get featSerenitatis => 'Mare Serenitatis (Sea of Serenity)';
+
+  @override
+  String get featTranquillitatis => 'Mare Tranquillitatis (Sea of Tranquility)';
+
+  @override
+  String get featCrisium => 'Mare Crisium (Sea of Crises)';
+
+  @override
+  String get featFecunditatis => 'Mare Fecunditatis (Sea of Fertility)';
+
+  @override
+  String get featNectaris => 'Mare Nectaris (Sea of Nectar)';
+
+  @override
+  String get featNubium => 'Mare Nubium (Sea of Clouds)';
+
+  @override
+  String get featHumorum => 'Mare Humorum (Sea of Moisture)';
+
+  @override
+  String get featProcellarum => 'Oceanus Procellarum (Ocean of Storms)';
+
+  @override
+  String get featFrigoris => 'Mare Frigoris (Sea of Cold)';
+
+  @override
+  String get featOrientale => 'Orientale basin';
+
+  @override
+  String get featAitken => 'South Pole-Aitken basin';
+
+  @override
+  String get featTycho => 'Tycho crater';
+
+  @override
+  String get featCopernicus => 'Copernicus crater';
+
+  @override
+  String get featOlympus => 'Olympus Mons';
+
+  @override
+  String get featTharsis => 'Tharsis volcanoes';
+
+  @override
+  String get featValles => 'Valles Marineris';
+
+  @override
+  String get featHellas => 'Hellas Planitia';
+
+  @override
+  String get featArgyre => 'Argyre Planitia';
+
+  @override
+  String get featUtopia => 'Utopia Planitia';
+
+  @override
+  String get featIsidis => 'Isidis Planitia';
+
+  @override
+  String get featSyrtis => 'Syrtis Major';
+
+  @override
+  String get featChryse => 'Chryse Planitia';
+
+  @override
+  String get featAcidalia => 'Acidalia Planitia';
+
+  @override
+  String get featElysium => 'Elysium Mons';
+
+  @override
+  String get featNorthCap => 'North polar cap';
+
+  @override
+  String get featSouthCap => 'South polar cap';
 }

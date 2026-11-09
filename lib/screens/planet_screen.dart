@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -17,6 +16,7 @@ import '../widgets/common.dart';
 import '../widgets/fact_card.dart';
 import '../widgets/favorite_button.dart';
 import '../widgets/share_card.dart';
+import 'surface_map_screen.dart';
 
 /// Text helpers shared by the planet and compare screens.
 class PlanetText {
@@ -177,16 +177,15 @@ class _PlanetScreenState extends State<PlanetScreen> {
       appBar: AppBar(
         actions: <Widget>[
           FavoriteButton(favoriteKey: widget.planet.id),
-          if (!kIsWeb)
-            IconButton(
-              tooltip: l.share,
-              onPressed: _sharing ? null : _share,
-              icon: _sharing
-                  ? const SizedBox.square(
-                      dimension: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2))
-                  : const Icon(Icons.share_outlined),
-            ),
+          IconButton(
+            tooltip: l.share,
+            onPressed: _sharing ? null : _share,
+            icon: _sharing
+                ? const SizedBox.square(
+                    dimension: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2))
+                : const Icon(Icons.share_outlined),
+          ),
         ],
       ),
       body: ListView(
@@ -314,6 +313,10 @@ class _PlanetScreenState extends State<PlanetScreen> {
           ),
           const SizedBox(height: 14),
           FactCard.of(planet.id, key: ValueKey<String>('fact-${planet.id}')),
+          if (SurfaceMapScreen.isAvailable(planet.id)) ...<Widget>[
+            const SizedBox(height: 14),
+            _SurfaceMapTile(planet: planet),
+          ],
           if (moons.isNotEmpty) ...<Widget>[
             const SizedBox(height: 24),
             Text(l.majorMoons,
@@ -711,6 +714,54 @@ class _TravelCard extends StatelessWidget {
           row(Icons.directions_car_outlined, l.byCar,
               t.duration(km / 100 * 3600)),
         ],
+      ),
+    );
+  }
+}
+
+/// A card that opens the surface map of the Moon or Mars.
+class _SurfaceMapTile extends StatelessWidget {
+  const _SurfaceMapTile({required this.planet});
+
+  final Planet planet;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final p = Palette.of(context);
+    return InkWell(
+      borderRadius: BorderRadius.circular(24),
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute<void>(
+            builder: (_) => SurfaceMapScreen(planet: planet)),
+      ),
+      child: SurfaceCard(
+        child: Row(
+          children: <Widget>[
+            Icon(Icons.map_outlined, size: 28, color: p.accentText),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(l.surfaceMapTitle,
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: p.text)),
+                  const SizedBox(height: 2),
+                  Text(
+                      planet.id == 'moon'
+                          ? l.surfaceMapMoonHint
+                          : l.surfaceMapMarsHint,
+                      style: TextStyle(
+                          fontSize: 13, color: p.muted, height: 1.35)),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right, color: p.muted),
+          ],
+        ),
       ),
     );
   }

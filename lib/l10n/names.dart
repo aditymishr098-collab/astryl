@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import '../core/format.dart';
 import '../core/quiz.dart';
 import '../data/planets.dart';
+import '../data/surface_sites.dart';
 import 'gen/app_localizations.dart';
 
 /// The app languages, shown in their own script in the picker.
@@ -403,4 +404,138 @@ String? constellationStory(AppLocalizations l, String id) {
       return l.storyCru;
   }
   return null;
+}
+
+/// The short story of a landing site on the surface map.
+String siteText(AppLocalizations l, String id) {
+  switch (id) {
+    case 'Luna9':
+      return l.siteLuna9;
+    case 'Surveyor1':
+      return l.siteSurveyor1;
+    case 'Apollo11':
+      return l.siteApollo11;
+    case 'Apollo12':
+      return l.siteApollo12;
+    case 'Luna16':
+      return l.siteLuna16;
+    case 'Lunokhod1':
+      return l.siteLunokhod1;
+    case 'Apollo14':
+      return l.siteApollo14;
+    case 'Apollo15':
+      return l.siteApollo15;
+    case 'Apollo16':
+      return l.siteApollo16;
+    case 'Apollo17':
+      return l.siteApollo17;
+    case 'Change3':
+      return l.siteChange3;
+    case 'Change4':
+      return l.siteChange4;
+    case 'Change5':
+      return l.siteChange5;
+    case 'Chandrayaan3':
+      return l.siteChandrayaan3;
+    case 'Slim':
+      return l.siteSlim;
+    case 'Viking1':
+      return l.siteViking1;
+    case 'Viking2':
+      return l.siteViking2;
+    case 'Pathfinder':
+      return l.sitePathfinder;
+    case 'Spirit':
+      return l.siteSpirit;
+    case 'Opportunity':
+      return l.siteOpportunity;
+    case 'Phoenix':
+      return l.sitePhoenix;
+    case 'Curiosity':
+      return l.siteCuriosity;
+    case 'Insight':
+      return l.siteInsight;
+    case 'Perseverance':
+      return l.sitePerseverance;
+    case 'Zhurong':
+      return l.siteZhurong;
+    default:
+      return id;
+  }
+}
+
+/// The name of a landform on the surface map.
+String featureName(AppLocalizations l, String id) {
+  switch (id) {
+    case 'Imbrium':
+      return l.featImbrium;
+    case 'Serenitatis':
+      return l.featSerenitatis;
+    case 'Tranquillitatis':
+      return l.featTranquillitatis;
+    case 'Crisium':
+      return l.featCrisium;
+    case 'Fecunditatis':
+      return l.featFecunditatis;
+    case 'Nectaris':
+      return l.featNectaris;
+    case 'Nubium':
+      return l.featNubium;
+    case 'Humorum':
+      return l.featHumorum;
+    case 'Procellarum':
+      return l.featProcellarum;
+    case 'Frigoris':
+      return l.featFrigoris;
+    case 'Orientale':
+      return l.featOrientale;
+    case 'Aitken':
+      return l.featAitken;
+    case 'Tycho':
+      return l.featTycho;
+    case 'Copernicus':
+      return l.featCopernicus;
+    case 'Olympus':
+      return l.featOlympus;
+    case 'Tharsis':
+      return l.featTharsis;
+    case 'Valles':
+      return l.featValles;
+    case 'Hellas':
+      return l.featHellas;
+    case 'Argyre':
+      return l.featArgyre;
+    case 'Utopia':
+      return l.featUtopia;
+    case 'Isidis':
+      return l.featIsidis;
+    case 'Syrtis':
+      return l.featSyrtis;
+    case 'Chryse':
+      return l.featChryse;
+    case 'Acidalia':
+      return l.featAcidalia;
+    case 'Elysium':
+      return l.featElysium;
+    case 'NorthCap':
+      return l.featNorthCap;
+    case 'SouthCap':
+      return l.featSouthCap;
+    default:
+      return id;
+  }
+}
+
+/// What kind of landing a site was.
+String siteKindLabel(AppLocalizations l, SiteKind kind) {
+  switch (kind) {
+    case SiteKind.crewed:
+      return l.siteKindCrewed;
+    case SiteKind.lander:
+      return l.siteKindLander;
+    case SiteKind.rover:
+      return l.siteKindRover;
+    case SiteKind.sample:
+      return l.siteKindSample;
+  }
 }

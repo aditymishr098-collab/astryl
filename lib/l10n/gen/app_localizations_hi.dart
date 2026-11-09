@@ -1951,4 +1951,230 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get backupBad => 'यह फ़ाइल Astryl का बैकअप नहीं है।';
+
+  @override
+  String get surfaceMapTitle => 'सतह का नक़्शा';
+
+  @override
+  String surfaceMapOf(String body) {
+    return '$body: सतह का नक़्शा';
+  }
+
+  @override
+  String get surfaceMapMoonHint =>
+      'जहाँ Apollo, Chang\'e, Chandrayaan और दूसरे यान उतरे।';
+
+  @override
+  String get surfaceMapMarsHint =>
+      'जहाँ Viking, Curiosity, Perseverance और दूसरे lander और rover उतरे।';
+
+  @override
+  String get surfaceMapTap =>
+      'कहानी पढ़ने के लिए किसी निशान पर दबाइए। Zoom करने के लिए दो उँगलियों से फैलाइए।';
+
+  @override
+  String get surfaceMapNote =>
+      'यह सरल नक़्शा है, तस्वीर नहीं: बड़े सागर, बेसिन, craters और ज्वालामुखी सही जगह पर बनाए गए हैं, और हर landing site अपने असली अक्षांश और देशांतर पर है।';
+
+  @override
+  String get surfaceMapSites => 'उतरने की जगहें';
+
+  @override
+  String get siteKindCrewed => 'इंसान उतरे';
+
+  @override
+  String get siteKindLander => 'Lander';
+
+  @override
+  String get siteKindRover => 'Rover';
+
+  @override
+  String get siteKindSample => 'नमूने वापस लाया';
+
+  @override
+  String get mapNearSide => 'सामने का हिस्सा';
+
+  @override
+  String get mapFarSide => 'पीछे का हिस्सा';
+
+  @override
+  String get siteLuna9 =>
+      'Luna 9 किसी दूसरी दुनिया पर पहली सॉफ़्ट लैंडिंग करने वाला यान था। उसने चाँद की सतह से खींची पहली तस्वीरें भेजीं।';
+
+  @override
+  String get siteSurveyor1 =>
+      'Surveyor 1 चाँद पर अमेरिका की पहली सॉफ़्ट लैंडिंग थी। उसने 11,000 से ज़्यादा तस्वीरें भेजीं और दिखाया कि वहाँ की ज़मीन उतरने लायक़ मज़बूत है।';
+
+  @override
+  String get siteApollo11 =>
+      'चाँद पर पहले इंसान, नील आर्मस्ट्रॉन्ग और बज़ ऑल्ड्रिन, जुलाई 1969 में यहाँ Tranquility Base पर उतरे।';
+
+  @override
+  String get siteApollo12 =>
+      'Apollo 12 पुराने यान Surveyor 3 के पास उतरा, और यात्री उसके कुछ हिस्से धरती पर ले आए।';
+
+  @override
+  String get siteLuna16 =>
+      'Luna 16 चाँद की मिट्टी धरती पर लाने वाला पहला रोबोट था, लगभग 100 ग्राम, बिना किसी इंसान के।';
+
+  @override
+  String get siteLunokhod1 =>
+      'Lunokhod 1 किसी दूसरी दुनिया पर चलने वाला पहला rover था। उसने ग्यारह महीनों में लगभग 10 किमी का सफ़र तय किया।';
+
+  @override
+  String get siteApollo14 =>
+      'Apollo 14 Fra Mauro की ऊँची ज़मीन पर उतरा। एलन शेपर्ड ने चाँद पर दो golf गेंदें मारीं।';
+
+  @override
+  String get siteApollo15 =>
+      'Apollo 15 चाँद की गाड़ी (lunar rover) वाला पहला मिशन था, और उसने Apennine पहाड़ों के पास खोज की।';
+
+  @override
+  String get siteApollo16 =>
+      'Apollo 16 ने rover से Descartes की ऊँची ज़मीन देखी और लगभग 95 किलो पत्थर वापस लाया।';
+
+  @override
+  String get siteApollo17 =>
+      'दिसंबर 1972 का Apollo 17 अब तक का आख़िरी मिशन है जिसमें इंसान चाँद पर चले। भू-वैज्ञानिक हैरिसन श्मिट चलने वाले दो लोगों में थे।';
+
+  @override
+  String get siteChange3 =>
+      'चीन के Chang\'e 3 ने दिसंबर 2013 में Yutu rover को चाँद पर उतारा। 1976 के बाद वहाँ यह पहली सॉफ़्ट लैंडिंग थी।';
+
+  @override
+  String get siteChange4 =>
+      'Chang\'e 4 ने जनवरी 2019 में चाँद के पीछे के हिस्से पर, विशाल दक्षिणी ध्रुव–ऐटकेन बेसिन के अंदर, पहली सॉफ़्ट लैंडिंग की।';
+
+  @override
+  String get siteChange5 =>
+      'Chang\'e 5 दिसंबर 2020 में चाँद के लगभग 1.7 किलो नमूने लाया, 44 साल में पहली बार नए नमूने।';
+
+  @override
+  String get siteChandrayaan3 =>
+      'भारत का Chandrayaan-3 23 अगस्त 2023 को चाँद के दक्षिणी ध्रुव के पास उतरा। चाँद पर उतरने वाला भारत चौथा देश बना।';
+
+  @override
+  String get siteSlim =>
+      'जापान का SLIM जनवरी 2024 में अपने निशाने से लगभग 100 मीटर के भीतर उतरा, यह बहुत सटीक लैंडिंग थी।';
+
+  @override
+  String get siteViking1 =>
+      'Viking 1 जुलाई 1976 में मंगल पर पहली सफल लैंडिंग करने वाला यान था। उसने छह साल से ज़्यादा सतह पर काम किया।';
+
+  @override
+  String get siteViking2 =>
+      'Viking 2 सितंबर 1976 में Utopia Planitia में उतरा और लाल ज़मीन पर जमी पाले की तस्वीर खींची।';
+
+  @override
+  String get sitePathfinder =>
+      'Mars Pathfinder जुलाई 1997 में उतरा और अपने साथ Sojourner लाया, मंगल का पहला rover, जो लगभग microwave के आकार का था।';
+
+  @override
+  String get siteSpirit =>
+      'Spirit जनवरी 2004 में Gusev crater में उतरा और ऐसे संकेत पाए कि कभी वहाँ पानी ने चट्टानों को आकार दिया था।';
+
+  @override
+  String get siteOpportunity =>
+      'Opportunity जनवरी 2004 में उतरा और लगभग 15 साल चला, जबकि उसे सिर्फ़ 90 दिन के लिए बनाया गया था।';
+
+  @override
+  String get sitePhoenix =>
+      'Phoenix मई 2008 में उत्तरी ध्रुव के पास उतरा और पक्का किया कि मिट्टी के ठीक नीचे पानी की बर्फ़ है।';
+
+  @override
+  String get siteCuriosity =>
+      'Curiosity अगस्त 2012 में Gale crater में उतरा और दिखाया कि वह जगह कभी सूक्ष्म जीवन के लायक़ रही हो सकती है।';
+
+  @override
+  String get siteInsight =>
+      'InSight नवंबर 2018 में उतरा और सैकड़ों मंगलकंप दर्ज किए, यानी ग्रह के अंदर की आवाज़ सुनी।';
+
+  @override
+  String get sitePerseverance =>
+      'Perseverance फ़रवरी 2021 में Jezero crater में हेलिकॉप्टर Ingenuity के साथ उतरा, और भविष्य में धरती लाने के लिए चट्टानों के नमूने जमा करता है।';
+
+  @override
+  String get siteZhurong =>
+      'चीन का Zhurong मई 2021 में उतरा। मंगल पर rover चलाने वाला चीन दूसरा देश बना।';
+
+  @override
+  String get featImbrium => 'मेयर इम्ब्रियम (वर्षा का सागर)';
+
+  @override
+  String get featSerenitatis => 'मेयर सेरेनिटाटिस (शांति का सागर)';
+
+  @override
+  String get featTranquillitatis => 'मेयर ट्रैंक्विलिटाटिस (सुकून का सागर)';
+
+  @override
+  String get featCrisium => 'मेयर क्रिसियम (संकटों का सागर)';
+
+  @override
+  String get featFecunditatis => 'मेयर फ़ेकंडिटाटिस (उर्वरता का सागर)';
+
+  @override
+  String get featNectaris => 'मेयर नेक्टेरिस (अमृत का सागर)';
+
+  @override
+  String get featNubium => 'मेयर न्यूबियम (बादलों का सागर)';
+
+  @override
+  String get featHumorum => 'मेयर ह्यूमोरम (नमी का सागर)';
+
+  @override
+  String get featProcellarum => 'ओशनस प्रोसेलारम (तूफ़ानों का महासागर)';
+
+  @override
+  String get featFrigoris => 'मेयर फ़्रिगोरिस (ठंड का सागर)';
+
+  @override
+  String get featOrientale => 'ओरिएंटेल बेसिन';
+
+  @override
+  String get featAitken => 'दक्षिणी ध्रुव–ऐटकेन बेसिन';
+
+  @override
+  String get featTycho => 'टाइको क्रेटर';
+
+  @override
+  String get featCopernicus => 'कोपरनिकस क्रेटर';
+
+  @override
+  String get featOlympus => 'ओलिंपस मॉन्स';
+
+  @override
+  String get featTharsis => 'थार्सिस ज्वालामुखी';
+
+  @override
+  String get featValles => 'वैलेस मैरिनेरिस';
+
+  @override
+  String get featHellas => 'हेलास प्लैनिशिया';
+
+  @override
+  String get featArgyre => 'आर्गायर प्लैनिशिया';
+
+  @override
+  String get featUtopia => 'यूटोपिया प्लैनिशिया';
+
+  @override
+  String get featIsidis => 'इसिडिस प्लैनिशिया';
+
+  @override
+  String get featSyrtis => 'सिर्टिस मेजर';
+
+  @override
+  String get featChryse => 'क्राइसी प्लैनिशिया';
+
+  @override
+  String get featAcidalia => 'एसिडेलिया प्लैनिशिया';
+
+  @override
+  String get featElysium => 'एलीसियम मॉन्स';
+
+  @override
+  String get featNorthCap => 'उत्तरी ध्रुवीय बर्फ़';
+
+  @override
+  String get featSouthCap => 'दक्षिणी ध्रुवीय बर्फ़';
 }
