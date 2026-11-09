@@ -37,18 +37,17 @@
   function onRender(f) { renderers.push(f); f(); }
 
   var theme = store.get('astryl-theme');
+  function isDark() { return theme === 'dark'; }
   function applyTheme() {
-    if (theme) document.documentElement.setAttribute('data-theme', theme);
-    var dark = theme ? theme === 'dark' : !(window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches);
-    var b = $('#themeBtn'); if (b) b.textContent = dark ? '☀' : '☾';
+    if (isDark()) document.documentElement.setAttribute('data-theme', 'dark');
+    else document.documentElement.removeAttribute('data-theme');
+    var b = $('#themeBtn'); if (b) b.textContent = isDark() ? '☀' : '☾';
   }
   applyTheme();
   document.addEventListener('click', function (e) {
     if (e.target.id === 'langBtn') setLang(lang === 'hi' ? 'en' : 'hi');
     if (e.target.id === 'themeBtn') {
-      var dark = document.documentElement.getAttribute('data-theme') ? document.documentElement.getAttribute('data-theme') === 'dark'
-        : !(window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches);
-      theme = dark ? 'light' : 'dark'; store.set('astryl-theme', theme); applyTheme(); changed();
+      theme = isDark() ? 'light' : 'dark'; store.set('astryl-theme', theme); applyTheme(); changed();
     }
   });
 
