@@ -450,6 +450,9 @@
     });
   }
 
+  /* ---------- small API for cosmos.js (home page animation) ---------- */
+  window.ASTRYL_API = { helio: helio, moonEcl: moonEcl, moonPhase: moonPhase, sunLon: sunLon, bname: bname, t: t, onRender: onRender, lang: function () { return lang; } };
+
   /* ---------- go ---------- */
   document.documentElement.lang = lang;
   var lb = $('#langBtn'); if (lb) lb.textContent = lang === 'hi' ? 'English' : 'हिन्दी';

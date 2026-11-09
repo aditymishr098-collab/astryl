@@ -22,6 +22,11 @@ def color(h):
     return '#' + h[4:].lower()
 
 
+# Strings used only by the website's home-page animation (cosmos.js).
+L['en'].update(cosmosHere='The Sun is here', cosmosToday='Today', cosmosSun='Sun', cosmosMoon='The Moon today: {lit}% lit, day {day}')
+L['hi'].update(cosmosHere='सूर्य यहाँ है', cosmosToday='आज', cosmosSun='सूर्य', cosmosMoon='आज का चाँद: {lit}% रोशन, दिन {day}')
+
+
 def parse_bodies():
     text = (ROOT / 'lib/data/planets.dart').read_text(encoding='utf-8')
     gases = {}
@@ -361,7 +366,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 {body}
 </main>
 <footer><div class="wrap cols">
-<div><b>Astryl</b><br>{bt("Explore the Solar System, fully offline.", "सौरमंडल को ऑफ़लाइन देखिए और जानिए।")}<br>© 2026 Astryl · <a href="{SITE}">astryl.space</a></div>
+<div><b>Astryl</b><br>{bt("Know your space.", "अपने अंतरिक्ष को जानिए।")}<br>© 2026 Astryl · <a href="{SITE}">astryl.space</a></div>
 <div>{bt("Free and open source", "मुफ़्त और open source")}<br><a href="{REPO}">{bt("Source code on GitHub", "GitHub पर source code")}</a><br><a href="{REPO}/blob/main/LICENSE">AGPL-3.0</a> · <a href="{p}privacy.html">{bt("Privacy Policy", "Privacy Policy")}</a><br><a href="{p}account.html">{bt("Account", "खाता")}</a></div>
 <div>{bt("Facts: NASA Planetary Fact Sheet", "तथ्य: NASA Planetary Fact Sheet")}<br><a href="{REPO}/releases">{bt("All versions", "सभी versions")}</a></div>
 </div></footer>
@@ -466,16 +471,28 @@ def index_page():
              ('🚀', 'missionsTitle', 'Sputnik to Chandrayaan-3: famous moments in space exploration.', 'Sputnik से Chandrayaan-3 तक: अंतरिक्ष खोज के मशहूर पल।', 'missions.html'),
              ('🛰️', 'spacecraftTitle', 'How far Voyager, JWST and the Mars rovers are from Earth, right now.', 'Voyager, JWST और Mars rovers इस वक़्त Earth से कितनी दूर हैं।', 'spacecraft.html')]
     cards = ''.join(f'<a class="card" href="{h}"><div class="ico">{ic}</div><h3>{bi(k)}</h3><p>{bt(en, hi)}</p></a>' for ic, k, en, hi, h in feats)
-    body = f'''<section class="hero">
-<div>
-<h1>{bt("Explore the Solar System, fully offline.", "सौरमंडल को ऑफ़लाइन देखिए और जानिए।")}</h1>
-<p class="lead">{bt("Astryl is a free, open-source Android app for the planets, moons, sky and space missions. No ads, no trackers, and an account only if you want one. Everything on this website is the same data and maths as the app.", "Astryl ग्रहों, चाँदों, आसमान और अंतरिक्ष missions का मुफ़्त open-source Android app है। न विज्ञापन, न trackers, और खाता सिर्फ़ तब जब आप चाहें। इस website पर वही data और गणित है जो app में है।")}</p>
-<div class="btns"><a class="btn primary dl-btn" href="{REPO}/releases/latest">⬇ {bt("Download for Android", "Android के लिए download करें")}</a><a class="btn" href="planets.html">{bt("Explore on the web", "Web पर देखें")}</a></div>
+    body = f'''<section class="cosmos-hero">
+<canvas id="galaxy" aria-hidden="true"></canvas>
+<div class="hero-text">
+<h1>{bt("Know your space.", "अपने अंतरिक्ष को जानिए।")}</h1>
+<p class="lead">{bt("Astryl is a free, open-source Android app for the planets, moons, the sky and space missions. Real positions for any date, live updates, and no ads. An account is optional.", "Astryl ग्रहों, चाँदों, आसमान और अंतरिक्ष missions का मुफ़्त open-source Android app है। किसी भी तारीख़ की असली स्थिति, live updates और कोई विज्ञापन नहीं। खाता वैकल्पिक है।")}</p>
+<div class="btns"><a class="btn primary dl-btn" href="{REPO}/releases/latest">⬇ {bt("Download for Android", "Android के लिए download करें")}</a><a class="btn" href="#journey">{bt("Start the journey", "सफ़र शुरू करें")}</a></div>
 <p class="note"><span class="ver"></span></p>
-<div class="chips"><span class="chip">{bt("Offline-first", "Offline-first")}</span><span class="chip">{bt("No ads", "कोई विज्ञापन नहीं")}</span><span class="chip">{bt("No trackers", "कोई trackers नहीं")}</span><span class="chip">{bt("Account optional", "खाता वैकल्पिक")}</span><span class="chip">{bt("English + हिन्दी", "English + हिन्दी")}</span><span class="chip">AGPL-3.0</span></div>
+<div class="chips"><span class="chip">{bt("Free", "मुफ़्त")}</span><span class="chip">{bt("Open source", "Open source")}</span><span class="chip">{bt("No ads", "कोई विज्ञापन नहीं")}</span><span class="chip">{bt("English + हिन्दी", "English + हिन्दी")}</span><span class="chip">AGPL-3.0</span></div>
 </div>
-<div class="sun-art">{planet_svg(BY["saturn"], uid="h")}</div>
+<p class="art-note">{bt("The Milky Way is an artist's impression.", "Milky Way कलाकार की कल्पना है।")}</p>
 </section>
+<section class="journey" id="journey"><div class="stick">
+<canvas id="cosmos" aria-label="{esc("Scroll to travel from the Milky Way to the Solar System, Earth and the Moon")}"></canvas>
+<div class="caps">
+<div class="cap on"><h2>{bt("Our galaxy", "हमारी आकाशगंगा")}</h2><p>{bt("The Milky Way holds hundreds of billions of stars. The Sun sits in one of its arms, about 26,000 light-years from the centre.", "आकाशगंगा में सैकड़ों अरब तारे हैं। सूर्य उसकी एक भुजा में है, केंद्र से लगभग 26,000 प्रकाश-वर्ष दूर।")}</p></div>
+<div class="cap"><h2>{bt("The Solar System", "सौरमंडल")}</h2><p>{bt("Every planet in its real place today. Keep scrolling and time moves forward. Distances are squeezed so the inner planets stay visible.", "हर ग्रह आज अपनी असली जगह पर। Scroll करते रहिए, समय आगे बढ़ता है। भीतरी ग्रह दिखते रहें इसलिए दूरियाँ दबाई गई हैं।")} <a href="solar-system.html">{bt("Open the full Solar System", "पूरा सौरमंडल खोलें")}</a></p></div>
+<div class="cap"><h2>{bt("Earth and the Moon", "पृथ्वी और चाँद")}</h2><p>{bt("The Moon is where it really is right now, and the Sun is on the side that lights it.", "चाँद ठीक वहीं है जहाँ वह अभी है, और सूर्य उस तरफ़ है जिधर से उसे रोशनी मिलती है।")} <a href="sky.html">{bt("Moon calendar", "चाँद का calendar")}</a></p></div>
+</div>
+<div class="jdate" id="jDate"></div>
+<div class="jphase" id="jPhase"><canvas width="64" height="64"></canvas><span></span></div>
+<div class="jdots"><i class="on"></i><i></i><i></i></div>
+</div></section>
 <section class="blk"><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))"><div class="card" id="dailyFact"></div><div class="card pcard" id="homeMoon"></div></div></section>
 <section class="blk"><h2>{bt("What is inside", "अंदर क्या है")}</h2><p class="sub">{bt("Everything below works on this website. The app has more and works without internet.", "नीचे सब कुछ इस website पर चलता है। App में इससे ज़्यादा है और वह बिना internet के चलता है।")}</p><div class="grid">{cards}</div></section>
 <section class="blk"><h2>{bt("Astryl in numbers", "Astryl आँकड़ों में")}</h2><div class="stats" id="stats"></div><p class="note" id="statsCountries"></p><p class="note" id="statsNote"></p></section>
@@ -489,7 +506,7 @@ def index_page():
 <div class="card"><h3>💾 {bt("Backup", "Backup")}</h3><p>{bt("Favourites, scores and settings in one small file that stays on your phone.", "Favourites, scores और settings एक छोटी file में, जो आपके फ़ोन में ही रहती है।")}</p></div>
 <div class="card"><h3>🔄 {bt("Updates", "Updates")}</h3><p>{bt("Download and install new versions from inside the app, straight from GitHub.", "नए versions app के अंदर से ही, सीधे GitHub से download और install करें।")}</p></div>
 </div><div class="btns"><a class="btn primary dl-btn" href="{REPO}/releases/latest">⬇ {bt("Download", "Download")}</a><a class="btn" href="get.html">{bt("How to install", "Install कैसे करें")}</a></div></section>'''
-    write('index.html', shell('Explore the Solar System, fully offline', 'सौरमंडल', 'home', body, 'Astryl is a free, open-source Android app to explore the Solar System offline: planets, moons, sky, quiz and space missions. No ads, no tracking.', canonical=''))
+    write('index.html', shell('Know your space', 'अपने अंतरिक्ष को जानिए', 'home', body, 'Astryl is a free, open-source Android app to know your space: planets, moons, the sky, quiz and space missions. Real positions, no ads.', canonical='', extra_head='<script defer src="assets/cosmos.js"></script>'))
 
 
 def planets_page():
@@ -715,6 +732,7 @@ def main():
     shutil.copy(SRC / 'style.css', OUT / 'assets/style.css')
     shutil.copy(SRC / 'app.js', OUT / 'assets/app.js')
     shutil.copy(SRC / 'account.js', OUT / 'assets/account.js')
+    shutil.copy(SRC / 'cosmos.js', OUT / 'assets/cosmos.js')
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#0a0d1a"/><circle r="30" fill="#f2b84b"/><ellipse rx="50" ry="15" fill="none" stroke="#7aa2ff" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#eef0fb"/></svg>', encoding='utf-8')
     (OUT / 'fonts').mkdir()
