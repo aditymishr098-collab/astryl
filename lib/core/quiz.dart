@@ -216,3 +216,77 @@ List<QuizQuestion> buildQuiz({
   }
   return questions;
 }
+
+int _imul32(int a, int b) {
+  final ah = (a >> 16) & 0xffff;
+  final al = a & 0xffff;
+  final bh = (b >> 16) & 0xffff;
+  final bl = b & 0xffff;
+  return ((al * bl) + (((ah * bl + al * bh) & 0xffff) << 16)) & 0xffffffff;
+}
+
+int _mix32(int h) {
+  var x = h & 0xffffffff;
+  x = _imul32(x ^ (x >> 16), 0x85ebca6b);
+  x = _imul32(x ^ (x >> 13), 0xc2b2ae35);
+  return (x ^ (x >> 16)) & 0xffffffff;
+}
+
+int _daySeed(String dayUtc) {
+  final clean = dayUtc.toUpperCase();
+  final bytes = 'astryl-recovery:$clean'.codeUnits;
+  var h = 0x811c9dc5;
+  for (var i = 0; i < bytes.length; i++) {
+    h ^= (bytes[i] + i) & 0xff;
+    h = _imul32(h, 0x01000193);
+  }
+  return _mix32(h);
+}
+
+List<T> _mulberryShuffle<T>(List<T> list, double Function() rnd) {
+  final a = List<T>.of(list);
+  for (var i = a.length - 1; i > 0; i--) {
+    final j = (rnd() * (i + 1)).floor();
+    final tmp = a[i];
+    a[i] = a[j];
+    a[j] = tmp;
+  }
+  return a;
+}
+
+/// Deterministic Daily 5 questions for [dayUtc] (YYYY-MM-DD), identical to the
+/// website's Daily 5 generator.
+List<QuizQuestion> buildDailyFive(String dayUtc) {
+  var a = _daySeed(dayUtc);
+  double rnd() {
+    a = (a + 0x6d2b79f5) & 0xffffffff;
+    var t = a;
+    t = _imul32(t ^ (t >> 15), t | 1);
+    t = (t ^ (t + _imul32(t ^ (t >> 7), t | 61))) & 0xffffffff;
+    return ((t ^ (t >> 14)) & 0xffffffff) / 4294967296.0;
+  }
+
+  final easyPick = _mulberryShuffle(kindsOf(QuizLevel.easy), rnd).take(2);
+  final medPick = _mulberryShuffle(kindsOf(QuizLevel.medium), rnd).take(2);
+  final hardPick = _mulberryShuffle(kindsOf(QuizLevel.hard), rnd).take(1);
+  final kinds = _mulberryShuffle(
+    <QuizKind>[...easyPick, ...medPick, ...hardPick],
+    rnd,
+  );
+  final questions = <QuizQuestion>[];
+  for (final k in kinds) {
+    final answer = answerFor(k);
+    final pool = distractorsFor(k).where((p) => p.id != answer.id).toList();
+    final wrong = _mulberryShuffle(pool, rnd).take(3);
+    final options = _mulberryShuffle(<Planet>[answer, ...wrong], rnd);
+    questions.add(QuizQuestion(k, options, answer));
+  }
+  return questions;
+}
+
+/// Calculates Daily 5 points from [correct] (0..5) and elapsed [ms].
+int dailyFivePoints(int correct, int ms) {
+  final speed = (1.0 - ms / 120000.0).clamp(0.0, 1.0);
+  return correct * 100 + (correct * 20 * speed).round();
+}
+

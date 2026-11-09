@@ -422,6 +422,59 @@ class AccountState extends ChangeNotifier {
     }
   }
 
+  /// Starts today's Daily 5 run for the logged-in user, or returns the finished
+  /// run if already played today.
+  Future<Map<String, dynamic>?> dailyStart() async {
+    if (!loggedIn) {
+      return null;
+    }
+    try {
+      return await _api.call(
+        'daily_start',
+        body: <String, Object?>{'username': username},
+        token: await _token(),
+      );
+    } on AccountException {
+      return null;
+    }
+  }
+
+  /// Submits today's Daily 5 score for the logged-in user.
+  Future<Map<String, dynamic>?> dailySubmit(int correct) async {
+    if (!loggedIn) {
+      return null;
+    }
+    try {
+      return await _api.call(
+        'daily_submit',
+        body: <String, Object?>{
+          'correct': correct,
+          'username': username,
+        },
+        token: await _token(),
+      );
+    } on AccountException {
+      return null;
+    }
+  }
+
+  /// Fetches the live Daily 5 leaderboard (today and all-time).
+  Future<Map<String, dynamic>?> dailyBoard() async {
+    try {
+      String? tk;
+      if (loggedIn) {
+        try {
+          tk = await _token();
+        } on AccountException {
+          tk = null;
+        }
+      }
+      return await _api.call('board', token: tk);
+    } on AccountException {
+      return null;
+    }
+  }
+
   @override
   void dispose() {
     _timer?.cancel();

@@ -822,6 +822,215 @@ class AccountService {
           'countries': countries,
         };
 
+      case 'daily_start':
+        if (token == null || token.isEmpty) {
+          throw const AccountException('no_token', 401);
+        }
+        final uid = _uidFromToken(token);
+        final day = DateTime.now().toUtc().toIso8601String().substring(0, 10);
+        final runId = '${day}_$uid';
+        var run = await _getDoc('daily_runs/$runId', token: token);
+        if (run == null) {
+          final prof = await _getDoc('profiles/$uid', token: token);
+          final username = '${prof?['username'] ?? body['username'] ?? ''}';
+          final showOnBoard = prof?['showOnBoard'] != false;
+          final nowMs = DateTime.now().millisecondsSinceEpoch;
+          run = <String, dynamic>{
+            'uid': uid,
+            'username': username,
+            'day': day,
+            'startedAtMs': nowMs,
+            'finishedAtMs': 0,
+            'correct': 0,
+            'ms': 0,
+            'points': 0,
+            'showOnBoard': showOnBoard,
+          };
+          await _setDoc('daily_runs/$runId', run, token: token);
+        }
+        final finMs =
+            run['finishedAtMs'] is int ? run['finishedAtMs'] as int : 0;
+        if (finMs > 0) {
+          return <String, dynamic>{
+            'day': day,
+            'done': true,
+            'correct': run['correct'] is int ? run['correct'] : 0,
+            'ms': run['ms'] is int ? run['ms'] : 0,
+            'points': run['points'] is int ? run['points'] : 0,
+          };
+        }
+        final startMs = run['startedAtMs'] is int
+            ? run['startedAtMs'] as int
+            : DateTime.now().millisecondsSinceEpoch;
+        return <String, dynamic>{
+          'day': day,
+          'done': false,
+          'elapsedMs': max(0, DateTime.now().millisecondsSinceEpoch - startMs),
+        };
+
+      case 'daily_submit':
+        if (token == null || token.isEmpty) {
+          throw const AccountException('no_token', 401);
+        }
+        final uid = _uidFromToken(token);
+        final day = DateTime.now().toUtc().toIso8601String().substring(0, 10);
+        final runId = '${day}_$uid';
+        final run = await _getDoc('daily_runs/$runId', token: token);
+        if (run == null) {
+          throw const AccountException('not_started', 404);
+        }
+        final finMs =
+            run['finishedAtMs'] is int ? run['finishedAtMs'] as int : 0;
+        if (finMs > 0) {
+          return <String, dynamic>{
+            'day': day,
+            'correct': run['correct'] is int ? run['correct'] : 0,
+            'ms': run['ms'] is int ? run['ms'] : 0,
+            'points': run['points'] is int ? run['points'] : 0,
+          };
+        }
+        final correct = body['correct'] is int
+            ? (body['correct'] as int).clamp(0, 5)
+            : 0;
+        final startMs = run['startedAtMs'] is int
+            ? run['startedAtMs'] as int
+            : DateTime.now().millisecondsSinceEpoch - 10000;
+        final nowMs = DateTime.now().millisecondsSinceEpoch;
+        final elapsed = (nowMs - startMs).clamp(3000, 1800000);
+        final speed = (1.0 - elapsed / 120000.0).clamp(0.0, 1.0);
+        final points = correct * 100 + (correct * 20 * speed).round();
+        final username = '${run['username'] ?? body['username'] ?? ''}';
+        await _setDoc(
+          'daily_runs/$runId',
+          <String, Object?>{
+            'uid': uid,
+            'username': username,
+            'day': day,
+            'startedAtMs': startMs,
+            'finishedAtMs': nowMs,
+            'correct': correct,
+            'ms': elapsed,
+            'points': points,
+            'showOnBoard': run['showOnBoard'] != false,
+          },
+          token: token,
+        );
+        return <String, dynamic>{
+          'day': day,
+          'correct': correct,
+          'ms': elapsed,
+          'points': points,
+        };
+
+      case 'board':
+        final day = DateTime.now().toUtc().toIso8601String().substring(0, 10);
+        String? myUid;
+        if (token != null && token.isNotEmpty) {
+          try {
+            myUid = _uidFromToken(token);
+          } on AccountException {
+            myUid = null;
+          }
+        }
+        final (bStatus, bJson) = await _http(
+          'GET',
+          '$accountApiUrl/daily_runs?pageSize=200&key=$accountApiKey',
+        );
+        final docs = <Map<String, dynamic>>[];
+        if (bStatus == 200 && bJson['documents'] is List) {
+          for (final raw in bJson['documents'] as List) {
+            if (raw is Map<String, dynamic>) {
+              docs.add(_fromFirestoreDoc(raw));
+            }
+          }
+        }
+        final finished = docs.where((d) {
+          final fin = d['finishedAtMs'] is int ? d['finishedAtMs'] as int : 0;
+          final name = '${d['username'] ?? ''}';
+          return fin > 0 && d['showOnBoard'] != false && name.isNotEmpty;
+        }).toList();
+
+        final todayList = finished
+            .where((d) => d['day'] == day)
+            .toList()
+          ..sort((a, b) {
+            final pa = a['points'] is int ? a['points'] as int : 0;
+            final pb = b['points'] is int ? b['points'] as int : 0;
+            if (pb != pa) {
+              return pb.compareTo(pa);
+            }
+            final ma = a['ms'] is int ? a['ms'] as int : 0;
+            final mb = b['ms'] is int ? b['ms'] as int : 0;
+            return ma.compareTo(mb);
+          });
+
+        final byUser = <String, Map<String, dynamic>>{};
+        for (final d in finished) {
+          final u = '${d['username']}';
+          final pts = d['points'] is int ? d['points'] as int : 0;
+          final existing = byUser[u];
+          if (existing == null) {
+            byUser[u] = <String, dynamic>{
+              'u': u,
+              'p': pts,
+              'd': 1,
+              'uid': '${d['uid'] ?? ''}',
+            };
+          } else {
+            existing['p'] = (existing['p'] as int) + pts;
+            existing['d'] = (existing['d'] as int) + 1;
+          }
+        }
+        final allList = byUser.values.toList()
+          ..sort((a, b) => (b['p'] as int).compareTo(a['p'] as int));
+
+        Map<String, dynamic>? meToday;
+        Map<String, dynamic>? meAll;
+        if (myUid != null) {
+          for (final d in docs) {
+            final fin = d['finishedAtMs'] is int ? d['finishedAtMs'] as int : 0;
+            if (d['uid'] == myUid && d['day'] == day && fin > 0) {
+              final rIdx = todayList.indexWhere((x) => x['uid'] == myUid);
+              meToday = <String, dynamic>{
+                'rank': rIdx >= 0 ? rIdx + 1 : 1,
+                'points': d['points'] is int ? d['points'] : 0,
+                'correct': d['correct'] is int ? d['correct'] : 0,
+                'ms': d['ms'] is int ? d['ms'] : 0,
+              };
+              break;
+            }
+          }
+          final aIdx = allList.indexWhere((x) => x['uid'] == myUid);
+          if (aIdx >= 0) {
+            meAll = <String, dynamic>{
+              'rank': aIdx + 1,
+              'points': allList[aIdx]['p'],
+            };
+          }
+        }
+        return <String, dynamic>{
+          'today': todayList
+              .take(20)
+              .map((d) => <String, dynamic>{
+                    'u': '${d['username']}',
+                    'p': d['points'] is int ? d['points'] : 0,
+                    'c': d['correct'] is int ? d['correct'] : 0,
+                    'ms': d['ms'] is int ? d['ms'] : 0,
+                  })
+              .toList(),
+          'all': allList
+              .take(20)
+              .map((d) => <String, dynamic>{
+                    'u': d['u'],
+                    'p': d['p'],
+                    'd': d['d'],
+                  })
+              .toList(),
+          'players_today': todayList.length,
+          'me_today': meToday,
+          'me_all': meAll,
+        };
+
       default:
         throw const AccountException('unknown_action', 400);
     }
