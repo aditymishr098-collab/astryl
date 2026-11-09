@@ -14,6 +14,7 @@ import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
 import '../widgets/globe_view.dart';
+import '../widgets/motion.dart';
 import '../widgets/orbit_view.dart';
 import '../widgets/space_view.dart';
 import 'compare_screen.dart';
@@ -93,7 +94,15 @@ class _HomeScreenState extends State<HomeScreen> {
               const YouScreen(),
               const QuizScreen(),
             ].indexed)
-              TickerMode(enabled: _tab == i, child: tab),
+              TickerMode(
+                enabled: _tab == i,
+                child: AnimatedOpacity(
+                  opacity: _tab == i ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 220),
+                  curve: Curves.easeOutCubic,
+                  child: tab,
+                ),
+              ),
           ],
         ),
       ),
@@ -658,7 +667,10 @@ class _PopularCards extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  PlanetBall(planet: planet, size: 58),
+                                  Hero(
+                                    tag: 'planet-hero-${planet.id}',
+                                    child: PlanetBall(planet: planet, size: 58),
+                                  ),
                                 ],
                               ),
                             ),

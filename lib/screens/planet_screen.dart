@@ -15,6 +15,7 @@ import '../theme.dart';
 import '../widgets/common.dart';
 import '../widgets/fact_card.dart';
 import '../widgets/favorite_button.dart';
+import '../widgets/motion.dart';
 import '../widgets/share_card.dart';
 import 'surface_map_screen.dart';
 
@@ -217,7 +218,10 @@ class _PlanetScreenState extends State<PlanetScreen> {
                   ),
                   child: const SizedBox.square(dimension: 120),
                 ),
-                PlanetBall(planet: planet, size: 160),
+                Hero(
+                  tag: 'planet-hero-${planet.id}',
+                  child: PlanetBall(planet: planet, size: 160),
+                ),
               ],
             ),
           ),
@@ -499,10 +503,13 @@ class _OxygenRow extends StatelessWidget {
               height: 10,
               color: p.background,
               alignment: AlignmentDirectional.centerStart,
-              child: FractionallySizedBox(
-                widthFactor:
+              child: AnimatedProgress(
+                target:
                     percent > 0 ? fraction.clamp(0.02, 1.0).toDouble() : 0.0,
-                child: Container(color: Gas.o2.color),
+                builder: (context, val) => FractionallySizedBox(
+                  widthFactor: val,
+                  child: Container(color: Gas.o2.color),
+                ),
               ),
             ),
           ),
@@ -597,11 +604,14 @@ class _LifeCard extends StatelessWidget {
           const SizedBox(height: 8),
           ClipRRect(
             borderRadius: BorderRadius.circular(999),
-            child: LinearProgressIndicator(
-              value: total / LifeScore.maxTotal,
-              minHeight: 8,
-              color: color,
-              backgroundColor: p.background,
+            child: AnimatedProgress(
+              target: total / LifeScore.maxTotal,
+              builder: (context, val) => LinearProgressIndicator(
+                value: val,
+                minHeight: 8,
+                color: color,
+                backgroundColor: p.background,
+              ),
             ),
           ),
           const SizedBox(height: 12),

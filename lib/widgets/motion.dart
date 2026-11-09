@@ -43,3 +43,32 @@ class FadeSlideIn extends StatelessWidget {
     );
   }
 }
+
+/// Smoothly animates a progress value from 0 to [target] when first shown or
+/// when [target] changes. Respects reduced-motion settings.
+class AnimatedProgress extends StatelessWidget {
+  const AnimatedProgress({
+    super.key,
+    required this.target,
+    required this.builder,
+    this.duration = const Duration(milliseconds: 650),
+  });
+
+  final double target;
+  final Widget Function(BuildContext context, double value) builder;
+  final Duration duration;
+
+  @override
+  Widget build(BuildContext context) {
+    final clamped = target.clamp(0.0, 1.0).toDouble();
+    if (MediaQuery.disableAnimationsOf(context)) {
+      return builder(context, clamped);
+    }
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(begin: 0, end: clamped),
+      duration: duration,
+      curve: Curves.easeOutCubic,
+      builder: (context, value, _) => builder(context, value),
+    );
+  }
+}
