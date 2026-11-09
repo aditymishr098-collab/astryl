@@ -36,6 +36,8 @@ class HelioraSettings {
     this.tonightMinutes = 1200,
     this.favorites = const <String>[],
     this.textScalePercent = 100,
+    this.myLat = 0,
+    this.myLon = 0,
   });
 
   final ThemeMode themeMode;
@@ -78,6 +80,12 @@ class HelioraSettings {
   /// Text size chosen in Settings, in percent: 100, 115 or 130.
   final int textScalePercent;
 
+  /// The place found by "Use my location", in degrees. Used only while
+  /// [cityId] is the GPS city, and it never leaves the phone unless the user
+  /// switches on sharing their location in the account.
+  final double myLat;
+  final double myLon;
+
   /// The best score of a quiz level, 0 when not played yet.
   int bestFor(String level) {
     final saved = quizBests[level];
@@ -107,6 +115,8 @@ class HelioraSettings {
     int? tonightMinutes,
     List<String>? favorites,
     int? textScalePercent,
+    double? myLat,
+    double? myLon,
   }) {
     return HelioraSettings(
       themeMode: themeMode ?? this.themeMode,
@@ -124,6 +134,8 @@ class HelioraSettings {
       tonightMinutes: tonightMinutes ?? this.tonightMinutes,
       favorites: favorites ?? this.favorites,
       textScalePercent: textScalePercent ?? this.textScalePercent,
+      myLat: myLat ?? this.myLat,
+      myLon: myLon ?? this.myLon,
     );
   }
 
@@ -145,6 +157,8 @@ class HelioraSettings {
       'tonightMinutes': tonightMinutes,
       'favorites': favorites,
       'textScale': textScalePercent,
+      'myLat': myLat,
+      'myLon': myLon,
     };
   }
 
@@ -177,6 +191,8 @@ class HelioraSettings {
     final minutes = json['tonightMinutes'];
     final favs = json['favorites'];
     final scale = json['textScale'];
+    final myLat = json['myLat'];
+    final myLon = json['myLon'];
     return HelioraSettings(
       themeMode: theme,
       // A language that was removed in an update falls back to the phone's.
@@ -208,6 +224,8 @@ class HelioraSettings {
           : d.favorites,
       textScalePercent:
           scale is int && textScaleChoices.contains(scale) ? scale : d.textScalePercent,
+      myLat: myLat is num && myLat.abs() <= 90 ? myLat.toDouble() : d.myLat,
+      myLon: myLon is num && myLon.abs() <= 180 ? myLon.toDouble() : d.myLon,
     );
   }
 }

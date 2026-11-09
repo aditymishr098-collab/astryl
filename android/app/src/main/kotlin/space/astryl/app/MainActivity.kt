@@ -52,6 +52,7 @@ class MainActivity : FlutterActivity() {
                 "appVersion" -> result.success(appVersion())
                 "openUrl" -> result.success(openUrl(call.argument<String>("url")))
                 "requestNotifications" -> requestNotifications(result)
+                "getLocation" -> getLocation(result, call.argument<Boolean>("ask") ?: false)
                 "scheduleReminder" -> result.success(
                     Reminders.schedule(
                         this,
@@ -102,6 +103,120 @@ class MainActivity : FlutterActivity() {
             )
             pendingNotificationResult = null
         }
+        if (requestCode == 4713) {
+            val pending = pendingLocationResult
+            pendingLocationResult = null
+            if (pending != null) {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    findLocation(pending)
+                } else {
+                    pending.success(hashMapOf<String, Any>("status" to "denied"))
+                }
+            }
+        }
+    }
+
+    private var pendingLocationResult: MethodChannel.Result? = null
+
+    /**
+     * Finds the approximate location. Only the coarse permission is used: it
+     * is enough for the sky and shows Android's "approximate" question.
+     * Answers a map: status "ok" (with lat and lon), "denied", "off" or "error".
+     */
+    private fun getLocation(result: MethodChannel.Result, ask: Boolean) {
+        val granted = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) ==
+            PackageManager.PERMISSION_GRANTED
+        if (granted) {
+            findLocation(result)
+            return
+        }
+        if (!ask || pendingLocationResult != null) {
+            result.success(hashMapOf<String, Any>("status" to "denied"))
+            return
+        }
+        pendingLocationResult = result
+        requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), 4713)
+    }
+
+    @Suppress("DEPRECATION")
+    private fun findLocation(result: MethodChannel.Result) {
+        val manager = getSystemService(android.content.Context.LOCATION_SERVICE)
+            as? android.location.LocationManager
+        if (manager == null) {
+            result.success(hashMapOf<String, Any>("status" to "error"))
+            return
+        }
+        try {
+            val provider = when {
+                manager.isProviderEnabled(android.location.LocationManager.NETWORK_PROVIDER) ->
+                    android.location.LocationManager.NETWORK_PROVIDER
+                manager.isProviderEnabled(android.location.LocationManager.PASSIVE_PROVIDER) ->
+                    android.location.LocationManager.PASSIVE_PROVIDER
+                else -> null
+            }
+            if (provider == null) {
+                result.success(hashMapOf<String, Any>("status" to "off"))
+                return
+            }
+            // A fix that is a few minutes old is fine for the sky.
+            val last = manager.getLastKnownLocation(provider)
+            if (last != null && System.currentTimeMillis() - last.time < 10 * 60 * 1000) {
+                replyLocation(result, last)
+                return
+            }
+            var answered = false
+            val handler = android.os.Handler(android.os.Looper.getMainLooper())
+            val finish = fun(location: android.location.Location?) {
+                if (answered) {
+                    return
+                }
+                answered = true
+                val best = location ?: last
+                if (best != null) {
+                    replyLocation(result, best)
+                } else {
+                    result.success(hashMapOf<String, Any>("status" to "error"))
+                }
+            }
+            if (Build.VERSION.SDK_INT >= 30) {
+                manager.getCurrentLocation(provider, null, mainExecutor) { location ->
+                    finish(location)
+                }
+            } else {
+                val listener = object : android.location.LocationListener {
+                    override fun onLocationChanged(location: android.location.Location) {
+                        finish(location)
+                    }
+
+                    @Deprecated("Deprecated in Java")
+                    override fun onStatusChanged(p: String?, s: Int, e: android.os.Bundle?) {}
+                    override fun onProviderEnabled(p: String) {}
+                    override fun onProviderDisabled(p: String) {}
+                }
+                manager.requestSingleUpdate(provider, listener, android.os.Looper.getMainLooper())
+                handler.postDelayed({
+                    manager.removeUpdates(listener)
+                    finish(null)
+                }, 15000)
+            }
+            if (Build.VERSION.SDK_INT >= 30) {
+                handler.postDelayed({ finish(null) }, 20000)
+            }
+        } catch (e: SecurityException) {
+            result.success(hashMapOf<String, Any>("status" to "denied"))
+        } catch (e: Exception) {
+            result.success(hashMapOf<String, Any>("status" to "error"))
+        }
+    }
+
+    private fun replyLocation(result: MethodChannel.Result, location: android.location.Location) {
+        result.success(
+            hashMapOf<String, Any>(
+                "status" to "ok",
+                "lat" to location.latitude,
+                "lon" to location.longitude
+            )
+        )
     }
 
     /** Returns "ok", "permission" (the user must allow installs) or "error". */

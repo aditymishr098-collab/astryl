@@ -40,7 +40,7 @@ class _TonightShareScreenState extends State<TonightShareScreen> {
     final palette = Palette.of(context);
     final messenger = ScaffoldMessenger.of(context);
     final bridge = AppScope.read(context).bridge;
-    final text = l.tonightShareText(widget.city.name);
+    final text = l.tonightShareText(cityName(l, widget.city));
     final failed = l.shareFailed;
     setState(() => _sharing = true);
     var shared = false;
@@ -107,7 +107,7 @@ class _TonightShareScreenState extends State<TonightShareScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(l.skyOverCity(city.name),
+                      Text(l.skyOverCity(cityName(l, city)),
                           style: headingStyle(24, p.text, height: 1.15)),
                       const SizedBox(height: 4),
                       Text(loc.formatFullDate(day),

@@ -168,7 +168,7 @@ class _SkyScreenState extends State<SkyScreen> {
           if (city != null)
             ActionChip(
               avatar: Icon(Icons.place_outlined, size: 18, color: p.accentText),
-              label: Text(city.name),
+              label: Text(cityName(l, city)),
               labelStyle:
                   TextStyle(color: p.text, fontWeight: FontWeight.w600),
               backgroundColor: p.surface,
@@ -878,6 +878,26 @@ class _CitySheet extends StatefulWidget {
 class _CitySheetState extends State<_CitySheet> {
   String _query = '';
 
+  /// Asks Android for the approximate location and makes it the city.
+  Future<void> _useMyLocation() async {
+    final l = context.l10n;
+    final state = AppScope.read(context);
+    final navigator = Navigator.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    final place = await state.bridge.getLocation(ask: true);
+    if (!place.ok) {
+      messenger.showSnackBar(SnackBar(
+          content: Text(switch (place.status) {
+        'denied' => l.locDenied,
+        'off' => l.locOff,
+        _ => l.locError,
+      })));
+      return;
+    }
+    await state.setMyLocationCity(place.lat, place.lon);
+    navigator.pop(gpsCityId);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
@@ -897,6 +917,12 @@ class _CitySheetState extends State<_CitySheet> {
       maxChildSize: 0.95,
       builder: (context, controller) => Column(
         children: <Widget>[
+          if (!kIsWeb)
+            ListTile(
+              leading: Icon(Icons.my_location, color: p.accentText),
+              title: Text(l.useMyLocation, style: TextStyle(color: p.text)),
+              onTap: _useMyLocation,
+            ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
             child: TextField(

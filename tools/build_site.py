@@ -350,7 +350,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 <link rel="stylesheet" href="{p}assets/style.css">
 <script>try{{var s=localStorage,l=s.getItem("astryl-lang")||((navigator.language||"en").slice(0,2)==="hi"?"hi":"en"),h=s.getItem("astryl-theme");document.documentElement.lang=l==="hi"?"hi":"en";if(h)document.documentElement.setAttribute("data-theme",h)}}catch(e){{}}</script>
 {extra_head}</head>
-<body data-page="{page}">
+<body data-page="{page}" data-root="{p}">
 <div class="stars"></div>
 <header class="top"><div class="wrap bar">
 <a class="brand" href="{p}index.html">{logo_svg()}Astryl</a>
@@ -362,10 +362,10 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 </main>
 <footer><div class="wrap cols">
 <div><b>Astryl</b><br>{bt("Explore the Solar System, fully offline.", "सौरमंडल को ऑफ़लाइन देखिए और जानिए।")}<br>© 2026 Astryl · <a href="{SITE}">astryl.space</a></div>
-<div>{bt("Free and open source", "मुफ़्त और open source")}<br><a href="{REPO}">{bt("Source code on GitHub", "GitHub पर source code")}</a><br><a href="{REPO}/blob/main/LICENSE">AGPL-3.0</a> · <a href="{p}privacy.html">{bt("Privacy", "Privacy")}</a></div>
+<div>{bt("Free and open source", "मुफ़्त और open source")}<br><a href="{REPO}">{bt("Source code on GitHub", "GitHub पर source code")}</a><br><a href="{REPO}/blob/main/LICENSE">AGPL-3.0</a> · <a href="{p}privacy.html">{bt("Privacy Policy", "Privacy Policy")}</a><br><a href="{p}account.html">{bt("Account", "खाता")}</a></div>
 <div>{bt("Facts: NASA Planetary Fact Sheet", "तथ्य: NASA Planetary Fact Sheet")}<br><a href="{REPO}/releases">{bt("All versions", "सभी versions")}</a></div>
 </div></footer>
-{"<script src=\"" + p + "assets/data.js\"></script><script src=\"" + p + "assets/app.js\"></script>" if scripts else ""}
+{"<script src=\"" + p + "assets/data.js\"></script><script src=\"" + p + "assets/app.js\"></script><script src=\"" + p + "assets/account.js\"></script>" if scripts else ""}
 </body></html>
 '''
 
@@ -469,20 +469,22 @@ def index_page():
     body = f'''<section class="hero">
 <div>
 <h1>{bt("Explore the Solar System, fully offline.", "सौरमंडल को ऑफ़लाइन देखिए और जानिए।")}</h1>
-<p class="lead">{bt("Astryl is a free, open-source Android app for the planets, moons, sky and space missions. No ads, no tracking, no sign-up. Everything on this website is the same data and maths as the app.", "Astryl ग्रहों, चाँदों, आसमान और अंतरिक्ष missions का मुफ़्त open-source Android app है। न विज्ञापन, न tracking, न sign-up। इस website पर वही data और गणित है जो app में है।")}</p>
+<p class="lead">{bt("Astryl is a free, open-source Android app for the planets, moons, sky and space missions. No ads, no trackers, and an account only if you want one. Everything on this website is the same data and maths as the app.", "Astryl ग्रहों, चाँदों, आसमान और अंतरिक्ष missions का मुफ़्त open-source Android app है। न विज्ञापन, न trackers, और खाता सिर्फ़ तब जब आप चाहें। इस website पर वही data और गणित है जो app में है।")}</p>
 <div class="btns"><a class="btn primary dl-btn" href="{REPO}/releases/latest">⬇ {bt("Download for Android", "Android के लिए download करें")}</a><a class="btn" href="planets.html">{bt("Explore on the web", "Web पर देखें")}</a></div>
 <p class="note"><span class="ver"></span></p>
-<div class="chips"><span class="chip">{bt("Offline-first", "Offline-first")}</span><span class="chip">{bt("No ads", "कोई विज्ञापन नहीं")}</span><span class="chip">{bt("No tracking", "कोई tracking नहीं")}</span><span class="chip">{bt("English + हिन्दी", "English + हिन्दी")}</span><span class="chip">AGPL-3.0</span></div>
+<div class="chips"><span class="chip">{bt("Offline-first", "Offline-first")}</span><span class="chip">{bt("No ads", "कोई विज्ञापन नहीं")}</span><span class="chip">{bt("No trackers", "कोई trackers नहीं")}</span><span class="chip">{bt("Account optional", "खाता वैकल्पिक")}</span><span class="chip">{bt("English + हिन्दी", "English + हिन्दी")}</span><span class="chip">AGPL-3.0</span></div>
 </div>
 <div class="sun-art">{planet_svg(BY["saturn"], uid="h")}</div>
 </section>
 <section class="blk"><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))"><div class="card" id="dailyFact"></div><div class="card pcard" id="homeMoon"></div></div></section>
 <section class="blk"><h2>{bt("What is inside", "अंदर क्या है")}</h2><p class="sub">{bt("Everything below works on this website. The app has more and works without internet.", "नीचे सब कुछ इस website पर चलता है। App में इससे ज़्यादा है और वह बिना internet के चलता है।")}</p><div class="grid">{cards}</div></section>
+<section class="blk"><h2>{bt("Astryl in numbers", "Astryl आँकड़ों में")}</h2><div class="stats" id="stats"></div><p class="note" id="statsCountries"></p><p class="note" id="statsNote"></p></section>
 <section class="blk"><h2>{bt("Only in the app", "सिर्फ़ app में")}</h2>
 <div class="grid">
 <div class="card"><h3>🧭 {bt("Planet finder", "ग्रह खोजक")}</h3><p>{bt("Point your phone at the sky and the compass guides you to a planet.", "फ़ोन आसमान की तरफ़ करें, compass आपको ग्रह तक ले जाता है।")}</p></div>
 <div class="card"><h3>🔔 {bt("Reminders", "Reminders")}</h3><p>{bt("Notes for eclipses, meteor showers, planet views and a nightly sky note.", "ग्रहण, उल्कापात, ग्रह दिखने और हर रात के आसमान के लिए याद दिलाने वाले notes।")}</p></div>
-<div class="card"><h3>📍 {bt("Your city", "आपका शहर")}</h3><p>{bt("Moonrise, sunset, golden hour and the planets above your horizon.", "चाँद का उगना, सूर्यास्त, golden hour और आपके क्षितिज के ऊपर के ग्रह।")}</p></div>
+<div class="card"><h3>📍 {bt("Your city or your location", "आपका शहर या आपकी location")}</h3><p>{bt("Moonrise, sunset, golden hour and the planets above your horizon, from a city or from your approximate location.", "चाँद का उगना, सूर्यास्त, golden hour और आपके क्षितिज के ऊपर के ग्रह, किसी शहर से या आपकी अनुमानित location से।")}</p></div>
+<div class="card"><h3>👤 {bt("Account (optional)", "खाता (वैकल्पिक)")}</h3><p>{bt("Username and password only. Your favourites, scores and settings sync between the app and this website.", "सिर्फ़ username और password। आपके favourites, scores और settings app और इस website के बीच sync होते हैं।")} <a href="account.html">{bt("Open", "खोलें")}</a></p></div>
 <div class="card"><h3>🛰️ {bt("Space station", "अंतरिक्ष station")}</h3><p>{bt("ISS, Tiangong and Hubble passes over your city (optional online data).", "आपके शहर के ऊपर ISS, Tiangong और Hubble का गुज़रना (optional online data)।")}</p></div>
 <div class="card"><h3>💾 {bt("Backup", "Backup")}</h3><p>{bt("Favourites, scores and settings in one small file that stays on your phone.", "Favourites, scores और settings एक छोटी file में, जो आपके फ़ोन में ही रहती है।")}</p></div>
 <div class="card"><h3>🔄 {bt("Updates", "Updates")}</h3><p>{bt("Download and install new versions from inside the app, straight from GitHub.", "नए versions app के अंदर से ही, सीधे GitHub से download और install करें।")}</p></div>
@@ -615,25 +617,76 @@ def get_page():
 
 
 def privacy_page():
-    body = f'''<section class="blk" style="max-width:760px"><h1>{bt("Privacy", "Privacy")}</h1>
-<p class="sub">{bt("Short version: Astryl has no ads, no analytics and no account. What you do in the app stays on your phone.", "छोटे में: Astryl में विज्ञापन, analytics और account नहीं हैं। आप app में जो करते हैं वह आपके फ़ोन में ही रहता है।")}</p>
-<h2>{bt("The app", "App")}</h2>
+    def li(en, hi):
+        return f'<li>{bt(en, hi)}</li>'
+    def tr(a_en, a_hi, b_en, b_hi, c_en, c_hi):
+        return f'<tr><td>{bt(a_en, a_hi)}</td><td>{bt(b_en, b_hi)}</td><td>{bt(c_en, c_hi)}</td></tr>'
+    body = f"""<section class="blk policy" style="max-width:800px"><h1>{bt("Privacy Policy", "Privacy Policy")}</h1>
+<p class="note">{bt("Version 1 · last updated 9 November 2026 · applies to the Astryl app (from version 1.18.0) and to astryl.space", "Version 1 · आख़िरी बार 9 नवंबर 2026 को बदली गई · Astryl app (version 1.18.0 से) और astryl.space पर लागू")}</p>
+<p class="sub">{bt("Short version: no ads, no trackers, nothing is sold. The app works fully without an account. If you make one, we keep only what is listed below, you choose every optional switch, and you can delete everything yourself at any time.", "छोटे में: कोई विज्ञापन नहीं, कोई trackers नहीं, कुछ बेचा नहीं जाता। App खाते के बिना पूरा चलता है। खाता बनाएँ तो हम सिर्फ़ वही रखते हैं जो नीचे लिखा है, हर वैकल्पिक switch आप चुनते हैं, और आप कभी भी सब कुछ ख़ुद मिटा सकते हैं।")}</p>
+
+<h2>{bt("1. Who is responsible", "1. ज़िम्मेदार कौन है")}</h2>
+<p>{bt("Astryl is a free, open-source project (AGPL-3.0). For questions about your data, write to", "Astryl एक मुफ़्त, open-source project है (AGPL-3.0)। अपने data के बारे में सवाल हों तो यहाँ लिखें:")} <a href="mailto:contact@astryl.space">contact@astryl.space</a>.</p>
+
+<h2>{bt("2. Without an account", "2. खाते के बिना")}</h2>
 <ul>
-<li>{bt("Planet facts, the Moon, planet positions, eclipses and the star map are worked out on your phone. No internet is needed.", "ग्रहों के तथ्य, चाँद, ग्रहों की स्थिति, ग्रहण और star map आपके फ़ोन पर ही निकाले जाते हैं। Internet ज़रूरी नहीं।")}</li>
-<li>{bt("Your city, birth date, favourites, quiz scores and settings are saved only on the phone. The Backup file is created by you and goes where you send it.", "आपका शहर, जन्मतिथि, favourites, quiz scores और settings सिर्फ़ फ़ोन में save होते हैं। Backup file आप बनाते हैं और वह वहीं जाती है जहाँ आप भेजें।")}</li>
-<li>{bt("Update check: the app asks GitHub for the newest release (once a day if you leave it on). GitHub sees your IP address like for any web request. You can turn this off.", "Update check: app GitHub से सबसे नया release पूछता है (चालू रखने पर दिन में एक बार)। जैसे हर web request में होता है, GitHub आपका IP address देख सकता है। इसे बंद किया जा सकता है।")}</li>
-<li>{bt("Online features are off until you turn them on. Then the app downloads orbit data (for the space station, Tiangong and Hubble), the rocket launch list and space news from public services. No account, and nothing about you is uploaded.", "Online features आप चालू करें तभी चलते हैं। तब app public services से orbit data (space station, Tiangong, Hubble के लिए), rocket launch की list और space news download करता है। कोई account नहीं, और आपके बारे में कुछ upload नहीं होता।")}</li>
-<li>{bt("Permissions: notifications (for reminders you ask for), the compass sensor (planet finder) and, in the app, installing updates you approve.", "Permissions: notifications (आपके माँगे reminders के लिए), compass sensor (ग्रह खोजक) और आपकी मंज़ूरी से updates install करना।")}</li>
+{li("Planet facts, the Moon, planet positions, eclipses, the star map and the quiz are worked out on your phone or in your browser. No internet is needed for the app.", "ग्रहों के तथ्य, चाँद, ग्रहों की स्थिति, ग्रहण, star map और quiz आपके फ़ोन या browser में ही निकाले जाते हैं। App के लिए internet ज़रूरी नहीं।")}
+{li("Your city, birth date, favourites, quiz scores and settings are saved on your phone. The Backup file is made by you and goes only where you send it.", "आपका शहर, जन्मतिथि, favourites, quiz scores और settings आपके फ़ोन में save होते हैं। Backup file आप बनाते हैं और वह वहीं जाती है जहाँ आप भेजें।")}
+{li("Update check (can be turned off): the app asks GitHub for the newest release, once a day. GitHub sees your IP address, like in any web request.", "Update check (बंद किया जा सकता है): app दिन में एक बार GitHub से सबसे नया release पूछता है। जैसे हर web request में होता है, GitHub आपका IP address देख सकता है।")}
+{li("Online features are off until you turn them on. Then the app downloads orbit data, the rocket launch list and space news from public services (wheretheiss.at, Celestrak, Launch Library 2, Spaceflight News API), which can see your IP address. Nothing about you is sent.", "Online features आप चालू करें तभी चलते हैं। तब app public services (wheretheiss.at, Celestrak, Launch Library 2, Spaceflight News API) से orbit data, rocket launch की list और space news लेता है, जो आपका IP address देख सकती हैं। आपके बारे में कुछ नहीं भेजा जाता।")}
+{li("“Use my location” in the city list asks Android for your approximate location, once, and uses it only on your phone to work out the sky. Nothing is sent for this.", "शहर की list में “मेरी location इस्तेमाल करें” Android से आपकी अनुमानित location एक बार माँगता है और उसे सिर्फ़ आपके फ़ोन पर आसमान निकालने में इस्तेमाल करता है। इसके लिए कुछ नहीं भेजा जाता।")}
 </ul>
-<h2>{bt("This website", "यह website")}</h2>
+
+<h2>{bt("3. The optional account", "3. वैकल्पिक खाता")}</h2>
+<p>{bt("The account is for one thing: keeping your favourites, scores and settings in step between the app and this website. It needs a username and a password. No e-mail address, name or phone number is asked for. You can skip it with “Skip now” and use everything.", "खाते का एक ही काम है: आपके favourites, scores और settings को app और इस website के बीच एक जैसा रखना। इसके लिए username और password चाहिए। e-mail, नाम या फ़ोन नंबर नहीं माँगा जाता। “अभी छोड़ें” दबाकर आप खाते के बिना सब कुछ इस्तेमाल कर सकते हैं।")}</p>
+<table><tr><th>{bt("What we store", "हम क्या रखते हैं")}</th><th>{bt("Why", "क्यों")}</th><th>{bt("For how long", "कब तक")}</th></tr>
+{tr("Your username and a hash of your password (the password itself is never stored or visible to us)", "आपका username और password का hash (password ख़ुद कभी store नहीं होता और हमें दिखता नहीं)", "To log you in", "आपको log in कराने के लिए", "Until you delete the account", "जब तक आप खाता नहीं मिटाते")}
+{tr("A hash of your recovery code, how many times it can still be used, failed tries", "Recovery code का hash, वह कितनी बार और चल सकता है, ग़लत कोशिशें", "So you can set a new password if you forget it", "ताकि password भूलने पर आप नया लगा सकें", "Until you delete the account", "जब तक आप खाता नहीं मिटाते")}
+{tr("The date you accepted this policy and its version, the date you joined, the date you last used the account", "आपने यह policy कब मानी और उसका version, आप कब जुड़े, खाता आख़िरी बार कब इस्तेमाल हुआ", "To show your consent and run the account", "आपकी सहमति दिखाने और खाता चलाने के लिए", "Until you delete the account", "जब तक आप खाता नहीं मिटाते")}
+{tr("If sync is on: favourites, quiz scores, language, theme, text size, city (never a GPS place), birth date and the daily sky note setting", "Sync चालू हो तो: favourites, quiz scores, भाषा, theme, text size, शहर (GPS वाली जगह कभी नहीं), जन्मतिथि और रोज़ के आसमान वाले note की setting", "To keep the app and the website in step", "App और website को एक जैसा रखने के लिए", "Until you delete the account or switch sync off and delete it", "जब तक आप खाता नहीं मिटाते")}
+</table>
+<p>{bt("Your birth date is stored only if you have entered it in the app and sync is on. Turn sync off in Settings → Account to stop this.", "आपकी जन्मतिथि तभी रखी जाती है जब आपने उसे app में लिखा हो और sync चालू हो। इसे रोकने के लिए Settings → Account में sync बंद करें।")}</p>
+<p>{bt("The recovery code is shown once when you make the account. Keep it safe: it is the only way back in if you forget your password, it works 3 times, and nobody (including us) can read it back. If you lose both the password and the code, the account cannot be recovered.", "Recovery code खाता बनाते समय एक बार दिखता है। इसे सुरक्षित रखें: password भूलने पर वापस आने का यही अकेला रास्ता है, यह 3 बार चलता है, और इसे कोई (हम भी) वापस नहीं पढ़ सकता। Password और code दोनों खो जाएँ तो खाता वापस नहीं मिल सकता।")}</p>
+
+<h2>{bt("4. Optional switches (all off until you turn them on)", "4. वैकल्पिक switches (आप चालू करें तभी, वरना सब बंद)")}</h2>
 <ul>
-<li>{bt("No cookies, no analytics, no ads, no third-party scripts or fonts. Everything is calculated in your browser.", "कोई cookies, analytics, विज्ञापन, बाहरी scripts या fonts नहीं। सब कुछ आपके browser में calculate होता है।")}</li>
-<li>{bt("Your browser remembers your language, theme and best quiz scores on your own device (local storage). It is never sent to us.", "आपका browser भाषा, theme और quiz के best scores आपके अपने device में याद रखता है (local storage)। यह हमें कभी नहीं भेजा जाता।")}</li>
-<li>{bt("The site is hosted on GitHub Pages, which may keep normal server logs under GitHub's own privacy statement. The download button loads the newest release from the GitHub API.", "Site GitHub Pages पर है, जो अपनी privacy policy के हिसाब से सामान्य server logs रख सकता है। Download button GitHub API से सबसे नया release लेता है।")}</li>
+{li("Count me as an active user: the app sends a random number made on your phone, at most once every few hours, with no username. It is not linked to you or your account. It is kept for 90 days and is used only to show how many people use Astryl.", "मुझे active user में गिनें: app आपके फ़ोन पर बना एक random number भेजता है, कुछ घंटों में ज़्यादा से ज़्यादा एक बार, बिना username के। यह आपसे या आपके खाते से जुड़ा नहीं होता। यह 90 दिन रखा जाता है और सिर्फ़ यह दिखाने में लगता है कि Astryl कितने लोग इस्तेमाल करते हैं।")}
+{li("Share my country: the country from your phone's (or browser's) language and region setting, kept with that random number and shown only as a count per country. It is not worked out from your IP address or your location.", "मेरा देश बताएँ: आपके फ़ोन (या browser) की भाषा और region setting वाला देश, उसी random number के साथ रखा जाता है और सिर्फ़ हर देश की गिनती के रूप में दिखता है। यह आपके IP address या location से नहीं निकाला जाता।")}
+{li("Share my approximate location (app only, needs an account): after you allow Android's location permission, the app sends Android's approximate location (a few kilometres) when you open it, at most once a day. The server rounds it to about 10 km and keeps only the latest place with its date, tied to your account. There is no location in the background. Switch it off and the place is deleted from the server.", "मेरी अनुमानित location बताएँ (सिर्फ़ app में, खाता चाहिए): Android की location अनुमति देने के बाद app आपके app खोलने पर Android की अनुमानित location (कुछ किलोमीटर तक) भेजता है, दिन में ज़्यादा से ज़्यादा एक बार। Server उसे लगभग 10 किमी में गोल करके सिर्फ़ सबसे ताज़ा जगह तारीख़ के साथ, आपके खाते से जुड़ी रखता है। Background में कोई location नहीं ली जाती। Switch बंद करने पर वह जगह server से मिट जाती है।")}
 </ul>
-<h2>{bt("Open source", "Open source")}</h2><p>{bt("You can check all of this in the", "यह सब आप")} <a href="{REPO}">{bt("source code", "source code")}</a>{bt(".", " में जाँच सकते हैं।")}</p>
-<p class="note">{bt("If this ever changes (for example if accounts or online sync are added), this page and the app's release notes will say so first.", "अगर यह कभी बदला (जैसे accounts या online sync जुड़े), तो पहले यह page और app के release notes में बताया जाएगा।")}</p></section>'''
-    write('privacy.html', shell('Privacy', 'Privacy', 'get', body, 'Astryl has no ads, no analytics and no account. What you do in the app stays on your phone.', canonical='privacy.html'))
+
+<h2>{bt("5. Where the data is kept and who handles it", "5. Data कहाँ रखा जाता है और कौन सँभालता है")}</h2>
+<p>{bt("Account data is stored with Supabase (database and login service), on servers in Singapore. The app and this website reach it only through one function that checks who is asking; the tables themselves cannot be read from outside. To limit abuse, a hashed (not readable) key and a counter are kept for up to 2 days; no IP address is stored in readable form. This website is hosted on GitHub Pages, and downloads and the update check use GitHub; both follow GitHub's own privacy statement. We do not sell data, show ads, use analytics or trackers, or share data with anyone else.", "खाते का data Supabase (database और login service) के पास, सिंगापुर के servers पर, रखा जाता है। App और यह website उस तक सिर्फ़ एक function से पहुँचते हैं, जो जाँचता है कि कौन माँग रहा है; tables को बाहर से पढ़ा नहीं जा सकता। दुरुपयोग रोकने के लिए hash किया हुआ (पढ़ने लायक़ नहीं) key और एक counter ज़्यादा से ज़्यादा 2 दिन रखा जाता है; IP address पढ़ने लायक़ रूप में नहीं रखा जाता। यह website GitHub Pages पर है, और downloads व update check GitHub से होते हैं; दोनों GitHub की अपनी privacy policy के हिसाब से चलते हैं। हम data बेचते नहीं, विज्ञापन नहीं दिखाते, analytics या trackers इस्तेमाल नहीं करते, और किसी और से data साझा नहीं करते।")}</p>
+
+<h2>{bt("6. This website", "6. यह website")}</h2>
+<ul>
+{li("No cookies, no analytics, no ads, no third-party scripts or fonts. Everything is calculated in your browser.", "कोई cookies, analytics, विज्ञापन, बाहरी scripts या fonts नहीं। सब कुछ आपके browser में calculate होता है।")}
+{li("Your browser remembers language, theme and quiz scores in local storage on your own device. If you log in, a login token is kept there too, until you log out.", "आपका browser भाषा, theme और quiz scores आपके अपने device की local storage में याद रखता है। Log in करने पर वहीं एक login token भी रहता है, log out करने तक।")}
+{li("The home page asks the Astryl server for the public counter (accounts and active users) and asks GitHub for the download count.", "Home page Astryl server से public counter (खाते और active users) और GitHub से download की गिनती माँगता है।")}
+</ul>
+
+<h2>{bt("7. Your choices and rights", "7. आपके विकल्प और अधिकार")}</h2>
+<ul>
+{li("Delete your account at any time: app → Settings → Account → Delete my account, or on the Account page of this website. Your account and everything stored for it online are removed straight away. The data on your phone stays.", "खाता कभी भी मिटाएँ: app → Settings → Account → मेरा खाता मिटाएँ, या इस website के Account page पर। आपका खाता और उससे जुड़ा सारा online data तुरंत मिट जाता है। आपके फ़ोन का data रहता है।")}
+{li("Turn any optional switch off at any time. This withdraws your consent for that part; the data it created is removed or stops growing.", "कोई भी वैकल्पिक switch कभी भी बंद करें। इससे उस हिस्से की सहमति वापस हो जाती है; उससे बना data मिट जाता है या बढ़ना रुक जाता है।")}
+{li("Log out to stop syncing on a device. Uninstalling the app removes its data from the phone.", "किसी device पर sync रोकने के लिए log out करें। App uninstall करने पर उसका data फ़ोन से हट जाता है।")}
+{li("To ask what is stored about you, to get a copy, or to have something corrected or removed, write to contact@astryl.space and tell us your username. Depending on where you live you may also have the right to complain to your data protection authority.", "आपके बारे में क्या रखा है यह पूछने, उसकी copy लेने, या कुछ सुधारने/हटाने के लिए contact@astryl.space पर लिखें और अपना username बताएँ। आप जहाँ रहते हैं उसके हिसाब से आपको अपनी data protection authority से शिकायत करने का अधिकार भी हो सकता है।")}
+</ul>
+
+<h2>{bt("8. Children", "8. बच्चे")}</h2>
+<p>{bt("Astryl is for everyone who likes space. If you are under 16, please ask a parent or guardian before making an account. The app is fully usable without one.", "Astryl उन सब के लिए है जिन्हें अंतरिक्ष पसंद है। अगर आप 16 साल से कम के हैं, तो खाता बनाने से पहले माता-पिता या अभिभावक से पूछ लें। App खाते के बिना भी पूरा इस्तेमाल हो सकता है।")}</p>
+
+<h2>{bt("9. Changes", "9. बदलाव")}</h2>
+<p>{bt("If this policy changes in a way that matters, the new version is published on this page and in the app's release notes, and the app asks again before you make a new account. The full source code, including the server code in the folder", "अगर यह policy किसी ज़रूरी तरह से बदली, तो नया version इसी page और app के release notes में छपेगा, और नया खाता बनाने से पहले app फिर पूछेगा। पूरा source code, server का code भी (folder")} <a href="{REPO}/tree/main/supabase">supabase/</a>{bt(", is open for anyone to read.", ") सबके पढ़ने के लिए खुला है।")}</p>
+</section>"""
+    write('privacy.html', shell('Privacy Policy', 'Privacy Policy', 'get', body, 'Astryl Privacy Policy: no ads, no trackers. An account (username and password only) is optional; what is stored, why, and how to delete it.', canonical='privacy.html'))
+
+
+def account_page():
+    body = f"""<section class="blk" style="max-width:640px"><h1>{bt("Astryl account", "Astryl खाता")}</h1>
+<div id="acct"><noscript><p>{bt("The account page needs JavaScript.", "Account page को JavaScript चाहिए।")}</noscript></p></div>
+<p class="note"><a href="privacy.html">{bt("Privacy Policy", "Privacy Policy")}</a></p></section>"""
+    write('account.html', shell('Account', 'खाता', 'account', body, 'Create an optional Astryl account with a username and password, and keep your favourites, quiz scores and settings in step between the app and this website.', canonical='account.html'))
 
 
 def not_found():
@@ -651,11 +704,17 @@ def data_js():
 
 
 def main():
-    if OUT.exists():
-        shutil.rmtree(OUT)
-    (OUT / 'assets').mkdir(parents=True)
+    # Only the generated parts are rebuilt; other files in site/ (images, the
+    # favicon) are left alone.
+    for sub in ('assets', 'body', 'fonts'):
+        if (OUT / sub).exists():
+            shutil.rmtree(OUT / sub)
+    for old in OUT.glob('*.html'):
+        old.unlink()
+    (OUT / 'assets').mkdir(parents=True, exist_ok=True)
     shutil.copy(SRC / 'style.css', OUT / 'assets/style.css')
     shutil.copy(SRC / 'app.js', OUT / 'assets/app.js')
+    shutil.copy(SRC / 'account.js', OUT / 'assets/account.js')
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#0a0d1a"/><circle r="30" fill="#f2b84b"/><ellipse rx="50" ry="15" fill="none" stroke="#7aa2ff" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#eef0fb"/></svg>', encoding='utf-8')
     (OUT / 'fonts').mkdir()
@@ -666,8 +725,8 @@ def main():
     (OUT / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n', encoding='utf-8')
     for i, b in enumerate(BODIES):
         body_page(b, i)
-    index_page(); planets_page(); simple_pages(); maps_page(); get_page(); privacy_page(); not_found()
-    urls = ['', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'get.html', 'privacy.html'] + [f'body/{b["id"]}.html' for b in BODIES]
+    index_page(); planets_page(); simple_pages(); maps_page(); get_page(); privacy_page(); account_page(); not_found()
+    urls = ['', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'get.html', 'privacy.html', 'account.html'] + [f'body/{b["id"]}.html' for b in BODIES]
     (OUT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}/{u}</loc></url>\n' for u in urls) + '</urlset>\n', encoding='utf-8')
     print('pages:', len(list(OUT.rglob('*.html'))))
 

@@ -8,6 +8,7 @@ import '../l10n/names.dart';
 import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
+import 'account_screen.dart';
 import 'update_dialog.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -301,6 +302,30 @@ class SettingsScreen extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
                 ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            SectionLabel(l.acctTitle),
+            SurfaceCard(
+              padding: EdgeInsets.zero,
+              child: ListenableBuilder(
+                listenable: state.account,
+                builder: (context, _) => ListTile(
+                  leading:
+                      Icon(Icons.account_circle_outlined, color: p.accentText),
+                  title: Text(
+                      state.account.loggedIn
+                          ? l.acctLoggedInAs(state.account.username)
+                          : l.acctTitle,
+                      style: TextStyle(color: p.text)),
+                  subtitle: Text(l.settingsAccountSubtitle,
+                      style: TextStyle(fontSize: 12, color: p.muted)),
+                  trailing: Icon(Icons.chevron_right, color: p.muted),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                        builder: (_) => const AccountHubScreen()),
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 20),

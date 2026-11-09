@@ -3,11 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../core/version.dart';
+import '../data/account_store.dart' show AccountStore;
 import '../data/backup.dart';
+import '../data/cities.dart';
 import '../data/build_flavor.dart';
 import '../data/favorites.dart';
 import '../data/native_bridge.dart';
 import '../data/online_service.dart';
+import 'account_state.dart';
 import 'online_state.dart';
 import '../data/settings.dart';
 import '../data/tonight_alerts.dart';
@@ -29,6 +32,12 @@ class AppState extends ChangeNotifier {
   final SettingsStore _store;
   final UpdateService _updates;
   final NativeBridge _bridge;
+
+  /// The optional online account (see account_state.dart).
+  late final AccountState account = AccountState(
+    store: AccountStore(bridge: _bridge),
+    bridge: _bridge,
+  );
 
   HelioraSettings _settings = const HelioraSettings();
   HelioraSettings get settings => _settings;
@@ -56,13 +65,27 @@ class AppState extends ChangeNotifier {
     _appVersion = await _bridge.appVersion();
     online.useStore(OnlineStore(folder: _bridge.filesDir));
     await online.loadCache();
+    _applyMyLocation();
+    account.bind(read: () => _settings, apply: _update);
+    await account.load();
     notifyListeners();
+  }
+
+  /// Lets cityById() answer for the "my location" city.
+  void _applyMyLocation() {
+    if (_settings.cityId == gpsCityId) {
+      setMyLocation(_settings.myLat, _settings.myLon);
+    } else {
+      setMyLocation(null, null);
+    }
   }
 
   Future<void> _update(HelioraSettings next) async {
     _settings = next;
+    _applyMyLocation();
     notifyListeners();
     await _store.save(next);
+    account.scheduleSync();
   }
 
   Future<void> setThemeMode(ThemeMode mode) =>
@@ -79,6 +102,10 @@ class AppState extends ChangeNotifier {
 
   Future<void> setCity(String id) =>
       _update(_settings.copyWith(cityId: id));
+
+  /// Makes the place the phone found the city for the sky.
+  Future<void> setMyLocationCity(double lat, double lon) => _update(
+      _settings.copyWith(cityId: gpsCityId, myLat: lat, myLon: lon));
 
   Future<void> setBirthDate(DateTime date) => _update(
       _settings.copyWith(birthDateMs: date.millisecondsSinceEpoch));

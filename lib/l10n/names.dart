@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import '../core/format.dart';
 import '../core/quiz.dart';
+import '../data/cities.dart';
 import '../data/planets.dart';
 import '../data/surface_sites.dart';
 import 'gen/app_localizations.dart';
@@ -539,3 +540,8 @@ String siteKindLabel(AppLocalizations l, SiteKind kind) {
       return l.siteKindSample;
   }
 }
+
+/// The name of [city] for display: "My location" is translated, the others
+/// are place names.
+String cityName(AppLocalizations l, City city) =>
+    city.id == gpsCityId ? l.myLocation : city.name;

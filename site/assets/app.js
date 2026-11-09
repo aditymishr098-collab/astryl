@@ -31,7 +31,9 @@
     store.set('astryl-lang', l);
     var b = $('#langBtn'); if (b) b.textContent = l === 'hi' ? 'English' : 'हिन्दी';
     renderers.forEach(function (f) { f(); });
+    changed();
   }
+  function changed() { try { document.dispatchEvent(new Event('astryl-change')); } catch (e) {} }
   function onRender(f) { renderers.push(f); f(); }
 
   var theme = store.get('astryl-theme');
@@ -46,7 +48,7 @@
     if (e.target.id === 'themeBtn') {
       var dark = document.documentElement.getAttribute('data-theme') ? document.documentElement.getAttribute('data-theme') === 'dark'
         : !(window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches);
-      theme = dark ? 'light' : 'dark'; store.set('astryl-theme', theme); applyTheme();
+      theme = dark ? 'light' : 'dark'; store.set('astryl-theme', theme); applyTheme(); changed();
     }
   });
 
@@ -324,7 +326,7 @@
         root.innerHTML = h + '</div>'; return;
       }
       if (done) {
-        var nb = score > best(level); if (nb) store.set('astryl-best-' + level, String(score));
+        var nb = score > best(level); if (nb) { store.set('astryl-best-' + level, String(score)); changed(); }
         root.innerHTML = '<div class="card" style="text-align:center"><div class="life">' + score + ' / ' + qs.length + '</div><p>' + t('quizScore', { score: score, total: qs.length }) + '</p><p>' + (nb ? '<b class="ok">' + t('quizNewBest') + '</b>' : t('quizBest', { score: best(level) + '/10' })) + '</p><button class="btn primary" id="again">' + t('quizAgain') + '</button></div>'; return;
       }
       var q = qs[i];

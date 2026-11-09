@@ -202,7 +202,7 @@
   "about": "About",
   "sourceCode": "Source code on GitHub",
   "websiteLink": "Website: astryl.space",
-  "privacyLine": "Offline · No ads · No tracking",
+  "privacyLine": "Offline-first · No ads · Account optional",
   "dataSource": "Facts: NASA Planetary Fact Sheet",
   "openFailed": "Could not open the link.",
   "bodySun": "Sun",
@@ -1235,5 +1235,103 @@
   "featAcidalia": "Acidalia Planitia",
   "featElysium": "Elysium Mons",
   "featNorthCap": "North polar cap",
-  "featSouthCap": "South polar cap"
+  "featSouthCap": "South polar cap",
+  "acctTitle": "Astryl account",
+  "acctCreateTitle": "Create your account",
+  "acctIntro": "Optional. A username and a password, no e-mail. Your favourites, quiz scores and settings then follow you between this app and astryl.space.",
+  "acctTabCreate": "Create account",
+  "acctTabLogin": "Log in",
+  "acctUsername": "Username",
+  "acctUsernameHint": "3 to 20 letters (a to z), digits or _",
+  "acctPassword": "Password",
+  "acctPasswordHint": "At least 8 characters",
+  "acctPasswordAgain": "Password again",
+  "acctForgot": "Forgot password?",
+  "acctRecoverTitle": "Reset with your recovery code",
+  "acctRecoverCode": "Recovery code",
+  "acctRecoverNewPassword": "New password",
+  "acctRecoverButton": "Set new password",
+  "acctBackToLogin": "Back to log in",
+  "acctConsent": "I have read and accept the Privacy Policy",
+  "acctReadPolicy": "Read the Privacy Policy",
+  "acctOptionalTitle": "Optional. All off until you switch them on.",
+  "acctCountMe": "Count me as an active user",
+  "acctCountMeNote": "Sends a random number made on this phone, once in a while, so Astryl can show how many people use it. It is not linked to you.",
+  "acctShareCountry": "Share my country",
+  "acctShareCountryNote": "The country from your phone’s language and region setting, for a chart of countries.",
+  "acctShareLocation": "Share my approximate location",
+  "acctShareLocationNote": "Needs an account. Android’s approximate location is used (a few kilometres). Only the latest place is kept, rounded to about 10 km, and it is updated when you open the app.",
+  "acctSkip": "Skip now",
+  "acctSkipNote": "You can make an account later in Settings. The app works the same without one.",
+  "acctCodeTitle": "Your recovery code",
+  "acctCodeWarn": "Write it down or keep it somewhere safe. If you forget your password, this code is the only way back in. It works 3 times.",
+  "acctCopy": "Copy",
+  "acctCopied": "Copied",
+  "acctCodeSaved": "I have saved my recovery code",
+  "acctContinue": "Continue",
+  "acctRecovered": "Password changed. The code can be used {count} more times.",
+  "@acctRecovered": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "acctLoggedInAs": "Logged in as {name}",
+  "@acctLoggedInAs": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "acctNotLoggedIn": "You are not logged in.",
+  "acctSync": "Sync my data",
+  "acctSyncNote": "Favourites, quiz scores, language, theme, city and birth date are kept in your account and shared with astryl.space.",
+  "acctSyncNow": "Sync now",
+  "acctSyncOk": "Synced",
+  "acctSyncFailed": "Could not sync. Check your internet and try again.",
+  "acctSyncing": "Syncing…",
+  "acctNewCode": "Make a new recovery code",
+  "acctNewCodeNote": "The old code stops working.",
+  "acctLogOut": "Log out",
+  "acctDelete": "Delete my account",
+  "acctDeleteNote": "Deletes your account and everything stored for it online. The data on this phone stays.",
+  "acctDeleteConfirmTitle": "Delete your account?",
+  "acctDeleteConfirmBody": "This cannot be undone. Type your password to confirm.",
+  "acctDeleteButton": "Delete",
+  "acctDeleted": "Account deleted.",
+  "acctCommunity": "Astryl community",
+  "acctStatsLine": "{registered} accounts · {active} active in the last 30 days",
+  "@acctStatsLine": {
+    "placeholders": {
+      "registered": {
+        "type": "String"
+      },
+      "active": {
+        "type": "String"
+      }
+    }
+  },
+  "acctStatsNote": "Active means people who chose to be counted.",
+  "acctPrivacyLink": "Privacy Policy",
+  "acctErrOffline": "No internet, or the server is not answering. Try again.",
+  "acctErrTaken": "That username is taken.",
+  "acctErrUsername": "Username: 3 to 20 letters (a to z), digits or _.",
+  "acctErrPassword": "Password: 8 to 72 characters.",
+  "acctErrMismatch": "The two passwords are not the same.",
+  "acctErrLogin": "Wrong username or password.",
+  "acctErrRecovery": "Wrong username or recovery code.",
+  "acctErrUsedUp": "This recovery code has already been used 3 times.",
+  "acctErrLocked": "Too many wrong tries. Wait 15 minutes.",
+  "acctErrRate": "Too many tries. Try again later.",
+  "acctErrGeneric": "Something went wrong. Try again.",
+  "acctErrCode": "A recovery code has 16 letters and digits.",
+  "myLocation": "My location",
+  "useMyLocation": "Use my location",
+  "locDenied": "Location permission was not given.",
+  "locOff": "Turn on location in your phone’s settings.",
+  "locError": "Could not find your location. Try again.",
+  "settingsAccountSubtitle": "Optional. Sync your data with astryl.space.",
+  "anonymousTitle": "Without an account"
 }

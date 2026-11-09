@@ -151,4 +151,40 @@ class NativeBridge {
       // Nothing to remove.
     }
   }
+
+  /// The phone's approximate location (about a few kilometres). With [ask]
+  /// true Android may show its permission question first; with false, only
+  /// an already given permission is used.
+  ///
+  /// [PhoneLocation.status] is "ok", "denied" (no permission), "off" (the
+  /// phone's location switch is off) or "error".
+  Future<PhoneLocation> getLocation({required bool ask}) async {
+    try {
+      final result = await _channel.invokeMapMethod<String, Object?>(
+          'getLocation', <String, bool>{'ask': ask});
+      if (result == null) {
+        return const PhoneLocation('error');
+      }
+      final status = result['status'];
+      final lat = result['lat'];
+      final lon = result['lon'];
+      if (status == 'ok' && lat is num && lon is num) {
+        return PhoneLocation('ok', lat.toDouble(), lon.toDouble());
+      }
+      return PhoneLocation(status is String ? status : 'error');
+    } on Exception {
+      return const PhoneLocation('error');
+    }
+  }
+}
+
+/// Answer of [NativeBridge.getLocation].
+class PhoneLocation {
+  const PhoneLocation(this.status, [this.lat = 0, this.lon = 0]);
+
+  final String status;
+  final double lat;
+  final double lon;
+
+  bool get ok => status == 'ok';
 }
