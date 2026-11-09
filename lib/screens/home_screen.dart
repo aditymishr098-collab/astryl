@@ -21,7 +21,6 @@ import 'quiz_screen.dart';
 import 'search_screen.dart';
 import 'settings_screen.dart';
 import 'sky_screen.dart';
-import 'update_dialog.dart';
 import 'weight_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -39,7 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _autoUpdate();
       AppScope.read(context).account.onAppOpen();
     });
   }
@@ -74,16 +72,6 @@ class _HomeScreenState extends State<HomeScreen> {
       );
       await scheduleTonightAlerts(state.bridge, alerts, channel: l.eventsTitle);
     });
-  }
-
-  Future<void> _autoUpdate() async {
-    final state = AppScope.read(context);
-    await state.autoCheckForUpdate();
-    final info = state.availableUpdate;
-    if (info != null && mounted) {
-      state.dismissAvailableUpdate();
-      await showUpdateDialog(context, info);
-    }
   }
 
   @override

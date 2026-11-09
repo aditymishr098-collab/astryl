@@ -9,31 +9,12 @@ import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
 import 'account_screen.dart';
-import 'update_dialog.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
   static const String _sourceUrl = 'https://github.com/aditymishr098-collab/astryl';
   static const String _websiteUrl = 'https://astryl.space';
-
-  Future<void> _checkUpdates(BuildContext context) async {
-    final l = context.l10n;
-    final state = AppScope.read(context);
-    final messenger = ScaffoldMessenger.of(context);
-    final (result, info) = await state.checkForUpdate();
-    if (!context.mounted) {
-      return;
-    }
-    switch (result) {
-      case UpdateCheckResult.newer:
-        await showUpdateDialog(context, info!);
-      case UpdateCheckResult.upToDate:
-        messenger.showSnackBar(SnackBar(content: Text(l.upToDate)));
-      case UpdateCheckResult.failed:
-        messenger.showSnackBar(SnackBar(content: Text(l.updateFailed)));
-    }
-  }
 
   Future<void> _open(BuildContext context, String url) async {
     final l = context.l10n;
@@ -344,6 +325,26 @@ class SettingsScreen extends StatelessWidget {
                   Text(l.onlineSubtitle,
                       style:
                           TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
+                  if (!kIsWeb)
+                    ListenableBuilder(
+                      listenable: state.account,
+                      builder: (context, _) => Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const SizedBox(height: 8),
+                          SwitchListTile(
+                            contentPadding: EdgeInsets.zero,
+                            title: Text(l.crashReportsTitle,
+                                style: TextStyle(fontSize: 15, color: p.text)),
+                            value: state.account.crashReports,
+                            onChanged: state.account.setCrashReports,
+                          ),
+                          Text(l.crashReportsNote,
+                              style: TextStyle(
+                                  fontSize: 12, color: p.muted, height: 1.4)),
+                        ],
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -393,36 +394,7 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 // The F-Droid build is updated by F-Droid, never by the app.
                 if (inAppUpdates) ...<Widget>[
-                  const SizedBox(height: 12),
-                  FilledButton.icon(
-                    style: FilledButton.styleFrom(
-                      minimumSize: const Size.fromHeight(48),
-                      backgroundColor: p.orbit,
-                      foregroundColor: Theme.of(context).brightness ==
-                              Brightness.dark
-                          ? p.background
-                          : Colors.white,
-                    ),
-                    onPressed: state.checkingForUpdate
-                        ? null
-                        : () => _checkUpdates(context),
-                    icon: state.checkingForUpdate
-                        ? const SizedBox.square(
-                            dimension: 18,
-                            child: CircularProgressIndicator(strokeWidth: 2))
-                        : const Icon(Icons.refresh),
-                    label: Text(state.checkingForUpdate
-                        ? l.checking
-                        : l.checkForUpdates),
-                  ),
-                  const SizedBox(height: 4),
-                  SwitchListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(l.autoUpdateCheck,
-                        style: TextStyle(fontSize: 14, color: p.text)),
-                    value: settings.autoUpdateCheck,
-                    onChanged: state.setAutoUpdateCheck,
-                  ),
+                  const SizedBox(height: 8),
                   Text(l.updateNote,
                       style:
                           TextStyle(fontSize: 12, color: p.muted, height: 1.4)),

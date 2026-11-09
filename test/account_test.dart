@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:heliora/data/account_store.dart';
 import 'package:heliora/data/cities.dart';
+import 'package:heliora/data/crash_reporter.dart';
 import 'package:heliora/data/settings.dart';
 import 'package:heliora/data/sync.dart';
 
@@ -238,7 +239,14 @@ void main() {
       expect(back.shareCountry, isFalse);
       expect(back.shareLocation, isFalse);
       expect(back.syncOn, isTrue);
+      expect(back.crashReports, isTrue);
       expect(back.session, isNull);
+    });
+
+    test('the crash report switch survives a save and load', () {
+      final off = AccountPrefs.fromJson(
+          const AccountPrefs().copyWith(crashReports: false).toJson());
+      expect(off.crashReports, isFalse);
     });
 
     test('clearSession removes the login only', () {
@@ -257,10 +265,45 @@ void main() {
     });
   });
 
+  group('crash reports', () {
+    test('a report is cut to size and holds no personal field', () {
+      final r = CrashReport.from(
+        'x' * 5000,
+        StackTrace.fromString('s' * 9000),
+        version: '1.19.0',
+        os: 'Linux 5.10 Android',
+        locale: 'hi',
+      );
+      expect(r.message.length, CrashReport.maxMessage);
+      expect(r.stack.length, CrashReport.maxStack);
+      expect(r.toJson().keys.toSet(),
+          <String>{'message', 'stack', 'version', 'os', 'locale'});
+    });
+
+    test('a report survives the queue file, and junk is ignored', () {
+      final r = CrashReport.from('boom', null,
+          version: '1.19.0', os: 'os', locale: 'en');
+      final back = CrashReport.fromJson(jsonDecode(jsonEncode(r.toJson())));
+      expect(back?.message, 'boom');
+      expect(CrashReport.fromJson('nope'), isNull);
+      expect(CrashReport.fromJson(<String, Object>{'stack': 'x'}), isNull);
+    });
+  });
+
   group('the backend files exist', () {
     test('the function, the SQL and the keep-alive are in the repo', () {
       expect(File('supabase/functions/account/index.ts').existsSync(), isTrue);
       expect(File('supabase/migrations/001_init.sql').existsSync(), isTrue);
+      expect(File('supabase/migrations/003_crashes.sql').existsSync(), isTrue);
+    });
+
+    test('the crash table is locked like the others', () {
+      final sql = File('supabase/migrations/003_crashes.sql').readAsStringSync();
+      expect(sql.contains('alter table public.crashes enable row level security'),
+          isTrue);
+      expect(sql.contains('create policy'), isFalse);
+      expect(sql.contains('revoke all on public.crashes from anon, authenticated'),
+          isTrue);
     });
 
     test('the SQL locks every table', () {

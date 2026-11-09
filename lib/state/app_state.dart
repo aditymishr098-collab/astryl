@@ -16,9 +16,6 @@ import '../data/settings.dart';
 import '../data/tonight_alerts.dart';
 import '../data/update_service.dart';
 
-/// Result of a manual "Check for updates".
-enum UpdateCheckResult { newer, upToDate, failed }
-
 /// Holds the settings and update state for the whole app.
 class AppState extends ChangeNotifier {
   AppState({
@@ -46,14 +43,6 @@ class AppState extends ChangeNotifier {
 
   /// Installed version name, for example "1.0.0".
   String get appVersion => _appVersion;
-
-  UpdateInfo? _available;
-
-  /// A newer release found by the automatic daily check, not yet shown.
-  UpdateInfo? get availableUpdate => _available;
-
-  bool _checking = false;
-  bool get checkingForUpdate => _checking;
 
   NativeBridge get bridge => _bridge;
 
@@ -96,9 +85,6 @@ class AppState extends ChangeNotifier {
 
   Future<void> setViewMode(ViewMode mode) =>
       _update(_settings.copyWith(viewMode: mode));
-
-  Future<void> setAutoUpdateCheck(bool value) =>
-      _update(_settings.copyWith(autoUpdateCheck: value));
 
   Future<void> setCity(String id) =>
       _update(_settings.copyWith(cityId: id));
@@ -213,51 +199,19 @@ class AppState extends ChangeNotifier {
     return true;
   }
 
-  /// Runs at most once a day when the user allows it, and never shows an
-  /// error: a failed check just tries again tomorrow.
-  Future<void> autoCheckForUpdate() async {
-    if (!inAppUpdates || !_settings.autoUpdateCheck || _appVersion.isEmpty) {
-      return;
+  /// Asks GitHub for the newest release each time the app opens. Returns it
+  /// when it is newer than this app, otherwise (or when offline, or slow)
+  /// null. Never throws: the app must always be able to open.
+  Future<UpdateInfo?> checkOnOpen() async {
+    if (!inAppUpdates || _appVersion.isEmpty) {
+      return null;
     }
-    final now = DateTime.now().millisecondsSinceEpoch;
-    const day = 24 * 60 * 60 * 1000;
-    if (now - _settings.lastUpdateCheckMs < day) {
-      return;
-    }
-    await _update(_settings.copyWith(lastUpdateCheckMs: now));
     try {
-      final info = await _updates.latest();
-      if (isNewerVersion(info.tag, _appVersion)) {
-        _available = info;
-        notifyListeners();
-      }
+      final info =
+          await _updates.latest().timeout(const Duration(seconds: 5));
+      return isNewerVersion(info.tag, _appVersion) ? info : null;
     } on Exception {
-      // Offline or GitHub unreachable: ignore.
-    }
-  }
-
-  /// Clears [availableUpdate] once its dialog has been shown.
-  void dismissAvailableUpdate() {
-    _available = null;
-    notifyListeners();
-  }
-
-  /// The manual check from Settings.
-  Future<(UpdateCheckResult, UpdateInfo?)> checkForUpdate() async {
-    _checking = true;
-    notifyListeners();
-    try {
-      final info = await _updates.latest();
-      final current = _appVersion.isEmpty ? '0.0.0' : _appVersion;
-      if (isNewerVersion(info.tag, current)) {
-        return (UpdateCheckResult.newer, info);
-      }
-      return (UpdateCheckResult.upToDate, info);
-    } on Exception {
-      return (UpdateCheckResult.failed, null);
-    } finally {
-      _checking = false;
-      notifyListeners();
+      return null;
     }
   }
 }

@@ -6,7 +6,7 @@
 
 *Formerly Heliora.*
 
-**Explore the Solar System, offline first.**
+**Know your space.**
 
 Real planet positions, rotating 3D worlds, a star map for your sky,<br>
 and an honest answer to "could humans live here?"
@@ -17,7 +17,6 @@ and an honest answer to "could humans live here?"
 [![License: AGPL v3](https://img.shields.io/badge/license-AGPL--3.0-blue)](LICENSE)
 ![Android](https://img.shields.io/badge/platform-Android-3DDC84?logo=android&logoColor=white)
 ![Flutter](https://img.shields.io/badge/built%20with-Flutter-02569B?logo=flutter&logoColor=white)
-![Offline](https://img.shields.io/badge/works-offline-141B33)
 
 [**⬇ Download the latest APK**](https://github.com/aditymishr098-collab/astryl/releases/latest)
 
@@ -122,16 +121,17 @@ Astryl is prepared for [F-Droid](https://f-droid.org). That build is made from t
 
 ## Privacy
 
-[Astryl](https://astryl.space): **no ads, no trackers, and an account only if you want one.** The full policy is at [astryl.space/privacy.html](https://astryl.space/privacy.html).
+[Astryl](https://astryl.space): **no ads, and an account only if you want one.** The full policy is at [astryl.space/privacy.html](https://astryl.space/privacy.html).
 
-- Everything works without internet, except the optional online features below. Planet data, positions and 3D surfaces are all calculated on your phone.
+- Planet data, positions and 3D surfaces are calculated on your phone, so the app works without internet. Internet is used for the update check, crash reports and the optional online features below.
 - **Online features are off by default.** If you switch them on in Settings, Astryl contacts `api.wheretheiss.at` (or `celestrak.org`) for the station's orbit data, `ll.thespacedevs.com` (Launch Library 2) for the launch list, and `api.spaceflightnewsapi.net` for the news. The orbits of Tiangong and Hubble come from `celestrak.org`. Nothing about you is sent; those services can only see your phone's internet address. The orbit data is saved on the phone, so the station keeps working offline for days. Switch the setting off and Astryl never contacts them.
 - **The account is optional.** If you make one, a small server on [Supabase](https://supabase.com) stores your username, a hash of your password and of your recovery code, the date you accepted the privacy policy, and, if you keep sync on, your favourites, quiz scores, language, theme, city and birth date. Nothing is stored for a visitor who skips it. You can delete the account in Settings → Account and everything is removed.
 - **Three more switches, all off until you turn them on:** *count me as an active user* (a random number made on your phone, not linked to you), *share my country* (taken from your phone's language and region setting) and *share my approximate location* (needs an account and Android's location permission; only your latest place is kept, rounded to about 10 km, and it is updated only when you open the app). There is no background location.
 - The app can only call one function (`supabase/functions/account`); every table is locked, and the key inside the app is the public (publishable) one. The service key never leaves Supabase.
 - Besides that, the internet is used for updates. The app asks GitHub for the latest release and, when you tap **Download and install**, downloads the signed APK from that release. Nothing about you is sent; like any web request, GitHub sees your phone's internet address. Android only installs the APK if it is signed with the same key as the app you already have.
 - Your birth date and settings are saved only on your phone. Android's cloud backup is switched off for Astryl; the backup file in Settings is made only when you ask and goes only where you send it.
-- The daily update check can be turned off in Settings.
+- **Update check:** each time the app opens, it asks GitHub for the newest release and offers it first, with **Update now** and **Skip**.
+- **Crash reports (on by default, switch in Settings → Send crash reports):** if the app crashes, one small report (the error text, the technical trace, the app version, the Android version string and the app language) is sent to the project's own Supabase (`crashes` table, kept 90 days, only used to fix bugs). It has no name, account, device id or location.
 
 ## How it works
 
@@ -178,6 +178,7 @@ Releases are built and signed by GitHub Actions when a version tag such as `v1.4
 | 1.16.0 | Optional online features: space news, Tiangong and Hubble passes, a share card for tonight's sky; the app is kept in English and Hindi (done) |
 | 1.17.0 | Smoother animations and less battery use, backup and restore (done) |
 | 1.18.0 | Optional account, sync with the website, privacy policy (done) |
+| 1.19.0 | Update offered first on every start (with Skip), crash reports to the project's Supabase, new tagline "Know your space", a turning Milky Way on the website (done) |
 | 1.19.0 | The big moons of Jupiter and Saturn, with their real positions |
 | 1.21.0 | Larger layout for tablets |
 | 2.0.0 | All the planets in one 3D scene you can fly around |
@@ -201,6 +202,7 @@ All texts live in `lib/l10n/app_en.arb` and `lib/l10n/app_hi.arb`. Found a wrong
 | Version | What's new |
 |---|---|
 | **1.18.0** | Optional online account (username and password, no e-mail) with a recovery code for a forgotten password, a "Skip now" choice and a privacy-policy tick box. Your favourites, quiz scores, language, theme, city and birth date sync with astryl.space. Settings → Account has switches for sync, the anonymous active-user count, country and approximate location, a new recovery code, log out and delete account. "Use my location" in the city list. New privacy policy on the website. Backend in `supabase/`. Your data and settings are kept |
+| **1.19.0** | Each time the app opens it asks GitHub for a newer version and offers it first, with **Update now** and **Skip**; the "Check for updates" button is gone. Crash reports (error text, app and Android version, language; no personal data) go to the project's own Supabase, with a switch in Settings and a line in the Privacy Policy. New tagline "Know your space". The website has a turning Milky Way and a scroll journey to the Solar System and the Moon. |
 | **1.17.6** | Surface maps for the Moon and Mars with 25 landing sites. Open the Moon or Mars and tap Surface map. Your data and settings are kept |
 | **1.17.5** | New app id `space.astryl.app` (it was `online.lumioapps.heliora`), after the website astryl.space. Android sees this as a **new app**, so it installs next to the old one instead of updating it. To move over: in the old app open Settings → Backup → Save, install 1.17.5, open Settings → Backup → Restore in the new app, then uninstall the old one. Reminders for single events are not kept, set them again |
 | **1.17.4** | The licence is now AGPL-3.0 (versions up to 1.17.3 stay under MIT). The name "Lumio Apps" is gone from the project texts; the copyright line is now Astryl and astryl.space. Settings → About has a new link to the website. Your data and settings are kept |
