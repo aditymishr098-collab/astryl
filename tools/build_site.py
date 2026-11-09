@@ -639,8 +639,8 @@ def privacy_page():
     def tr(a_en, a_hi, b_en, b_hi, c_en, c_hi):
         return f'<tr><td>{bt(a_en, a_hi)}</td><td>{bt(b_en, b_hi)}</td><td>{bt(c_en, c_hi)}</td></tr>'
     body = f"""<section class="blk policy" style="max-width:800px"><h1>{bt("Privacy Policy", "Privacy Policy")}</h1>
-<p class="note">{bt("Version 1 · last updated 9 November 2026 · applies to the Astryl app (from version 1.18.0) and to astryl.space", "Version 1 · आख़िरी बार 9 नवंबर 2026 को बदली गई · Astryl app (version 1.18.0 से) और astryl.space पर लागू")}</p>
-<p class="sub">{bt("Short version: no ads, no trackers, nothing is sold. The app works fully without an account. If you make one, we keep only what is listed below, you choose every optional switch, and you can delete everything yourself at any time.", "छोटे में: कोई विज्ञापन नहीं, कोई trackers नहीं, कुछ बेचा नहीं जाता। App खाते के बिना पूरा चलता है। खाता बनाएँ तो हम सिर्फ़ वही रखते हैं जो नीचे लिखा है, हर वैकल्पिक switch आप चुनते हैं, और आप कभी भी सब कुछ ख़ुद मिटा सकते हैं।")}</p>
+<p class="note">{bt("Last updated 9 November 2026 · applies to the Astryl app (version 1.19.0 and later; account features from 1.18.0) and to astryl.space", "आख़िरी बार 9 नवंबर 2026 को बदली गई · Astryl app (version 1.19.0 और बाद के; खाते की सुविधाएँ 1.18.0 से) और astryl.space पर लागू")}</p>
+<p class="sub">{bt("Short version: no ads, nothing is sold. The app works without an account. If you make one, or if the app crashes, we keep only what is listed below, you choose every optional switch, and you can delete everything yourself at any time.", "छोटे में: कोई विज्ञापन नहीं, कुछ बेचा नहीं जाता। App खाते के बिना चलता है। खाता बनाएँ, या app crash हो, तो हम सिर्फ़ वही रखते हैं जो नीचे लिखा है, हर वैकल्पिक switch आप चुनते हैं, और आप कभी भी सब कुछ ख़ुद मिटा सकते हैं।")}</p>
 
 <h2>{bt("1. Who is responsible", "1. ज़िम्मेदार कौन है")}</h2>
 <p>{bt("Astryl is a free, open-source project (AGPL-3.0). For questions about your data, write to", "Astryl एक मुफ़्त, open-source project है (AGPL-3.0)। अपने data के बारे में सवाल हों तो यहाँ लिखें:")} <a href="mailto:contact@astryl.space">contact@astryl.space</a>.</p>
@@ -649,7 +649,7 @@ def privacy_page():
 <ul>
 {li("Planet facts, the Moon, planet positions, eclipses, the star map and the quiz are worked out on your phone or in your browser. No internet is needed for the app.", "ग्रहों के तथ्य, चाँद, ग्रहों की स्थिति, ग्रहण, star map और quiz आपके फ़ोन या browser में ही निकाले जाते हैं। App के लिए internet ज़रूरी नहीं।")}
 {li("Your city, birth date, favourites, quiz scores and settings are saved on your phone. The Backup file is made by you and goes only where you send it.", "आपका शहर, जन्मतिथि, favourites, quiz scores और settings आपके फ़ोन में save होते हैं। Backup file आप बनाते हैं और वह वहीं जाती है जहाँ आप भेजें।")}
-{li("Update check (can be turned off): the app asks GitHub for the newest release, once a day. GitHub sees your IP address, like in any web request.", "Update check (बंद किया जा सकता है): app दिन में एक बार GitHub से सबसे नया release पूछता है। जैसे हर web request में होता है, GitHub आपका IP address देख सकता है।")}
+{li("Update check: each time the app opens, it asks GitHub for the newest release and, if there is one, offers it first (you can tap Skip). GitHub sees your IP address, like in any web request.", "Update check: app हर बार खुलने पर GitHub से सबसे नया release पूछता है और नया हो तो सबसे पहले वही दिखाता है (आप Skip दबा सकते हैं)। जैसे हर web request में होता है, GitHub आपका IP address देख सकता है।")}
 {li("Online features are off until you turn them on. Then the app downloads orbit data, the rocket launch list and space news from public services (wheretheiss.at, Celestrak, Launch Library 2, Spaceflight News API), which can see your IP address. Nothing about you is sent.", "Online features आप चालू करें तभी चलते हैं। तब app public services (wheretheiss.at, Celestrak, Launch Library 2, Spaceflight News API) से orbit data, rocket launch की list और space news लेता है, जो आपका IP address देख सकती हैं। आपके बारे में कुछ नहीं भेजा जाता।")}
 {li("“Use my location” in the city list asks Android for your approximate location, once, and uses it only on your phone to work out the sky. Nothing is sent for this.", "शहर की list में “मेरी location इस्तेमाल करें” Android से आपकी अनुमानित location एक बार माँगता है और उसे सिर्फ़ आपके फ़ोन पर आसमान निकालने में इस्तेमाल करता है। इसके लिए कुछ नहीं भेजा जाता।")}
 </ul>
@@ -672,17 +672,24 @@ def privacy_page():
 {li("Share my approximate location (app only, needs an account): after you allow Android's location permission, the app sends Android's approximate location (a few kilometres) when you open it, at most once a day. The server rounds it to about 10 km and keeps only the latest place with its date, tied to your account. There is no location in the background. Switch it off and the place is deleted from the server.", "मेरी अनुमानित location बताएँ (सिर्फ़ app में, खाता चाहिए): Android की location अनुमति देने के बाद app आपके app खोलने पर Android की अनुमानित location (कुछ किलोमीटर तक) भेजता है, दिन में ज़्यादा से ज़्यादा एक बार। Server उसे लगभग 10 किमी में गोल करके सिर्फ़ सबसे ताज़ा जगह तारीख़ के साथ, आपके खाते से जुड़ी रखता है। Background में कोई location नहीं ली जाती। Switch बंद करने पर वह जगह server से मिट जाती है।")}
 </ul>
 
-<h2>{bt("5. Where the data is kept and who handles it", "5. Data कहाँ रखा जाता है और कौन सँभालता है")}</h2>
+<h2>{bt("5. Crash reports (on by default, you can switch them off)", "5. Crash reports (डिफ़ॉल्ट रूप से चालू, आप बंद कर सकते हैं)")}</h2>
+<ul>
+{li("If the app crashes, it sends one small report to the Astryl server: the error text, the technical trace of where it happened, the app version, the Android version string and the app language. It contains no name, no account, no device id, no IP address (the server keeps none in readable form) and no location.", "App crash हो तो वह Astryl server को एक छोटा report भेजता है: error का text, कहाँ हुआ उसका technical trace, app version, Android version string और app की भाषा। उसमें कोई नाम, खाता, device id, IP address (server उसे पढ़ने लायक़ रूप में नहीं रखता) या location नहीं होती।")}
+{li("It is used only to find and fix bugs, and is kept for 90 days. If the phone is offline, the report waits on the phone and is sent later.", "इसका इस्तेमाल सिर्फ़ bugs ढूँढने और ठीक करने के लिए होता है, और यह 90 दिन रखा जाता है। फ़ोन offline हो तो report फ़ोन पर रुका रहता है और बाद में भेजा जाता है।")}
+{li("Turn it off in Settings → Send crash reports. Nothing is then kept or sent, and reports still waiting on the phone are not sent.", "इसे Settings → Crash reports भेजें में बंद करें। तब कुछ रखा या भेजा नहीं जाता, और फ़ोन पर रुके reports भी नहीं भेजे जाते।")}
+</ul>
+
+<h2>{bt("6. Where the data is kept and who handles it", "6. Data कहाँ रखा जाता है और कौन सँभालता है")}</h2>
 <p>{bt("Account data is stored with Supabase (database and login service), on servers in Singapore. The app and this website reach it only through one function that checks who is asking; the tables themselves cannot be read from outside. To limit abuse, a hashed (not readable) key and a counter are kept for up to 2 days; no IP address is stored in readable form. This website is hosted on GitHub Pages, and downloads and the update check use GitHub; both follow GitHub's own privacy statement. We do not sell data, show ads, use analytics or trackers, or share data with anyone else.", "खाते का data Supabase (database और login service) के पास, सिंगापुर के servers पर, रखा जाता है। App और यह website उस तक सिर्फ़ एक function से पहुँचते हैं, जो जाँचता है कि कौन माँग रहा है; tables को बाहर से पढ़ा नहीं जा सकता। दुरुपयोग रोकने के लिए hash किया हुआ (पढ़ने लायक़ नहीं) key और एक counter ज़्यादा से ज़्यादा 2 दिन रखा जाता है; IP address पढ़ने लायक़ रूप में नहीं रखा जाता। यह website GitHub Pages पर है, और downloads व update check GitHub से होते हैं; दोनों GitHub की अपनी privacy policy के हिसाब से चलते हैं। हम data बेचते नहीं, विज्ञापन नहीं दिखाते, analytics या trackers इस्तेमाल नहीं करते, और किसी और से data साझा नहीं करते।")}</p>
 
-<h2>{bt("6. This website", "6. यह website")}</h2>
+<h2>{bt("7. This website", "7. यह website")}</h2>
 <ul>
 {li("No cookies, no analytics, no ads, no third-party scripts or fonts. Everything is calculated in your browser.", "कोई cookies, analytics, विज्ञापन, बाहरी scripts या fonts नहीं। सब कुछ आपके browser में calculate होता है।")}
 {li("Your browser remembers language, theme and quiz scores in local storage on your own device. If you log in, a login token is kept there too, until you log out.", "आपका browser भाषा, theme और quiz scores आपके अपने device की local storage में याद रखता है। Log in करने पर वहीं एक login token भी रहता है, log out करने तक।")}
 {li("The home page asks the Astryl server for the public counter (accounts and active users) and asks GitHub for the download count.", "Home page Astryl server से public counter (खाते और active users) और GitHub से download की गिनती माँगता है।")}
 </ul>
 
-<h2>{bt("7. Your choices and rights", "7. आपके विकल्प और अधिकार")}</h2>
+<h2>{bt("8. Your choices and rights", "8. आपके विकल्प और अधिकार")}</h2>
 <ul>
 {li("Delete your account at any time: app → Settings → Account → Delete my account, or on the Account page of this website. Your account and everything stored for it online are removed straight away. The data on your phone stays.", "खाता कभी भी मिटाएँ: app → Settings → Account → मेरा खाता मिटाएँ, या इस website के Account page पर। आपका खाता और उससे जुड़ा सारा online data तुरंत मिट जाता है। आपके फ़ोन का data रहता है।")}
 {li("Turn any optional switch off at any time. This withdraws your consent for that part; the data it created is removed or stops growing.", "कोई भी वैकल्पिक switch कभी भी बंद करें। इससे उस हिस्से की सहमति वापस हो जाती है; उससे बना data मिट जाता है या बढ़ना रुक जाता है।")}
@@ -690,13 +697,13 @@ def privacy_page():
 {li("To ask what is stored about you, to get a copy, or to have something corrected or removed, write to contact@astryl.space and tell us your username. Depending on where you live you may also have the right to complain to your data protection authority.", "आपके बारे में क्या रखा है यह पूछने, उसकी copy लेने, या कुछ सुधारने/हटाने के लिए contact@astryl.space पर लिखें और अपना username बताएँ। आप जहाँ रहते हैं उसके हिसाब से आपको अपनी data protection authority से शिकायत करने का अधिकार भी हो सकता है।")}
 </ul>
 
-<h2>{bt("8. Children", "8. बच्चे")}</h2>
+<h2>{bt("9. Children", "9. बच्चे")}</h2>
 <p>{bt("Astryl is for everyone who likes space. If you are under 16, please ask a parent or guardian before making an account. The app is fully usable without one.", "Astryl उन सब के लिए है जिन्हें अंतरिक्ष पसंद है। अगर आप 16 साल से कम के हैं, तो खाता बनाने से पहले माता-पिता या अभिभावक से पूछ लें। App खाते के बिना भी पूरा इस्तेमाल हो सकता है।")}</p>
 
-<h2>{bt("9. Changes", "9. बदलाव")}</h2>
+<h2>{bt("10. Changes", "10. बदलाव")}</h2>
 <p>{bt("If this policy changes in a way that matters, the new version is published on this page and in the app's release notes, and the app asks again before you make a new account. The full source code, including the server code in the folder", "अगर यह policy किसी ज़रूरी तरह से बदली, तो नया version इसी page और app के release notes में छपेगा, और नया खाता बनाने से पहले app फिर पूछेगा। पूरा source code, server का code भी (folder")} <a href="{REPO}/tree/main/supabase">supabase/</a>{bt(", is open for anyone to read.", ") सबके पढ़ने के लिए खुला है।")}</p>
 </section>"""
-    write('privacy.html', shell('Privacy Policy', 'Privacy Policy', 'get', body, 'Astryl Privacy Policy: no ads, no trackers. An account (username and password only) is optional; what is stored, why, and how to delete it.', canonical='privacy.html'))
+    write('privacy.html', shell('Privacy Policy', 'Privacy Policy', 'get', body, 'Astryl Privacy Policy: no ads. An account (username and password only) is optional, crash reports can be switched off; what is stored, why, and how to delete it.', canonical='privacy.html'))
 
 
 def account_page():

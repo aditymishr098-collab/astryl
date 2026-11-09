@@ -1,7 +1,7 @@
 {
   "@@locale": "en",
   "appTitle": "Astryl",
-  "tagline": "Explore the Solar System, fully offline",
+  "tagline": "Know your space",
   "navExplore": "Explore",
   "navCompare": "Compare",
   "navWeight": "Weight",
@@ -185,7 +185,7 @@
   "checkForUpdates": "Check for updates",
   "checking": "Checking…",
   "autoUpdateCheck": "Check automatically once a day",
-  "updateNote": "Updates come from GitHub Releases. Your settings stay on your phone.",
+  "updateNote": "Each time Astryl opens, it asks GitHub for a newer version and offers it first (you can skip). Nothing about you is sent. Your settings stay on your phone.",
   "upToDate": "You have the latest version.",
   "updateFailed": "Could not reach GitHub. Check your internet and try again.",
   "updateAvailable": "Update available",
@@ -199,10 +199,13 @@
   },
   "download": "Download",
   "later": "Later",
+  "updateSkip": "Skip",
+  "crashReportsTitle": "Send crash reports",
+  "crashReportsNote": "If the app crashes, a small report (the error text, the app version and the Android version) is sent to the Astryl server so the bug can be fixed. It has no name, account or location. Turn this off any time.",
   "about": "About",
   "sourceCode": "Source code on GitHub",
   "websiteLink": "Website: astryl.space",
-  "privacyLine": "Offline-first · No ads · Account optional",
+  "privacyLine": "Free · Open source · No ads · Account optional",
   "dataSource": "Facts: NASA Planetary Fact Sheet",
   "openFailed": "Could not open the link.",
   "bodySun": "Sun",
@@ -283,7 +286,7 @@
     }
   },
   "share": "Share",
-  "shareText": "{planet} in Astryl, the free offline Solar System app: https://github.com/aditymishr098-collab/astryl",
+  "shareText": "{planet} in Astryl, the free Solar System app: https://github.com/aditymishr098-collab/astryl",
   "shareFailed": "Could not share the picture.",
   "travelTitle": "How far is it?",
   "distanceFromEarth": "Distance from Earth today",
@@ -1136,7 +1139,7 @@
   "newsOpenFailed": "Could not open the link.",
   "tonightShareTitle": "Share tonight’s sky",
   "tonightShareHint": "A picture of the Moon and planets for your friends",
-  "tonightShareText": "The sky over {city}, made with Astryl, the free offline Solar System app: https://github.com/aditymishr098-collab/astryl",
+  "tonightShareText": "The sky over {city}, made with Astryl, the free Solar System app: https://github.com/aditymishr098-collab/astryl",
   "@tonightShareText": {
     "placeholders": {
       "city": {

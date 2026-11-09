@@ -68,6 +68,11 @@ class AccountState extends ChangeNotifier {
     await _store.save(next);
   }
 
+  bool get crashReports => _prefs.crashReports;
+
+  Future<void> setCrashReports(bool on) =>
+      _set(_prefs.copyWith(crashReports: on));
+
   Future<void> markPromptDone() => _set(_prefs.copyWith(promptDone: true));
 
   String? get _country {

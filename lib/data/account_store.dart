@@ -75,6 +75,7 @@ class AccountPrefs {
     this.countMe = false,
     this.shareCountry = false,
     this.shareLocation = false,
+    this.crashReports = true,
     this.syncedMs = 0,
     this.lastPingMs = 0,
     this.lastLocationMs = 0,
@@ -92,6 +93,9 @@ class AccountPrefs {
   final bool shareCountry;
   final bool shareLocation;
 
+  /// Whether a crash sends a small anonymous report (no account, no name).
+  final bool crashReports;
+
   /// When the phone last agreed with the account (ms since 1970, server time).
   final int syncedMs;
   final int lastPingMs;
@@ -105,6 +109,7 @@ class AccountPrefs {
     bool? countMe,
     bool? shareCountry,
     bool? shareLocation,
+    bool? crashReports,
     int? syncedMs,
     int? lastPingMs,
     int? lastLocationMs,
@@ -118,6 +123,7 @@ class AccountPrefs {
       countMe: countMe ?? this.countMe,
       shareCountry: shareCountry ?? this.shareCountry,
       shareLocation: shareLocation ?? this.shareLocation,
+      crashReports: crashReports ?? this.crashReports,
       syncedMs: syncedMs ?? this.syncedMs,
       lastPingMs: lastPingMs ?? this.lastPingMs,
       lastLocationMs: lastLocationMs ?? this.lastLocationMs,
@@ -132,6 +138,7 @@ class AccountPrefs {
         'countMe': countMe,
         'shareCountry': shareCountry,
         'shareLocation': shareLocation,
+        'crashReports': crashReports,
         'syncedMs': syncedMs,
         'lastPingMs': lastPingMs,
         'lastLocationMs': lastLocationMs,
@@ -158,6 +165,7 @@ class AccountPrefs {
       countMe: b('countMe', d.countMe),
       shareCountry: b('shareCountry', d.shareCountry),
       shareLocation: b('shareLocation', d.shareLocation),
+      crashReports: b('crashReports', d.crashReports),
       syncedMs: i('syncedMs'),
       lastPingMs: i('lastPingMs'),
       lastLocationMs: i('lastLocationMs'),

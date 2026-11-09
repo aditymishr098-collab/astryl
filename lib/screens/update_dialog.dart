@@ -169,7 +169,7 @@ class _UpdateDialogState extends State<_UpdateDialog> {
       actions = <Widget>[
         TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text(l.later)),
+            child: Text(l.updateSkip)),
         FilledButton(onPressed: _openInBrowser, child: Text(l.download)),
       ];
     } else {
@@ -178,28 +178,28 @@ class _UpdateDialogState extends State<_UpdateDialog> {
           actions = <Widget>[
             TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text(l.later)),
+                child: Text(l.updateSkip)),
             FilledButton(onPressed: _download, child: Text(l.downloadInstall)),
           ];
         case _Stage.downloading:
           actions = <Widget>[
             TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text(l.later)),
+                child: Text(l.updateSkip)),
           ];
         case _Stage.downloaded:
         case _Stage.permission:
           actions = <Widget>[
             TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text(l.later)),
+                child: Text(l.updateSkip)),
             FilledButton(onPressed: _install, child: Text(l.installNow)),
           ];
         case _Stage.failed:
           actions = <Widget>[
             TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text(l.later)),
+                child: Text(l.updateSkip)),
             FilledButton(onPressed: _download, child: Text(l.tryAgain)),
           ];
       }

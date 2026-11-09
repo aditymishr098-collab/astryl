@@ -158,6 +158,30 @@ async function handle(req: Request, b: any): Promise<Response> {
       return reply(data, 200, { "Cache-Control": "public, max-age=300" });
     }
 
+    case "crash": {
+      // Anonymous crash report from the app. Sizes are cut, and one address
+      // can only send a limited number per hour.
+      await hit("crash:" + ip, 30, 3600);
+      const message = String(b.message ?? "").slice(0, 400);
+      if (!message) throw new Fail(400, "bad_report");
+      const { error } = await admin.from("crashes").insert({
+        app_version: String(b.version ?? "").slice(0, 30),
+        os: String(b.os ?? "").slice(0, 120),
+        locale: String(b.locale ?? "").slice(0, 12),
+        message,
+        stack: String(b.stack ?? "").slice(0, 3000),
+      });
+      if (error) throw new Fail(500, "crash_failed");
+      // Reports are kept for 90 days; tidy up now and then.
+      if (Math.random() < 0.02) {
+        await admin.from("crashes").delete().lt(
+          "created_at",
+          new Date(Date.now() - 90 * 86400000).toISOString(),
+        );
+      }
+      return reply({ ok: true });
+    }
+
     case "ping": {
       const device = String(b.device ?? "");
       if (!/^[A-Za-z0-9-]{8,64}$/.test(device)) throw new Fail(400, "bad_device");
