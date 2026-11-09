@@ -9,8 +9,9 @@ import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
 
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
+/// Every setting of the app. It sits at the bottom of the "You" tab.
+class SettingsSections extends StatelessWidget {
+  const SettingsSections({super.key});
 
   static const String _sourceUrl = 'https://github.com/aditymishr098-collab/astryl';
   static const String _websiteUrl = 'https://astryl.space';
@@ -151,13 +152,8 @@ class SettingsScreen extends StatelessWidget {
         ? l.phoneLanguage
         : languageName(settings.localeCode);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l.settings,
-            style: const TextStyle(fontWeight: FontWeight.w700)),
-      ),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           SectionLabel(l.appearance),
           SurfaceCard(
@@ -261,8 +257,13 @@ class SettingsScreen extends StatelessWidget {
                     value: settings.tonightAlert,
                     onChanged: (value) => _toggleTonight(context, value),
                   ),
-                  if (settings.tonightAlert)
-                    ListTile(
+                  AnimatedSize(
+                    duration: const Duration(milliseconds: 250),
+                    curve: Curves.easeOut,
+                    alignment: Alignment.topCenter,
+                    child: !settings.tonightAlert
+                        ? const SizedBox(width: double.infinity)
+                        : ListTile(
                       contentPadding: EdgeInsets.zero,
                       title: Text(l.tonightAlertTime,
                           style: TextStyle(fontSize: 15, color: p.text)),
@@ -277,7 +278,7 @@ class SettingsScreen extends StatelessWidget {
                             color: p.accentText),
                       ),
                       onTap: () => _pickTonightTime(context),
-                    ),
+                    )),
                   Text(l.tonightAlertNote,
                       style:
                           TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
@@ -361,6 +362,12 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 const Divider(),
                 ListTile(
+                  title: Text(l.reportBug, style: TextStyle(color: p.text)),
+                  trailing: Icon(Icons.open_in_new, color: p.muted, size: 20),
+                  onTap: () => _open(context, '$_sourceUrl/issues'),
+                ),
+                const Divider(),
+                ListTile(
                   title: Text(l.privacyLine, style: TextStyle(color: p.text)),
                   subtitle: Text(l.dataSource,
                       style: TextStyle(fontSize: 12, color: p.muted)),
@@ -369,7 +376,6 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
         ],
-      ),
     );
   }
 }

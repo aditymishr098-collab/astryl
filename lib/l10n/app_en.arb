@@ -199,6 +199,7 @@
   },
   "download": "Download",
   "later": "Later",
+  "reportBug": "Report a bug",
   "updateSkip": "Skip",
   "crashReportsTitle": "Send crash reports",
   "crashReportsNote": "If the app crashes, a small report (the error text, the app version and the Android version) is sent to the Astryl server so the bug can be fixed. It has no name, account or location. Turn this off any time.",

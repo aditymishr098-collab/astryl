@@ -10,8 +10,10 @@ import '../l10n/names.dart';
 import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
+import '../widgets/motion.dart';
 import 'account_screen.dart';
 import 'birthday_screen.dart';
+import 'settings_screen.dart';
 
 /// What the user would weigh, and how old they would be, on other worlds.
 class WeightScreen extends StatefulWidget {
@@ -70,7 +72,7 @@ class _WeightScreenState extends State<WeightScreen> {
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
       children: <Widget>[
         if (!kIsWeb) ...<Widget>[
-          const _AccountCard(),
+          const FadeSlideIn(child: _AccountCard()),
           const SizedBox(height: 20),
         ],
         Text(l.weightTitle,
@@ -105,7 +107,7 @@ class _WeightScreenState extends State<WeightScreen> {
         Text(l.jumpNote, style: TextStyle(fontSize: 12, color: p.muted)),
         const SizedBox(height: 16),
         for (final planet in allBodies) ...<Widget>[
-          SurfaceCard(
+          FadeSlideIn(child: SurfaceCard(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             borderColor: planet.id == 'earth' ? p.accentText : null,
             child: Row(
@@ -137,11 +139,20 @@ class _WeightScreenState extends State<WeightScreen> {
                 ),
               ],
             ),
-          ),
+          )),
           const SizedBox(height: 8),
         ],
         const SizedBox(height: 24),
-        const _AgeSection(),
+        const FadeSlideIn(child: _AgeSection()),
+        const SizedBox(height: 28),
+        Text(l.settings,
+            style: TextStyle(
+                fontFamily: headingFont,
+                fontSize: 26,
+                fontWeight: FontWeight.w700,
+                color: p.text)),
+        const SizedBox(height: 8),
+        const FadeSlideIn(child: SettingsSections()),
       ],
     );
   }
@@ -301,11 +312,15 @@ class _AccountCard extends StatelessWidget {
             ListTile(
               leading:
                   Icon(Icons.account_circle_outlined, color: p.accentText),
-              title: Text(
-                  account.loggedIn
-                      ? l.acctLoggedInAs(account.username)
-                      : l.acctTitle,
-                  style: TextStyle(color: p.text)),
+              title: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 250),
+                child: Text(
+                    account.loggedIn
+                        ? l.acctLoggedInAs(account.username)
+                        : l.acctTitle,
+                    key: ValueKey<bool>(account.loggedIn),
+                    style: TextStyle(color: p.text)),
+              ),
               subtitle: Text(l.settingsAccountSubtitle,
                   style: TextStyle(fontSize: 12, color: p.muted)),
               trailing: Icon(Icons.chevron_right, color: p.muted),
