@@ -12,7 +12,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'Astryl';
 
   @override
-  String get tagline => 'Explore the Solar System, fully offline';
+  String get tagline => 'Know your space';
 
   @override
   String get navExplore => 'Explore';
@@ -321,7 +321,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get updateNote =>
-      'Updates come from GitHub Releases. Your settings stay on your phone.';
+      'Each time Astryl opens, it asks GitHub for a newer version and offers it first (you can skip). Nothing about you is sent. Your settings stay on your phone.';
 
   @override
   String get upToDate => 'You have the latest version.';
@@ -345,6 +345,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get later => 'Later';
 
   @override
+  String get reportBug => 'Report a bug';
+
+  @override
+  String get updateSkip => 'Skip';
+
+  @override
+  String get crashReportsTitle => 'Send crash reports';
+
+  @override
+  String get crashReportsNote =>
+      'If the app crashes, a small report (the error text, the app version and the Android version) is sent to the Astryl server so the bug can be fixed. It has no name, account or location. Turn this off any time.';
+
+  @override
   String get about => 'About';
 
   @override
@@ -354,7 +367,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get websiteLink => 'Website: astryl.space';
 
   @override
-  String get privacyLine => 'Offline · No ads · No tracking';
+  String get privacyLine => 'Free · Open source · No ads · Account optional';
 
   @override
   String get dataSource => 'Facts: NASA Planetary Fact Sheet';
@@ -527,7 +540,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String shareText(String planet) {
-    return '$planet in Astryl, the free offline Solar System app: https://github.com/aditymishr098-collab/astryl';
+    return '$planet in Astryl, the free Solar System app: https://github.com/aditymishr098-collab/astryl';
   }
 
   @override
@@ -1905,7 +1918,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String tonightShareText(String city) {
-    return 'The sky over $city, made with Astryl, the free offline Solar System app: https://github.com/aditymishr098-collab/astryl';
+    return 'The sky over $city, made with Astryl, the free Solar System app: https://github.com/aditymishr098-collab/astryl';
   }
 
   @override
@@ -2176,4 +2189,256 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get featSouthCap => 'South polar cap';
+
+  @override
+  String get acctTitle => 'Astryl account';
+
+  @override
+  String get acctCreateTitle => 'Create your account';
+
+  @override
+  String get acctIntro =>
+      'Optional. A username and a password, no e-mail. Your favourites, quiz scores and settings then follow you between this app and astryl.space.';
+
+  @override
+  String get acctTabCreate => 'Create account';
+
+  @override
+  String get acctTabLogin => 'Log in';
+
+  @override
+  String get acctUsername => 'Username';
+
+  @override
+  String get acctUsernameHint => '3 to 20 letters (a to z), digits or _';
+
+  @override
+  String get acctPassword => 'Password';
+
+  @override
+  String get acctPasswordHint => 'At least 8 characters';
+
+  @override
+  String get acctPasswordAgain => 'Password again';
+
+  @override
+  String get acctForgot => 'Forgot password?';
+
+  @override
+  String get acctRecoverTitle => 'Reset with your recovery code';
+
+  @override
+  String get acctRecoverCode => 'Recovery code';
+
+  @override
+  String get acctRecoverNewPassword => 'New password';
+
+  @override
+  String get acctRecoverButton => 'Set new password';
+
+  @override
+  String get acctBackToLogin => 'Back to log in';
+
+  @override
+  String get acctConsent => 'I have read and accept the Privacy Policy';
+
+  @override
+  String get acctReadPolicy => 'Read the Privacy Policy';
+
+  @override
+  String get acctOptionalTitle => 'Optional. All off until you switch them on.';
+
+  @override
+  String get acctCountMe => 'Count me as an active user';
+
+  @override
+  String get acctCountMeNote =>
+      'Sends a random number made on this phone, once in a while, so Astryl can show how many people use it. It is not linked to you.';
+
+  @override
+  String get acctShareCountry => 'Share my country';
+
+  @override
+  String get acctShareCountryNote =>
+      'The country from your phone’s language and region setting, for a chart of countries.';
+
+  @override
+  String get acctShareLocation => 'Share my approximate location';
+
+  @override
+  String get acctShareLocationNote =>
+      'Needs an account. Android’s approximate location is used (a few kilometres). Only the latest place is kept, rounded to about 10 km, and it is updated when you open the app.';
+
+  @override
+  String get acctSkip => 'Skip now';
+
+  @override
+  String get acctSkipNote =>
+      'You can make an account later in Settings. The app works the same without one.';
+
+  @override
+  String get acctCodeTitle => 'Your recovery code';
+
+  @override
+  String get acctCodeWarn =>
+      'Write it down or keep it somewhere safe. If you forget your password, this code is the only way back in. It works 3 times.';
+
+  @override
+  String get acctCopy => 'Copy';
+
+  @override
+  String get acctCopied => 'Copied';
+
+  @override
+  String get acctCodeSaved => 'I have saved my recovery code';
+
+  @override
+  String get acctContinue => 'Continue';
+
+  @override
+  String acctRecovered(int count) {
+    return 'Password changed. The code can be used $count more times.';
+  }
+
+  @override
+  String acctLoggedInAs(String name) {
+    return 'Logged in as $name';
+  }
+
+  @override
+  String get acctNotLoggedIn => 'You are not logged in.';
+
+  @override
+  String get acctSync => 'Sync my data';
+
+  @override
+  String get acctSyncNote =>
+      'Favourites, quiz scores, language, theme, city and birth date are kept in your account and shared with astryl.space.';
+
+  @override
+  String get acctSyncNow => 'Sync now';
+
+  @override
+  String get acctSyncOk => 'Synced';
+
+  @override
+  String get acctSyncFailed =>
+      'Could not sync. Check your internet and try again.';
+
+  @override
+  String get acctSyncing => 'Syncing…';
+
+  @override
+  String get acctNewCode => 'Make a new recovery code';
+
+  @override
+  String get acctNewCodeNote => 'The old code stops working.';
+
+  @override
+  String get acctLogOut => 'Log out';
+
+  @override
+  String get acctDelete => 'Delete my account';
+
+  @override
+  String get acctDeleteNote =>
+      'Deletes your account and everything stored for it online. The data on this phone stays.';
+
+  @override
+  String get acctDeleteConfirmTitle => 'Delete your account?';
+
+  @override
+  String get acctDeleteConfirmBody =>
+      'This cannot be undone. Type your password to confirm.';
+
+  @override
+  String get acctDeleteButton => 'Delete';
+
+  @override
+  String get acctDeleted => 'Account deleted.';
+
+  @override
+  String get acctCommunity => 'Astryl community';
+
+  @override
+  String acctStatsLine(String registered, String active) {
+    return '$registered accounts · $active active in the last 30 days';
+  }
+
+  @override
+  String get acctStatsNote => 'Active means people who chose to be counted.';
+
+  @override
+  String get acctPrivacyLink => 'Privacy Policy';
+
+  @override
+  String get acctErrOffline =>
+      'No internet, or the server is not answering. Try again.';
+
+  @override
+  String get acctErrTaken => 'That username is taken.';
+
+  @override
+  String get acctErrUsername =>
+      'Username: 3 to 20 letters (a to z), digits or _.';
+
+  @override
+  String get acctErrPassword => 'Password: 8 to 72 characters.';
+
+  @override
+  String get acctErrMismatch => 'The two passwords are not the same.';
+
+  @override
+  String get acctErrLogin => 'Wrong username or password.';
+
+  @override
+  String get acctErrRecovery => 'Wrong username or recovery code.';
+
+  @override
+  String get acctErrUsedUp =>
+      'This recovery code has already been used 3 times.';
+
+  @override
+  String get acctErrLocked => 'Too many wrong tries. Wait 15 minutes.';
+
+  @override
+  String get acctErrRate => 'Too many tries. Try again later.';
+
+  @override
+  String get acctErrGeneric => 'Something went wrong. Try again.';
+
+  @override
+  String get acctErrCode => 'A recovery code has 16 letters and digits.';
+
+  @override
+  String get myLocation => 'My location';
+
+  @override
+  String get useMyLocation => 'Use my location';
+
+  @override
+  String get locDenied => 'Location permission was not given.';
+
+  @override
+  String get locOff => 'Turn on location in your phone’s settings.';
+
+  @override
+  String get locError => 'Could not find your location. Try again.';
+
+  @override
+  String get settingsAccountSubtitle =>
+      'Optional. Sync your data with astryl.space.';
+
+  @override
+  String get anonymousTitle => 'Without an account';
+
+  @override
+  String get spaceMode => 'Space';
+
+  @override
+  String get spaceBack => 'Whole Solar System';
+
+  @override
+  String get spaceHint =>
+      'Drag to look around · Pinch to zoom · Tap a planet to fly to it · Sizes and distances not to scale';
 }

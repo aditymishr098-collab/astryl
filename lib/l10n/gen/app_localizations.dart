@@ -107,7 +107,7 @@ abstract class AppLocalizations {
   /// No description provided for @tagline.
   ///
   /// In en, this message translates to:
-  /// **'Explore the Solar System, fully offline'**
+  /// **'Know your space'**
   String get tagline;
 
   /// No description provided for @navExplore.
@@ -671,7 +671,7 @@ abstract class AppLocalizations {
   /// No description provided for @updateNote.
   ///
   /// In en, this message translates to:
-  /// **'Updates come from GitHub Releases. Your settings stay on your phone.'**
+  /// **'Each time Astryl opens, it asks GitHub for a newer version and offers it first (you can skip). Nothing about you is sent. Your settings stay on your phone.'**
   String get updateNote;
 
   /// No description provided for @upToDate.
@@ -710,6 +710,30 @@ abstract class AppLocalizations {
   /// **'Later'**
   String get later;
 
+  /// No description provided for @reportBug.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a bug'**
+  String get reportBug;
+
+  /// No description provided for @updateSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get updateSkip;
+
+  /// No description provided for @crashReportsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send crash reports'**
+  String get crashReportsTitle;
+
+  /// No description provided for @crashReportsNote.
+  ///
+  /// In en, this message translates to:
+  /// **'If the app crashes, a small report (the error text, the app version and the Android version) is sent to the Astryl server so the bug can be fixed. It has no name, account or location. Turn this off any time.'**
+  String get crashReportsNote;
+
   /// No description provided for @about.
   ///
   /// In en, this message translates to:
@@ -731,7 +755,7 @@ abstract class AppLocalizations {
   /// No description provided for @privacyLine.
   ///
   /// In en, this message translates to:
-  /// **'Offline · No ads · No tracking'**
+  /// **'Free · Open source · No ads · Account optional'**
   String get privacyLine;
 
   /// No description provided for @dataSource.
@@ -1049,7 +1073,7 @@ abstract class AppLocalizations {
   /// No description provided for @shareText.
   ///
   /// In en, this message translates to:
-  /// **'{planet} in Astryl, the free offline Solar System app: https://github.com/aditymishr098-collab/astryl'**
+  /// **'{planet} in Astryl, the free Solar System app: https://github.com/aditymishr098-collab/astryl'**
   String shareText(String planet);
 
   /// No description provided for @shareFailed.
@@ -3317,7 +3341,7 @@ abstract class AppLocalizations {
   /// No description provided for @tonightShareText.
   ///
   /// In en, this message translates to:
-  /// **'The sky over {city}, made with Astryl, the free offline Solar System app: https://github.com/aditymishr098-collab/astryl'**
+  /// **'The sky over {city}, made with Astryl, the free Solar System app: https://github.com/aditymishr098-collab/astryl'**
   String tonightShareText(String city);
 
   /// No description provided for @skyOverCity.
@@ -3787,6 +3811,468 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'South polar cap'**
   String get featSouthCap;
+
+  /// No description provided for @acctTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Astryl account'**
+  String get acctTitle;
+
+  /// No description provided for @acctCreateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your account'**
+  String get acctCreateTitle;
+
+  /// No description provided for @acctIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional. A username and a password, no e-mail. Your favourites, quiz scores and settings then follow you between this app and astryl.space.'**
+  String get acctIntro;
+
+  /// No description provided for @acctTabCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get acctTabCreate;
+
+  /// No description provided for @acctTabLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in'**
+  String get acctTabLogin;
+
+  /// No description provided for @acctUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get acctUsername;
+
+  /// No description provided for @acctUsernameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'3 to 20 letters (a to z), digits or _'**
+  String get acctUsernameHint;
+
+  /// No description provided for @acctPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get acctPassword;
+
+  /// No description provided for @acctPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 8 characters'**
+  String get acctPasswordHint;
+
+  /// No description provided for @acctPasswordAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Password again'**
+  String get acctPasswordAgain;
+
+  /// No description provided for @acctForgot.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
+  String get acctForgot;
+
+  /// No description provided for @acctRecoverTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset with your recovery code'**
+  String get acctRecoverTitle;
+
+  /// No description provided for @acctRecoverCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Recovery code'**
+  String get acctRecoverCode;
+
+  /// No description provided for @acctRecoverNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'New password'**
+  String get acctRecoverNewPassword;
+
+  /// No description provided for @acctRecoverButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Set new password'**
+  String get acctRecoverButton;
+
+  /// No description provided for @acctBackToLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to log in'**
+  String get acctBackToLogin;
+
+  /// No description provided for @acctConsent.
+  ///
+  /// In en, this message translates to:
+  /// **'I have read and accept the Privacy Policy'**
+  String get acctConsent;
+
+  /// No description provided for @acctReadPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Read the Privacy Policy'**
+  String get acctReadPolicy;
+
+  /// No description provided for @acctOptionalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional. All off until you switch them on.'**
+  String get acctOptionalTitle;
+
+  /// No description provided for @acctCountMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Count me as an active user'**
+  String get acctCountMe;
+
+  /// No description provided for @acctCountMeNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Sends a random number made on this phone, once in a while, so Astryl can show how many people use it. It is not linked to you.'**
+  String get acctCountMeNote;
+
+  /// No description provided for @acctShareCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Share my country'**
+  String get acctShareCountry;
+
+  /// No description provided for @acctShareCountryNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The country from your phone’s language and region setting, for a chart of countries.'**
+  String get acctShareCountryNote;
+
+  /// No description provided for @acctShareLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Share my approximate location'**
+  String get acctShareLocation;
+
+  /// No description provided for @acctShareLocationNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs an account. Android’s approximate location is used (a few kilometres). Only the latest place is kept, rounded to about 10 km, and it is updated when you open the app.'**
+  String get acctShareLocationNote;
+
+  /// No description provided for @acctSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip now'**
+  String get acctSkip;
+
+  /// No description provided for @acctSkipNote.
+  ///
+  /// In en, this message translates to:
+  /// **'You can make an account later in Settings. The app works the same without one.'**
+  String get acctSkipNote;
+
+  /// No description provided for @acctCodeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your recovery code'**
+  String get acctCodeTitle;
+
+  /// No description provided for @acctCodeWarn.
+  ///
+  /// In en, this message translates to:
+  /// **'Write it down or keep it somewhere safe. If you forget your password, this code is the only way back in. It works 3 times.'**
+  String get acctCodeWarn;
+
+  /// No description provided for @acctCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get acctCopy;
+
+  /// No description provided for @acctCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied'**
+  String get acctCopied;
+
+  /// No description provided for @acctCodeSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'I have saved my recovery code'**
+  String get acctCodeSaved;
+
+  /// No description provided for @acctContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get acctContinue;
+
+  /// No description provided for @acctRecovered.
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed. The code can be used {count} more times.'**
+  String acctRecovered(int count);
+
+  /// No description provided for @acctLoggedInAs.
+  ///
+  /// In en, this message translates to:
+  /// **'Logged in as {name}'**
+  String acctLoggedInAs(String name);
+
+  /// No description provided for @acctNotLoggedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not logged in.'**
+  String get acctNotLoggedIn;
+
+  /// No description provided for @acctSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync my data'**
+  String get acctSync;
+
+  /// No description provided for @acctSyncNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Favourites, quiz scores, language, theme, city and birth date are kept in your account and shared with astryl.space.'**
+  String get acctSyncNote;
+
+  /// No description provided for @acctSyncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync now'**
+  String get acctSyncNow;
+
+  /// No description provided for @acctSyncOk.
+  ///
+  /// In en, this message translates to:
+  /// **'Synced'**
+  String get acctSyncOk;
+
+  /// No description provided for @acctSyncFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not sync. Check your internet and try again.'**
+  String get acctSyncFailed;
+
+  /// No description provided for @acctSyncing.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing…'**
+  String get acctSyncing;
+
+  /// No description provided for @acctNewCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Make a new recovery code'**
+  String get acctNewCode;
+
+  /// No description provided for @acctNewCodeNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The old code stops working.'**
+  String get acctNewCodeNote;
+
+  /// No description provided for @acctLogOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Log out'**
+  String get acctLogOut;
+
+  /// No description provided for @acctDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete my account'**
+  String get acctDelete;
+
+  /// No description provided for @acctDeleteNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Deletes your account and everything stored for it online. The data on this phone stays.'**
+  String get acctDeleteNote;
+
+  /// No description provided for @acctDeleteConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete your account?'**
+  String get acctDeleteConfirmTitle;
+
+  /// No description provided for @acctDeleteConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This cannot be undone. Type your password to confirm.'**
+  String get acctDeleteConfirmBody;
+
+  /// No description provided for @acctDeleteButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get acctDeleteButton;
+
+  /// No description provided for @acctDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Account deleted.'**
+  String get acctDeleted;
+
+  /// No description provided for @acctCommunity.
+  ///
+  /// In en, this message translates to:
+  /// **'Astryl community'**
+  String get acctCommunity;
+
+  /// No description provided for @acctStatsLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{registered} accounts · {active} active in the last 30 days'**
+  String acctStatsLine(String registered, String active);
+
+  /// No description provided for @acctStatsNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Active means people who chose to be counted.'**
+  String get acctStatsNote;
+
+  /// No description provided for @acctPrivacyLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get acctPrivacyLink;
+
+  /// No description provided for @acctErrOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet, or the server is not answering. Try again.'**
+  String get acctErrOffline;
+
+  /// No description provided for @acctErrTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'That username is taken.'**
+  String get acctErrTaken;
+
+  /// No description provided for @acctErrUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Username: 3 to 20 letters (a to z), digits or _.'**
+  String get acctErrUsername;
+
+  /// No description provided for @acctErrPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password: 8 to 72 characters.'**
+  String get acctErrPassword;
+
+  /// No description provided for @acctErrMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'The two passwords are not the same.'**
+  String get acctErrMismatch;
+
+  /// No description provided for @acctErrLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong username or password.'**
+  String get acctErrLogin;
+
+  /// No description provided for @acctErrRecovery.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong username or recovery code.'**
+  String get acctErrRecovery;
+
+  /// No description provided for @acctErrUsedUp.
+  ///
+  /// In en, this message translates to:
+  /// **'This recovery code has already been used 3 times.'**
+  String get acctErrUsedUp;
+
+  /// No description provided for @acctErrLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many wrong tries. Wait 15 minutes.'**
+  String get acctErrLocked;
+
+  /// No description provided for @acctErrRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many tries. Try again later.'**
+  String get acctErrRate;
+
+  /// No description provided for @acctErrGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Try again.'**
+  String get acctErrGeneric;
+
+  /// No description provided for @acctErrCode.
+  ///
+  /// In en, this message translates to:
+  /// **'A recovery code has 16 letters and digits.'**
+  String get acctErrCode;
+
+  /// No description provided for @myLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'My location'**
+  String get myLocation;
+
+  /// No description provided for @useMyLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Use my location'**
+  String get useMyLocation;
+
+  /// No description provided for @locDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission was not given.'**
+  String get locDenied;
+
+  /// No description provided for @locOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on location in your phone’s settings.'**
+  String get locOff;
+
+  /// No description provided for @locError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not find your location. Try again.'**
+  String get locError;
+
+  /// No description provided for @settingsAccountSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional. Sync your data with astryl.space.'**
+  String get settingsAccountSubtitle;
+
+  /// No description provided for @anonymousTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Without an account'**
+  String get anonymousTitle;
+
+  /// No description provided for @spaceMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Space'**
+  String get spaceMode;
+
+  /// No description provided for @spaceBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Whole Solar System'**
+  String get spaceBack;
+
+  /// No description provided for @spaceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to look around · Pinch to zoom · Tap a planet to fly to it · Sizes and distances not to scale'**
+  String get spaceHint;
 }
 
 class _AppLocalizationsDelegate

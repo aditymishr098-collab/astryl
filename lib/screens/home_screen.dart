@@ -14,7 +14,6 @@ import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
 import '../widgets/globe_view.dart';
-import '../widgets/motion.dart';
 import '../widgets/orbit_view.dart';
 import '../widgets/space_view.dart';
 import 'compare_screen.dart';
