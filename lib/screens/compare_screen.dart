@@ -7,6 +7,7 @@ import '../data/planets.dart';
 import '../l10n/names.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
+import 'calculators.dart';
 import 'planet_screen.dart';
 
 /// Two planets side by side.
@@ -110,6 +111,8 @@ class _CompareScreenState extends State<CompareScreen> {
             ],
           ),
         ),
+        const SizedBox(height: 32),
+        const Calculators(),
       ],
     );
   }

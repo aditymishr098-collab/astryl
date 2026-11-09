@@ -15,12 +15,13 @@ import '../theme.dart';
 import '../widgets/common.dart';
 import '../widgets/globe_view.dart';
 import '../widgets/orbit_view.dart';
+import '../widgets/space_view.dart';
 import 'compare_screen.dart';
 import 'planet_screen.dart';
 import 'quiz_screen.dart';
 import 'search_screen.dart';
 import 'sky_screen.dart';
-import 'weight_screen.dart';
+import 'you_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -89,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ExploreTab(active: _tab == 0),
               const SkyScreen(),
               const CompareScreen(),
-              const WeightScreen(),
+              const YouScreen(),
               const QuizScreen(),
             ].indexed)
               TickerMode(enabled: _tab == i, child: tab),
@@ -151,6 +152,9 @@ class ExploreTab extends StatefulWidget {
 class _ExploreTabState extends State<ExploreTab>
     with SingleTickerProviderStateMixin {
   String _selectedId = 'earth';
+
+  /// The planet the Space view's camera is on; null shows the whole system.
+  String? _spaceFocus;
 
   /// The date the 2D view shows. Starts at today.
   DateTime _date = DateTime.now();
@@ -231,6 +235,16 @@ class _ExploreTabState extends State<ExploreTab>
     }
   }
 
+  /// Flies the Space view to [id], or back to the whole system for null.
+  void _focusSpace(String? id) {
+    setState(() {
+      _spaceFocus = id;
+      if (id != null) {
+        _selectedId = id;
+      }
+    });
+  }
+
   void _openPlanet(Planet planet) {
     setState(() => _selectedId = planet.id);
     Navigator.of(context).push(
@@ -247,6 +261,7 @@ class _ExploreTabState extends State<ExploreTab>
     final selected = planetById(_selectedId);
     final width = MediaQuery.sizeOf(context).width;
     final viewHeight = (width - 40).clamp(260.0, 420.0);
+    final spaceHeight = ((width - 40) * 1.2).clamp(300.0, 520.0);
 
     return ListView(
       padding: const EdgeInsets.only(bottom: 24),
@@ -348,10 +363,25 @@ class _ExploreTabState extends State<ExploreTab>
             ),
           ),
         ],
+        if (mode == ViewMode.space) ...<Widget>[
+          _PlanetChips(
+            bodies: spaceBodies,
+            selectedId: _spaceFocus ?? '',
+            onSelect: (planet) => _focusSpace(planet.id),
+          ),
+          if (_spaceFocus != null)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
+              child: _GlobeInfoCard(
+                planet: planetById(_spaceFocus!),
+                onOpen: () => _openPlanet(planetById(_spaceFocus!)),
+              ),
+            ),
+        ],
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Container(
-            height: viewHeight,
+            height: mode == ViewMode.space ? spaceHeight : viewHeight,
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
               color: p.surface,
@@ -367,10 +397,18 @@ class _ExploreTabState extends State<ExploreTab>
                         onPlanetTap: _openPlanet,
                         nameOf: (planet) => planetName(l, planet),
                       )
-                    : GlobeView(planet: selected)),
+                    : (mode == ViewMode.globe
+                        ? GlobeView(planet: selected)
+                        : SpaceView(
+                            date: _date,
+                            focusId: _spaceFocus,
+                            onFocus: _focusSpace,
+                            nameOf: (planet) => planetName(l, planet),
+                            backLabel: l.spaceBack,
+                          ))),
           ),
         ),
-        if (mode == ViewMode.flat)
+        if (mode != ViewMode.globe)
           Padding(
             padding: const EdgeInsets.only(top: 8),
             child: _DateBar(
@@ -386,7 +424,9 @@ class _ExploreTabState extends State<ExploreTab>
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
           child: Text(
-            mode == ViewMode.flat ? l.positionsNote : l.dragToRotate,
+            mode == ViewMode.flat
+                ? l.positionsNote
+                : (mode == ViewMode.globe ? l.dragToRotate : l.spaceHint),
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 12, color: p.muted),
           ),
@@ -526,6 +566,7 @@ class _ViewToggle extends StatelessWidget {
           children: <Widget>[
             option('2D', ViewMode.flat),
             option('3D', ViewMode.globe),
+            option(context.l10n.spaceMode, ViewMode.space),
           ],
         ),
       ),
@@ -661,24 +702,32 @@ class _PopularCards extends StatelessWidget {
 }
 
 class _PlanetChips extends StatelessWidget {
-  const _PlanetChips({required this.selectedId, required this.onSelect});
+  const _PlanetChips({
+    required this.selectedId,
+    required this.onSelect,
+    this.bodies,
+  });
 
   final String selectedId;
   final ValueChanged<Planet> onSelect;
+
+  /// The bodies to list. Everything in the app when null.
+  final List<Planet>? bodies;
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     final p = Palette.of(context);
+    final list = bodies ?? allBodies;
     return SizedBox(
       height: 44,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: allBodies.length,
+        itemCount: list.length,
         separatorBuilder: (context, index) => const SizedBox(width: 8),
         itemBuilder: (context, index) {
-          final planet = allBodies[index];
+          final planet = list[index];
           final on = planet.id == selectedId;
           return ChoiceChip(
             selected: on,

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'native_bridge.dart';
 
 /// Which solar-system view the Explore tab shows.
-enum ViewMode { flat, globe }
+enum ViewMode { flat, globe, space }
 
 /// The text sizes offered in Settings, in percent. Larger sizes would break
 /// the fixed layouts of some screens, so 130 is the limit.

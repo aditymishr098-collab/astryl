@@ -170,121 +170,160 @@ class _GlobePainter extends CustomPainter {
     final roll = planet.tiltDeg * math.pi / 180;
 
     if (planet.hasRings) {
-      _paintRings(canvas, center, radius, roll, back: true);
+      paintPlanetRings(canvas, planet, center, radius,
+          roll: roll, pitch: state.pitch, back: true);
     }
 
-    var i = 0;
-    void f(double v) => shader.setFloat(i++, v);
-    void color(Color c) {
-      f(c.r);
-      f(c.g);
-      f(c.b);
-    }
-
-    f(size.width);
-    f(size.height);
-    f(state.yaw);
-    f(-state.pitch);
-    f(roll);
-    f(zoom);
-    color(planet.colors[0]);
-    color(planet.colors[1]);
-    color(planet.colors[2]);
-    f(planet.style.index.toDouble());
-    f(planet.polarCaps ? 1.0 : 0.0);
-    f(planet.spot ? 1.0 : 0.0);
-    // A different noise pattern for every body.
-    f((planet.id.codeUnits.fold<int>(0, (a, c) => a + c) % 50) * 0.13);
-    color(_glowColor(planet));
-    f(_glowAmount(planet));
-    f(state.time);
-
+    setPlanetUniforms(
+      shader,
+      planet,
+      size: size,
+      center: center,
+      yaw: state.yaw,
+      pitch: state.pitch,
+      zoom: zoom,
+      time: state.time,
+    );
     canvas.drawRect(Offset.zero & size, Paint()..shader = shader);
 
     if (planet.hasRings) {
-      _paintRings(canvas, center, radius, roll, back: false);
-    }
-  }
-
-  /// Draws the back or front half of Saturn's rings. Looking from above, the
-  /// near half is the lower one on screen.
-  void _paintRings(Canvas canvas, Offset center, double radius, double roll,
-      {required bool back}) {
-    final flatten = math.sin(state.pitch).abs().clamp(0.04, 1.0).toDouble();
-    final fromAbove = state.pitch >= 0;
-    // Arc 0..pi is the lower half on screen (y points down).
-    final lowerHalf = back ? !fromAbove : fromAbove;
-    final start = lowerHalf ? 0.0 : math.pi;
-
-    canvas.save();
-    canvas.translate(center.dx, center.dy);
-    canvas.rotate(-roll);
-    const bands = <(double, double, double)>[
-      // inner radius, outer radius, opacity
-      (1.24, 1.45, 0.45),
-      (1.48, 1.86, 0.85),
-      (1.92, 2.18, 0.65),
-    ];
-    for (final (inner, outer, opacity) in bands) {
-      final mid = (inner + outer) / 2 * radius;
-      final width = (outer - inner) * radius;
-      final rect = Rect.fromCenter(
-          center: Offset.zero, width: mid * 2, height: mid * 2 * flatten);
-      final paint = Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth =
-            math.max(1.0, (width * flatten.clamp(0.35, 1.0)).toDouble())
-        ..color = Color.lerp(planet.colors[2], planet.colors[1], 0.35)!
-            .withValues(alpha: opacity);
-      canvas.drawArc(rect, start, math.pi, false, paint);
-    }
-    canvas.restore();
-  }
-
-  Color _glowColor(Planet p) {
-    switch (p.id) {
-      case 'sun':
-        return const Color(0xFFFFB347);
-      case 'titan':
-        return const Color(0xFFF0B060);
-      case 'earth':
-        return const Color(0xFF7FB2FF);
-      case 'venus':
-        return const Color(0xFFFFE2A8);
-      case 'mars':
-        return const Color(0xFFFFB38A);
-      case 'uranus':
-      case 'neptune':
-        return const Color(0xFFBFE8FF);
-      default:
-        return Color.lerp(p.colors[2], Colors.white, 0.3)!;
-    }
-  }
-
-  double _glowAmount(Planet p) {
-    if (p.thinAtmosphere || p.atmosphere.isEmpty) {
-      return 0;
-    }
-    switch (p.id) {
-      case 'sun':
-        return 1.0;
-      case 'titan':
-        return 0.9;
-      case 'pluto':
-      case 'triton':
-        return 0.15;
-      case 'earth':
-        return 0.9;
-      case 'venus':
-        return 0.7;
-      case 'mars':
-        return 0.3;
-      default:
-        return 0.45;
+      paintPlanetRings(canvas, planet, center, radius,
+          roll: roll, pitch: state.pitch, back: false);
     }
   }
 
   @override
   bool shouldRepaint(covariant _GlobePainter oldDelegate) =>
       oldDelegate.planet.id != planet.id || oldDelegate.shader != shader;
+}
+
+/// The light every planet in the single-planet view is lit by: from the
+/// upper left, a little towards the viewer.
+const List<double> defaultPlanetLight = <double>[-0.55, 0.45, 0.7];
+
+/// Fills in every uniform of shaders/planet.frag for [planet]. [size] is the
+/// area the shader is drawn into, [center] where the planet sits in it and
+/// [zoom] the planet's radius as a part of half the smaller side of [size].
+/// [pitch] is the viewing angle: positive looks at the planet from above.
+/// [light] points from the planet to the light in view space.
+void setPlanetUniforms(
+  ui.FragmentShader shader,
+  Planet planet, {
+  required Size size,
+  required Offset center,
+  required double yaw,
+  required double pitch,
+  required double zoom,
+  required double time,
+  List<double> light = defaultPlanetLight,
+}) {
+  var i = 0;
+  void f(double v) => shader.setFloat(i++, v);
+  void color(Color c) {
+    f(c.r);
+    f(c.g);
+    f(c.b);
+  }
+
+  f(size.width);
+  f(size.height);
+  f(yaw);
+  f(-pitch);
+  f(planet.tiltDeg * math.pi / 180);
+  f(zoom);
+  color(planet.colors[0]);
+  color(planet.colors[1]);
+  color(planet.colors[2]);
+  f(planet.style.index.toDouble());
+  f(planet.polarCaps ? 1.0 : 0.0);
+  f(planet.spot ? 1.0 : 0.0);
+  // A different noise pattern for every body.
+  f((planet.id.codeUnits.fold<int>(0, (a, c) => a + c) % 50) * 0.13);
+  color(_glowColor(planet));
+  f(_glowAmount(planet));
+  f(time);
+  f(center.dx);
+  f(center.dy);
+  f(light[0]);
+  f(light[1]);
+  f(light[2]);
+}
+
+/// Draws the back or front half of Saturn's rings. Looking from above, the
+/// near half is the lower one on screen.
+void paintPlanetRings(Canvas canvas, Planet planet, Offset center,
+    double radius,
+    {required double roll, required double pitch, required bool back}) {
+  final flatten = math.sin(pitch).abs().clamp(0.04, 1.0).toDouble();
+  final fromAbove = pitch >= 0;
+  // Arc 0..pi is the lower half on screen (y points down).
+  final lowerHalf = back ? !fromAbove : fromAbove;
+  final start = lowerHalf ? 0.0 : math.pi;
+
+  canvas.save();
+  canvas.translate(center.dx, center.dy);
+  canvas.rotate(-roll);
+  const bands = <(double, double, double)>[
+    // inner radius, outer radius, opacity
+    (1.24, 1.45, 0.45),
+    (1.48, 1.86, 0.85),
+    (1.92, 2.18, 0.65),
+  ];
+  for (final (inner, outer, opacity) in bands) {
+    final mid = (inner + outer) / 2 * radius;
+    final width = (outer - inner) * radius;
+    final rect = Rect.fromCenter(
+        center: Offset.zero, width: mid * 2, height: mid * 2 * flatten);
+    final paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth =
+          math.max(1.0, (width * flatten.clamp(0.35, 1.0)).toDouble())
+      ..color = Color.lerp(planet.colors[2], planet.colors[1], 0.35)!
+          .withValues(alpha: opacity);
+    canvas.drawArc(rect, start, math.pi, false, paint);
+  }
+  canvas.restore();
+}
+
+Color _glowColor(Planet p) {
+  switch (p.id) {
+    case 'sun':
+      return const Color(0xFFFFB347);
+    case 'titan':
+      return const Color(0xFFF0B060);
+    case 'earth':
+      return const Color(0xFF7FB2FF);
+    case 'venus':
+      return const Color(0xFFFFE2A8);
+    case 'mars':
+      return const Color(0xFFFFB38A);
+    case 'uranus':
+    case 'neptune':
+      return const Color(0xFFBFE8FF);
+    default:
+      return Color.lerp(p.colors[2], Colors.white, 0.3)!;
+  }
+}
+
+double _glowAmount(Planet p) {
+  if (p.thinAtmosphere || p.atmosphere.isEmpty) {
+    return 0;
+  }
+  switch (p.id) {
+    case 'sun':
+      return 1.0;
+    case 'titan':
+      return 0.9;
+    case 'pluto':
+    case 'triton':
+      return 0.15;
+    case 'earth':
+      return 0.9;
+    case 'venus':
+      return 0.7;
+    case 'mars':
+      return 0.3;
+    default:
+      return 0.45;
+  }
 }

@@ -1587,6 +1587,12 @@ void main() {
       expect(s.localeCode, '');
       expect(s.bestQuizScore, 0);
     });
+
+    test('the Space view mode is saved and read back', () {
+      const s = HelioraSettings(viewMode: ViewMode.space);
+      final back = HelioraSettings.fromJson(s.toJson());
+      expect(back.viewMode, ViewMode.space);
+    });
   });
 
   group('star map', () {

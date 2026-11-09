@@ -692,5 +692,8 @@
   "locOff": "फ़ोन की settings में location चालू कीजिए।",
   "locError": "आपकी location नहीं मिल सकी। फिर कोशिश करें।",
   "settingsAccountSubtitle": "वैकल्पिक। अपना data astryl.space से sync करें।",
-  "anonymousTitle": "खाते के बिना"
+  "anonymousTitle": "खाते के बिना",
+  "spaceMode": "स्पेस",
+  "spaceBack": "पूरा सौर मंडल",
+  "spaceHint": "घुमाने के लिए खींचें · ज़ूम के लिए पिंच करें · किसी ग्रह पर टैप करके वहाँ पहुँचें · आकार और दूरी पैमाने पर नहीं"
 }
