@@ -136,11 +136,15 @@ class _OrbitPainter extends CustomPainter {
     final layout = OrbitLayout(size);
 
     if (palette.star.a > 0) {
-      final starPaint = Paint()..color = palette.star;
+      final t = date.millisecondsSinceEpoch / 1000.0;
       for (var i = 0; i < _stars.length; i++) {
         final s = _stars[i];
+        final twinkle =
+            0.5 + 0.5 * (0.5 + 0.5 * math.sin(t * 2.0 + i * 1.7));
+        final starPaint = Paint()
+          ..color = palette.star.withValues(alpha: palette.star.a * twinkle);
         canvas.drawCircle(Offset(s.dx * size.width, s.dy * size.height),
-            i.isEven ? 1.0 : 1.3, starPaint);
+            i.isEven ? 1.0 : 1.35, starPaint);
       }
     }
 

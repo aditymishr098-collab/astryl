@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 
 import '../core/facts.dart';
 import '../core/format.dart';
@@ -346,6 +348,10 @@ class _PlanetScreenState extends State<PlanetScreen> {
                   ),
               ],
             ),
+            if (planet.id == 'jupiter' || planet.id == 'saturn') ...<Widget>[
+              const SizedBox(height: 14),
+              _MoonOrbitCard(planet: planet, moons: moons),
+            ],
           ],
           const SizedBox(height: 24),
           Text(planet.isStar ? l.composition : l.atmosphere,
@@ -775,4 +781,223 @@ class _SurfaceMapTile extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Live orbital diagram of the major moons of Jupiter (Io, Europa, Ganymede,
+/// Callisto) or Saturn (Enceladus, Titan) at their real orbital angles.
+class _MoonOrbitCard extends StatefulWidget {
+  const _MoonOrbitCard({required this.planet, required this.moons});
+
+  final Planet planet;
+  final List<Planet> moons;
+
+  @override
+  State<_MoonOrbitCard> createState() => _MoonOrbitCardState();
+}
+
+class _MoonOrbitCardState extends State<_MoonOrbitCard>
+    with SingleTickerProviderStateMixin {
+  bool _playing = false;
+  double _dayOffset = 0;
+  Ticker? _ticker;
+  Duration _last = Duration.zero;
+
+  /// J2000.0 mean longitudes in degrees for the major moons.
+  static const Map<String, double> _j2000Deg = <String, double>{
+    'io': 106.077,
+    'europa': 175.732,
+    'ganymede': 120.558,
+    'callisto': 84.444,
+    'enceladus': 200.01,
+    'titan': 186.59,
+  };
+
+  @override
+  void initState() {
+    super.initState();
+    _ticker = createTicker((elapsed) {
+      if (!_playing) {
+        _last = elapsed;
+        return;
+      }
+      final dt = (elapsed - _last).inMicroseconds / 1e6;
+      _last = elapsed;
+      setState(() {
+        // 1.2 days of moon orbit per real second when playing.
+        _dayOffset += dt * 1.2;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _ticker?.dispose();
+    super.dispose();
+  }
+
+  void _togglePlay() {
+    setState(() {
+      _playing = !_playing;
+      if (_playing) {
+        _last = Duration.zero;
+        _ticker?.start();
+      } else {
+        _ticker?.stop();
+      }
+    });
+  }
+
+  static double _moonAngleRad(Planet moon, DateTime at) {
+    final j2000 = DateTime.utc(2000, 1, 1, 12);
+    final days = at.toUtc().difference(j2000).inMinutes / 1440.0;
+    final l0 = _j2000Deg[moon.id] ?? 0.0;
+    final period = moon.yearDays > 0 ? moon.yearDays : 1.0;
+    final deg = (l0 + (days / period) * 360.0) % 360.0;
+    return -deg * math.pi / 180.0;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final p = Palette.of(context);
+    final isHi = Localizations.localeOf(context).languageCode == 'hi';
+    final sorted = List<Planet>.of(widget.moons)
+      ..sort((a, b) => a.distanceMillionKm.compareTo(b.distanceMillionKm));
+    final current = DateTime.now()
+        .toUtc()
+        .add(Duration(minutes: (_dayOffset * 1440).round()));
+
+    return SurfaceCard(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Icon(Icons.track_changes_outlined,
+                  size: 20, color: p.accentText),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  isHi
+                      ? '${planetName(l, widget.planet)} के चंद्रमाओं की लाइव कक्षा'
+                      : '${planetName(l, widget.planet)} moons · Live orbits',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: p.text,
+                  ),
+                ),
+              ),
+              if (_dayOffset != 0)
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _playing = false;
+                      _dayOffset = 0;
+                      _ticker?.stop();
+                    });
+                  },
+                  child: Text(isHi ? 'अभी (Now)' : 'Now'),
+                ),
+              IconButton(
+                icon: Icon(
+                  _playing ? Icons.pause_circle_filled : Icons.play_circle_fill,
+                  color: p.accentText,
+                  size: 28,
+                ),
+                tooltip: _playing ? 'Pause' : 'Play',
+                onPressed: _togglePlay,
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          SizedBox(
+            height: 210,
+            width: double.infinity,
+            child: CustomPaint(
+              painter: _MoonOrbitPainter(
+                planet: widget.planet,
+                moons: sorted,
+                angles: <double>[
+                  for (final m in sorted) _moonAngleRad(m, current),
+                ],
+                names: <String>[
+                  for (final m in sorted) planetName(l, m),
+                ],
+                palette: p,
+              ),
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            isHi
+                ? 'वास्तविक कक्षीय अवधि (JPL डेटा) के अनुसार चंद्रमाओं की दिशा। Play दबाकर उन्हें घूमते हुए देखें।'
+                : 'Positions calculated from each moon\'s orbital period. Tap Play to watch them orbit.',
+            style: TextStyle(fontSize: 12, color: p.muted, height: 1.35),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MoonOrbitPainter extends CustomPainter {
+  _MoonOrbitPainter({
+    required this.planet,
+    required this.moons,
+    required this.angles,
+    required this.names,
+    required this.palette,
+  });
+
+  final Planet planet;
+  final List<Planet> moons;
+  final List<double> angles;
+  final List<String> names;
+  final Palette palette;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height / 2);
+    final maxR = math.min(size.width, size.height) / 2 - 18;
+    final orbitPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.1
+      ..color = palette.orbitLine;
+
+    // Draw central planet
+    canvas.drawCircle(
+      center,
+      14,
+      Paint()..color = planet.color.withValues(alpha: 0.25),
+    );
+    paintPlanetBall(canvas, planet, center, 10);
+
+    for (var i = 0; i < moons.length; i++) {
+      final moon = moons[i];
+      final r = maxR * (0.34 + 0.66 * (i / math.max(1, moons.length - 1)));
+      canvas.drawCircle(center, r, orbitPaint);
+      final a = angles[i];
+      final pos = center + Offset(math.cos(a) * r, math.sin(a) * r);
+      paintPlanetBall(canvas, moon, pos, 5.5);
+
+      final tp = TextPainter(
+        text: TextSpan(
+          text: names[i],
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            color: palette.text,
+          ),
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      final labelOffset = pos + const Offset(8, -6);
+      tp.paint(canvas, labelOffset);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _MoonOrbitPainter oldDelegate) => true;
 }

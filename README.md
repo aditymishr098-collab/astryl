@@ -185,7 +185,8 @@ Releases are built and signed by GitHub Actions when a version tag such as `v1.4
 | 1.19.4 | All the planets in one 3D scene you can fly around (Space), weight, jump and age calculators moved to Compare (done) |
 | 1.19.5 | Hosted on Firebase (`astryl-space`), smooth hero planet fly-in, tab transitions and animated progress bars (done) |
 | 1.20.0 | Daily 5 quiz and live Today / All-time Leaderboard in the app, synced with astryl.space (done) |
-| 1.21.0 | The big moons of Jupiter and Saturn with their real positions, plus twinkling and shooting stars |
+| 1.21.0 | The big moons of Jupiter and Saturn with their real positions, plus twinkling and shooting stars (done) |
+| 1.22.0 | Interactive Planet Interior Cutaway (Crust, Mantle, Core) and 3D Earth city lights / aurora |
 
 Plans can change. An account stays optional, and nothing is collected unless you agree to it.
 
@@ -213,6 +214,7 @@ All texts live in `lib/l10n/app_en.arb` and `lib/l10n/app_hi.arb`. Found a wrong
 | **1.19.4** | New **Space** view next to 2D and 3D on Explore: all the planets in one 3D scene at their real directions from the Sun on the chosen date. Drag to look around, pinch to zoom, tap a planet (or its chip) and the camera flies to it, lit by the Sun, with a *Whole Solar System* button to fly back. Sizes and distances are not to scale. The weight, jump-height and age calculators moved from You to the bottom of **Compare**; You now holds just the account and the settings. |
 | **1.19.5** | Online backend and website hosting moved to Firebase (`astryl-space`). Smooth Hero fly-in animation when opening a planet from Home, soft tab fade transitions, and animated Life Score and Oxygen bars on the planet page. |
 | **1.20.0** | Daily 5 quiz and live Leaderboard inside the app's Quiz screen: play the same 5 daily questions (UTC) as on astryl.space with a live timer, earn speed + accuracy points, and see your Today and All-time rank on the shared Firebase leaderboard. |
+| **1.21.0** | Live orbital view for the major moons of Jupiter (Io, Europa, Ganymede, Callisto) and Saturn (Enceladus, Titan) on their planet pages with Play/Pause orbital animation, plus gentle star twinkling and shooting stars in Space and 2D views. |
 | **1.17.6** | Surface maps for the Moon and Mars with 25 landing sites. Open the Moon or Mars and tap Surface map. Your data and settings are kept |
 | **1.17.5** | New app id `space.astryl.app` (it was `online.lumioapps.heliora`), after the website astryl.space. Android sees this as a **new app**, so it installs next to the old one instead of updating it. To move over: in the old app open Settings → Backup → Save, install 1.17.5, open Settings → Backup → Restore in the new app, then uninstall the old one. Reminders for single events are not kept, set them again |
 | **1.17.4** | The licence is now AGPL-3.0 (versions up to 1.17.3 stay under MIT). The name "Lumio Apps" is gone from the project texts; the copyright line is now Astryl and astryl.space. Settings → About has a new link to the website. Your data and settings are kept |

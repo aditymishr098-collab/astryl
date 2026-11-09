@@ -457,7 +457,6 @@ class _SpacePainter extends CustomPainter {
     final bounds = Offset.zero & size;
 
     if (palette.star.a > 0) {
-      final starPaint = Paint()..color = palette.star;
       for (var i = 0; i < _stars.length; i++) {
         final d = _stars[i];
         final depth = d.dot(cam.fwd);
@@ -468,8 +467,34 @@ class _SpacePainter extends CustomPainter {
             cam.center.dx + d.dot(cam.right) / depth * cam.focal,
             cam.center.dy - d.dot(cam.up) / depth * cam.focal);
         if (bounds.contains(at)) {
-          canvas.drawCircle(at, i.isEven ? 1.0 : 1.3, starPaint);
+          final twinkle =
+              0.45 + 0.55 * (0.5 + 0.5 * math.sin(scene.time * 2.2 + i * 1.9));
+          final starPaint = Paint()
+            ..color = palette.star.withValues(alpha: palette.star.a * twinkle);
+          canvas.drawCircle(at, i.isEven ? 1.0 : 1.4, starPaint);
         }
+      }
+
+      // Periodic shooting star streak across the 3D space background
+      final cycle = scene.time % 8.5;
+      if (cycle < 0.75) {
+        final progress = cycle / 0.75;
+        final seed = (scene.time ~/ 8.5) % 5;
+        final startX = size.width * (0.18 + seed * 0.14);
+        final startY = size.height * (0.12 + (seed.isEven ? 0.08 : 0.22));
+        final dx = 135.0;
+        final dy = 65.0;
+        final head = Offset(startX + dx * progress, startY + dy * progress);
+        final tail = Offset(
+          startX + dx * math.max(0.0, progress - 0.28),
+          startY + dy * math.max(0.0, progress - 0.28),
+        );
+        final fade = math.sin(progress * math.pi);
+        final streakPaint = Paint()
+          ..strokeWidth = 1.6
+          ..strokeCap = StrokeCap.round
+          ..color = palette.star.withValues(alpha: (palette.star.a * fade).clamp(0.0, 1.0));
+        canvas.drawLine(tail, head, streakPaint);
       }
     }
 
