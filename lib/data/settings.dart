@@ -30,7 +30,7 @@ class HelioraSettings {
     this.birthDateMs = 0,
     this.cityId = '',
     this.reminders = const <String>[],
-    this.onlineFeatures = false,
+    this.onlineFeatures = true,
     this.quizBests = const <String, int>{},
     this.tonightAlert = false,
     this.tonightMinutes = 1200,
@@ -185,7 +185,6 @@ class HelioraSettings {
     final birth = json['birthDateMs'];
     final city = json['cityId'];
     final reminders = json['reminders'];
-    final online = json['onlineFeatures'];
     final bests = json['quizBests'];
     final alert = json['tonightAlert'];
     final minutes = json['tonightMinutes'];
@@ -208,7 +207,9 @@ class HelioraSettings {
       reminders: reminders is List
           ? <String>[for (final r in reminders) if (r is String) r]
           : d.reminders,
-      onlineFeatures: online is bool ? online : d.onlineFeatures,
+      // Astryl is always online now: an old "off" from an earlier version
+      // is ignored.
+      onlineFeatures: true,
       quizBests: bests is Map
           ? <String, int>{
               for (final e in bests.entries)

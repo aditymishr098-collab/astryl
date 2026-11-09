@@ -1554,15 +1554,13 @@ void main() {
           .quizBests, isEmpty);
     });
 
-    test('online features are off by default and saved', () {
-      expect(const HelioraSettings().onlineFeatures, isFalse);
-      expect(HelioraSettings.fromJson(<String, dynamic>{}).onlineFeatures, isFalse);
-      const on = HelioraSettings(onlineFeatures: true);
-      expect(HelioraSettings.fromJson(on.toJson()).onlineFeatures, isTrue);
+    test('online features are always on, whatever an old file says', () {
+      expect(const HelioraSettings().onlineFeatures, isTrue);
+      expect(HelioraSettings.fromJson(<String, dynamic>{}).onlineFeatures, isTrue);
       expect(
-          HelioraSettings.fromJson(<String, dynamic>{'onlineFeatures': 'yes'})
+          HelioraSettings.fromJson(<String, dynamic>{'onlineFeatures': false})
               .onlineFeatures,
-          isFalse);
+          isTrue);
     });
 
     test('reminders are saved and broken ones ignored', () {

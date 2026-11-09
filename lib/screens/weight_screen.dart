@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -9,6 +10,7 @@ import '../l10n/names.dart';
 import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
+import 'account_screen.dart';
 import 'birthday_screen.dart';
 
 /// What the user would weigh, and how old they would be, on other worlds.
@@ -67,6 +69,10 @@ class _WeightScreenState extends State<WeightScreen> {
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
       children: <Widget>[
+        if (!kIsWeb) ...<Widget>[
+          const _AccountCard(),
+          const SizedBox(height: 20),
+        ],
         Text(l.weightTitle,
             style: TextStyle(fontFamily: headingFont, fontSize: 26, fontWeight: FontWeight.w700, color: p.text)),
         const SizedBox(height: 16),
@@ -273,6 +279,52 @@ class _AgeSection extends StatelessWidget {
           ],
         ],
       ],
+    );
+  }
+}
+
+/// The optional account and the crash-report switch, at the top of "You".
+class _AccountCard extends StatelessWidget {
+  const _AccountCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final p = Palette.of(context);
+    final account = AppScope.of(context).account;
+    return ListenableBuilder(
+      listenable: account,
+      builder: (context, _) => SurfaceCard(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: Column(
+          children: <Widget>[
+            ListTile(
+              leading:
+                  Icon(Icons.account_circle_outlined, color: p.accentText),
+              title: Text(
+                  account.loggedIn
+                      ? l.acctLoggedInAs(account.username)
+                      : l.acctTitle,
+                  style: TextStyle(color: p.text)),
+              subtitle: Text(l.settingsAccountSubtitle,
+                  style: TextStyle(fontSize: 12, color: p.muted)),
+              trailing: Icon(Icons.chevron_right, color: p.muted),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                    builder: (_) => const AccountHubScreen()),
+              ),
+            ),
+            SwitchListTile(
+              title: Text(l.crashReportsTitle,
+                  style: TextStyle(fontSize: 15, color: p.text)),
+              subtitle: Text(l.crashReportsNote,
+                  style: TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
+              value: account.crashReports,
+              onChanged: account.setCrashReports,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
