@@ -9,6 +9,7 @@
 // function checks the user's own token itself (see userFrom).
 
 import { createClient } from "npm:@supabase/supabase-js@2";
+import bank from "./quiz_bank.json" with { type: "json" };
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -111,6 +112,69 @@ async function hit(key: string, max: number, windowSec: number) {
   await admin.from("rate").update({ n: data.n + 1 }).eq("k", k);
 }
 
+
+// ---------- Daily 5 quiz ----------
+// Everyone gets the same 5 questions on a given UTC day: the day is the seed.
+// The answers never leave this function until a run is handed in, and the
+// score and the time are worked out here, not in the app or the website.
+const BANK = bank as Record<string, { a: string; pool: string[] }>;
+const KIND_KEYS = Object.keys(BANK);
+// quiz_bank.json lists easy kinds first, then medium, then hard.
+const EASY = KIND_KEYS.slice(0, 11);
+const MEDIUM = KIND_KEYS.slice(11, 23);
+const HARD = KIND_KEYS.slice(23);
+const DAILY_COUNT = 5;
+const POINTS_RIGHT = 100;
+const POINTS_SPEED = 20; // most speed bonus per right answer
+const SPEED_WINDOW_MS = 120000; // the bonus is gone after 2 minutes in all
+const MIN_RUN_MS = 3000;
+const MAX_RUN_MS = 30 * 60 * 1000;
+
+function todayUtc(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function mulberry32(seed: number) {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function shuffled<T>(list: T[], rnd: () => number): T[] {
+  const a = list.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rnd() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+async function dailyQuestions(day: string) {
+  const seed = parseInt((await sha256Hex("astryl-daily:" + day)).slice(0, 8), 16);
+  const rnd = mulberry32(seed);
+  const kinds = shuffled([
+    ...shuffled(EASY, rnd).slice(0, 2),
+    ...shuffled(MEDIUM, rnd).slice(0, 2),
+    ...shuffled(HARD, rnd).slice(0, 1),
+  ], rnd);
+  return kinds.map((k) => {
+    const q = BANK[k];
+    const options = shuffled([q.a, ...shuffled(q.pool, rnd).slice(0, 3)], rnd);
+    return { k, o: options, a: q.a };
+  });
+}
+
+/** Right answers x 100, plus up to 20 for each right answer for speed. */
+function dailyPoints(correct: number, ms: number): number {
+  const speed = Math.max(0, 1 - ms / SPEED_WINDOW_MS);
+  return correct * POINTS_RIGHT + Math.round(correct * POINTS_SPEED * speed);
+}
+
 // deno-lint-ignore no-explicit-any
 function pack(session: any) {
   return {
@@ -204,6 +268,76 @@ async function handle(req: Request, b: any): Promise<Response> {
       return reply({ ok: true });
     }
 
+    case "daily_start": {
+      const user = await userFrom(req);
+      await hit("daily:" + user.id, 40, 3600);
+      const day = todayUtc();
+      const qs = await dailyQuestions(day);
+      const found = await admin.from("daily_runs").select("started_at, finished_at, correct, ms, points")
+        .eq("user_id", user.id).eq("day", day).maybeSingle();
+      let run = found.data;
+      if (!run) {
+        const ins = await admin.from("daily_runs").insert({ user_id: user.id, day })
+          .select("started_at, finished_at, correct, ms, points").maybeSingle();
+        if (ins.error || !ins.data) throw new Fail(500, "daily_failed");
+        run = ins.data;
+      }
+      if (run.finished_at) {
+        // Already played today: show the questions with their answers.
+        return reply({
+          day, done: true, correct: run.correct, ms: run.ms, points: run.points,
+          questions: qs.map((q) => ({ k: q.k, o: q.o, a: q.a })),
+        });
+      }
+      return reply({
+        day, done: false,
+        elapsedMs: Date.now() - new Date(run.started_at).getTime(),
+        questions: qs.map((q) => ({ k: q.k, o: q.o })),
+      });
+    }
+
+    case "daily_submit": {
+      const user = await userFrom(req);
+      await hit("daily:" + user.id, 40, 3600);
+      const day = todayUtc();
+      const answers: unknown = b.answers;
+      if (!Array.isArray(answers) || answers.length !== DAILY_COUNT ||
+          !answers.every((x) => typeof x === "string" && x.length < 30)) {
+        throw new Fail(400, "bad_answers");
+      }
+      const found = await admin.from("daily_runs").select("started_at, finished_at")
+        .eq("user_id", user.id).eq("day", day).maybeSingle();
+      if (!found.data) throw new Fail(404, "not_started");
+      if (found.data.finished_at) throw new Fail(409, "already_done");
+      const qs = await dailyQuestions(day);
+      let correct = 0;
+      qs.forEach((q, i) => { if (answers[i] === q.a) correct++; });
+      const ms = Math.min(
+        MAX_RUN_MS,
+        Math.max(MIN_RUN_MS, Date.now() - new Date(found.data.started_at).getTime()),
+      );
+      const points = dailyPoints(correct, ms);
+      const upd = await admin.from("daily_runs")
+        .update({ finished_at: new Date().toISOString(), correct, ms, points })
+        .eq("user_id", user.id).eq("day", day).is("finished_at", null)
+        .select("user_id");
+      if (upd.error) throw new Fail(500, "daily_failed");
+      if (!upd.data || upd.data.length === 0) throw new Fail(409, "already_done");
+      return reply({ day, correct, ms, points, answers: qs.map((q) => q.a) });
+    }
+
+    case "board": {
+      // Open to everybody; a logged in person also gets their own standing.
+      await hit("board:" + ip, 120, 3600);
+      let uid: string | null = null;
+      if (req.headers.get("x-astryl-token")) {
+        try { uid = (await userFrom(req)).id; } catch { uid = null; }
+      }
+      const { data, error } = await admin.rpc("astryl_board", { p_day: todayUtc(), p_user: uid });
+      if (error) throw new Fail(500, "board_failed");
+      return reply(data);
+    }
+
     case "ping": {
       const device = String(b.device ?? "");
       if (!/^[A-Za-z0-9-]{8,64}$/.test(device)) throw new Fail(400, "bad_device");
@@ -252,6 +386,7 @@ async function handle(req: Request, b: any): Promise<Response> {
         count_me: bool(b.countMe),
         share_country: shareCountry,
         share_location: shareLocation,
+        show_on_board: b.showOnBoard !== false,
         country: shareCountry ? cleanCountry(b.country) : null,
       });
       if (ins.error) {
@@ -335,7 +470,7 @@ async function handle(req: Request, b: any): Promise<Response> {
       const user = await userFrom(req);
       const [d, p] = await Promise.all([
         admin.from("user_data").select("data, updated_at").eq("user_id", user.id).maybeSingle(),
-        admin.from("profiles").select("username, count_me, share_country, share_location").eq("id", user.id).maybeSingle(),
+        admin.from("profiles").select("username, count_me, share_country, share_location, show_on_board").eq("id", user.id).maybeSingle(),
       ]);
       if (!p.data) throw new Fail(404, "no_profile");
       await admin.from("profiles").update({ last_seen: new Date().toISOString() }).eq("id", user.id);
@@ -347,6 +482,7 @@ async function handle(req: Request, b: any): Promise<Response> {
           countMe: p.data.count_me,
           shareCountry: p.data.share_country,
           shareLocation: p.data.share_location,
+          showOnBoard: p.data.show_on_board !== false,
         },
       });
     }
@@ -376,6 +512,7 @@ async function handle(req: Request, b: any): Promise<Response> {
         share_location: shareLocation,
         country: shareCountry ? cleanCountry(b.country) : null,
       };
+      if (typeof b.showOnBoard === "boolean") row.show_on_board = b.showOnBoard;
       if (!shareLocation) {
         row.lat = null;
         row.lon = null;

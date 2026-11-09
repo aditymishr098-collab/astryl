@@ -31,6 +31,13 @@
       webNote: 'On this website your language, theme and quiz scores sync. Sharing your location is only in the app.',
       loading: 'Loading…', showPassword: 'Show password',
       statsViews: 'Page views (30 days)',
+      boardTitle: 'Daily 5', boardIntro: 'The same 5 questions for everybody, every day (UTC). Right answers and speed make your score.',
+      boardLogin: 'Log in to play today\'s 5 and join the leaderboard.', boardPlay: 'Play today\'s 5', boardTimerNote: 'The clock starts when you press play.',
+      boardQ: 'Question {n} of 5', boardSubmitting: 'Checking your answers…', boardDone: 'Today\'s result', boardPoints: '{p} points', boardRight: '{c} of 5 right',
+      boardTime: '{s} s', boardRank: 'Your rank today: {r} of {n}', boardRankAll: 'All-time rank: {r}', boardToday: 'Today', boardAll: 'All time', boardEmpty: 'Nobody yet. Be the first.',
+      boardHidden: 'You are hidden from the leaderboard. You can change this in your account.', boardBack: 'Come back tomorrow for 5 new questions.',
+      boardTitleLb: 'Leaderboard', boardDays: '{d} days', boardErr: 'Could not reach the server. Try again in a moment.', boardReview: 'Your answers', boardYours: 'You',
+      boardShow: 'Show me on the leaderboard', boardShowNote: 'Shows only your username and score. On by default; switch it off to hide.',
       welcomeTitle: 'Welcome to Astryl', welcomeSub: 'Make a free account to keep your favourites, quiz scores and rank in step between the app and this website. Or just look around.', welcomeSkip: 'Continue without account',
       webIntro: 'Optional. A username and a password, no e-mail. Your favourites, quiz scores and settings then follow you between the Astryl app and this website.'
     },
@@ -41,6 +48,13 @@
       webNote: 'इस website पर आपकी भाषा, theme और quiz scores sync होते हैं। Location साझा करना सिर्फ़ app में है।',
       loading: 'Loading…', showPassword: 'Password दिखाएँ',
       statsViews: 'Page views (30 दिन)',
+      boardTitle: 'Daily 5', boardIntro: 'हर दिन सबके लिए वही 5 सवाल (UTC)। सही जवाब और तेज़ी से आपका score बनता है।',
+      boardLogin: 'आज के 5 खेलने और leaderboard में आने के लिए log in कीजिए।', boardPlay: 'आज के 5 खेलिए', boardTimerNote: 'Play दबाते ही घड़ी चालू हो जाती है।',
+      boardQ: 'सवाल {n} / 5', boardSubmitting: 'जवाब जाँचे जा रहे हैं…', boardDone: 'आज का नतीजा', boardPoints: '{p} अंक', boardRight: '5 में से {c} सही',
+      boardTime: '{s} सेकंड', boardRank: 'आज आपकी रैंक: {r} / {n}', boardRankAll: 'कुल रैंक: {r}', boardToday: 'आज', boardAll: 'कुल', boardEmpty: 'अभी कोई नहीं। पहले आप बनिए।',
+      boardHidden: 'आप leaderboard से छिपे हैं। इसे अपने खाते में बदल सकते हैं।', boardBack: 'कल 5 नए सवालों के लिए आइए।',
+      boardTitleLb: 'Leaderboard', boardDays: '{d} दिन', boardErr: 'Server से संपर्क नहीं हो पाया। थोड़ी देर में फिर कोशिश कीजिए।', boardReview: 'आपके जवाब', boardYours: 'आप',
+      boardShow: 'मुझे leaderboard में दिखाएँ', boardShowNote: 'सिर्फ़ आपका username और score दिखता है। डिफ़ॉल्ट रूप से चालू; छिपने के लिए बंद कीजिए।',
       welcomeTitle: 'Astryl में स्वागत है', welcomeSub: 'मुफ़्त खाता बनाइए, ताकि आपके favourites, quiz scores और rank app और इस website में एक जैसे रहें। या बस घूमकर देखिए।', welcomeSkip: 'बिना खाते के आगे बढ़ें',
       webIntro: 'ज़रूरी नहीं। बस एक username और password, e-mail नहीं। फिर आपके favourites, quiz scores और settings Astryl app और इस website के बीच आपके साथ चलते हैं।'
     }
@@ -80,7 +94,7 @@
   function getPrefs() {
     var p = {};
     try { p = JSON.parse(store.get('astryl-acct') || '{}') || {}; } catch (e) {}
-    return { syncOn: p.syncOn !== false, countMe: p.countMe === true, shareCountry: p.shareCountry === true, syncedMs: p.syncedMs || 0, lastPing: p.lastPing || 0 };
+    return { syncOn: p.syncOn !== false, showOnBoard: p.showOnBoard !== false, countMe: p.countMe === true, shareCountry: p.shareCountry === true, syncedMs: p.syncedMs || 0, lastPing: p.lastPing || 0 };
   }
   function setPrefs(p) { store.set('astryl-acct', JSON.stringify(p)); }
   function patchPrefs(o) { var p = Object.assign(getPrefs(), o); setPrefs(p); return p; }
@@ -125,6 +139,7 @@
     syncing = true; syncStatus = 'syncing'; redraw();
     var tk, reload = false;
     return token().then(function (k) { tk = k; return api('pull', {}, k); }).then(function (res) {
+      if (res.prefs && typeof res.prefs.showOnBoard === 'boolean') patchPrefs({ showOnBoard: res.prefs.showOnBoard });
       var remote = res.data && typeof res.data === 'object' && !Array.isArray(res.data) ? res.data : null;
       var remoteWins = !!remote && (res.updatedMs || 0) > p.syncedMs;
       var merged = Object.assign({ v: 1 }, remote || {});
@@ -244,7 +259,7 @@
         '<p><button class="btn" type="button" data-act="syncNow"' + (syncing || !p.syncOn ? ' disabled' : '') + '>' + esc(t('acctSyncNow')) + '</button> <span class="note">' +
         esc({ syncing: t('acctSyncing'), ok: t('acctSyncOk'), failed: t('acctSyncFailed') }[syncStatus] || '') + '</span></p></div>' +
         '<h3>' + esc(t('acctOptionalTitle')) + '</h3><div class="card">' +
-        check('countMe', t('acctCountMe'), t('acctCountMeNote'), p.countMe) + check('shareCountry', t('acctShareCountry'), t('acctShareCountryNote'), p.shareCountry) + '</div>' +
+        check('showOnBoard', w('boardShow'), w('boardShowNote'), p.showOnBoard) + check('countMe', t('acctCountMe'), t('acctCountMeNote'), p.countMe) + check('shareCountry', t('acctShareCountry'), t('acctShareCountryNote'), p.shareCountry) + '</div>' +
         '<p class="note">' + esc(w('webNote')) + '</p>' +
         (ui.newCode ? '<div class="card"><h3>' + esc(t('acctCodeTitle')) + '</h3><p>' + esc(t('acctCodeWarn')) + '</p>' + codeCard(ui.newCode) + '</div>' : '') +
         '<div class="btns"><button class="btn" type="button" data-act="newCode">' + esc(t('acctNewCode')) + '</button><button class="btn" type="button" data-act="logout">' + esc(t('acctLogOut')) + '</button></div>' +
@@ -266,7 +281,7 @@
       h += check('show', w('showPassword'), '', ui.show);
       if (create) {
         h += check('consent', t('acctConsent'), '', !!ui.f.consent) + '<p><a href="' + ROOT + 'privacy.html" target="_blank" rel="noopener">' + esc(t('acctReadPolicy')) + '</a></p>' +
-          '<h3>' + esc(t('acctOptionalTitle')) + '</h3>' + check('countMe', t('acctCountMe'), t('acctCountMeNote'), !!ui.f.countMe) + check('shareCountry', t('acctShareCountry'), t('acctShareCountryNote'), !!ui.f.shareCountry) +
+          '<h3>' + esc(t('acctOptionalTitle')) + '</h3>' + check('showOnBoard', w('boardShow'), w('boardShowNote'), ui.f.showOnBoard !== false) + check('countMe', t('acctCountMe'), t('acctCountMeNote'), !!ui.f.countMe) + check('shareCountry', t('acctShareCountry'), t('acctShareCountryNote'), !!ui.f.shareCountry) +
           '<p class="note">' + esc(w('webNote')) + '</p>';
       }
       if (ui.err) h += '<p class="no">' + esc(ui.err) + '</p>';
@@ -294,8 +309,8 @@
       if (pass.length < 8 || pass.length > 72) { ui.err = t('acctErrPassword'); return draw(); }
       if (pass !== f.pass2) { ui.err = t('acctErrMismatch'); return draw(); }
       run = function () {
-        return api('signup', { username: name, password: pass, consent: true, consentVersion: 1, countMe: !!f.countMe, shareCountry: !!f.shareCountry, shareLocation: false, country: f.shareCountry ? country() : null }).then(function (j) {
-          setSession(toSession(j, name)); patchPrefs({ countMe: !!f.countMe, shareCountry: !!f.shareCountry, syncedMs: 0 });
+        return api('signup', { username: name, password: pass, consent: true, consentVersion: 1, showOnBoard: f.showOnBoard !== false, countMe: !!f.countMe, shareCountry: !!f.shareCountry, shareLocation: false, country: f.shareCountry ? country() : null }).then(function (j) {
+          setSession(toSession(j, name)); patchPrefs({ showOnBoard: f.showOnBoard !== false, countMe: !!f.countMe, shareCountry: !!f.shareCountry, syncedMs: 0 });
           ui.code = fmtCode(j.code || ''); ui.saved = false; ui.f = {};
         });
       };
@@ -350,6 +365,12 @@
     if (c === 'saved') { ui.saved = on; return draw(); }
     if (!s) { ui.f[c] = on; return draw(); }
     if (c === 'syncOn') { patchPrefs({ syncOn: on }); draw(); if (on) sync(); return; }
+    if (c === 'showOnBoard') {
+      patchPrefs({ showOnBoard: on }); draw();
+      var q = getPrefs();
+      token().then(function (k) { return api('prefs', { showOnBoard: on, countMe: q.countMe, shareCountry: q.shareCountry, shareLocation: false, country: q.shareCountry ? country() : null }, k); }).catch(function () {});
+      return;
+    }
     if (c === 'countMe' || c === 'shareCountry') {
       var p = patchPrefs((function () { var o = {}; o[c] = on; o.lastPing = 0; return o; })());
       draw();
@@ -393,6 +414,105 @@
     }).catch(function () {});
   }
 
-  welcome(); accountPage(); statsBlock(); ping(); track();
+  /* ---------- Daily 5 and the leaderboard ---------- */
+  var NAMES = { mercury: 'planetMercury', venus: 'planetVenus', earth: 'planetEarth', mars: 'planetMars', jupiter: 'planetJupiter', saturn: 'planetSaturn', uranus: 'planetUranus', neptune: 'planetNeptune', sun: 'bodySun', moon: 'bodyMoon', pluto: 'bodyPluto', io: 'moonIo', europa: 'moonEuropa', ganymede: 'moonGanymede', callisto: 'moonCallisto', titan: 'moonTitan', enceladus: 'moonEnceladus', triton: 'moonTriton' };
+  function bodyName(id) { return t(NAMES[id] || id); }
+  function qText(k) { return t('q' + k.charAt(0).toUpperCase() + k.slice(1)); }
+  function sec(ms) { return (Math.round(ms / 100) / 10).toFixed(1); }
+  function fill(str, o) { for (var k in o) str = str.split('{' + k + '}').join(o[k]); return str; }
+  function dailyPage() {
+    var root = $('#daily'); if (!root) return;
+    var d = { phase: 'idle', qs: [], i: 0, picked: [], startAt: 0, result: null, answers: null, board: null, tab: 'today', err: '', busy: false }, tick = null;
+    function me() { return getSession(); }
+    function loadBoard() {
+      var go = function (k) { return api('board', {}, k); };
+      (me() ? token().then(go, function () { return go(); }) : go()).then(function (j) {
+        d.board = j;
+        // Already played today: fetch the review (this does not start a run).
+        if (j.me_today && d.phase === 'idle') return start();
+        draw();
+      }, function () { d.board = null; draw(); });
+    }
+    function board() {
+      var b = d.board, h = '<h3>' + esc(w('boardTitleLb')) + '</h3><div class="tabs"><button type="button" class="' + (d.tab === 'today' ? 'on' : '') + '" data-dl="tab:today">' + esc(w('boardToday')) + '</button><button type="button" class="' + (d.tab === 'all' ? 'on' : '') + '" data-dl="tab:all">' + esc(w('boardAll')) + '</button></div>';
+      if (!b) return h + '<p class="note">' + esc(w('loading')) + '</p>';
+      var rows = d.tab === 'today' ? b.today : b.all, mine = me() ? me().username : '';
+      if (!rows.length) h += '<p class="note">' + esc(w('boardEmpty')) + '</p>';
+      else {
+        h += '<ol class="lb">';
+        rows.forEach(function (r) {
+          var sub = d.tab === 'today' ? fill(w('boardRight'), { c: r.c }) + ' · ' + fill(w('boardTime'), { s: sec(r.ms) }) : fill(w('boardDays'), { d: r.d });
+          h += '<li' + (r.u === mine ? ' class="me"' : '') + '><span class="nm">' + esc(r.u) + (r.u === mine ? ' (' + esc(w('boardYours')) + ')' : '') + '<small>' + esc(sub) + '</small></span><b>' + r.p + '</b></li>';
+        });
+        h += '</ol>';
+      }
+      var m = d.tab === 'today' ? b.me_today : b.me_all;
+      if (m) h += '<p class="note"><b>' + esc(d.tab === 'today' ? fill(w('boardRank'), { r: m.rank, n: b.players_today }) : fill(w('boardRankAll'), { r: m.rank })) + '</b></p>';
+      if (me() && !getPrefs().showOnBoard) h += '<p class="note">' + esc(w('boardHidden')) + '</p>';
+      return h;
+    }
+    function review() {
+      var h = '<h3>' + esc(w('boardReview')) + '</h3>';
+      d.qs.forEach(function (q, i) {
+        var right = d.answers && d.answers[i], mine = d.picked[i];
+        h += '<div class="card"><b>' + esc(qText(q.k)) + '</b><p>' + (right ? '<span class="' + (mine === right ? 'ok' : 'no') + '">' + esc(mine ? bodyName(mine) : '–') + '</span>' + (mine !== right ? ' → <b>' + esc(bodyName(right)) + '</b>' : '') : '') + '</p></div>';
+      });
+      return h;
+    }
+    function resultCard() {
+      var r = d.result;
+      return '<div class="card" style="text-align:center"><h3>' + esc(w('boardDone')) + '</h3><div class="life">' + r.points + '</div><p>' + esc(fill(w('boardRight'), { c: r.correct }) + ' · ' + fill(w('boardTime'), { s: sec(r.ms) })) + '</p><p class="note">' + esc(w('boardBack')) + '</p></div>';
+    }
+    function draw() {
+      var h = '<h2>' + esc(w('boardTitle')) + '</h2><p class="sub">' + esc(w('boardIntro')) + '</p>';
+      if (d.err) h += '<p class="no">' + esc(d.err) + '</p>';
+      if (!me()) h += '<div class="card"><p>' + esc(w('boardLogin')) + '</p><p><a class="btn primary" href="' + ROOT + 'account.html">' + esc(t('acctTabLogin')) + ' / ' + esc(t('acctTabCreate')) + '</a></p></div>';
+      else if (d.phase === 'idle') h += '<div class="card"><p><button class="btn primary" type="button" data-dl="play"' + (d.busy ? ' disabled' : '') + '>' + esc(w('boardPlay')) + '</button></p><p class="note">' + esc(w('boardTimerNote')) + '</p></div>';
+      else if (d.phase === 'play') {
+        var q = d.qs[d.i];
+        h += '<div class="card"><p class="note">' + esc(fill(w('boardQ'), { n: d.i + 1 })) + ' · <span id="dlClock"></span></p><div class="progress"><i style="width:' + (d.i / 5 * 100) + '%"></i></div><h3>' + esc(qText(q.k)) + '</h3>';
+        q.o.forEach(function (id) { h += '<button type="button" class="opt" data-dl="pick:' + id + '"' + (d.busy ? ' disabled' : '') + '>' + esc(bodyName(id)) + '</button>'; });
+        h += '</div>';
+      } else if (d.phase === 'check') h += '<div class="card"><p>' + esc(w('boardSubmitting')) + '</p></div>';
+      else if (d.phase === 'done') h += resultCard() + review();
+      h += board();
+      root.innerHTML = h;
+      clock();
+    }
+    function clock() {
+      var el = $('#dlClock'); if (!el) return;
+      el.textContent = fill(w('boardTime'), { s: sec(Date.now() - d.startAt) });
+    }
+    function start() {
+      d.err = ''; d.busy = true; draw();
+      token().then(function (k) { return api('daily_start', {}, k); }).then(function (j) {
+        d.busy = false; d.qs = j.questions; d.i = 0; d.picked = [];
+        if (j.done) { d.phase = 'done'; d.result = { points: j.points, correct: j.correct, ms: j.ms }; d.answers = j.questions.map(function (q) { return q.a; }); d.picked = []; }
+        else { d.phase = 'play'; d.startAt = Date.now() - (j.elapsedMs || 0); }
+        draw(); loadBoard();
+      }, function (e) { d.busy = false; d.err = errText(e); draw(); });
+    }
+    function submit() {
+      d.phase = 'check'; draw();
+      token().then(function (k) { return api('daily_submit', { answers: d.picked }, k); }).then(function (j) {
+        d.result = j; d.answers = j.answers; d.phase = 'done'; draw(); loadBoard();
+      }, function (e) { d.phase = 'idle'; d.err = e && e.code === 'already_done' ? '' : errText(e); draw(); loadBoard(); });
+    }
+    root.addEventListener('click', function (e) {
+      var el = e.target.closest('[data-dl]'); if (!el) return;
+      var a = el.dataset.dl;
+      if (a === 'play') return start();
+      if (a.indexOf('tab:') === 0) { d.tab = a.slice(4); return draw(); }
+      if (a.indexOf('pick:') === 0 && d.phase === 'play') {
+        d.picked.push(a.slice(5));
+        if (d.picked.length >= d.qs.length) return submit();
+        d.i++; draw();
+      }
+    });
+    tick = setInterval(clock, 500);
+    draw(); loadBoard(); onLang(draw);
+  }
+
+  welcome(); accountPage(); dailyPage(); statsBlock(); ping(); track();
   if (getSession() && !$('#acct')) sync();
 })();
