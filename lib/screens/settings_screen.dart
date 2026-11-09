@@ -8,7 +8,6 @@ import '../l10n/names.dart';
 import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
-import 'account_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -282,69 +281,6 @@ class SettingsScreen extends StatelessWidget {
                   Text(l.tonightAlertNote,
                       style:
                           TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            SectionLabel(l.acctTitle),
-            SurfaceCard(
-              padding: EdgeInsets.zero,
-              child: ListenableBuilder(
-                listenable: state.account,
-                builder: (context, _) => ListTile(
-                  leading:
-                      Icon(Icons.account_circle_outlined, color: p.accentText),
-                  title: Text(
-                      state.account.loggedIn
-                          ? l.acctLoggedInAs(state.account.username)
-                          : l.acctTitle,
-                      style: TextStyle(color: p.text)),
-                  subtitle: Text(l.settingsAccountSubtitle,
-                      style: TextStyle(fontSize: 12, color: p.muted)),
-                  trailing: Icon(Icons.chevron_right, color: p.muted),
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                        builder: (_) => const AccountHubScreen()),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            SectionLabel(l.onlineTitle),
-            SurfaceCard(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SwitchListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(l.onlineTitle,
-                        style: TextStyle(fontSize: 15, color: p.text)),
-                    value: settings.onlineFeatures,
-                    onChanged: state.setOnlineFeatures,
-                  ),
-                  Text(l.onlineSubtitle,
-                      style:
-                          TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
-                  if (!kIsWeb)
-                    ListenableBuilder(
-                      listenable: state.account,
-                      builder: (context, _) => Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          const SizedBox(height: 8),
-                          SwitchListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: Text(l.crashReportsTitle,
-                                style: TextStyle(fontSize: 15, color: p.text)),
-                            value: state.account.crashReports,
-                            onChanged: state.account.setCrashReports,
-                          ),
-                          Text(l.crashReportsNote,
-                              style: TextStyle(
-                                  fontSize: 12, color: p.muted, height: 1.4)),
-                        ],
-                      ),
-                    ),
                 ],
               ),
             ),
