@@ -1,4 +1,4 @@
-// Astryl "account" Edge Function (v1.18.0)
+// Astryl "account" Edge Function (v1.20.0)
 //
 // The one door between the app/website and the database. Accounts are made of
 // a username and a password only (no e-mail). A recovery code that works 3
@@ -179,6 +179,28 @@ async function handle(req: Request, b: any): Promise<Response> {
           new Date(Date.now() - 90 * 86400000).toISOString(),
         );
       }
+      return reply({ ok: true });
+    }
+
+    case "visit": {
+      // One page view of astryl.space. Only counted, never tied to a person:
+      // no IP address, no cookie, no id, no time of day is stored.
+      await hit("visit:" + ip, 200, 3600);
+      const page = String(b.page ?? "").toLowerCase();
+      if (!/^[a-z0-9\/_.-]{1,60}$/.test(page)) throw new Fail(400, "bad_page");
+      const lang = b.lang === "hi" ? "hi" : "en";
+      const device = ["s", "m", "l"].includes(String(b.device)) ? String(b.device) : "";
+      const ref = /^[a-z0-9.-]{1,80}$/.test(String(b.ref ?? "")) ? String(b.ref) : "";
+      // The country comes from the request's edge location when it has one.
+      const country = cleanCountry(req.headers.get("cf-ipcountry")) ?? "";
+      const { error } = await admin.rpc("astryl_visit", {
+        p_page: page,
+        p_lang: lang,
+        p_device: device,
+        p_ref: ref,
+        p_country: country,
+      });
+      if (error) throw new Fail(500, "visit_failed");
       return reply({ ok: true });
     }
 
