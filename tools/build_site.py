@@ -656,7 +656,7 @@ def privacy_page():
 </ul>
 
 <h2>{bt("5. Where the data is kept and who handles it", "5. Data कहाँ रखा जाता है और कौन सँभालता है")}</h2>
-<p>{bt("Account data is stored with Supabase (database and login service). The app and this website reach it only through one function that checks who is asking; the tables themselves cannot be read from outside. To limit abuse, a hashed (not readable) key and a counter are kept for up to 2 days; no IP address is stored in readable form. This website is hosted on GitHub Pages, and downloads and the update check use GitHub; both follow GitHub's own privacy statement. We do not sell data, show ads, use analytics or trackers, or share data with anyone else.", "खाते का data Supabase (database और login service) के पास रखा जाता है। App और यह website उस तक सिर्फ़ एक function से पहुँचते हैं, जो जाँचता है कि कौन माँग रहा है; tables को बाहर से पढ़ा नहीं जा सकता। दुरुपयोग रोकने के लिए hash किया हुआ (पढ़ने लायक़ नहीं) key और एक counter ज़्यादा से ज़्यादा 2 दिन रखा जाता है; IP address पढ़ने लायक़ रूप में नहीं रखा जाता। यह website GitHub Pages पर है, और downloads व update check GitHub से होते हैं; दोनों GitHub की अपनी privacy policy के हिसाब से चलते हैं। हम data बेचते नहीं, विज्ञापन नहीं दिखाते, analytics या trackers इस्तेमाल नहीं करते, और किसी और से data साझा नहीं करते।")}</p>
+<p>{bt("Account data is stored with Supabase (database and login service), on servers in Singapore. The app and this website reach it only through one function that checks who is asking; the tables themselves cannot be read from outside. To limit abuse, a hashed (not readable) key and a counter are kept for up to 2 days; no IP address is stored in readable form. This website is hosted on GitHub Pages, and downloads and the update check use GitHub; both follow GitHub's own privacy statement. We do not sell data, show ads, use analytics or trackers, or share data with anyone else.", "खाते का data Supabase (database और login service) के पास, सिंगापुर के servers पर, रखा जाता है। App और यह website उस तक सिर्फ़ एक function से पहुँचते हैं, जो जाँचता है कि कौन माँग रहा है; tables को बाहर से पढ़ा नहीं जा सकता। दुरुपयोग रोकने के लिए hash किया हुआ (पढ़ने लायक़ नहीं) key और एक counter ज़्यादा से ज़्यादा 2 दिन रखा जाता है; IP address पढ़ने लायक़ रूप में नहीं रखा जाता। यह website GitHub Pages पर है, और downloads व update check GitHub से होते हैं; दोनों GitHub की अपनी privacy policy के हिसाब से चलते हैं। हम data बेचते नहीं, विज्ञापन नहीं दिखाते, analytics या trackers इस्तेमाल नहीं करते, और किसी और से data साझा नहीं करते।")}</p>
 
 <h2>{bt("6. This website", "6. यह website")}</h2>
 <ul>
@@ -704,9 +704,14 @@ def data_js():
 
 
 def main():
-    if OUT.exists():
-        shutil.rmtree(OUT)
-    (OUT / 'assets').mkdir(parents=True)
+    # Only the generated parts are rebuilt; other files in site/ (images, the
+    # favicon) are left alone.
+    for sub in ('assets', 'body', 'fonts'):
+        if (OUT / sub).exists():
+            shutil.rmtree(OUT / sub)
+    for old in OUT.glob('*.html'):
+        old.unlink()
+    (OUT / 'assets').mkdir(parents=True, exist_ok=True)
     shutil.copy(SRC / 'style.css', OUT / 'assets/style.css')
     shutil.copy(SRC / 'app.js', OUT / 'assets/app.js')
     shutil.copy(SRC / 'account.js', OUT / 'assets/account.js')
