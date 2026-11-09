@@ -46,7 +46,13 @@ class _UpdateGateState extends State<UpdateGate> {
     final p = Palette.of(context);
     return Scaffold(
       body: Center(
-        child: Column(
+        child: TweenAnimationBuilder<double>(
+          tween: Tween<double>(begin: 0, end: 1),
+          duration: const Duration(milliseconds: 600),
+          curve: Curves.easeOut,
+          builder: (context, value, child) =>
+              Opacity(opacity: value, child: child),
+          child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text('Astryl',
@@ -62,6 +68,7 @@ class _UpdateGateState extends State<UpdateGate> {
                   CircularProgressIndicator(strokeWidth: 2, color: p.accent),
             ),
           ],
+          ),
         ),
       ),
     );

@@ -102,6 +102,7 @@
   "updateReady": "वर्ज़न {version} डाउनलोड के लिए तैयार है।",
   "download": "डाउनलोड",
   "later": "बाद में",
+  "reportBug": "Bug की रिपोर्ट करें",
   "updateSkip": "छोड़ें",
   "crashReportsTitle": "Crash reports भेजें",
   "crashReportsNote": "App crash होने पर एक छोटा report (error का text, app version और Android version) Astryl के अपने server पर जाता है, ताकि bug ठीक हो सके। उसमें नाम, खाता या location नहीं होता। इसे कभी भी बंद कर सकते हैं।",

@@ -19,7 +19,6 @@ import 'compare_screen.dart';
 import 'planet_screen.dart';
 import 'quiz_screen.dart';
 import 'search_screen.dart';
-import 'settings_screen.dart';
 import 'sky_screen.dart';
 import 'weight_screen.dart';
 
@@ -252,7 +251,7 @@ class _ExploreTabState extends State<ExploreTab>
     return ListView(
       padding: const EdgeInsets.only(bottom: 24),
       children: <Widget>[
-        // Header: logo, name and a round settings button.
+        // Header: logo and name.
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
           child: Row(
@@ -268,25 +267,6 @@ class _ExploreTabState extends State<ExploreTab>
                     l.appTitle,
                     maxLines: 1,
                     style: headingStyle(28, p.text),
-                  ),
-                ),
-              ),
-              Tooltip(
-                message: l.settings,
-                child: Material(
-                  color: p.surface,
-                  shape: CircleBorder(side: BorderSide(color: p.border)),
-                  child: InkWell(
-                    customBorder: const CircleBorder(),
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                          builder: (_) => const SettingsScreen()),
-                    ),
-                    child: SizedBox(
-                      width: 46,
-                      height: 46,
-                      child: Icon(Icons.settings_outlined, color: p.text),
-                    ),
                   ),
                 ),
               ),
