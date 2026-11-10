@@ -542,6 +542,36 @@ async function handle(req: Request, b: any): Promise<Response> {
       return reply({ ok: true });
     }
 
+    case "avatar_get": {
+      const user = await userFrom(req);
+      const r = await admin.from("avatars").select("image").eq("user_id", user.id).maybeSingle();
+      return reply({ image: r.data ? r.data.image : null });
+    }
+
+    case "avatar_set": {
+      const user = await userFrom(req);
+      await hit("avatar:" + user.id, 20, 3600);
+      const image = typeof b.image === "string" ? b.image : "";
+      // A small JPEG as base64 text: no more than about 50 KB.
+      if (image.length < 200 || image.length > 70000) throw new Fail(413, "bad_image");
+      if (!/^[A-Za-z0-9+/]+={0,2}$/.test(image)) throw new Fail(400, "bad_image");
+      // JPEG files start with FF D8 FF, which is "/9j/" in base64.
+      if (!image.startsWith("/9j/")) throw new Fail(400, "bad_image");
+      const { error } = await admin.from("avatars").upsert({
+        user_id: user.id,
+        image,
+        updated_at: new Date().toISOString(),
+      });
+      if (error) throw new Fail(500, "avatar_failed");
+      return reply({ ok: true });
+    }
+
+    case "avatar_delete": {
+      const user = await userFrom(req);
+      await admin.from("avatars").delete().eq("user_id", user.id);
+      return reply({ ok: true });
+    }
+
     case "delete": {
       const user = await userFrom(req);
       const prof = await admin.from("profiles").select("username").eq("id", user.id).maybeSingle();
@@ -549,6 +579,7 @@ async function handle(req: Request, b: any): Promise<Response> {
       await hit("delete:" + user.id, 5, 900);
       if (prof.data) await signIn(prof.data.username, password);
       await admin.from("user_data").delete().eq("user_id", user.id);
+      await admin.from("avatars").delete().eq("user_id", user.id);
       await admin.from("recovery").delete().eq("user_id", user.id);
       await admin.from("profiles").delete().eq("id", user.id);
       const { error } = await admin.auth.admin.deleteUser(user.id);

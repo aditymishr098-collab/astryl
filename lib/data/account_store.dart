@@ -80,6 +80,7 @@ class AccountPrefs {
     this.syncedMs = 0,
     this.lastPingMs = 0,
     this.lastLocationMs = 0,
+    this.avatar = '',
     this.session,
   });
 
@@ -104,6 +105,10 @@ class AccountPrefs {
   final int syncedMs;
   final int lastPingMs;
   final int lastLocationMs;
+
+  /// The profile picture of the logged-in account: a small JPEG as base64
+  /// text, kept here so it also shows offline. Empty when there is none.
+  final String avatar;
   final AccountSession? session;
 
   AccountPrefs copyWith({
@@ -118,6 +123,7 @@ class AccountPrefs {
     int? syncedMs,
     int? lastPingMs,
     int? lastLocationMs,
+    String? avatar,
     AccountSession? session,
     bool clearSession = false,
   }) {
@@ -133,6 +139,7 @@ class AccountPrefs {
       syncedMs: syncedMs ?? this.syncedMs,
       lastPingMs: lastPingMs ?? this.lastPingMs,
       lastLocationMs: lastLocationMs ?? this.lastLocationMs,
+      avatar: avatar ?? this.avatar,
       session: clearSession ? null : (session ?? this.session),
     );
   }
@@ -149,6 +156,7 @@ class AccountPrefs {
         'syncedMs': syncedMs,
         'lastPingMs': lastPingMs,
         'lastLocationMs': lastLocationMs,
+        'avatar': avatar,
         'session': session?.toJson(),
       };
 
@@ -177,6 +185,7 @@ class AccountPrefs {
       syncedMs: i('syncedMs'),
       lastPingMs: i('lastPingMs'),
       lastLocationMs: i('lastLocationMs'),
+      avatar: json['avatar'] is String ? json['avatar'] as String : '',
       session: AccountSession.fromJson(json['session']),
     );
   }

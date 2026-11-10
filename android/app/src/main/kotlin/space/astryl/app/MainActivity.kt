@@ -49,6 +49,7 @@ class MainActivity : FlutterActivity() {
                     )
                 )
                 "pickBackup" -> pickBackup(result)
+                "pickPhoto" -> pickPhoto(result)
                 "appVersion" -> result.success(appVersion())
                 "openUrl" -> result.success(openUrl(call.argument<String>("url")))
                 "requestNotifications" -> requestNotifications(result)
@@ -308,13 +309,124 @@ class MainActivity : FlutterActivity() {
         }
     }
 
+    private var pendingPhotoResult: MethodChannel.Result? = null
+
+    /** Lets the user pick a picture; returns a small square JPEG as base64, or null. */
+    private fun pickPhoto(result: MethodChannel.Result) {
+        if (pendingPhotoResult != null) {
+            result.success(null)
+            return
+        }
+        try {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+                .addCategory(Intent.CATEGORY_OPENABLE)
+                .setType("image/*")
+            pendingPhotoResult = result
+            startActivityForResult(intent, 4713)
+        } catch (e: Exception) {
+            pendingPhotoResult = null
+            result.success(null)
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 4712) {
             val uri = if (resultCode == android.app.Activity.RESULT_OK) data?.data else null
             pendingPickResult?.success(if (uri == null) null else readText(uri))
             pendingPickResult = null
+        } else if (requestCode == 4713) {
+            val uri = if (resultCode == android.app.Activity.RESULT_OK) data?.data else null
+            val pending = pendingPhotoResult
+            pendingPhotoResult = null
+            if (pending != null) {
+                if (uri == null) {
+                    pending.success(null)
+                } else {
+                    // Decoding a big picture takes a moment: not on the main thread.
+                    Thread {
+                        val encoded = try {
+                            squarePhoto(uri)
+                        } catch (e: Throwable) {
+                            null
+                        }
+                        runOnUiThread { pending.success(encoded) }
+                    }.start()
+                }
+            }
         }
+    }
+
+    /** A centred 256 x 256 JPEG of the picture, as base64 text (under about 45 KB). */
+    private fun squarePhoto(uri: Uri): String? {
+        val bounds = android.graphics.BitmapFactory.Options()
+        bounds.inJustDecodeBounds = true
+        contentResolver.openInputStream(uri)?.use {
+            android.graphics.BitmapFactory.decodeStream(it, null, bounds)
+        }
+        if (bounds.outWidth <= 0 || bounds.outHeight <= 0) {
+            return null
+        }
+        var sample = 1
+        while (bounds.outWidth / (sample * 2) >= 512 && bounds.outHeight / (sample * 2) >= 512) {
+            sample *= 2
+        }
+        val decode = android.graphics.BitmapFactory.Options()
+        decode.inSampleSize = sample
+        val decoded = contentResolver.openInputStream(uri)?.use {
+            android.graphics.BitmapFactory.decodeStream(it, null, decode)
+        } ?: return null
+
+        // Turn the picture upright using its EXIF mark.
+        var degrees = 0
+        if (Build.VERSION.SDK_INT >= 24) {
+            try {
+                contentResolver.openInputStream(uri)?.use {
+                    val exif = android.media.ExifInterface(it)
+                    degrees = when (exif.getAttributeInt(
+                        android.media.ExifInterface.TAG_ORIENTATION,
+                        android.media.ExifInterface.ORIENTATION_NORMAL
+                    )) {
+                        android.media.ExifInterface.ORIENTATION_ROTATE_90 -> 90
+                        android.media.ExifInterface.ORIENTATION_ROTATE_180 -> 180
+                        android.media.ExifInterface.ORIENTATION_ROTATE_270 -> 270
+                        else -> 0
+                    }
+                }
+            } catch (e: Exception) {
+                degrees = 0
+            }
+        }
+        val side = Math.min(decoded.width, decoded.height)
+        val matrix = android.graphics.Matrix()
+        matrix.postRotate(degrees.toFloat())
+        val cropped = android.graphics.Bitmap.createBitmap(
+            decoded,
+            (decoded.width - side) / 2,
+            (decoded.height - side) / 2,
+            side,
+            side
+        )
+        val upright = android.graphics.Bitmap.createBitmap(
+            cropped, 0, 0, cropped.width, cropped.height, matrix, true
+        )
+        val small = android.graphics.Bitmap.createScaledBitmap(upright, 256, 256, true)
+
+        var quality = 82
+        var bytes = ByteArray(0)
+        while (quality >= 40) {
+            val out = java.io.ByteArrayOutputStream()
+            small.compress(android.graphics.Bitmap.CompressFormat.JPEG, quality, out)
+            bytes = out.toByteArray()
+            if (bytes.size <= 45000) {
+                break
+            }
+            quality -= 10
+        }
+        if (bytes.size > 50000) {
+            return null
+        }
+        return android.util.Base64.encodeToString(bytes, android.util.Base64.NO_WRAP)
     }
 
     /** Reads a small text file; null when it cannot be read or is too big. */

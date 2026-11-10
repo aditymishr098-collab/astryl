@@ -42,6 +42,7 @@
       boardWeek: 'This week', boardRankWeek: 'Your rank this week: {r}', streakNow: '{n}-day streak', streakNone: 'No streak yet. Play today to start one.', streakBest: 'Best: {n}',
       badgesTitle: 'Badges', bdFirst: 'First run', bdS3: '3-day streak', bdS7: '7-day streak', bdS30: '30-day streak', bdPerfect: 'Perfect 5 of 5', bdP10: '10 runs', bdP50: '50 runs',
       welcomeTitle: 'Welcome to Astryl', welcomeSub: 'Make a free account to keep your favourites, quiz scores and rank in step between the app and this website. Or just look around.', welcomeSkip: 'Continue without account',
+      avatarChoose: 'Choose a photo', avatarChange: 'Change photo', avatarRemove: 'Remove photo', avatarNote: 'Shown only on your own profile (not on the leaderboard). A small square picture, saved in your Astryl account.', avatarFail: 'The photo could not be saved. Try a different picture.',
       webIntro: 'Optional. A username and a password, no e-mail. Your favourites, quiz scores and settings then follow you between the Astryl app and this website.'
     },
     hi: {
@@ -62,6 +63,7 @@
       boardWeek: 'इस हफ़्ते', boardRankWeek: 'इस हफ़्ते आपकी रैंक: {r}', streakNow: '{n} दिन की streak', streakNone: 'अभी कोई streak नहीं। आज खेलकर शुरू कीजिए।', streakBest: 'सबसे लंबी: {n}',
       badgesTitle: 'Badges', bdFirst: 'पहला खेल', bdS3: '3 दिन की streak', bdS7: '7 दिन की streak', bdS30: '30 दिन की streak', bdPerfect: '5 में से 5 सही', bdP10: '10 खेल', bdP50: '50 खेल',
       welcomeTitle: 'Astryl में स्वागत है', welcomeSub: 'मुफ़्त खाता बनाइए, ताकि आपके favourites, quiz scores और rank app और इस website में एक जैसे रहें। या बस घूमकर देखिए।', welcomeSkip: 'बिना खाते के आगे बढ़ें',
+      avatarChoose: 'फ़ोटो चुनें', avatarChange: 'फ़ोटो बदलें', avatarRemove: 'फ़ोटो हटाएँ', avatarNote: 'सिर्फ़ आपकी अपनी profile पर दिखती है (leaderboard पर नहीं)। एक छोटी चौकोर तस्वीर, आपके Astryl account में सेव होती है।', avatarFail: 'फ़ोटो सेव नहीं हो सकी। कोई दूसरी तस्वीर आज़माइए।',
       webIntro: 'ज़रूरी नहीं। बस एक username और password, e-mail नहीं। फिर आपके favourites, quiz scores और settings Astryl app और इस website के बीच आपके साथ चलते हैं।'
     }
   };
@@ -96,7 +98,7 @@
   /* ---------- what is kept in this browser ---------- */
   function getSession() { try { return JSON.parse(store.get('astryl-session') || 'null'); } catch (e) { return null; } }
   function setSession(s) { store.set('astryl-session', JSON.stringify(s)); store.set('astryl-gate', '1'); }
-  function clearSession() { store.del('astryl-session'); }
+  function clearSession() { store.del('astryl-session'); store.del('astryl-avatar'); }
   function getPrefs() {
     var p = {};
     try { p = JSON.parse(store.get('astryl-acct') || '{}') || {}; } catch (e) {}
@@ -250,11 +252,52 @@
   function codeCard(code) {
     return '<div class="codebox"><div class="code" id="codeText">' + esc(code) + '</div><button class="btn" type="button" data-act="copy">' + esc(t('acctCopy')) + '</button></div>';
   }
+  /* ---------- profile photo ---------- */
+  function getAvatar() { var a = store.get('astryl-avatar') || ''; return /^[A-Za-z0-9+/]+={0,2}$/.test(a) ? a : ''; }
+  function avatarImg(cls) { var a = getAvatar(); return a ? '<img class="' + cls + '" alt="" src="data:image/jpeg;base64,' + a + '">' : ''; }
+  function fetchAvatar() {
+    if (!getSession()) return;
+    token().then(function (k) { return api('avatar_get', {}, k); }).then(function (j) {
+      var a = j && typeof j.image === 'string' ? j.image : '';
+      if (a) store.set('astryl-avatar', a); else store.del('astryl-avatar');
+      navAccount(); redraw();
+    }, function () {});
+  }
+  /* A centred 256 x 256 JPEG of the picked file, as base64 text. */
+  function squarePhoto(file) {
+    return new Promise(function (resolve, reject) {
+      var url = URL.createObjectURL(file), img = new Image();
+      img.onload = function () {
+        try {
+          var side = Math.min(img.naturalWidth, img.naturalHeight), c = document.createElement('canvas');
+          c.width = 256; c.height = 256;
+          c.getContext('2d').drawImage(img, (img.naturalWidth - side) / 2, (img.naturalHeight - side) / 2, side, side, 0, 0, 256, 256);
+          var q = 0.82, out = '';
+          while (q >= 0.4) {
+            out = c.toDataURL('image/jpeg', q).split(',')[1] || '';
+            if (out.length <= 60000) break;
+            q -= 0.1;
+          }
+          URL.revokeObjectURL(url);
+          if (!out || out.length > 65000) reject(fail('bad_image')); else resolve(out);
+        } catch (e) { URL.revokeObjectURL(url); reject(fail('bad_image')); }
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); reject(fail('bad_image')); };
+      img.src = url;
+    });
+  }
+  function pickPhoto(file) {
+    if (!file) return;
+    ui.busy = true; ui.delMsg = ''; draw();
+    squarePhoto(file).then(function (b64) {
+      return token().then(function (k) { return api('avatar_set', { image: b64 }, k); }).then(function () { store.set('astryl-avatar', b64); });
+    }).then(function () { ui.busy = false; navAccount(); draw(); }, function () { ui.busy = false; ui.delMsg = w('avatarFail'); draw(); });
+  }
   /* The header shows the name of the person who is logged in. */
   function navAccount() {
     var el = $('#acctNav'); if (!el) return;
     var s = getSession();
-    if (s && s.username) el.innerHTML = '<a class="btn primary" href="' + (document.body.dataset.root || '') + 'account.html">\uD83D\uDC64 ' + esc(s.username) + '</a>';
+    if (s && s.username) el.innerHTML = '<a class="btn primary" href="' + (document.body.dataset.root || '') + 'account.html">' + (getAvatar() ? avatarImg('navpic') : '\uD83D\uDC64 ') + esc(s.username) + '</a>';
   }
   function draw() {
     navAccount();
@@ -267,7 +310,9 @@
         '<p><button class="btn primary" type="button" data-act="codeDone"' + (ui.saved ? '' : ' disabled') + '>' + esc(t('acctContinue')) + '</button></p>';
     } else if (s) {
       var p = getPrefs();
-      h = '<div class="card"><b>' + esc(t('acctLoggedInAs', { name: s.username })) + '</b></div>' +
+      h = '<div class="card whoami">' + (getAvatar() ? avatarImg('bigpic') : '<span class="bigpic ph">\uD83D\uDC64</span>') + '<div><b>' + esc(t('acctLoggedInAs', { name: s.username })) + '</b><div class="btns"><label class="btn" for="photoIn">' + esc(w(getAvatar() ? 'avatarChange' : 'avatarChoose')) + '</label>' +
+        (getAvatar() ? '<button class="btn" type="button" data-act="photoDel">' + esc(w('avatarRemove')) + '</button>' : '') + '</div>' +
+        '<input id="photoIn" type="file" accept="image/*" hidden><small class="note">' + esc(w('avatarNote')) + '</small>' + (ui.delMsg && !ui.del ? '<small class="note">' + esc(ui.delMsg) + '</small>' : '') + '</div></div>' +
         '<div class="card">' + check('syncOn', t('acctSync'), t('acctSyncNote'), p.syncOn) +
         '<p><button class="btn" type="button" data-act="syncNow"' + (syncing || !p.syncOn ? ' disabled' : '') + '>' + esc(t('acctSyncNow')) + '</button> <span class="note">' +
         esc({ syncing: t('acctSyncing'), ok: t('acctSyncOk'), failed: t('acctSyncFailed') }[syncStatus] || '') + '</span></p></div>' +
@@ -355,6 +400,7 @@
       return;
     }
     if (act === 'codeDone') { ui.code = null; return draw(); }
+    if (act === 'photoDel') return void token().then(function (k) { return api('avatar_delete', {}, k); }).then(function () { store.del('astryl-avatar'); navAccount(); draw(); }, function (x) { ui.delMsg = errText(x); draw(); });
     if (act === 'syncNow') return void sync();
     if (act === 'newCode') return void token().then(function (k) { return api('newcode', {}, k); }).then(function (j) { ui.newCode = fmtCode(j.code); draw(); }, function (x) { ui.delMsg = errText(x); draw(); });
     if (act === 'logout') { clearSession(); ui.newCode = null; ui.del = false; ui.mode = 'login'; return draw(); }
@@ -391,7 +437,7 @@
   function accountPage() {
     var root = $('#acct'); if (!root) return;
     root.addEventListener('click', onClick);
-    root.addEventListener('change', onChange);
+    root.addEventListener('change', function (e) { if (e.target && e.target.id === 'photoIn') { var f = e.target.files && e.target.files[0]; e.target.value = ''; return pickPhoto(f); } onChange(e); });
     root.addEventListener('input', function (e) { if (e.target.dataset && e.target.dataset.f) ui.f[e.target.dataset.f] = e.target.value; });
     root.addEventListener('keydown', function (e) { if (e.key === 'Enter' && e.target.dataset && e.target.dataset.f && !ui.code && !getSession()) { e.preventDefault(); submit(); } });
     if (/[?&]mode=login/.test(location.search) && !getSession()) ui.mode = 'login';
@@ -561,5 +607,6 @@
   }
 
   navAccount(); welcome(); accountPage(); dailyPage(); statsBlock(); ping(); track();
+  if (getSession()) fetchAvatar();
   if (getSession() && !$('#acct')) sync();
 })();
