@@ -781,7 +781,7 @@ def get_page():
 <div class="card"><h3>🛰️ {bt("Space station", "अंतरिक्ष station")}</h3><p>{bt("ISS, Tiangong and Hubble passes over your city.", "आपके शहर के ऊपर ISS, Tiangong और Hubble का गुज़रना।")}</p></div>
 <div class="card"><h3>🪐 {bt("Space view", "Space view")}</h3><p>{bt("All the planets in one 3D scene: drag, pinch and tap a planet to fly to it.", "सारे ग्रह एक 3D दृश्य में: घुमाइए, ज़ूम कीजिए और किसी ग्रह पर टैप करके वहाँ पहुँचिए।")}</p></div>
 <div class="card"><h3>💾 {bt("Backup", "Backup")}</h3><p>{bt("Favourites, scores and settings in one small file that stays on your phone.", "Favourites, scores और settings एक छोटी file में, जो आपके फ़ोन में ही रहती है।")}</p></div>
-<div class="card"><h3>👤 {bt("Account (optional)", "खाता (वैकल्पिक)")}</h3><p>{bt("Username and password only. Your favourites, scores and settings sync with this website.", "सिर्फ़ username और password। आपके favourites, scores और settings इस website से sync होते हैं।")} <a href="account.html">{bt("Open", "खोलें")}</a></p></div>
+<div class="card"><h3>👤 {bt("Account", "खाता")}</h3><p>{bt("Username and password only. Your favourites, scores and settings sync with this website.", "सिर्फ़ username और password। आपके favourites, scores और settings इस website से sync होते हैं।")} <a href="account.html">{bt("Open", "खोलें")}</a></p></div>
 </div></section>
 <section class="blk"><div class="callout"><h3>{bt("Coming from Heliora (before version 1.17.5)?", "Heliora (version 1.17.5 से पहले) से आ रहे हैं?")}</h3>
 <p>{bt("Astryl 1.17.5 has a new app id, so it installs next to the old Heliora instead of replacing it. Your data moves in a minute:", "Astryl 1.17.5 का app id नया है, इसलिए यह पुराने Heliora की जगह नहीं लेता, उसके बग़ल में install होता है। आपका data एक मिनट में आ जाता है:")}</p>
@@ -796,7 +796,7 @@ def privacy_page():
         return f'<li>{bt(en, hi)}</li>'
     def tr(a_en, a_hi, b_en, b_hi, c_en, c_hi):
         return f'<tr><td>{bt(a_en, a_hi)}</td><td>{bt(b_en, b_hi)}</td><td>{bt(c_en, c_hi)}</td></tr>'
-    toc = [("1", "Who is responsible", "ज़िम्मेदार कौन है"), ("2", "Without an account", "खाते के बिना"), ("3", "The optional account", "वैकल्पिक खाता"),
+    toc = [("1", "Who is responsible", "ज़िम्मेदार कौन है"), ("2", "On your phone or in your browser", "आपके फ़ोन या browser में"), ("3", "The account", "खाता"),
            ("4", "Optional switches", "वैकल्पिक switches"), ("5", "Crash reports", "Crash reports"), ("6", "Where data is kept", "Data कहाँ रखा जाता है"),
            ("7", "This website", "यह website"), ("8", "Your choices and rights", "आपके विकल्प और अधिकार"), ("9", "Children", "बच्चे"), ("10", "Changes", "बदलाव")]
     toc_html = ''.join(f'<a href="#s{n}">{n}. {bt(en, hi)}</a>' for n, en, hi in toc)
@@ -805,7 +805,7 @@ def privacy_page():
 <p class="sub">{bt("In plain words: we do not sell anything about you, there are no ads, and you can use everything without an account. This page lists exactly what is kept when you do choose something, and how to remove it.", "सीधे शब्दों में: हम आपके बारे में कुछ नहीं बेचते, कोई विज्ञापन नहीं है, और आप खाते के बिना सब कुछ इस्तेमाल कर सकते हैं। जब आप कुछ चुनते हैं तब क्या रखा जाता है और उसे कैसे हटाएँ, यह पूरा इसी page पर है।")}</p>
 <div class="glance">
 <div class="card"><div class="ico">🚫</div><h3>{bt("No ads, nothing sold", "कोई विज्ञापन नहीं, कुछ बिकता नहीं")}</h3><p>{bt("No ad networks, no data brokers, no third-party analytics.", "कोई ad network, data broker या बाहरी analytics नहीं।")}</p></div>
-<div class="card"><div class="ico">👤</div><h3>{bt("Account is optional", "खाता वैकल्पिक है")}</h3><p>{bt("A username and a password. No e-mail, name or phone number.", "बस username और password। e-mail, नाम या फ़ोन नंबर नहीं।")}</p></div>
+<div class="card"><div class="ico">👤</div><h3>{bt("One account, no e-mail", "एक खाता, e-mail नहीं")}</h3><p>{bt("The app needs an account; the website does not. Just a username and a password, no e-mail, name or phone number.", "App के लिए खाता चाहिए, website के लिए नहीं। बस username और password, e-mail, नाम या फ़ोन नंबर नहीं।")}</p></div>
 <div class="card"><div class="ico">📊</div><h3>{bt("Counted, not tracked", "गिनती, पीछा नहीं")}</h3><p>{bt("Page views are only added up: no cookie, no IP address, no id.", "Page views बस जोड़े जाते हैं: कोई cookie, IP address या id नहीं।")}</p></div>
 <div class="card"><div class="ico">🗑️</div><h3>{bt("You can delete it all", "सब कुछ आप मिटा सकते हैं")}</h3><p>{bt("One button deletes your account and everything stored for it.", "एक button आपका खाता और उससे जुड़ा सारा data मिटा देता है।")}</p></div>
 </div></section>
@@ -814,7 +814,7 @@ def privacy_page():
 <h2 id="s1">{bt("1. Who is responsible", "1. ज़िम्मेदार कौन है")}</h2>
 <p>{bt("Astryl is a free, open-source project (AGPL-3.0). For questions about your data, write to", "Astryl एक मुफ़्त, open-source project है (AGPL-3.0)। अपने data के बारे में सवाल हों तो यहाँ लिखें:")} <a href="mailto:contact@astryl.space">contact@astryl.space</a>.</p>
 
-<h2 id="s2">{bt("2. Without an account", "2. खाते के बिना")}</h2>
+<h2 id="s2">{bt("2. On your phone or in your browser", "2. आपके फ़ोन या browser में")}</h2>
 <ul>
 {li("Planet facts, the Moon, planet positions, eclipses, the star map and the quiz are worked out on your phone or in your browser.", "ग्रहों के तथ्य, चाँद, ग्रहों की स्थिति, ग्रहण, star map और quiz आपके फ़ोन या browser में ही निकाले जाते हैं।")}
 {li("Your city, birth date, favourites, quiz scores and settings are saved on your phone. The Backup file is made by you and goes only where you send it.", "आपका शहर, जन्मतिथि, favourites, quiz scores और settings आपके फ़ोन में save होते हैं। Backup file आप बनाते हैं और वह वहीं जाती है जहाँ आप भेजें।")}
@@ -823,8 +823,8 @@ def privacy_page():
 {li("“Use my location” in the city list asks Android for your approximate location, once, and uses it only on your phone to work out the sky. Nothing is sent for this.", "शहर की list में “मेरी location इस्तेमाल करें” Android से आपकी अनुमानित location एक बार माँगता है और उसे सिर्फ़ आपके फ़ोन पर आसमान निकालने में इस्तेमाल करता है। इसके लिए कुछ नहीं भेजा जाता।")}
 </ul>
 
-<h2 id="s3">{bt("3. The optional account", "3. वैकल्पिक खाता")}</h2>
-<p>{bt("The account is for one thing: keeping your favourites, scores and settings in step between the app and this website. It needs a username and a password. No e-mail address, name or phone number is asked for. You can skip it with “Continue without account” and use everything.", "खाते का एक ही काम है: आपके favourites, scores और settings को app और इस website के बीच एक जैसा रखना। इसके लिए username और password चाहिए। e-mail, नाम या फ़ोन नंबर नहीं माँगा जाता। “बिना खाते के आगे बढ़ें” दबाकर आप खाते के बिना सब कुछ इस्तेमाल कर सकते हैं।")}</p>
+<h2 id="s3">{bt("3. The account", "3. खाता")}</h2>
+<p>{bt("The account is for one thing: keeping your favourites, scores and settings in step between the app and this website. It needs a username and a password. No e-mail address, name or phone number is asked for. The app asks you to make an account (or log in) when it is first opened. On the website the account is optional: “Continue without account” lets you look around.", "खाते का एक ही काम है: आपके favourites, scores और settings को app और इस website के बीच एक जैसा रखना। इसके लिए username और password चाहिए। e-mail, नाम या फ़ोन नंबर नहीं माँगा जाता। App पहली बार खुलने पर खाता बनाने (या log in करने) को कहता है। Website पर खाता वैकल्पिक है: “बिना खाते के आगे बढ़ें” दबाकर आप बस घूमकर देख सकते हैं।")}</p>
 <table><tr><th>{bt("What we store", "हम क्या रखते हैं")}</th><th>{bt("Why", "क्यों")}</th><th>{bt("For how long", "कब तक")}</th></tr>
 {tr("Your username and a hash of your password (the password itself is never stored or visible to us)", "आपका username और password का hash (password ख़ुद कभी store नहीं होता और हमें दिखता नहीं)", "To log you in", "आपको log in कराने के लिए", "Until you delete the account", "जब तक आप खाता नहीं मिटाते")}
 {tr("A hash of your recovery code, how many times it can still be used, failed tries", "Recovery code का hash, वह कितनी बार और चल सकता है, ग़लत कोशिशें", "So you can set a new password if you forget it", "ताकि password भूलने पर आप नया लगा सकें", "Until you delete the account", "जब तक आप खाता नहीं मिटाते")}
@@ -880,14 +880,14 @@ def privacy_page():
 <h2 id="s10">{bt("10. Changes", "10. बदलाव")}</h2>
 <p>{bt("If this policy changes in a way that matters, the new version is published on this page and in the app's release notes, and the app asks again before you make a new account. The full source code, including the server code in the folder", "अगर यह policy किसी ज़रूरी तरह से बदली, तो नया version इसी page और app के release notes में छपेगा, और नया खाता बनाने से पहले app फिर पूछेगा। पूरा source code, server का code भी (folder")} <a href="{REPO}/tree/main/supabase">supabase/</a>{bt(", is open for anyone to read.", ") सबके पढ़ने के लिए खुला है।")}</p>
 </div></section>"""
-    write('privacy.html', shell('Privacy Policy', 'Privacy Policy', 'get', body, 'Astryl Privacy Policy: no ads. An account (username and password only) is optional, crash reports can be switched off; what is stored, why, and how to delete it.', canonical='privacy.html'))
+    write('privacy.html', shell('Privacy Policy', 'Privacy Policy', 'get', body, 'Astryl Privacy Policy: no ads. An account (username and password only) is needed for the app and optional on the website, crash reports can be switched off; what is stored, why, and how to delete it.', canonical='privacy.html'))
 
 
 def account_page():
     body = f"""<section class="blk" style="max-width:640px"><h1>{bt("Astryl account", "Astryl खाता")}</h1>
 <div id="acct"><noscript><p>{bt("The account page needs JavaScript.", "Account page को JavaScript चाहिए।")}</noscript></p></div>
 <p class="note"><a href="privacy.html">{bt("Privacy Policy", "Privacy Policy")}</a></p></section>"""
-    write('account.html', shell('Account', 'खाता', 'account', body, 'Create an optional Astryl account with a username and password, and keep your favourites, quiz scores and settings in step between the app and this website.', canonical='account.html'))
+    write('account.html', shell('Account', 'खाता', 'account', body, 'Create your Astryl account with a username and password, and keep your favourites, quiz scores and settings in step between the app and this website.', canonical='account.html'))
 
 
 def not_found():

@@ -55,7 +55,7 @@ a daily space quiz, and an honest answer to "could humans live here?"
 |---|---|
 | 🔭 **Real sky, real maths** | Planet positions, the Moon, the moons of Jupiter and Saturn, sunrise and sunset, eclipses and the star map are all calculated on your phone, not copied from a website. |
 | 🎯 **A reason to come back** | The Daily 5 quiz: the same five questions for everybody each day, a streak, badges and a leaderboard. |
-| 🔒 **Private** | No ads, no trackers. An account is optional, and the app works fully without one. Nothing is sent unless you agree. |
+| 🔒 **Private** | No ads, no trackers. An account is only a username and a password, no e-mail. Nothing else is sent unless you agree. |
 | 🌍 **English and हिन्दी** | The whole app and the website are in English and Hindi, or follow your phone. |
 | 🌐 **App and website together** | The same data and the same account work in the app and on [astryl.space](https://astryl.space). |
 | 🆓 **Open source** | AGPL-3.0. Read it, change it, build it yourself; if you share a changed version, share its source too. |
@@ -118,7 +118,7 @@ a daily space quiz, and an honest answer to "could humans live here?"
 - **Share.** Turn a planet's card into a picture and send it to friends.
 
 ### ⚙️ Made for everyone
-- **Optional account.** A username and a password, no e-mail, and a recovery code for a forgotten password. Your favourites, quiz scores, language, theme, city and birth date then follow you between the app and the website. Skip it, log out, or delete the account and everything stored for it, any time.
+- **One account, no e-mail.** The app opens on a page to make an account or log in (a username and a password, and a recovery code for a forgotten password). Your favourites, quiz scores, language, theme, city and birth date then follow you between the app and the website. You can log out, or delete the account and everything stored for it, any time. The website can be used without an account.
 - **Use my location (optional).** One tap in the city list uses your approximate location for the sky above you. Android asks first.
 - **Backup and restore.** Save your favourites, settings, scores, city and birth date in one small file and restore it on another phone. It goes nowhere unless you send it.
 - **Light, dark or system theme**, and a **text size** setting (Normal, Large, Larger).
@@ -151,11 +151,11 @@ If you have a version older than 1.17.5, the app id changed (see the 1.17.5 line
 
 ## Privacy
 
-[Astryl](https://astryl.space): **no ads, and an account only if you want one.** The full policy is at [astryl.space/privacy.html](https://astryl.space/privacy.html).
+[Astryl](https://astryl.space): **no ads, and no e-mail address.** The full policy is at [astryl.space/privacy.html](https://astryl.space/privacy.html).
 
-- Planet data, positions and 3D surfaces are calculated on your phone. Astryl is an online app: it also uses the internet for the update check, crash reports, the account and the live features below. Without internet it shows the last data it has.
+- Planet data, positions and 3D surfaces are calculated on your phone. Astryl is an online app: the first start needs internet to make an account or log in, and it also uses the internet for the update check, crash reports, sync and the live features below. After that, without internet it shows the last data it has.
 - **Live features.** Astryl contacts `api.wheretheiss.at` (or `celestrak.org`) for the station's orbit data, `celestrak.org` for Tiangong and Hubble, `ll.thespacedevs.com` (Launch Library 2) for the launch list, and `api.spaceflightnewsapi.net` for the news. Nothing about you is sent; those services can only see your phone's internet address. Orbit data is saved on the phone, so the station keeps working for days without internet.
-- **The account is optional.** If you make one, a small server on [Supabase](https://supabase.com) stores your username, a hash of your password and of your recovery code, the date you accepted the privacy policy, your Daily 5 runs, and, if you keep sync on, your favourites, quiz scores, language, theme, city and birth date. Nothing is stored for a visitor who skips it. Delete the account in the You tab and everything is removed.
+- **The account.** The app needs one (the website does not). A small server on [Supabase](https://supabase.com) stores your username, a hash of your password and of your recovery code, the date you accepted the privacy policy, your Daily 5 runs, and, if you keep sync on, your favourites, quiz scores, language, theme, city and birth date. Nothing is stored for a website visitor who has no account. Delete the account in the You tab and everything is removed.
 - **Three more switches, all off until you turn them on:** *count me as an active user* (a random number made on your phone, not linked to you), *share my country* (from your phone's language and region) and *share my approximate location* (needs an account and Android's permission; only your latest place is kept, rounded to about 10 km, updated only when you open the app). There is no background location.
 - **The leaderboard** shows only your username, and only if you leave *Show me on the leaderboard* on.
 - **Update check:** each time the app opens, it asks GitHub for the newest release. When you tap *Update now*, it downloads the signed APK from that release. Android only installs it if it is signed with the same key as the app you already have.
@@ -239,9 +239,9 @@ The website is built with `python3 tools/build_site.py` (it needs Pillow for the
 
 | Version | What's new |
 |---|---|
+| **1.35.2** | **Account first.** The app opens on a page to make an account or log in; there is no "Skip" any more, and logging out brings the page back. Phones that skipped it before see it once, and everything already on the phone is kept. The privacy texts say the account is needed for the app. |
 | **1.35.1** | **Cleaner start and You tab.** The app opens straight on Home (no account page first; the optional account is in the You tab). The You tab is lighter: a slim account row, the weight, jump and age calculators stay in Compare, and the crash-report switch moved down to the settings. The status bar clock, signal and battery are dark on the light theme. |
 | **1.35.0** | **Streaks, real moons, widget.** The Daily 5 counts your streak and best streak, shows seven badges and a This week board, and your result can be shared as a picture. The moons of Jupiter (four) and Saturn (eight) are shown where they really are on any date. A new home-screen widget shows tonight's Moon phase. |
-| **1.34.0** | **One backend: Supabase.** Accounts, sync, the Daily 5 and the leaderboard all live in one Supabase project. The server picks the questions and checks the answers and the time. A "Show me on the leaderboard" switch is in Account. |
 
 Every version since 1.0.0 is in the [**changelog**](CHANGELOG.md).
 

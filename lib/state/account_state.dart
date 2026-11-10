@@ -53,6 +53,12 @@ class AccountState extends ChangeNotifier {
       _prefs = _prefs.copyWith(deviceId: newDeviceId());
       await _store.save(_prefs);
     }
+    // Everybody who is not logged in goes through the account page, also
+    // phones that skipped it in an older version.
+    if (_prefs.session == null && _prefs.promptDone) {
+      _prefs = _prefs.copyWith(promptDone: false);
+      await _store.save(_prefs);
+    }
     notifyListeners();
   }
 
@@ -61,6 +67,10 @@ class AccountState extends ChangeNotifier {
 
   /// True until the first-run account page has been left.
   bool get needsPrompt => !_prefs.promptDone;
+
+  /// The app opens only for somebody who is logged in (and has saved the
+  /// recovery code of a new account).
+  bool get needsGate => !loggedIn || needsPrompt;
 
   Future<void> _set(AccountPrefs next) async {
     _prefs = next;
@@ -182,7 +192,8 @@ class AccountState extends ChangeNotifier {
     _timer?.cancel();
     _lastPushed = null;
     syncStatus = 'idle';
-    await _set(_prefs.copyWith(clearSession: true, syncedMs: 0));
+    await _set(
+        _prefs.copyWith(clearSession: true, syncedMs: 0, promptDone: false));
   }
 
   /// Deletes the account and everything stored for it online. The data on
@@ -197,6 +208,7 @@ class AccountState extends ChangeNotifier {
     await _set(_prefs.copyWith(
       clearSession: true,
       syncedMs: 0,
+      promptDone: false,
       shareLocation: false,
       shareCountry: false,
     ));
