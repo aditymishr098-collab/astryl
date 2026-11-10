@@ -50,6 +50,16 @@
                 android:resource="@xml/file_paths" />
         </provider>
         <receiver
+            android:name=".MoonWidget"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/moon_widget_info" />
+        </receiver>
+        <receiver
             android:name=".ReminderReceiver"
             android:exported="false" />
         <receiver

@@ -8,6 +8,7 @@ import 'package:flutter/scheduler.dart';
 import '../core/facts.dart';
 import '../core/format.dart';
 import '../core/habitability.dart';
+import '../core/moons.dart';
 import '../core/orbits.dart';
 import '../data/planets.dart';
 import '../l10n/gen/app_localizations.dart';
@@ -793,8 +794,9 @@ class _SurfaceMapTile extends StatelessWidget {
   }
 }
 
-/// Live orbital diagram of the major moons of Jupiter (Io, Europa, Ganymede,
-/// Callisto) or Saturn (Enceladus, Titan) at their real orbital angles.
+/// The moons of Jupiter (four) or Saturn (eight) where they really are on a
+/// chosen date, as a small telescope shows them: north up, west to the right.
+/// The positions come from lib/core/moons.dart.
 class _MoonOrbitCard extends StatefulWidget {
   const _MoonOrbitCard({required this.planet, required this.moons});
 
@@ -805,22 +807,41 @@ class _MoonOrbitCard extends StatefulWidget {
   State<_MoonOrbitCard> createState() => _MoonOrbitCardState();
 }
 
+class _MoonSpec {
+  const _MoonSpec(this.en, this.hi, this.color);
+
+  final String en;
+  final String hi;
+  final Color color;
+}
+
+const List<_MoonSpec> _jupiterSpecs = <_MoonSpec>[
+  _MoonSpec('Io', 'आयो', Color(0xFFF2C94C)),
+  _MoonSpec('Europa', 'यूरोपा', Color(0xFFBCE0FD)),
+  _MoonSpec('Ganymede', 'गैनिमीड', Color(0xFFD0C4B4)),
+  _MoonSpec('Callisto', 'कैलिस्टो', Color(0xFF9E9488)),
+];
+
+const List<_MoonSpec> _saturnSpecs = <_MoonSpec>[
+  _MoonSpec('Mimas', 'मिमास', Color(0xFFE9E9EF)),
+  _MoonSpec('Enceladus', 'एन्सेलेडस', Color(0xFFDCF2FF)),
+  _MoonSpec('Tethys', 'टेथिस', Color(0xFFCFE3F2)),
+  _MoonSpec('Dione', 'डायोन', Color(0xFFE8DCC8)),
+  _MoonSpec('Rhea', 'रिया', Color(0xFFD8CFC4)),
+  _MoonSpec('Titan', 'टाइटन', Color(0xFFF0AD4E)),
+  _MoonSpec('Hyperion', 'हाइपेरियन', Color(0xFFC7A98A)),
+  _MoonSpec('Iapetus', 'आयापेटस', Color(0xFFB8B0E8)),
+];
+
 class _MoonOrbitCardState extends State<_MoonOrbitCard>
     with SingleTickerProviderStateMixin {
   bool _playing = false;
-  double _dayOffset = 0;
+  bool _wide = false;
+  double _hourOffset = 0;
   Ticker? _ticker;
   Duration _last = Duration.zero;
 
-  /// J2000.0 mean longitudes in degrees for the major moons.
-  static const Map<String, double> _j2000Deg = <String, double>{
-    'io': 106.077,
-    'europa': 175.732,
-    'ganymede': 120.558,
-    'callisto': 84.444,
-    'enceladus': 200.01,
-    'titan': 186.59,
-  };
+  bool get _isSaturn => widget.planet.id == 'saturn';
 
   @override
   void initState() {
@@ -833,8 +854,8 @@ class _MoonOrbitCardState extends State<_MoonOrbitCard>
       final dt = (elapsed - _last).inMicroseconds / 1e6;
       _last = elapsed;
       setState(() {
-        // 1.2 days of moon orbit per real second when playing.
-        _dayOffset += dt * 1.2;
+        // 12 hours of sky time per real second when playing.
+        _hourOffset += dt * 12;
       });
     });
   }
@@ -857,13 +878,11 @@ class _MoonOrbitCardState extends State<_MoonOrbitCard>
     });
   }
 
-  static double _moonAngleRad(Planet moon, DateTime at) {
-    final j2000 = DateTime.utc(2000, 1, 1, 12);
-    final days = at.toUtc().difference(j2000).inMinutes / 1440.0;
-    final l0 = _j2000Deg[moon.id] ?? 0.0;
-    final period = moon.yearDays > 0 ? moon.yearDays : 1.0;
-    final deg = (l0 + (days / period) * 360.0) % 360.0;
-    return -deg * math.pi / 180.0;
+  void _step(double hours) => setState(() => _hourOffset += hours);
+
+  String _stamp(DateTime t) {
+    String two(int v) => v.toString().padLeft(2, '0');
+    return '${t.year}-${two(t.month)}-${two(t.day)} ${two(t.hour)}:${two(t.minute)} UTC';
   }
 
   @override
@@ -871,11 +890,13 @@ class _MoonOrbitCardState extends State<_MoonOrbitCard>
     final l = context.l10n;
     final p = Palette.of(context);
     final isHi = Localizations.localeOf(context).languageCode == 'hi';
-    final sorted = List<Planet>.of(widget.moons)
-      ..sort((a, b) => a.distanceMillionKm.compareTo(b.distanceMillionKm));
+    final specs = _isSaturn ? _saturnSpecs : _jupiterSpecs;
     final current = DateTime.now()
         .toUtc()
-        .add(Duration(minutes: (_dayOffset * 1440).round()));
+        .add(Duration(minutes: (_hourOffset * 60).round()));
+    final positions = _isSaturn ? saturnMoons(current) : jupiterMoons(current);
+    final range = _isSaturn ? (_wide ? 62.0 : 22.0) : 29.0;
+    final tilt = _isSaturn ? saturnRingTilt(current) : 0.0;
 
     return SurfaceCard(
       padding: const EdgeInsets.all(16),
@@ -890,8 +911,8 @@ class _MoonOrbitCardState extends State<_MoonOrbitCard>
               Expanded(
                 child: Text(
                   isHi
-                      ? '${planetName(l, widget.planet)} के चंद्रमाओं की लाइव कक्षा'
-                      : '${planetName(l, widget.planet)} moons · Live orbits',
+                      ? '${planetName(l, widget.planet)} के चंद्रमाओं की असली स्थिति'
+                      : '${planetName(l, widget.planet)} moons · Real positions',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
@@ -899,17 +920,6 @@ class _MoonOrbitCardState extends State<_MoonOrbitCard>
                   ),
                 ),
               ),
-              if (_dayOffset != 0)
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      _playing = false;
-                      _dayOffset = 0;
-                      _ticker?.stop();
-                    });
-                  },
-                  child: Text(isHi ? 'अभी (Now)' : 'Now'),
-                ),
               IconButton(
                 icon: Icon(
                   _playing ? Icons.pause_circle_filled : Icons.play_circle_fill,
@@ -921,20 +931,50 @@ class _MoonOrbitCardState extends State<_MoonOrbitCard>
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          Text(_stamp(current),
+              style: TextStyle(
+                  fontSize: 13, fontWeight: FontWeight.w600, color: p.text)),
+          const SizedBox(height: 6),
+          Wrap(
+            spacing: 6,
+            children: <Widget>[
+              OutlinedButton(
+                  onPressed: () => _step(-24), child: const Text('−1 d')),
+              OutlinedButton(
+                  onPressed: () => _step(-6), child: const Text('−6 h')),
+              OutlinedButton(
+                  onPressed: () => _step(6), child: const Text('+6 h')),
+              OutlinedButton(
+                  onPressed: () => _step(24), child: const Text('+1 d')),
+              OutlinedButton(
+                onPressed: () => setState(() {
+                  _playing = false;
+                  _hourOffset = 0;
+                  _ticker?.stop();
+                }),
+                child: Text(isHi ? 'अभी (Now)' : 'Now'),
+              ),
+              if (_isSaturn)
+                OutlinedButton(
+                  onPressed: () => setState(() => _wide = !_wide),
+                  child: Text(_wide
+                      ? (isHi ? 'पास के चंद्रमा' : 'Near moons')
+                      : (isHi ? 'सभी चंद्रमा' : 'All moons')),
+                ),
+            ],
+          ),
+          const SizedBox(height: 10),
           SizedBox(
-            height: 210,
+            height: _isSaturn ? 170 : 150,
             width: double.infinity,
             child: CustomPaint(
               painter: _MoonOrbitPainter(
                 planet: widget.planet,
-                moons: sorted,
-                angles: <double>[
-                  for (final m in sorted) _moonAngleRad(m, current),
-                ],
-                names: <String>[
-                  for (final m in sorted) planetName(l, m),
-                ],
+                positions: positions,
+                specs: specs,
+                isHi: isHi,
+                range: range,
+                tiltDeg: tilt,
                 palette: p,
               ),
             ),
@@ -942,8 +982,8 @@ class _MoonOrbitCardState extends State<_MoonOrbitCard>
           const SizedBox(height: 6),
           Text(
             isHi
-                ? 'वास्तविक कक्षीय अवधि (JPL डेटा) के अनुसार चंद्रमाओं की दिशा। Play दबाकर उन्हें घूमते हुए देखें।'
-                : 'Positions calculated from each moon\'s orbital period. Tap Play to watch them orbit.',
+                ? 'जैसे दूरबीन में दिखते हैं: ऊपर उत्तर, दाईं ओर पश्चिम। Jean Meeus के formulas से हिसाब (website वाला ही)।'
+                : 'As a telescope shows them: north up, west to the right. Calculated with Jean Meeus\'s formulas (the same as on the website).',
             style: TextStyle(fontSize: 12, color: p.muted, height: 1.35),
           ),
         ],
@@ -955,46 +995,73 @@ class _MoonOrbitCardState extends State<_MoonOrbitCard>
 class _MoonOrbitPainter extends CustomPainter {
   _MoonOrbitPainter({
     required this.planet,
-    required this.moons,
-    required this.angles,
-    required this.names,
+    required this.positions,
+    required this.specs,
+    required this.isHi,
+    required this.range,
+    required this.tiltDeg,
     required this.palette,
   });
 
   final Planet planet;
-  final List<Planet> moons;
-  final List<double> angles;
-  final List<String> names;
+  final List<MoonPosition> positions;
+  final List<_MoonSpec> specs;
+  final bool isHi;
+  final double range;
+  final double tiltDeg;
   final Palette palette;
+
+  void _rings(Canvas canvas, Offset c, double s, bool front) {
+    if (planet.id != 'saturn') {
+      return;
+    }
+    final k = math.sin(tiltDeg * math.pi / 180).abs();
+    final near = tiltDeg >= 0 ? 0.0 : math.pi;
+    final start = front ? near : near + math.pi;
+    for (final ring in const <List<double>>[
+      <double>[1.55, 0.5],
+      <double>[2.0, 0.55],
+      <double>[2.27, 0.25],
+    ]) {
+      final rx = ring[0] * s;
+      final paint = Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = math.max(1.0, ring[1] * s)
+        ..color = const Color(0xBFDFC07C);
+      canvas.drawArc(
+        Rect.fromCenter(center: c, width: rx * 2, height: rx * 2 * k),
+        start,
+        math.pi,
+        false,
+        paint,
+      );
+    }
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
-    final center = Offset(size.width / 2, size.height / 2);
-    final maxR = math.min(size.width, size.height) / 2 - 18;
-    final orbitPaint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.1
-      ..color = palette.orbitLine;
+    final c = Offset(size.width / 2, size.height / 2);
+    final s = (size.width / 2 - 14) / range;
 
-    // Draw central planet
-    canvas.drawCircle(
-      center,
-      14,
-      Paint()..color = planet.color.withValues(alpha: 0.25),
-    );
-    paintPlanetBall(canvas, planet, center, 10);
+    _rings(canvas, c, s, false);
+    paintPlanetBall(canvas, planet, c, math.max(4.0, s));
+    _rings(canvas, c, s, true);
 
-    for (var i = 0; i < moons.length; i++) {
-      final moon = moons[i];
-      final r = maxR * (0.34 + 0.66 * (i / math.max(1, moons.length - 1)));
-      canvas.drawCircle(center, r, orbitPaint);
-      final a = angles[i];
-      final pos = center + Offset(math.cos(a) * r, math.sin(a) * r);
-      paintPlanetBall(canvas, moon, pos, 5.5);
-
+    final order = List<int>.generate(positions.length, (i) => i)
+      ..sort((a, b) => positions[a].z.compareTo(positions[b].z));
+    for (final i in order) {
+      final m = positions[i];
+      if (m.x.abs() > range) {
+        continue;
+      }
+      if (m.z < 0 && m.apparentDistance < 1) {
+        continue;
+      }
+      final pos = c + Offset(m.x * s, -m.y * s);
+      canvas.drawCircle(pos, 3.6, Paint()..color = specs[i].color);
       final tp = TextPainter(
         text: TextSpan(
-          text: names[i],
+          text: isHi ? specs[i].hi : specs[i].en,
           style: TextStyle(
             fontSize: 11,
             fontWeight: FontWeight.w600,
@@ -1003,8 +1070,24 @@ class _MoonOrbitPainter extends CustomPainter {
         ),
         textDirection: TextDirection.ltr,
       )..layout();
-      final labelOffset = pos + const Offset(8, -6);
-      tp.paint(canvas, labelOffset);
+      tp.paint(
+        canvas,
+        Offset(pos.dx - tp.width / 2, pos.dy + (i.isOdd ? 7 : -17)),
+      );
+    }
+
+    for (final label in <(String, bool)>[
+      (isHi ? 'पूर्व' : 'E', false),
+      (isHi ? 'पश्चिम' : 'W', true),
+    ]) {
+      final tp = TextPainter(
+        text: TextSpan(
+          text: label.$1,
+          style: TextStyle(fontSize: 10, color: palette.muted),
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      tp.paint(canvas, Offset(label.$2 ? size.width - tp.width - 4 : 4, 2));
     }
   }
 
