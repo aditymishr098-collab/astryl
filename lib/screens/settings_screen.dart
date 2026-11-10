@@ -59,6 +59,29 @@ class SettingsSections extends StatelessWidget {
     await state.setQuizAlert(value);
   }
 
+  Future<void> _toggleFactAlert(BuildContext context, bool value) async {
+    final l = context.l10n;
+    final state = AppScope.read(context);
+    final messenger = ScaffoldMessenger.of(context);
+    if (value && !await state.bridge.requestNotifications()) {
+      messenger.showSnackBar(SnackBar(content: Text(l.notificationsOff)));
+      return;
+    }
+    await state.setFactAlert(value);
+  }
+
+  Future<void> _pickFactTime(BuildContext context) async {
+    final state = AppScope.read(context);
+    final minutes = state.factMinutes;
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: minutes ~/ 60, minute: minutes % 60),
+    );
+    if (picked != null) {
+      await state.setFactMinutes(picked.hour * 60 + picked.minute);
+    }
+  }
+
   Future<void> _pickQuizTime(BuildContext context) async {
     final state = AppScope.read(context);
     final minutes = state.quizMinutes;
@@ -347,6 +370,42 @@ class SettingsSections extends StatelessWidget {
                           : 'Sends a daily reminder with a preview of today\'s 1st question to keep your streak alive.',
                       style:
                           TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
+                  const SizedBox(height: 12),
+                  const Divider(height: 1),
+                  const SizedBox(height: 8),
+                  SwitchListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(
+                        Localizations.localeOf(context).languageCode == 'hi'
+                            ? 'रोज़ाना "क्या आप जानते हैं?" तथ्य'
+                            : 'Daily "Did you know?" fact',
+                        style: TextStyle(fontSize: 15, color: p.text)),
+                    value: state.factAlert,
+                    onChanged: (value) => _toggleFactAlert(context, value),
+                  ),
+                  AnimatedSize(
+                    duration: const Duration(milliseconds: 250),
+                    curve: Curves.easeOut,
+                    alignment: Alignment.topCenter,
+                    child: !state.factAlert
+                        ? const SizedBox(width: double.infinity)
+                        : ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            title: Text(l.tonightAlertTime,
+                                style: TextStyle(fontSize: 15, color: p.text)),
+                            trailing: Text(
+                              MaterialLocalizations.of(context).formatTimeOfDay(
+                                  TimeOfDay(
+                                      hour: state.factMinutes ~/ 60,
+                                      minute: state.factMinutes % 60)),
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: p.accentText),
+                            ),
+                            onTap: () => _pickFactTime(context),
+                          ),
+                  ),
                 ],
               ),
             ),
@@ -391,6 +450,28 @@ class SettingsSections extends StatelessWidget {
                           TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
                   value: state.account.crashReports,
                   onChanged: state.account.setCrashReports,
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            ListenableBuilder(
+              listenable: state.account,
+              builder: (context, _) => SurfaceCard(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: SwitchListTile(
+                  title: Text(
+                      Localizations.localeOf(context).languageCode == 'hi'
+                          ? 'Astryl की ख़बरें'
+                          : 'Astryl news',
+                      style: TextStyle(fontSize: 15, color: p.text)),
+                  subtitle: Text(
+                      Localizations.localeOf(context).languageCode == 'hi'
+                          ? 'नई सुविधाओं और ज़रूरी बातों की सूचना। हर कुछ घंटे में सिर्फ़ पूछा जाता है "कुछ नया है?"; आपके बारे में कुछ नहीं भेजा जाता।'
+                          : 'A notification for new features and important notes. Every few hours the app only asks "anything new?"; nothing about you is sent.',
+                      style:
+                          TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
+                  value: state.account.newsOn,
+                  onChanged: state.account.setNews,
                 ),
               ),
             ),

@@ -542,6 +542,16 @@ async function handle(req: Request, b: any): Promise<Response> {
       return reply({ ok: true });
     }
 
+    case "news": {
+      // The latest announcements, for the notification check on the phones.
+      await hit("news:" + ip, 120, 3600);
+      const { data, error } = await admin.from("announcements")
+        .select("id, title_en, body_en, title_hi, body_hi, created_at")
+        .eq("active", true).order("id", { ascending: false }).limit(5);
+      if (error) throw new Fail(500, "news_failed");
+      return reply({ items: data ?? [] }, 200, { "Cache-Control": "public, max-age=300" });
+    }
+
     case "avatar_get": {
       const user = await userFrom(req);
       const r = await admin.from("avatars").select("image").eq("user_id", user.id).maybeSingle();

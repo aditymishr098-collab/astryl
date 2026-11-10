@@ -64,6 +64,16 @@ class MainActivity : FlutterActivity() {
                         call.argument<String>("channel") ?: "Space events"
                     )
                 )
+                "configureNews" -> {
+                    NewsCheck.configure(
+                        this,
+                        call.argument<Boolean>("on") ?: false,
+                        call.argument<String>("url") ?: "",
+                        call.argument<String>("key") ?: "",
+                        call.argument<String>("lang") ?: "en"
+                    )
+                    result.success(true)
+                }
                 "cancelReminder" -> {
                     Reminders.cancel(this, call.argument<String>("id") ?: "")
                     result.success(true)
