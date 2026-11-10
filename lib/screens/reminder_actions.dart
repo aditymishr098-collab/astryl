@@ -61,4 +61,5 @@ bool isEventReminder(String id) =>
     !id.startsWith('iss:') &&
     !id.startsWith('sat:') &&
     !id.startsWith('launch:') &&
-    !id.startsWith('tonight:');
+    !id.startsWith('tonight:') &&
+    !id.startsWith('quiz:');

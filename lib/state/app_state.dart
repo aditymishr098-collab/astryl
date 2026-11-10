@@ -128,6 +128,33 @@ class AppState extends ChangeNotifier {
   Future<void> setTonightMinutes(int minutes) =>
       _update(_settings.copyWith(tonightMinutes: minutes));
 
+  /// Whether the daily quiz reminder notification is switched on.
+  bool get quizAlert => (_settings.quizBests['quizAlert'] ?? 0) == 1;
+
+  /// When the daily quiz reminder is shown, in minutes after midnight
+  /// (default 1140 = 19:00 / 7:00 PM).
+  int get quizMinutes => _settings.quizBests['quizMinutes'] ?? 1140;
+
+  /// Turns the daily quiz reminder notification on or off. Turning it off
+  /// removes any scheduled `quiz:0`..`quiz:14` alarms.
+  Future<void> setQuizAlert(bool value) async {
+    final bests = Map<String, int>.of(_settings.quizBests)
+      ..['quizAlert'] = value ? 1 : 0;
+    await _update(_settings.copyWith(quizBests: bests));
+    if (!value) {
+      for (var i = 0; i < tonightAlertDays; i++) {
+        await _bridge.cancelReminder('quiz:$i');
+      }
+    }
+  }
+
+  /// Sets when the daily quiz reminder is shown, in minutes after midnight.
+  Future<void> setQuizMinutes(int minutes) async {
+    final bests = Map<String, int>.of(_settings.quizBests)
+      ..['quizMinutes'] = minutes.clamp(0, 1439);
+    await _update(_settings.copyWith(quizBests: bests));
+  }
+
   /// Whether [key] (see favorites.dart) is starred.
   bool isFavorite(String key) => _settings.favorites.contains(key);
 

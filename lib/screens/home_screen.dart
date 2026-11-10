@@ -30,6 +30,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _tab = 0;
   String _alertKey = '';
+  String _quizAlertKey = '';
 
   @override
   void initState() {
@@ -71,10 +72,50 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  /// Prepares the next 15 days' Daily 5 Quiz reminder notifications.
+  /// Automatically skips today (`quiz:0`) if the user already played today.
+  void _syncQuizAlerts(AppState state) {
+    if (kIsWeb || !state.quizAlert) {
+      _quizAlertKey = '';
+      return;
+    }
+    final settings = state.settings;
+    final now = DateTime.now();
+    final nowUtc = now.toUtc();
+    final todayUtcNum = nowUtc.year * 10000 + nowUtc.month * 100 + nowUtc.day;
+    final lastDay = settings.quizBests['lastDay'] ?? 0;
+    final streak = settings.quizBests['streak'] ?? 0;
+    final playedToday = lastDay == todayUtcNum;
+    final locale = Localizations.localeOf(context);
+    final key = '${state.quizMinutes}-$streak-$playedToday-'
+        '${locale.languageCode}-${now.year}-${now.month}-${now.day}';
+    if (key == _quizAlertKey) {
+      return;
+    }
+    _quizAlertKey = key;
+    final l = context.l10n;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) {
+        return;
+      }
+      final alerts = buildQuizAlerts(
+        l: l,
+        locale: locale,
+        minutes: state.quizMinutes,
+        now: now,
+        streak: streak,
+        playedToday: playedToday,
+      );
+      await scheduleQuizAlerts(state.bridge, alerts, channel: l.quizTitle);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    _syncTonightAlerts(AppScope.of(context));
+    final state = AppScope.of(context);
+    _syncTonightAlerts(state);
+    _syncQuizAlerts(state);
     return Scaffold(
       body: SafeArea(
         bottom: false,

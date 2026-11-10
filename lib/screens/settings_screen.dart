@@ -48,6 +48,29 @@ class SettingsSections extends StatelessWidget {
     }
   }
 
+  Future<void> _toggleQuizAlert(BuildContext context, bool value) async {
+    final l = context.l10n;
+    final state = AppScope.read(context);
+    final messenger = ScaffoldMessenger.of(context);
+    if (value && !await state.bridge.requestNotifications()) {
+      messenger.showSnackBar(SnackBar(content: Text(l.notificationsOff)));
+      return;
+    }
+    await state.setQuizAlert(value);
+  }
+
+  Future<void> _pickQuizTime(BuildContext context) async {
+    final state = AppScope.read(context);
+    final minutes = state.quizMinutes;
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: minutes ~/ 60, minute: minutes % 60),
+    );
+    if (picked != null) {
+      await state.setQuizMinutes(picked.hour * 60 + picked.minute);
+    }
+  }
+
   Future<void> _saveBackup(BuildContext context) async {
     final l = context.l10n;
     final state = AppScope.read(context);
@@ -280,6 +303,48 @@ class SettingsSections extends StatelessWidget {
                       onTap: () => _pickTonightTime(context),
                     )),
                   Text(l.tonightAlertNote,
+                      style:
+                          TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
+                  const SizedBox(height: 12),
+                  const Divider(height: 1),
+                  const SizedBox(height: 8),
+                  SwitchListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(
+                        Localizations.localeOf(context).languageCode == 'hi'
+                            ? 'रोज़ाना Daily 5 क्विज़ रिमाइंडर'
+                            : 'Daily 5 quiz & streak reminder',
+                        style: TextStyle(fontSize: 15, color: p.text)),
+                    value: state.quizAlert,
+                    onChanged: (value) => _toggleQuizAlert(context, value),
+                  ),
+                  AnimatedSize(
+                    duration: const Duration(milliseconds: 250),
+                    curve: Curves.easeOut,
+                    alignment: Alignment.topCenter,
+                    child: !state.quizAlert
+                        ? const SizedBox(width: double.infinity)
+                        : ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            title: Text(l.tonightAlertTime,
+                                style: TextStyle(fontSize: 15, color: p.text)),
+                            trailing: Text(
+                              MaterialLocalizations.of(context).formatTimeOfDay(
+                                  TimeOfDay(
+                                      hour: state.quizMinutes ~/ 60,
+                                      minute: state.quizMinutes % 60)),
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: p.accentText),
+                            ),
+                            onTap: () => _pickQuizTime(context),
+                          ),
+                  ),
+                  Text(
+                      Localizations.localeOf(context).languageCode == 'hi'
+                          ? 'हर दिन आपके चुने समय पर आज के पहले सवाल की झलक और स्ट्रीक अलर्ट भेजेगा।'
+                          : 'Sends a daily reminder with a preview of today\'s 1st question to keep your streak alive.',
                       style:
                           TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
                 ],

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -82,10 +83,60 @@ class _QuizScreenState extends State<QuizScreen> {
     if (!mounted) {
       return;
     }
-    setState(() {
-      _boardData = data;
-      _loadingBoard = false;
-    });
+      setState(() {
+        _boardData = data;
+        _loadingBoard = false;
+      });
+    }
+
+  Future<void> _toggleQuizBell(BuildContext context, bool isHi) async {
+    final l = context.l10n;
+    final state = AppScope.read(context);
+    final messenger = ScaffoldMessenger.of(context);
+    if (state.quizAlert) {
+      await state.setQuizAlert(false);
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(
+            isHi ? '🔕 डेली क्विज़ रिमाइंडर बंद कर दिया गया।' : '🔕 Daily quiz reminder turned off.',
+          ),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
+    if (!await state.bridge.requestNotifications()) {
+      messenger.showSnackBar(SnackBar(content: Text(l.notificationsOff)));
+      return;
+    }
+    if (!context.mounted) {
+      return;
+    }
+    final minutes = state.quizMinutes;
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: minutes ~/ 60, minute: minutes % 60),
+    );
+    if (picked != null) {
+      await state.setQuizMinutes(picked.hour * 60 + picked.minute);
+    }
+    await state.setQuizAlert(true);
+    if (!context.mounted) {
+      return;
+    }
+    final timeStr = MaterialLocalizations.of(context).formatTimeOfDay(
+      TimeOfDay(hour: state.quizMinutes ~/ 60, minute: state.quizMinutes % 60),
+    );
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(
+          isHi
+              ? '🔔 हर दिन $timeStr बजे Daily 5 क्विज़ का रिमाइंडर आएगा!'
+              : '🔔 Daily 5 quiz reminder set for $timeStr every day!',
+        ),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
 
   void _start(QuizLevel level) {
@@ -460,6 +511,14 @@ class _QuizScreenState extends State<QuizScreen> {
           loading: _loadingBoard,
           boardData: _boardData,
           boardTabAll: _boardTabAll,
+          quizAlertOn: state.quizAlert,
+          quizAlertTime: MaterialLocalizations.of(context).formatTimeOfDay(
+            TimeOfDay(
+              hour: state.quizMinutes ~/ 60,
+              minute: state.quizMinutes % 60,
+            ),
+          ),
+          onToggleBell: () => _toggleQuizBell(context, isHi),
           onToggleTab: (all) => setState(() => _boardTabAll = all),
           onPlayDaily: _startDaily,
           onRefresh: _refreshBoard,
@@ -1057,6 +1116,9 @@ class _DailyFiveCard extends StatelessWidget {
     required this.loading,
     required this.boardData,
     required this.boardTabAll,
+    required this.quizAlertOn,
+    required this.quizAlertTime,
+    required this.onToggleBell,
     required this.onToggleTab,
     required this.onPlayDaily,
     required this.onRefresh,
@@ -1068,6 +1130,9 @@ class _DailyFiveCard extends StatelessWidget {
   final bool loading;
   final Map<String, dynamic>? boardData;
   final bool boardTabAll;
+  final bool quizAlertOn;
+  final String quizAlertTime;
+  final VoidCallback onToggleBell;
   final ValueChanged<bool> onToggleTab;
   final VoidCallback onPlayDaily;
   final VoidCallback onRefresh;
@@ -1103,6 +1168,22 @@ class _DailyFiveCard extends StatelessWidget {
                   ),
                 ),
               ),
+              if (!kIsWeb)
+                IconButton(
+                  icon: Icon(
+                    quizAlertOn
+                        ? Icons.notifications_active
+                        : Icons.notifications_none_outlined,
+                    size: 20,
+                    color: quizAlertOn ? p.accentText : p.muted,
+                  ),
+                  tooltip: quizAlertOn
+                      ? (isHi
+                          ? 'रोज़ाना अलर्ट चालू ($quizAlertTime)'
+                          : 'Daily reminder on ($quizAlertTime)')
+                      : (isHi ? 'रोज़ाना रिमाइंडर सेट करें' : 'Set daily quiz reminder'),
+                  onPressed: onToggleBell,
+                ),
               IconButton(
                 icon: Icon(Icons.refresh, size: 20, color: p.muted),
                 tooltip: isHi ? 'ताज़ा करें' : 'Refresh',
