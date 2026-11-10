@@ -345,7 +345,7 @@ def asset_v():
     '''A short hash of the scripts and styles, so a changed file is never served from an old cache.'''
     if not _ASSET_V:
         h = hashlib.md5()
-        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'fx.js'):
+        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js'):
             h.update((SRC / name).read_bytes())
         h.update(data_js().encode('utf-8'))
         _ASSET_V.append(h.hexdigest()[:10])
@@ -461,7 +461,7 @@ def body_page(b, i):
     nxt = BODIES[i + 1] if i + 1 < len(BODIES) else None
     pn = '<div class="pn">' + (f'<a class="btn" href="{prev["id"]}.html">← {bname(prev["id"])}</a>' if prev else '<span></span>') + (f'<a class="btn" href="{nxt["id"]}.html">{bname(nxt["id"])} →</a>' if nxt else '<span></span>') + '</div>'
     wt = f'<h2>{bi("weightFeelsLike", weight="60")}</h2><div class="card"><div class="life">{val(lambda lg: fmt(lg, 60 * b["g"] / 9.8, 1) + " kg")}</div><p class="note">{bi("gravityTimes", factor={lg: fmt(lg, b["g"] / 9.8, 2) for lg in ("en", "hi")})} · <a href="../you.html">{bi("weightTitle")}</a></p></div>' if b['hasSurface'] or True else ''
-    moon_orb = f'<section class="blk"><h2>{bt("Live moon orbits", "चंद्रमाओं की लाइव परिक्रमा")}</h2><div class="card" id="moonOrbitSim" data-body="{idn}"></div></section>' if idn in ('jupiter', 'saturn') else ''
+    moon_orb = f'<section class="blk"><h2>{bt("Live moon positions", "चंद्रमाओं की लाइव स्थिति")}</h2><div class="card" id="moonOrbitSim" data-body="{idn}"></div></section>' if idn in ('jupiter', 'saturn') else ''
     body = f'''<p style="margin-top:20px"><a href="../planets.html">← {bi("planetsTitle")}</a></p>
 <div class="bodyhead">{planet_svg(b)}<div><h1 style="margin:0">{bname(idn)}</h1><p class="sub" style="margin:.2em 0 0">{sub}</p></div></div>
 <div class="stats">{"".join(stats)}</div>
@@ -475,7 +475,7 @@ def body_page(b, i):
 <section class="blk">{moons}{dyn}</section>
 {pn}'''
     en_name = tr('en', NAME_KEY[idn])
-    write(f'body/{idn}.html', shell(en_name, tr('hi', NAME_KEY[idn]), 'planets', body, f'{en_name}: size, gravity, temperature, day and year length, atmosphere and facts. From the Astryl Solar System app.', depth=1, canonical=f'body/{idn}.html'))
+    write(f'body/{idn}.html', shell(en_name, tr('hi', NAME_KEY[idn]), 'planets', body, f'{en_name}: size, gravity, temperature, day and year length, atmosphere and facts. From the Astryl Solar System app.', depth=1, canonical=f'body/{idn}.html', extra_head=f'<script defer src="../assets/moons.js?v={asset_v()}"></script>' if idn in ('jupiter', 'saturn') else ''))
 
 
 def orrery_svg():
@@ -804,6 +804,7 @@ def main():
     shutil.copy(SRC / 'app.js', OUT / 'assets/app.js')
     shutil.copy(SRC / 'account.js', OUT / 'assets/account.js')
     shutil.copy(SRC / 'cosmos.js', OUT / 'assets/cosmos.js')
+    shutil.copy(SRC / 'moons.js', OUT / 'assets/moons.js')
     shutil.copy(SRC / 'fx.js', OUT / 'assets/fx.js')
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#fbf7ee"/><circle r="30" fill="#1b3a8a"/><ellipse rx="50" ry="15" fill="none" stroke="#6a45d6" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#1b3a8a"/></svg>', encoding='utf-8')

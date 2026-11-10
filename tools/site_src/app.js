@@ -941,42 +941,6 @@
       });
       onRender(drawTel);
     }
-
-    // 3. Live Moon Orbit Simulator (for Jupiter & Saturn)
-    var mSim = $('#moonOrbitSim');
-    if (mSim) {
-      var mid = mSim.dataset.body, mPlaying = true, mDays = (Date.now() - Date.UTC(2025, 0, 1)) / 86400000;
-      var mList = mid === 'jupiter'
-        ? [{ n: 'Io', r: 34, p: 1.769, c: '#f2c94c' }, { n: 'Europa', r: 52, p: 3.551, c: '#bce0fd' }, { n: 'Ganymede', r: 72, p: 7.155, c: '#d0c4b4' }, { n: 'Callisto', r: 94, p: 16.689, c: '#9e9488' }]
-        : [{ n: 'Enceladus', r: 48, p: 1.370, c: '#dcf2ff' }, { n: 'Titan', r: 86, p: 15.945, c: '#f0ad4e' }];
-      mSim.innerHTML = '<div class="sim-flex"><canvas id="moonOrbCv" width="240" height="240" style="width:210px;height:210px;border-radius:14px;background:#050812"></canvas><div style="flex:1"><p id="moonOrbDesc" style="color:var(--text);margin-top:0"></p><div class="eyes-chips" id="moonOrbLegend"></div><button class="btn" id="moonOrbToggle" style="margin-top:10px">⏸ Pause</button></div></div>';
-      var mCv = $('#moonOrbCv'), mCtx = mCv.getContext('2d'), mBtn = $('#moonOrbToggle');
-      function renderMoonLegend() {
-        $('#moonOrbDesc').textContent = lang === 'hi'
-          ? (mid === 'jupiter' ? 'बृहस्पति के 4 गैलीलियन चंद्रमा (आयो, यूरोपा, गैनिमीड, कैलिस्टो) अपनी असली गति के अनुपात में परिक्रमा कर रहे हैं।' : 'शनि के प्रमुख चंद्रमा एन्सेलेडस और टाइटन अपनी कक्षाओं में घूम रहे हैं।')
-          : (mid === 'jupiter' ? 'Jupiter\'s 4 Galilean moons (Io, Europa, Ganymede, Callisto) orbiting at their real relative speeds.' : 'Saturn\'s major moons Enceladus and Titan orbiting in real relative periods.');
-        $('#moonOrbLegend').innerHTML = mList.map(function (m) { return '<span class="eyes-chip"><i style="background:' + m.c + '"></i>' + m.n + ' (' + m.p + 'd)</span>'; }).join('');
-        mBtn.textContent = mPlaying ? t('pause') : t('play');
-      }
-      function tickMoons() {
-        if (mPlaying) mDays += 0.035;
-        mCtx.clearRect(0, 0, 240, 240);
-        var cx = 120, cy = 120;
-        mCtx.fillStyle = byId[mid].colors[0]; mCtx.beginPath(); mCtx.arc(cx, cy, 14, 0, 7); mCtx.fill();
-        mList.forEach(function (m) {
-          mCtx.strokeStyle = 'rgba(160,180,230,0.22)'; mCtx.lineWidth = 1.2;
-          mCtx.beginPath(); mCtx.arc(cx, cy, m.r, 0, 7); mCtx.stroke();
-          var ang = (mDays / m.p) * Math.PI * 2, mx = cx + Math.cos(ang) * m.r, my = cy + Math.sin(ang) * m.r;
-          mCtx.fillStyle = m.c; mCtx.beginPath(); mCtx.arc(mx, my, 5, 0, 7); mCtx.fill();
-          mCtx.fillStyle = 'rgba(235,240,255,0.88)'; mCtx.font = '600 11px "DM Sans",sans-serif';
-          mCtx.fillText(m.n, mx + 7, my + 4);
-        });
-        if (mPlaying) requestAnimationFrame(tickMoons);
-      }
-      mBtn.addEventListener('click', function () { mPlaying = !mPlaying; renderMoonLegend(); if (mPlaying) requestAnimationFrame(tickMoons); });
-      onRender(renderMoonLegend);
-      requestAnimationFrame(tickMoons);
-    }
   }
 
   /* ---------- small API for cosmos.js (home page animation) ---------- */
