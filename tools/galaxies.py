@@ -94,7 +94,7 @@ def build(h):
     hub = f'''<section class="hero2" style="padding-bottom:0">
 <div><h1 class="rise">{bt("Cities of", "तारों के")} <span class="grad">{bt("stars.", "शहर।")}</span></h1>
 <p class="lead rise">{bt("Galaxies are the great cities of stars. Start with our own, meet our neighbour Andromeda, and see how far the rest are. Every number comes from real measurements.", "Galaxies तारों के विशाल शहर हैं। अपनी आकाशगंगा से शुरू कीजिए, पड़ोसी Andromeda से मिलिए, और देखिए बाक़ी कितनी दूर हैं। हर आँकड़ा असली माप से आया है।")}</p>
-<div class="btns rise"><a class="btn primary" href="galaxies/the-milky-way.html">{bt("Our Milky Way", "हमारी आकाशगंगा")} →</a><a class="btn" href="galaxies/what-is-a-galaxy.html">{bt("What is a galaxy?", "Galaxy क्या है?")}</a></div></div>
+<div class="btns rise"><a class="btn primary" href="galaxies/the-milky-way.html">{bt("Our Milky Way", "हमारी आकाशगंगा")} →</a><a class="btn" href="galaxies/what-is-a-galaxy.html">{bt("What is a galaxy?", "Galaxy क्या है?")}</a><a class="btn" href="deep-space-quiz.html#galaxies">🎲 {bt("Galaxy quiz", "Galaxy quiz")}</a></div></div>
 <div>{milky_way_svg()}</div></section>
 <section class="blk">{facts([
         ('Stars in the Milky Way', 'आकाशगंगा में तारे', '100 to 400 billion', '100 से 400 अरब'),

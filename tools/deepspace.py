@@ -113,7 +113,7 @@ def black_hole_pages(h):
         left = (f'<a class="btn" href="{prev[0]}.html">← {bt(prev[1], prev[2])}</a>' if prev
                 else f'<a class="btn" href="../black-holes.html">← {bt("Black holes", "ब्लैक होल")}</a>')
         right = (f'<a class="btn primary" href="{nxt[0]}.html">{bt(nxt[1], nxt[2])} →</a>' if nxt
-                 else f'<a class="btn primary" href="../quiz.html">{bt("Take the quiz", "Quiz खेलिए")} →</a>')
+                 else f'<a class="btn primary" href="../deep-space-quiz.html">{bt("Take the quiz", "Quiz खेलिए")} →</a>')
         return f'<div class="pn">{left}{right}</div>'
 
     def head(slug, en, hi, lead_en, lead_hi):
@@ -122,7 +122,7 @@ def black_hole_pages(h):
 
     def page(slug, body, en, hi, desc):
         meta = next(s for s in SLUGS if s[0] == slug)
-        html = shell(en, hi, 'bh', body, desc, depth=1, canonical=f'black-holes/{slug}.html')
+        html = shell(en, hi, 'bh', body, desc, depth=1, canonical=f'black-holes/{slug}.html', extra_head=f'<script defer src="../assets/learn.js?v={h["asset_v"]()}"></script>')
         return {'file': f'black-holes/{slug}.html', 'html': html}
 
     out = []
@@ -133,7 +133,7 @@ def black_hole_pages(h):
     hub = f'''<section class="hero2" style="padding-bottom:0">
 <div><h1 class="rise">{bt("Black", "ब्लैक")} <span class="grad">{bt("holes.", "होल।")}</span></h1>
 <p class="lead rise">{bt("The darkest objects in the universe, explained from the start. No maths needed, and every number comes from real measurements.", "ब्रह्मांड की सबसे अँधेरी चीज़ें, शुरू से समझाई हुई। गणित की ज़रूरत नहीं, और हर आँकड़ा असली माप से आया है।")}</p>
-<div class="btns rise"><a class="btn primary" href="black-holes/what-is-a-black-hole.html">{bt("Start here", "यहाँ से शुरू करें")} →</a><a class="btn" href="black-holes/famous-black-holes.html">{bt("Famous black holes", "मशहूर ब्लैक होल")}</a><a class="btn" href="black-hole-lab.html">🧪 {bt("Black hole lab", "ब्लैक होल lab")}</a></div></div>
+<div class="btns rise"><a class="btn primary" href="black-holes/what-is-a-black-hole.html">{bt("Start here", "यहाँ से शुरू करें")} →</a><a class="btn" href="black-holes/famous-black-holes.html">{bt("Famous black holes", "मशहूर ब्लैक होल")}</a><a class="btn" href="black-hole-lab.html">🧪 {bt("Black hole lab", "ब्लैक होल lab")}</a><a class="btn" href="black-holes-101.html">🎓 {bt("Black holes 101", "Black holes 101")}</a></div></div>
 <div>{anatomy_svg(bt)}</div></section>
 <section class="blk">{facts([
         ("Our Galaxy's black hole", 'हमारी आकाशगंगा का ब्लैक होल', '4.3 million Suns', '43 लाख सूरज के बराबर'),
