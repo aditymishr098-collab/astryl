@@ -110,12 +110,10 @@ List<MoonPosition> jupiterMoons(DateTime date) {
 }
 
 class _R4 {
-  _R4([this.lam = 0, this.r = 0, this.gam = 0, this.om = 0]);
-
-  double lam;
-  double r;
-  double gam;
-  double om;
+  double lam = 0;
+  double r = 0;
+  double gam = 0;
+  double om = 0;
 }
 
 const List<int> _ksat = <int>[
