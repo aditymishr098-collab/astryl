@@ -83,6 +83,16 @@ class NativeBridge {
     }
   }
 
+  /// Lets the user pick a picture. Returns a small square JPEG (256 px) as
+  /// base64 text, or null when nothing was picked or it could not be read.
+  Future<String?> pickPhoto() async {
+    try {
+      return await _channel.invokeMethod<String>('pickPhoto');
+    } on Exception {
+      return null;
+    }
+  }
+
   /// The installed version name, for example "1.0.0". Empty when unknown.
   Future<String> appVersion() async {
     try {

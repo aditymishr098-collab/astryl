@@ -156,7 +156,11 @@ class AccountState extends ChangeNotifier {
     });
     _lastPushed = null;
     await _set(_prefs.copyWith(
-        session: _sessionFrom(json, name), promptDone: true, syncedMs: 0));
+        session: _sessionFrom(json, name),
+        promptDone: true,
+        syncedMs: 0,
+        avatar: ''));
+    unawaited(refreshAvatar());
     await syncNow();
   }
 
@@ -171,7 +175,11 @@ class AccountState extends ChangeNotifier {
     });
     _lastPushed = null;
     await _set(_prefs.copyWith(
-        session: _sessionFrom(json, name), promptDone: true, syncedMs: 0));
+        session: _sessionFrom(json, name),
+        promptDone: true,
+        syncedMs: 0,
+        avatar: ''));
+    unawaited(refreshAvatar());
     await syncNow();
     final left = json['usesLeft'];
     return left is int ? left : 0;
@@ -193,7 +201,8 @@ class AccountState extends ChangeNotifier {
     _lastPushed = null;
     syncStatus = 'idle';
     await _set(
-        _prefs.copyWith(clearSession: true, syncedMs: 0, promptDone: false));
+        _prefs.copyWith(
+            clearSession: true, syncedMs: 0, promptDone: false, avatar: ''));
   }
 
   /// Deletes the account and everything stored for it online. The data on
@@ -211,6 +220,7 @@ class AccountState extends ChangeNotifier {
       promptDone: false,
       shareLocation: false,
       shareCountry: false,
+      avatar: '',
     ));
   }
 
@@ -421,6 +431,61 @@ class AccountState extends ChangeNotifier {
     }
   }
 
+  /// The profile picture as base64 JPEG text, or empty.
+  String get avatar => _prefs.avatar;
+
+  /// Asks the user for a picture and saves it to the account. Returns false
+  /// when nothing was picked or it could not be saved. Throws nothing.
+  Future<bool> chooseAvatar() async {
+    if (!loggedIn) {
+      return false;
+    }
+    final image = await _bridge.pickPhoto();
+    if (image == null || image.isEmpty) {
+      return false;
+    }
+    try {
+      await _api.call('avatar_set',
+          body: <String, Object?>{'image': image}, token: await _token());
+    } on AccountException {
+      return false;
+    }
+    await _set(_prefs.copyWith(avatar: image));
+    return true;
+  }
+
+  /// Removes the profile picture from the account and the phone.
+  Future<bool> removeAvatar() async {
+    if (!loggedIn) {
+      return false;
+    }
+    try {
+      await _api.call('avatar_delete', token: await _token());
+    } on AccountException {
+      return false;
+    }
+    await _set(_prefs.copyWith(avatar: ''));
+    return true;
+  }
+
+  /// Fetches the picture of the account (it may have been changed on the
+  /// website). Offline, the picture kept on the phone stays.
+  Future<void> refreshAvatar() async {
+    if (!loggedIn) {
+      return;
+    }
+    try {
+      final json = await _api.call('avatar_get', token: await _token());
+      final image = json['image'];
+      final next = image is String ? image : '';
+      if (next != _prefs.avatar) {
+        await _set(_prefs.copyWith(avatar: next));
+      }
+    } on AccountException {
+      // Tried again the next time the app opens.
+    }
+  }
+
   /// What the app does each time it opens.
   Future<void> onAppOpen() async {
     // The web version has no account: it has no files or native bridge.
@@ -430,6 +495,7 @@ class AccountState extends ChangeNotifier {
     await syncNow();
     await ping();
     await shareLocationNow();
+    await refreshAvatar();
   }
 
   /// The public counter, or null when offline.

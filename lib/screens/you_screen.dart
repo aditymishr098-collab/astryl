@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 import '../core/format.dart';
 import '../l10n/names.dart';
+import '../state/account_state.dart';
 import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
@@ -91,20 +94,7 @@ class _SpacePassportCard extends StatelessWidget {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                        colors: <Color>[p.accent, p.accentText],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                    alignment: Alignment.center,
-                    child: const Icon(Icons.public, color: Colors.white, size: 26),
-                  ),
+                  _PassportAvatar(account: account, isHi: isHi),
                   const SizedBox(width: 14),
                   Expanded(
                     child: Column(
@@ -167,6 +157,118 @@ class _SpacePassportCard extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+/// The round picture on the passport. With an account, a tap opens a sheet to
+/// choose or remove a profile photo.
+class _PassportAvatar extends StatelessWidget {
+  const _PassportAvatar({required this.account, required this.isHi});
+
+  final AccountState account;
+  final bool isHi;
+
+  Future<void> _sheet(BuildContext context) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final has = account.avatar.isNotEmpty;
+    final pick = await showModalBottomSheet<String>(
+      context: context,
+      showDragHandle: true,
+      builder: (ctx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              leading: const Icon(Icons.photo_library_outlined),
+              title: Text(isHi ? 'फ़ोटो चुनें' : 'Choose a photo'),
+              onTap: () => Navigator.of(ctx).pop('choose'),
+            ),
+            if (has)
+              ListTile(
+                leading: const Icon(Icons.delete_outline),
+                title: Text(isHi ? 'फ़ोटो हटाएँ' : 'Remove photo'),
+                onTap: () => Navigator.of(ctx).pop('remove'),
+              ),
+          ],
+        ),
+      ),
+    );
+    if (pick == null) {
+      return;
+    }
+    final ok = pick == 'choose'
+        ? await account.chooseAvatar()
+        : await account.removeAvatar();
+    // Choosing nothing is not an error; only a failed save is told.
+    if (!ok && pick == 'remove') {
+      messenger.showSnackBar(SnackBar(
+          content: Text(isHi
+              ? 'अभी नहीं हो सका, बाद में कोशिश करें।'
+              : 'Could not do that now. Try again later.')));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final p = Palette.of(context);
+    final has = account.avatar.isNotEmpty;
+    ImageProvider? photo;
+    if (has) {
+      try {
+        photo = MemoryImage(base64Decode(account.avatar));
+      } on FormatException {
+        photo = null;
+      }
+    }
+    final circle = Container(
+      width: 52,
+      height: 52,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: LinearGradient(
+          colors: <Color>[p.accent, p.accentText],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        image: photo == null
+            ? null
+            : DecorationImage(
+                image: photo, fit: BoxFit.cover, filterQuality: FilterQuality.medium),
+      ),
+      alignment: Alignment.center,
+      child: photo == null
+          ? const Icon(Icons.public, color: Colors.white, size: 28)
+          : null,
+    );
+    if (!account.loggedIn) {
+      return circle;
+    }
+    return Semantics(
+      button: true,
+      label: isHi ? 'प्रोफ़ाइल फ़ोटो बदलें' : 'Change profile photo',
+      child: GestureDetector(
+        onTap: () => _sheet(context),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: <Widget>[
+            circle,
+            Positioned(
+              right: -2,
+              bottom: -2,
+              child: Container(
+                padding: const EdgeInsets.all(3),
+                decoration: BoxDecoration(
+                  color: p.accent,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: p.surface, width: 2),
+                ),
+                child: const Icon(Icons.camera_alt, size: 11, color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

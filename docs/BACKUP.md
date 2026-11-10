@@ -5,7 +5,8 @@ Actions tab ("Run workflow"). It saves the profiles, recovery hashes, synced dat
 and Daily 5 runs, encrypts them with `BACKUP_PASSPHRASE` and keeps the file for
 30 days as the artifact `astryl-backup` (Actions > the run > Artifacts).
 
-Passwords themselves live in Supabase Auth and are not in the file. If the
+Profile photos are not in the file (they are small pictures a person can choose
+again). Passwords themselves live in Supabase Auth and are not in the file. If the
 database were ever lost, people sign in again with their recovery code and set a
 new password; their data comes back from this file.
 
