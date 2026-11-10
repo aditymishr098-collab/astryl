@@ -16,8 +16,7 @@ TextStyle headingStyle(double size, Color color,
       height: height,
     );
 
-/// Astryl's colours, from the approved design (dark "deep space" and a
-/// light cream theme).
+/// Astryl's colours: Cosmic Nebula dark ("deep space") and a crisp light theme.
 @immutable
 class Palette extends ThemeExtension<Palette> {
   const Palette({
@@ -57,20 +56,20 @@ class Palette extends ThemeExtension<Palette> {
   final Color star;
 
   static const Palette dark = Palette(
-    background: Color(0xFF0B1020),
-    surface: Color(0xFF141B33),
-    surfaceHigh: Color(0xFF1C2547),
-    border: Color(0xFF2A3458),
-    text: Color(0xFFE8ECF8),
-    muted: Color(0xFF9AA6C4),
-    accent: Color(0xFFF5A524),
-    onAccent: Color(0xFF0B1020),
-    accentText: Color(0xFFF5A524),
-    orbit: Color(0xFF7AA2FF),
-    orbitLine: Color(0xFF2A3458),
-    good: Color(0xFF8FE3A6),
-    bad: Color(0xFFFFB08A),
-    star: Color(0xFF5C6890),
+    background: Color(0xFF060A17),
+    surface: Color(0xFF10172E),
+    surfaceHigh: Color(0xFF182242),
+    border: Color(0xFF283660),
+    text: Color(0xFFF0F4FF),
+    muted: Color(0xFF98A6C8),
+    accent: Color(0xFFFFB02E),
+    onAccent: Color(0xFF060A17),
+    accentText: Color(0xFFFFB83D),
+    orbit: Color(0xFF6EA8FF),
+    orbitLine: Color(0xFF26335A),
+    good: Color(0xFF6CE59B),
+    bad: Color(0xFFFF8F70),
+    star: Color(0xFF6B7BA8),
   );
 
   static const Palette light = Palette(
@@ -154,13 +153,14 @@ class Palette extends ThemeExtension<Palette> {
 }
 
 ThemeData buildTheme(Brightness brightness) {
-  final p = brightness == Brightness.dark ? Palette.dark : Palette.light;
+  final isDark = brightness == Brightness.dark;
+  final p = isDark ? Palette.dark : Palette.light;
   final scheme = ColorScheme(
     brightness: brightness,
     primary: p.accent,
     onPrimary: p.onAccent,
     secondary: p.orbit,
-    onSecondary: brightness == Brightness.dark ? p.background : Colors.white,
+    onSecondary: isDark ? p.background : Colors.white,
     error: p.bad,
     onError: p.background,
     surface: p.background,
@@ -176,7 +176,7 @@ ThemeData buildTheme(Brightness brightness) {
     scaffoldBackgroundColor: p.background,
     extensions: <ThemeExtension<dynamic>>[p],
     appBarTheme: AppBarTheme(
-      backgroundColor: p.background,
+      backgroundColor: Colors.transparent,
       foregroundColor: p.text,
       elevation: 0,
       scrolledUnderElevation: 0,
@@ -192,17 +192,75 @@ ThemeData buildTheme(Brightness brightness) {
         side: BorderSide(color: p.border),
       ),
     ),
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(
+        elevation: 0,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+        textStyle: const TextStyle(
+          fontFamily: bodyFont,
+          fontSize: 15,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0.2,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: p.text,
+        side: BorderSide(color: p.border, width: 1.3),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+        textStyle: const TextStyle(
+          fontFamily: bodyFont,
+          fontSize: 14.5,
+          fontWeight: FontWeight.w600,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: isDark
+          ? const Color(0xFF0B1124).withValues(alpha: 0.85)
+          : p.surfaceHigh.withValues(alpha: 0.5),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: p.border),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: p.border),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: p.accent, width: 1.8),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: p.bad),
+      ),
+      labelStyle: TextStyle(color: p.muted),
+      helperStyle: TextStyle(color: p.muted, fontSize: 12),
+    ),
     navigationBarTheme: NavigationBarThemeData(
-      height: 72,
-      backgroundColor: brightness == Brightness.dark
-          ? const Color(0xFF0E1428)
-          : Colors.white,
-      indicatorColor: Colors.transparent,
+      height: 68,
+      backgroundColor: isDark
+          ? const Color(0xFF0D1429).withValues(alpha: 0.94)
+          : Colors.white.withValues(alpha: 0.95),
+      indicatorColor: p.accent.withValues(alpha: isDark ? 0.18 : 0.22),
+      indicatorShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
       surfaceTintColor: Colors.transparent,
       labelTextStyle: WidgetStateProperty.resolveWith((states) {
         final selected = states.contains(WidgetState.selected);
         return TextStyle(
-          fontSize: 12,
+          fontSize: 11.5,
           fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
           color: selected ? p.accentText : p.muted,
         );
@@ -210,16 +268,23 @@ ThemeData buildTheme(Brightness brightness) {
       iconTheme: WidgetStateProperty.resolveWith((states) {
         final selected = states.contains(WidgetState.selected);
         return IconThemeData(
-            size: 26, color: selected ? p.accentText : p.muted);
+            size: 24, color: selected ? p.accentText : p.muted);
       }),
     ),
     dividerTheme: DividerThemeData(color: p.border, space: 1),
     snackBarTheme: SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
       backgroundColor: p.surfaceHigh,
-      contentTextStyle: TextStyle(color: p.text),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      contentTextStyle: TextStyle(color: p.text, fontWeight: FontWeight.w500),
     ),
-    dialogTheme: DialogThemeData(backgroundColor: p.surface),
+    dialogTheme: DialogThemeData(
+      backgroundColor: p.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+        side: BorderSide(color: p.border),
+      ),
+    ),
     switchTheme: SwitchThemeData(
       thumbColor: WidgetStateProperty.resolveWith((states) =>
           states.contains(WidgetState.selected) ? p.onAccent : p.muted),

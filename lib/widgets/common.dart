@@ -193,7 +193,8 @@ class AtmosphereBar extends StatelessWidget {
   }
 }
 
-/// A rounded card with the palette's surface colour.
+/// A rounded card with Cosmic Nebula glass finish, subtle gradient depth,
+/// and a soft ambient shadow in dark mode.
 class SurfaceCard extends StatelessWidget {
   const SurfaceCard({
     super.key,
@@ -211,14 +212,50 @@ class SurfaceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final p = Palette.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final baseColor = color ?? p.surface;
     return Container(
       padding: padding,
       decoration: BoxDecoration(
-        color: color ?? p.surface,
+        color: color != null ? baseColor : null,
+        gradient: color == null
+            ? LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: isDark
+                    ? <Color>[
+                        Color.lerp(p.surfaceHigh, p.surface, 0.35)!,
+                        p.surface,
+                      ]
+                    : <Color>[
+                        p.surface,
+                        Color.lerp(p.surface, p.surfaceHigh, 0.25)!,
+                      ],
+              )
+            : null,
         borderRadius: BorderRadius.circular(24),
         border: borderColor != null
             ? Border.all(color: borderColor!, width: 1.5)
-            : Border.all(color: p.border),
+            : Border.all(
+                color: isDark
+                    ? p.border.withValues(alpha: 0.85)
+                    : p.border,
+              ),
+        boxShadow: isDark
+            ? <BoxShadow>[
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.32),
+                  blurRadius: 18,
+                  offset: const Offset(0, 8),
+                ),
+              ]
+            : <BoxShadow>[
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.04),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
       ),
       child: child,
     );

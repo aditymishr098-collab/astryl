@@ -225,11 +225,21 @@ class _AccountCard extends StatelessWidget {
                         ? l.acctLoggedInAs(account.username)
                         : l.acctTitle,
                     key: ValueKey<bool>(account.loggedIn),
-                    style: TextStyle(color: p.text)),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600, color: p.text)),
               ),
               subtitle: Text(l.settingsAccountSubtitle,
                   style: TextStyle(fontSize: 12, color: p.muted)),
-              trailing: Icon(Icons.chevron_right, color: p.muted),
+              trailing: account.loggedIn
+                  ? Icon(Icons.chevron_right, color: p.muted)
+                  : FilledButton.tonalIcon(
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                            builder: (_) => const AccountScreen()),
+                      ),
+                      icon: const Icon(Icons.login_rounded, size: 16),
+                      label: Text(l.acctTabLogin),
+                    ),
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute<void>(
                     builder: (_) => const AccountHubScreen()),

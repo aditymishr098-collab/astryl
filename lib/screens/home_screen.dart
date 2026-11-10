@@ -116,69 +116,123 @@ class _HomeScreenState extends State<HomeScreen> {
     final state = AppScope.of(context);
     _syncTonightAlerts(state);
     _syncQuizAlerts(state);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final p = Palette.of(context);
     return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: IndexedStack(
-          index: _tab,
-          // The tabs stay alive, but only the one on screen may animate: a
-          // hidden 3D planet would otherwise wake the phone 60 times a second.
-          children: <Widget>[
-            for (final (i, tab) in <Widget>[
-              ExploreTab(active: _tab == 0),
-              const SkyScreen(),
-              const CompareScreen(),
-              const YouScreen(),
-              const QuizScreen(),
-            ].indexed)
-              TickerMode(
-                enabled: _tab == i,
-                child: AnimatedOpacity(
-                  opacity: _tab == i ? 1.0 : 0.0,
-                  duration: const Duration(milliseconds: 220),
-                  curve: Curves.easeOutCubic,
-                  child: tab,
+      extendBody: false,
+      body: Stack(
+        children: <Widget>[
+          if (isDark)
+            Positioned.fill(
+              child: IgnorePointer(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: RadialGradient(
+                      center: const Alignment(-0.75, -0.85),
+                      radius: 1.35,
+                      colors: <Color>[
+                        p.orbit.withValues(alpha: 0.13),
+                        p.accent.withValues(alpha: 0.05),
+                        Colors.transparent,
+                      ],
+                      stops: const <double>[0.0, 0.45, 1.0],
+                    ),
+                  ),
                 ),
               ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: DecoratedBox(
-        decoration: BoxDecoration(
-          border: Border(
-              top: BorderSide(color: Palette.of(context).border, width: 1)),
-        ),
-        child: NavigationBar(
-        selectedIndex: _tab,
-        onDestinationSelected: (i) => setState(() => _tab = i),
-        destinations: <NavigationDestination>[
-          NavigationDestination(
-            icon: const Icon(Icons.public_outlined),
-            selectedIcon: const Icon(Icons.public),
-            label: l.navExplore,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.nights_stay_outlined),
-            selectedIcon: const Icon(Icons.nights_stay),
-            label: l.navSky,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.bar_chart_outlined),
-            selectedIcon: const Icon(Icons.bar_chart),
-            label: l.navCompare,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.person_outline),
-            selectedIcon: const Icon(Icons.person),
-            label: l.navYou,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.quiz_outlined),
-            selectedIcon: const Icon(Icons.quiz),
-            label: l.navQuiz,
+            ),
+          SafeArea(
+            bottom: false,
+            child: IndexedStack(
+              index: _tab,
+              // The tabs stay alive, but only the one on screen may animate: a
+              // hidden 3D planet would otherwise wake the phone 60 times a second.
+              children: <Widget>[
+                for (final (i, tab) in <Widget>[
+                  ExploreTab(active: _tab == 0),
+                  const SkyScreen(),
+                  const CompareScreen(),
+                  const YouScreen(),
+                  const QuizScreen(),
+                ].indexed)
+                  TickerMode(
+                    enabled: _tab == i,
+                    child: AnimatedOpacity(
+                      opacity: _tab == i ? 1.0 : 0.0,
+                      duration: const Duration(milliseconds: 240),
+                      curve: Curves.easeOutCubic,
+                      child: AnimatedScale(
+                        scale: _tab == i ? 1.0 : 0.985,
+                        duration: const Duration(milliseconds: 240),
+                        curve: Curves.easeOutCubic,
+                        child: tab,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
         ],
       ),
+      bottomNavigationBar: SafeArea(
+        top: false,
+        minimum: const EdgeInsets.fromLTRB(12, 0, 12, 10),
+        child: Container(
+          decoration: BoxDecoration(
+            color: isDark
+                ? const Color(0xFF0D1429).withValues(alpha: 0.95)
+                : Colors.white.withValues(alpha: 0.96),
+            borderRadius: BorderRadius.circular(26),
+            border: Border.all(
+              color: isDark
+                  ? p.border.withValues(alpha: 0.9)
+                  : p.border,
+              width: 1.2,
+            ),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: Colors.black.withValues(alpha: isDark ? 0.45 : 0.08),
+                blurRadius: 22,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(26),
+            child: NavigationBar(
+              backgroundColor: Colors.transparent,
+              selectedIndex: _tab,
+              onDestinationSelected: (i) => setState(() => _tab = i),
+              destinations: <NavigationDestination>[
+                NavigationDestination(
+                  icon: const Icon(Icons.public_outlined),
+                  selectedIcon: const Icon(Icons.public),
+                  label: l.navExplore,
+                ),
+                NavigationDestination(
+                  icon: const Icon(Icons.nights_stay_outlined),
+                  selectedIcon: const Icon(Icons.nights_stay),
+                  label: l.navSky,
+                ),
+                NavigationDestination(
+                  icon: const Icon(Icons.bar_chart_outlined),
+                  selectedIcon: const Icon(Icons.bar_chart),
+                  label: l.navCompare,
+                ),
+                NavigationDestination(
+                  icon: const Icon(Icons.person_outline),
+                  selectedIcon: const Icon(Icons.person),
+                  label: l.navYou,
+                ),
+                NavigationDestination(
+                  icon: const Icon(Icons.quiz_outlined),
+                  selectedIcon: const Icon(Icons.quiz),
+                  label: l.navQuiz,
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
