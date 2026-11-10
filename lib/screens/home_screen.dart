@@ -260,7 +260,7 @@ class _NeonSideRail extends StatelessWidget {
   }
 }
 
-/// Clean, calm minimal top header bar with brand logo, streak pill, and search.
+/// Clean, calm minimal top header bar with brand logo, streak pill, and compact search button.
 class _MissionControlHudBar extends StatelessWidget {
   const _MissionControlHudBar({
     required this.onTapProfile,
@@ -283,12 +283,14 @@ class _MissionControlHudBar extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 6),
       child: Row(
         children: <Widget>[
-          const HelioraLogo(size: 28),
+          const HelioraLogo(size: 32),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
               l.appTitle,
-              style: headingStyle(20, p.text),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: headingStyle(22, p.text),
             ),
           ),
           if (streak > 0) ...<Widget>[
@@ -297,7 +299,7 @@ class _MissionControlHudBar extends StatelessWidget {
               onTap: onTapStreak,
               child: Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
                   color: p.surface,
                   borderRadius: BorderRadius.circular(999),
@@ -306,12 +308,12 @@ class _MissionControlHudBar extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    const Text('🔥', style: TextStyle(fontSize: 12)),
+                    const Text('🔥', style: TextStyle(fontSize: 13)),
                     const SizedBox(width: 4),
                     Text(
                       '$streak',
                       style: TextStyle(
-                        fontSize: 12.5,
+                        fontSize: 13,
                         fontWeight: FontWeight.w700,
                         color: p.text,
                       ),
@@ -322,26 +324,21 @@ class _MissionControlHudBar extends StatelessWidget {
             ),
             const SizedBox(width: 8),
           ],
-          InkWell(
-            borderRadius: BorderRadius.circular(999),
-            onTap: onTapSearch,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-              decoration: BoxDecoration(
-                color: p.surface,
-                borderRadius: BorderRadius.circular(999),
-                border: Border.all(color: p.border),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Icon(Icons.search_rounded, size: 17, color: p.muted),
-                  const SizedBox(width: 6),
-                  Text(
-                    l.searchHint,
-                    style: TextStyle(fontSize: 12.5, color: p.muted),
-                  ),
-                ],
+          Tooltip(
+            message: l.searchHint,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(999),
+              onTap: onTapSearch,
+              child: Container(
+                width: 38,
+                height: 38,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: p.surface,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: p.border),
+                ),
+                child: Icon(Icons.search_rounded, size: 19, color: p.text),
               ),
             ),
           ),
