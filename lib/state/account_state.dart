@@ -256,6 +256,11 @@ class AccountState extends ChangeNotifier {
     await _pushPrefs();
   }
 
+  Future<void> setShowOnBoard(bool value) async {
+    await _set(_prefs.copyWith(showOnBoard: value));
+    await _pushPrefs();
+  }
+
   Future<void> _pushPrefs() async {
     if (!loggedIn) {
       return;
@@ -266,6 +271,7 @@ class AccountState extends ChangeNotifier {
             'countMe': _prefs.countMe,
             'shareCountry': _prefs.shareCountry,
             'shareLocation': _prefs.shareLocation,
+            'showOnBoard': _prefs.showOnBoard,
             'country': _prefs.shareCountry ? _country : null,
           },
           token: await _token());
@@ -293,6 +299,7 @@ class AccountState extends ChangeNotifier {
           countMe: remotePrefs['countMe'] is bool ? remotePrefs['countMe'] as bool : null,
           shareCountry: remotePrefs['shareCountry'] is bool ? remotePrefs['shareCountry'] as bool : null,
           shareLocation: remotePrefs['shareLocation'] is bool ? remotePrefs['shareLocation'] as bool : null,
+          showOnBoard: remotePrefs['showOnBoard'] is bool ? remotePrefs['showOnBoard'] as bool : null,
         );
       }
       final local = _read();
@@ -431,7 +438,6 @@ class AccountState extends ChangeNotifier {
     try {
       return await _api.call(
         'daily_start',
-        body: <String, Object?>{'username': username},
         token: await _token(),
       );
     } on AccountException {
@@ -439,18 +445,16 @@ class AccountState extends ChangeNotifier {
     }
   }
 
-  /// Submits today's Daily 5 score for the logged-in user.
-  Future<Map<String, dynamic>?> dailySubmit(int correct) async {
+  /// Hands in today's Daily 5: the five chosen option ids, in order. The
+  /// server works out the score and the time itself.
+  Future<Map<String, dynamic>?> dailySubmit(List<String> answers) async {
     if (!loggedIn) {
       return null;
     }
     try {
       return await _api.call(
         'daily_submit',
-        body: <String, Object?>{
-          'correct': correct,
-          'username': username,
-        },
+        body: <String, Object?>{'answers': answers},
         token: await _token(),
       );
     } on AccountException {

@@ -1,5 +1,6 @@
-# Checks Firebase Cloud Firestore public stats endpoint periodically.
-name: Keep Firebase stats warm
+# Supabase's free plan pauses a project that nobody has used for about a week.
+# This asks the public counter once every few days, so the project stays awake.
+name: Keep Supabase awake
 
 on:
   schedule:
@@ -12,6 +13,6 @@ jobs:
     steps:
       - name: Ask for the public counter
         run: |
-          curl --silent --show-error --max-time 30 \
-            "https://firestore.googleapis.com/v1/projects/astryl-space/databases/(default)/documents/stats/global" > /dev/null || true
-
+          curl --fail --silent --show-error --max-time 30 \
+            -H "apikey: sb_publishable_2q49HssjpFg-5dnCRVBCSw_4O3cY8yH" \
+            "https://pmfjjlfggzihbnbmqkao.supabase.co/functions/v1/account?action=stats"

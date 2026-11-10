@@ -75,6 +75,7 @@ class AccountPrefs {
     this.countMe = false,
     this.shareCountry = false,
     this.shareLocation = false,
+    this.showOnBoard = true,
     this.crashReports = true,
     this.syncedMs = 0,
     this.lastPingMs = 0,
@@ -93,6 +94,9 @@ class AccountPrefs {
   final bool shareCountry;
   final bool shareLocation;
 
+  /// Whether the name shows on the Daily 5 leaderboard (on by default).
+  final bool showOnBoard;
+
   /// Whether a crash sends a small anonymous report (no account, no name).
   final bool crashReports;
 
@@ -109,6 +113,7 @@ class AccountPrefs {
     bool? countMe,
     bool? shareCountry,
     bool? shareLocation,
+    bool? showOnBoard,
     bool? crashReports,
     int? syncedMs,
     int? lastPingMs,
@@ -123,6 +128,7 @@ class AccountPrefs {
       countMe: countMe ?? this.countMe,
       shareCountry: shareCountry ?? this.shareCountry,
       shareLocation: shareLocation ?? this.shareLocation,
+      showOnBoard: showOnBoard ?? this.showOnBoard,
       crashReports: crashReports ?? this.crashReports,
       syncedMs: syncedMs ?? this.syncedMs,
       lastPingMs: lastPingMs ?? this.lastPingMs,
@@ -138,6 +144,7 @@ class AccountPrefs {
         'countMe': countMe,
         'shareCountry': shareCountry,
         'shareLocation': shareLocation,
+        'showOnBoard': showOnBoard,
         'crashReports': crashReports,
         'syncedMs': syncedMs,
         'lastPingMs': lastPingMs,
@@ -165,6 +172,7 @@ class AccountPrefs {
       countMe: b('countMe', d.countMe),
       shareCountry: b('shareCountry', d.shareCountry),
       shareLocation: b('shareLocation', d.shareLocation),
+      showOnBoard: b('showOnBoard', d.showOnBoard),
       crashReports: b('crashReports', d.crashReports),
       syncedMs: i('syncedMs'),
       lastPingMs: i('lastPingMs'),

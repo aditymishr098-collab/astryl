@@ -1341,5 +1341,8 @@
   "spaceMode": "Space",
   "spaceBack": "Whole Solar System",
   "spaceHint": "Drag to look around · Pinch to zoom · Tap a planet to fly to it · Sizes and distances not to scale",
-  "spacecraftAdityal1": "India's (ISRO) first solar observatory. Placed in a halo orbit around the Sun–Earth L1 point (1.5 million km away) to watch the Sun's corona and solar storms non-stop."
+  "spacecraftAdityal1": "India's (ISRO) first solar observatory. Placed in a halo orbit around the Sun–Earth L1 point (1.5 million km away) to watch the Sun's corona and solar storms non-stop.",
+  "dailyUpdate": "This version cannot show today’s questions. Please update the app.",
+  "boardShow": "Show me on the leaderboard",
+  "boardShowNote": "Shows only your username and score. On by default; switch it off to hide."
 }

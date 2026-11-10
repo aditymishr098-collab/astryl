@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../core/daily.dart';
 import '../core/format.dart';
 import '../core/quiz.dart';
 import '../data/planets.dart';
@@ -54,6 +55,8 @@ class _QuizScreenState extends State<QuizScreen> {
   int _dailyStartMs = 0;
   int _dailyElapsedSec = 0;
   int _dailyPoints = 0;
+  List<String> _dailyPicks = <String>[];
+  List<QuizQuestion>? _dailyServerQuestions;
   Timer? _dailyTimer;
   bool _boardTabAll = false;
   bool _loadingBoard = true;
@@ -225,6 +228,7 @@ class _QuizScreenState extends State<QuizScreen> {
     final dayUtc = DateTime.now().toUtc().toIso8601String().substring(0, 10);
     final acct = AppScope.read(context).account;
     var elapsedMs = 0;
+    List<QuizQuestion>? serverQuestions;
     if (acct.loggedIn) {
       final started = await acct.dailyStart();
       if (!mounted) {
@@ -237,6 +241,17 @@ class _QuizScreenState extends State<QuizScreen> {
       if (started != null && started['elapsedMs'] is int) {
         elapsedMs = started['elapsedMs'] as int;
       }
+      // The server picks today's questions and checks the answers later.
+      if (started != null && started['questions'] != null) {
+        serverQuestions = parseDaily(started['questions']);
+        if (serverQuestions == null) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(context.l10n.dailyUpdate),
+            behavior: SnackBarBehavior.floating,
+          ));
+          return;
+        }
+      }
     }
     _dailyTimer?.cancel();
     _blitzTimer?.cancel();
@@ -244,7 +259,9 @@ class _QuizScreenState extends State<QuizScreen> {
     setState(() {
       _isDaily = true;
       _isBlitz = false;
-      _questions = buildDailyFive(dayUtc);
+      _questions = serverQuestions ?? buildDailyFive(dayUtc);
+      _dailyServerQuestions = serverQuestions;
+      _dailyPicks = <String>[];
       _index = 0;
       _score = 0;
       _picked = null;
@@ -304,6 +321,9 @@ class _QuizScreenState extends State<QuizScreen> {
     setState(() {
       _picked = planet;
       _history.add(right);
+      if (_isDaily) {
+        _dailyPicks.add(planet.id);
+      }
       if (right) {
         _score++;
         if (_isBlitz) {
@@ -353,8 +373,8 @@ class _QuizScreenState extends State<QuizScreen> {
       final state = AppScope.read(context);
       await state.recordDailyStreak();
       final acct = state.account;
-      if (acct.loggedIn) {
-        final sub = await acct.dailySubmit(_score);
+      if (acct.loggedIn && _dailyServerQuestions != null) {
+        final sub = await acct.dailySubmit(_dailyPicks);
         if (sub != null && sub['points'] is int) {
           pts = sub['points'] as int;
         }

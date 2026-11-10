@@ -1277,6 +1277,26 @@ class _AccountHubScreenState extends State<AccountHubScreen> {
                   ),
                 ),
               ],
+              if (account.loggedIn) ...<Widget>[
+                const SizedBox(height: 16),
+                SurfaceCard(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SwitchListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(l.boardShow,
+                            style: TextStyle(fontSize: 15, color: p.text)),
+                        value: prefs.showOnBoard,
+                        onChanged: account.setShowOnBoard,
+                      ),
+                      Text(l.boardShowNote,
+                          style: TextStyle(
+                              fontSize: 12, color: p.muted, height: 1.4)),
+                    ],
+                  ),
+                ),
+              ],
               const SizedBox(height: 16),
               SectionLabel(l.acctOptionalTitle),
               SurfaceCard(
