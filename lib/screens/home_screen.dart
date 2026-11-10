@@ -5,7 +5,6 @@ import 'package:flutter/scheduler.dart';
 import '../core/format.dart';
 import '../core/habitability.dart';
 import '../core/orbits.dart';
-import '../core/sky.dart';
 import '../data/cities.dart';
 import '../data/planets.dart';
 import '../data/tonight_alerts.dart';
@@ -120,8 +119,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final state = AppScope.of(context);
     _syncTonightAlerts(state);
     _syncQuizAlerts(state);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final p = Palette.of(context);
     final screenWidth = MediaQuery.sizeOf(context).width;
     final isTablet = screenWidth >= 700;
     final navLabels = <String>[
@@ -133,100 +130,72 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
     return Scaffold(
       extendBody: false,
-      body: Stack(
-        children: <Widget>[
-          if (isDark)
-            Positioned.fill(
-              child: IgnorePointer(
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: RadialGradient(
-                      center: const Alignment(-0.7, -0.82),
-                      radius: 1.45,
-                      colors: <Color>[
-                        p.accent.withValues(alpha: 0.14),
-                        p.orbit.withValues(alpha: 0.11),
-                        Colors.transparent,
-                      ],
-                      stops: const <double>[0.0, 0.45, 1.0],
+      body: SafeArea(
+        bottom: false,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            if (isTablet)
+              _NeonSideRail(
+                selectedIndex: _tab,
+                onSelect: (i) => setState(() => _tab = i),
+                labels: navLabels,
+              ),
+            Expanded(
+              child: Column(
+                children: <Widget>[
+                  Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 1200),
+                      child: _MissionControlHudBar(
+                        onTapProfile: () => setState(() => _tab = 3),
+                        onTapStreak: () => setState(() => _tab = 4),
+                        onTapSearch: () => Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                              builder: (_) => const SearchScreen()),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
-          SafeArea(
-            bottom: false,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                if (isTablet)
-                  _NeonSideRail(
-                    selectedIndex: _tab,
-                    onSelect: (i) => setState(() => _tab = i),
-                    labels: navLabels,
-                  ),
-                Expanded(
-                  child: Column(
-                    children: <Widget>[
-                      Center(
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 1200),
-                          child: _MissionControlHudBar(
-                            onTapProfile: () => setState(() => _tab = 3),
-                            onTapStreak: () => setState(() => _tab = 4),
-                            onTapSearch: () => Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                  builder: (_) => const SearchScreen()),
-                            ),
+                  Expanded(
+                    child: IndexedStack(
+                      index: _tab,
+                      children: <Widget>[
+                        for (final (i, tab) in <Widget>[
+                          ExploreTab(
+                            active: _tab == 0,
+                            onSelectTab: (t) => setState(() => _tab = t),
                           ),
-                        ),
-                      ),
-                      Expanded(
-                        child: IndexedStack(
-                          index: _tab,
-                          children: <Widget>[
-                            for (final (i, tab) in <Widget>[
-                              ExploreTab(
-                                active: _tab == 0,
-                                onSelectTab: (t) => setState(() => _tab = t),
-                              ),
-                              const SkyScreen(),
-                              const CompareScreen(),
-                              const YouScreen(),
-                              const QuizScreen(),
-                            ].indexed)
-                              TickerMode(
-                                enabled: _tab == i,
-                                child: AnimatedOpacity(
-                                  opacity: _tab == i ? 1.0 : 0.0,
-                                  duration: const Duration(milliseconds: 240),
-                                  curve: Curves.easeOutCubic,
-                                  child: AnimatedScale(
-                                    scale: _tab == i ? 1.0 : 0.985,
-                                    duration: const Duration(milliseconds: 240),
-                                    curve: Curves.easeOutCubic,
-                                    child: Align(
-                                      alignment: Alignment.topCenter,
-                                      child: ConstrainedBox(
-                                        constraints: BoxConstraints(
-                                          maxWidth: i == 0 ? 1200 : 880,
-                                        ),
-                                        child: tab,
-                                      ),
-                                    ),
+                          const SkyScreen(),
+                          const CompareScreen(),
+                          const YouScreen(),
+                          const QuizScreen(),
+                        ].indexed)
+                          TickerMode(
+                            enabled: _tab == i,
+                            child: AnimatedOpacity(
+                              opacity: _tab == i ? 1.0 : 0.0,
+                              duration: const Duration(milliseconds: 220),
+                              curve: Curves.easeOutCubic,
+                              child: Align(
+                                alignment: Alignment.topCenter,
+                                child: ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxWidth: i == 0 ? 1200 : 880,
                                   ),
+                                  child: tab,
                                 ),
                               ),
-                          ],
-                        ),
-                      ),
-                    ],
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: isTablet
           ? null
@@ -239,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-/// Vertical Neon Cyber-Space Side Navigation Rail for Tablets & Landscape screens.
+/// Clean Minimal Side Navigation Rail for Tablets & Landscape screens.
 class _NeonSideRail extends StatelessWidget {
   const _NeonSideRail({
     required this.selectedIndex,
@@ -254,42 +223,22 @@ class _NeonSideRail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final p = Palette.of(context);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      width: 96,
-      margin: const EdgeInsets.fromLTRB(12, 6, 4, 14),
+      width: 92,
+      margin: const EdgeInsets.fromLTRB(12, 8, 4, 14),
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: isDark
-              ? <Color>[
-                  const Color(0xFF0A1128).withValues(alpha: 0.96),
-                  const Color(0xFF130E2B).withValues(alpha: 0.96),
-                ]
-              : <Color>[Colors.white, p.surfaceHigh],
-        ),
-        borderRadius: BorderRadius.circular(28),
-        border: Border.all(
-          color: p.accent.withValues(alpha: isDark ? 0.45 : 0.3),
-          width: 1.3,
-        ),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: p.accent.withValues(alpha: isDark ? 0.14 : 0.05),
-            blurRadius: 24,
-            offset: const Offset(4, 0),
-          ),
-        ],
+        color: p.surface,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: p.border),
       ),
       child: Column(
         children: <Widget>[
           const Padding(
             padding: EdgeInsets.only(bottom: 10),
-            child: HelioraLogo(size: 32),
+            child: HelioraLogo(size: 30),
           ),
-          Divider(color: p.border.withValues(alpha: 0.6), height: 12),
+          Divider(color: p.border, height: 12),
           const SizedBox(height: 4),
           for (var i = 0; i < labels.length; i++) ...<Widget>[
             Expanded(
@@ -311,8 +260,8 @@ class _NeonSideRail extends StatelessWidget {
   }
 }
 
-/// Top Mission Control HUD header + Live Cosmic Telemetry Ticker shown across tabs.
-class _MissionControlHudBar extends StatefulWidget {
+/// Clean, calm minimal top header bar with brand logo, streak pill, and search.
+class _MissionControlHudBar extends StatelessWidget {
   const _MissionControlHudBar({
     required this.onTapProfile,
     required this.onTapStreak,
@@ -324,238 +273,75 @@ class _MissionControlHudBar extends StatefulWidget {
   final VoidCallback onTapSearch;
 
   @override
-  State<_MissionControlHudBar> createState() => _MissionControlHudBarState();
-}
-
-class _MissionControlHudBarState extends State<_MissionControlHudBar>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _tickerCtrl = AnimationController(
-    vsync: this,
-    duration: const Duration(seconds: 28),
-  )..repeat();
-
-  @override
-  void dispose() {
-    _tickerCtrl.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final l = context.l10n;
     final p = Palette.of(context);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final isHi = Localizations.localeOf(context).languageCode == 'hi';
     final state = AppScope.of(context);
-    final settings = state.settings;
-    final streak = settings.quizBests['streak'] ?? 0;
-    final stars = settings.bestFor('easy') +
-        settings.bestFor('medium') +
-        settings.bestFor('hard');
-    final rankLabel = stars >= 25
-        ? (isHi ? 'कमांडर' : 'Commander')
-        : stars >= 12
-            ? (isHi ? 'पायलट' : 'Pilot')
-            : (isHi ? 'कैडेट' : 'Cadet');
-    final now = DateTime.now();
-    final moonLit = (moonPhase(now).lit * 100).round();
-    final marsDistMkm = (distanceFromEarthKm('mars', now) / 1e6).round();
+    final streak = state.settings.quizBests['streak'] ?? 0;
 
-    final tickerText = isHi
-        ? '🛰️ ISS गति: 27,600 km/h   •   🌕 चंद्रमा: $moonLit% प्रकाशित   •   🔴 मंगल दूरी: ${marsDistMkm}M km   •   ☀️ आदित्य-L1: L1 कक्षा (1.5M km)   •   🚀 वॉयेजर 1: 24.6B km दूर   •   '
-        : '🛰️ ISS SPEED: 27,600 KM/H   •   🌕 MOON: $moonLit% LIT   •   🔴 MARS RANGE: ${marsDistMkm}M KM   •   ☀️ ADITYA-L1: L1 HALO ORBIT   •   🚀 VOYAGER 1: 24.6B KM   •   ';
-
-    return Container(
-      margin: const EdgeInsets.fromLTRB(14, 6, 14, 4),
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: isDark
-              ? <Color>[
-                  const Color(0xFF0E1734).withValues(alpha: 0.92),
-                  const Color(0xFF141132).withValues(alpha: 0.92),
-                ]
-              : <Color>[p.surface, p.surfaceHigh],
-        ),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: p.accent.withValues(alpha: isDark ? 0.42 : 0.25),
-          width: 1.2,
-        ),
-        boxShadow: isDark
-            ? <BoxShadow>[
-                BoxShadow(
-                  color: p.accent.withValues(alpha: 0.12),
-                  blurRadius: 16,
-                  offset: const Offset(0, 4),
-                ),
-              ]
-            : const <BoxShadow>[],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 6),
+      child: Row(
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              const HelioraLogo(size: 30),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          const HelioraLogo(size: 28),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              l.appTitle,
+              style: headingStyle(20, p.text),
+            ),
+          ),
+          if (streak > 0) ...<Widget>[
+            InkWell(
+              borderRadius: BorderRadius.circular(999),
+              onTap: onTapStreak,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: p.surface,
+                  borderRadius: BorderRadius.circular(999),
+                  border: Border.all(color: p.border),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Text(
-                          'ASTRYL',
-                          style: headingStyle(16, p.text),
-                        ),
-                        const SizedBox(width: 6),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 6, vertical: 1.5),
-                          decoration: BoxDecoration(
-                            color: p.good.withValues(alpha: 0.16),
-                            borderRadius: BorderRadius.circular(999),
-                            border: Border.all(
-                                color: p.good.withValues(alpha: 0.55)),
-                          ),
-                          child: Text(
-                            'LIVE HUD',
-                            style: TextStyle(
-                              fontSize: 9,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 0.7,
-                              color: p.good,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    const Text('🔥', style: TextStyle(fontSize: 12)),
+                    const SizedBox(width: 4),
                     Text(
-                      isHi
-                          ? 'अंतरिक्ष मिशन कंट्रोल'
-                          : 'CYBER-SPACE MISSION CONTROL',
+                      '$streak',
                       style: TextStyle(
-                        fontSize: 9.5,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.7,
-                        color: p.muted,
+                        fontSize: 12.5,
+                        fontWeight: FontWeight.w700,
+                        color: p.text,
                       ),
                     ),
                   ],
                 ),
               ),
-              // Streak Pill
-              InkWell(
-                borderRadius: BorderRadius.circular(999),
-                onTap: widget.onTapStreak,
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: p.star.withValues(alpha: 0.16),
-                    borderRadius: BorderRadius.circular(999),
-                    border: Border.all(color: p.star.withValues(alpha: 0.5)),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      const Text('🔥', style: TextStyle(fontSize: 12)),
-                      const SizedBox(width: 4),
-                      Text(
-                        '$streak',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w800,
-                          color: p.star,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: 6),
-              // Commander Rank Pill
-              InkWell(
-                borderRadius: BorderRadius.circular(999),
-                onTap: widget.onTapProfile,
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: p.orbit.withValues(alpha: 0.18),
-                    borderRadius: BorderRadius.circular(999),
-                    border: Border.all(color: p.orbit.withValues(alpha: 0.55)),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      const Text('👩‍🚀', style: TextStyle(fontSize: 12)),
-                      const SizedBox(width: 4),
-                      Text(
-                        rankLabel,
-                        style: TextStyle(
-                          fontSize: 11.5,
-                          fontWeight: FontWeight.w700,
-                          color: p.text,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: 6),
-              // Quick Search Icon
-              InkWell(
-                borderRadius: BorderRadius.circular(999),
-                onTap: widget.onTapSearch,
-                child: Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: p.accent.withValues(alpha: 0.14),
-                    shape: BoxShape.circle,
-                    border: Border.all(color: p.accent.withValues(alpha: 0.45)),
-                  ),
-                  child: Icon(Icons.search_rounded,
-                      size: 16, color: p.accentText),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 6),
-          // Live scrolling cosmic telemetry ticker
-          ClipRRect(
+            ),
+            const SizedBox(width: 8),
+          ],
+          InkWell(
             borderRadius: BorderRadius.circular(999),
+            onTap: onTapSearch,
             child: Container(
-              height: 20,
-              width: double.infinity,
-              color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.05),
-              alignment: Alignment.centerLeft,
-              child: AnimatedBuilder(
-                animation: _tickerCtrl,
-                builder: (context, _) {
-                  return FractionalTranslation(
-                    translation: Offset(-_tickerCtrl.value * 0.5, 0),
-                    child: OverflowBox(
-                      maxWidth: double.infinity,
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Text(
-                          '$tickerText$tickerText',
-                          maxLines: 1,
-                          softWrap: false,
-                          style: TextStyle(
-                            fontFamily: 'monospace',
-                            fontSize: 10.5,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 0.5,
-                            color: p.accentText,
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+              decoration: BoxDecoration(
+                color: p.surface,
+                borderRadius: BorderRadius.circular(999),
+                border: Border.all(color: p.border),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(Icons.search_rounded, size: 17, color: p.muted),
+                  const SizedBox(width: 6),
+                  Text(
+                    l.searchHint,
+                    style: TextStyle(fontSize: 12.5, color: p.muted),
+                  ),
+                ],
               ),
             ),
           ),
@@ -565,7 +351,7 @@ class _MissionControlHudBarState extends State<_MissionControlHudBar>
   }
 }
 
-/// Custom Neon Cyber-Space Floating Capsule Bottom Dock with glowing gradient pills.
+/// Clean Minimal Floating Pill Bottom Navigation Bar.
 class _NeonCapsuleBottomDock extends StatelessWidget {
   const _NeonCapsuleBottomDock({
     required this.selectedIndex,
@@ -591,36 +377,19 @@ class _NeonCapsuleBottomDock extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
       top: false,
-      minimum: const EdgeInsets.fromLTRB(12, 0, 12, 10),
+      minimum: const EdgeInsets.fromLTRB(14, 0, 14, 10),
       child: Container(
-        height: 68,
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+        height: 64,
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 5),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: isDark
-                ? <Color>[
-                    const Color(0xFF0A1128).withValues(alpha: 0.96),
-                    const Color(0xFF130E2B).withValues(alpha: 0.96),
-                  ]
-                : <Color>[Colors.white, p.surfaceHigh],
-          ),
+          color: p.surface,
           borderRadius: BorderRadius.circular(999),
-          border: Border.all(
-            color: p.accent.withValues(alpha: isDark ? 0.45 : 0.3),
-            width: 1.3,
-          ),
+          border: Border.all(color: p.border),
           boxShadow: <BoxShadow>[
             BoxShadow(
-              color: p.accent.withValues(alpha: isDark ? 0.16 : 0.06),
-              blurRadius: 24,
+              color: Colors.black.withValues(alpha: isDark ? 0.45 : 0.06),
+              blurRadius: 18,
               offset: const Offset(0, 6),
-            ),
-            BoxShadow(
-              color: Colors.black.withValues(alpha: isDark ? 0.55 : 0.08),
-              blurRadius: 20,
-              offset: const Offset(0, 8),
             ),
           ],
         ),
@@ -665,32 +434,20 @@ class _DockItem extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 240),
+        duration: const Duration(milliseconds: 200),
         curve: Curves.easeOutCubic,
         margin: const EdgeInsets.symmetric(horizontal: 2),
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
         decoration: BoxDecoration(
-          gradient: selected
-              ? LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: <Color>[
-                    p.accent.withValues(alpha: 0.28),
-                    p.orbit.withValues(alpha: 0.26),
-                  ],
-                )
-              : null,
+          color: selected ? p.accent.withValues(alpha: 0.16) : null,
           borderRadius: BorderRadius.circular(999),
-          border: selected
-              ? Border.all(color: p.accent.withValues(alpha: 0.65), width: 1.1)
-              : null,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Icon(
               icon,
-              size: isPrimary3D ? 23 : 21,
+              size: 21,
               color: selected ? p.accentText : p.muted,
             ),
             const SizedBox(height: 2),
@@ -700,7 +457,7 @@ class _DockItem extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontSize: 10.5,
-                fontWeight: selected ? FontWeight.w800 : FontWeight.w500,
+                fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                 color: selected ? p.accentText : p.muted,
               ),
             ),
@@ -845,16 +602,8 @@ class _ExploreTabState extends State<ExploreTab>
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: p.surface,
-        borderRadius: BorderRadius.circular(26),
-        border: Border.all(
-            color: p.accent.withValues(alpha: 0.5), width: 1.5),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: p.accent.withValues(alpha: 0.14),
-            blurRadius: 24,
-            offset: const Offset(0, 6),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: p.border),
       ),
       child: !widget.active
           ? const SizedBox.shrink()
@@ -964,29 +713,12 @@ class _ExploreTabState extends State<ExploreTab>
             ),
           ),
         ],
-        // Holographic Planet Showcase Grid (2 columns on phone, 3-4 on tablet)
+        // Planet Showcase Grid (2 columns on phone, 3-4 on tablet)
         Padding(
           padding: const EdgeInsets.fromLTRB(18, 18, 18, 10),
-          child: Row(
-            children: <Widget>[
-              Icon(Icons.auto_awesome, size: 18, color: p.accentText),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  l.planetsTitle,
-                  style: headingStyle(18, p.text),
-                ),
-              ),
-              Text(
-                isHi ? 'होलोग्राफिक ग्रिड' : 'HOLOGRAPHIC DECK',
-                style: TextStyle(
-                  fontSize: 10.5,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 0.8,
-                  color: p.accentText,
-                ),
-              ),
-            ],
+          child: Text(
+            l.planetsTitle,
+            style: headingStyle(18, p.text),
           ),
         ),
         _PopularCards(
@@ -1001,7 +733,7 @@ class _ExploreTabState extends State<ExploreTab>
   }
 }
 
-/// 2x2 Quick Launch Bento Tiles on the Home screen.
+/// Clean 2x2 Quick Launch Bento Tiles on the Home screen.
 class _QuickLaunchBentoGrid extends StatelessWidget {
   const _QuickLaunchBentoGrid({
     required this.isHi,
@@ -1013,47 +745,41 @@ class _QuickLaunchBentoGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final p = Palette.of(context);
     final city = cityById(AppScope.of(context).settings.cityId) ?? cities.first;
     final tiles = <({
-      String emoji,
+      IconData icon,
       String title,
       String sub,
-      Color tint,
       VoidCallback onTap,
     })>[
       (
-        emoji: '🛰️',
+        icon: Icons.satellite_alt_outlined,
         title: isHi ? 'ISS लाइव ट्रैकर' : 'Live ISS Tracker',
         sub: isHi ? 'कक्षा और पास समय' : '27,600 km/h orbit',
-        tint: p.accent,
         onTap: () => Navigator.of(context).push(
               MaterialPageRoute<void>(builder: (_) => IssScreen(city: city)),
             ),
       ),
       (
-        emoji: '✨',
+        icon: Icons.auto_awesome_outlined,
         title: isHi ? '3D तारामंडल मैप' : 'Interactive Star Map',
         sub: isHi ? '1,000 तारे · 89 तारामंडल' : '1,000 stars · 89 constellations',
-        tint: p.orbit,
         onTap: () => Navigator.of(context).push(
               MaterialPageRoute<void>(builder: (_) => const StarMapScreen()),
             ),
       ),
       (
-        emoji: '🚀',
+        icon: Icons.rocket_launch_outlined,
         title: isHi ? 'अंतरिक्ष यान रडार' : 'Deep Spacecraft',
         sub: isHi ? 'वॉयेजर · JWST · आदित्य-L1' : 'Voyager · JWST · Aditya-L1',
-        tint: p.good,
         onTap: () => Navigator.of(context).push(
               MaterialPageRoute<void>(builder: (_) => const SpacecraftScreen()),
             ),
       ),
       (
-        emoji: '⚡',
+        icon: Icons.bolt_rounded,
         title: isHi ? '60s क्विज़ ब्लिट्ज़' : '60s Quiz Blitz',
-        sub: isHi ? '3 लाइफ · लीडरबोर्ड' : '3 lives · Daily 5 arena',
-        tint: p.star,
+        sub: isHi ? '3 लाइफ · लीडरबोर्ड' : '3 lives · Daily 5',
         onTap: onOpenQuiz,
       ),
     ];
@@ -1084,10 +810,9 @@ class _BentoTile extends StatelessWidget {
   const _BentoTile({required this.item});
 
   final ({
-    String emoji,
+    IconData icon,
     String title,
     String sub,
-    Color tint,
     VoidCallback onTap,
   }) item;
 
@@ -1097,36 +822,26 @@ class _BentoTile extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(18),
         onTap: item.onTap,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: <Color>[
-                item.tint.withValues(alpha: 0.18),
-                p.surface,
-              ],
-            ),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: item.tint.withValues(alpha: 0.45),
-              width: 1.2,
-            ),
+            color: p.surface,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: p.border),
           ),
           child: Row(
             children: <Widget>[
               Container(
-                width: 38,
-                height: 38,
+                width: 36,
+                height: 36,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: item.tint.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(12),
+                  color: p.surfaceHigh,
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                child: Text(item.emoji, style: const TextStyle(fontSize: 19)),
+                child: Icon(item.icon, size: 19, color: p.accentText),
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -1329,37 +1044,24 @@ class _HolographicPlanetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final life = lifeScore(planet).total;
+    final isHi = Localizations.localeOf(context).languageCode == 'hi';
+    final moonLabel = planet.isStar
+        ? ''
+        : ' · ${planet.moons} ${isHi ? 'चंद्रमा' : (planet.moons == 1 ? 'moon' : 'moons')}';
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(22),
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: <Color>[
-                planet.color.withValues(alpha: selected ? 0.34 : 0.22),
-                p.surface,
-              ],
-            ),
-            borderRadius: BorderRadius.circular(24),
+            color: p.surface,
+            borderRadius: BorderRadius.circular(22),
             border: Border.all(
-              color: selected
-                  ? p.accent
-                  : planet.color.withValues(alpha: 0.45),
-              width: selected ? 1.8 : 1.2,
+              color: selected ? p.accent : p.border,
+              width: selected ? 1.6 : 1.0,
             ),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                color: planet.color.withValues(alpha: 0.16),
-                blurRadius: 18,
-                offset: const Offset(0, 6),
-              ),
-            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1367,101 +1069,43 @@ class _HolographicPlanetCard extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  SizedBox(
-                    height: 60,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: 54,
-                          height: 54,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                color: planet.color.withValues(alpha: 0.55),
-                                blurRadius: 24,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Hero(
-                          tag: 'planet-hero-${planet.id}',
-                          child: PlanetBall(planet: planet, size: 54),
-                        ),
-                      ],
-                    ),
+                  Hero(
+                    tag: 'planet-hero-${planet.id}',
+                    child: PlanetBall(planet: planet, size: 52),
                   ),
                   const Spacer(),
                   if (starred)
-                    Icon(Icons.star_rounded, size: 20, color: p.star),
+                    Icon(Icons.star_rounded, size: 19, color: p.star),
                 ],
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 12),
               Text(
                 planetName(l, planet),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: headingStyle(16, p.text),
               ),
-              const SizedBox(height: 2),
+              const SizedBox(height: 3),
               Text(
                 bodySubtitle(l, planet),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 11.5, color: p.muted, height: 1.25),
+                style: TextStyle(fontSize: 12, color: p.muted, height: 1.3),
               ),
               const Spacer(),
               const SizedBox(height: 10),
-              Wrap(
-                spacing: 6,
-                runSpacing: 4,
-                children: <Widget>[
-                  _MiniHoloBadge(
-                    text: '${planet.meanTempC}°C',
-                    color: planet.color,
-                  ),
-                  if (!planet.isStar)
-                    _MiniHoloBadge(
-                      text: '🌙 ${planet.moons}',
-                      color: p.orbit,
-                    ),
-                  _MiniHoloBadge(
-                    text: '♥ $life/10',
-                    color: life >= 5 ? p.good : p.accent,
-                  ),
-                ],
+              Text(
+                '${planet.meanTempC}°C$moonLabel',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w600,
+                  color: p.accentText,
+                ),
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _MiniHoloBadge extends StatelessWidget {
-  const _MiniHoloBadge({required this.text, required this.color});
-
-  final String text;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    final p = Palette.of(context);
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.16),
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: color.withValues(alpha: 0.45)),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: 10.5,
-          fontWeight: FontWeight.w700,
-          color: p.text,
         ),
       ),
     );
@@ -1508,8 +1152,7 @@ class _PlanetChips extends StatelessWidget {
             ),
             selectedColor: p.accent,
             backgroundColor: p.surface,
-            side: BorderSide(
-                color: on ? p.accent : planet.color.withValues(alpha: 0.45)),
+            side: BorderSide(color: on ? p.accent : p.border),
             shape: const StadiumBorder(),
           );
         },
@@ -1568,7 +1211,6 @@ class _GlobeInfoCard extends StatelessWidget {
 
     return SurfaceCard(
       padding: const EdgeInsets.all(16),
-      borderColor: planet.color.withValues(alpha: 0.55),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,

@@ -45,35 +45,12 @@ class _CompareScreenState extends State<CompareScreen> {
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
       children: <Widget>[
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: Text(l.compareTitle,
-                  style: TextStyle(
-                      fontFamily: headingFont,
-                      fontSize: 26,
-                      fontWeight: FontWeight.w700,
-                      color: p.text)),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: p.orbit.withValues(alpha: 0.16),
-                borderRadius: BorderRadius.circular(999),
-                border: Border.all(color: p.orbit.withValues(alpha: 0.5)),
-              ),
-              child: Text(
-                'VS ARENA',
-                style: TextStyle(
-                  fontSize: 10.5,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 0.8,
-                  color: p.orbit,
-                ),
-              ),
-            ),
-          ],
-        ),
+        Text(l.compareTitle,
+            style: TextStyle(
+                fontFamily: headingFont,
+                fontSize: 26,
+                fontWeight: FontWeight.w700,
+                color: p.text)),
         const SizedBox(height: 6),
         Text(l.compareHint, style: TextStyle(fontSize: 14, color: p.muted)),
         const SizedBox(height: 16),
@@ -86,27 +63,9 @@ class _CompareScreenState extends State<CompareScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Container(
-                width: 34,
-                height: 34,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    colors: <Color>[p.accent, p.orbit],
-                  ),
-                ),
-                child: Text(
-                  'VS',
-                  style: TextStyle(
-                    fontFamily: headingFont,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w800,
-                    color: p.onAccent,
-                  ),
-                ),
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Icon(Icons.compare_arrows_rounded,
+                  size: 20, color: p.muted),
             ),
             Expanded(
               child: _PlanetPicker(
@@ -121,7 +80,6 @@ class _CompareScreenState extends State<CompareScreen> {
         const SizedBox(height: 16),
         SurfaceCard(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-          borderColor: p.accent.withValues(alpha: 0.45),
           child: Column(
             children: <Widget>[
               for (var i = 0; i < rows.length; i++) ...<Widget>[
@@ -132,12 +90,11 @@ class _CompareScreenState extends State<CompareScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        rows[i].$1.toUpperCase(),
+                        rows[i].$1,
                         style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 0.8,
-                          color: p.accentText,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: p.muted,
                         ),
                       ),
                       const SizedBox(height: 6),
@@ -145,39 +102,19 @@ class _CompareScreenState extends State<CompareScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Expanded(
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 6),
-                              decoration: BoxDecoration(
-                                color: a.color.withValues(alpha: 0.14),
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                    color: a.color.withValues(alpha: 0.35)),
-                              ),
-                              child: Text(rows[i].$2,
-                                  style: TextStyle(
-                                      fontSize: 14.5,
-                                      fontWeight: FontWeight.w700,
-                                      color: p.text)),
-                            ),
+                            child: Text(rows[i].$2,
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700,
+                                    color: p.text)),
                           ),
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 12),
                           Expanded(
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 6),
-                              decoration: BoxDecoration(
-                                color: b.color.withValues(alpha: 0.14),
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                    color: b.color.withValues(alpha: 0.35)),
-                              ),
-                              child: Text(rows[i].$3,
-                                  style: TextStyle(
-                                      fontSize: 14.5,
-                                      fontWeight: FontWeight.w700,
-                                      color: p.text)),
-                            ),
+                            child: Text(rows[i].$3,
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700,
+                                    color: p.text)),
                           ),
                         ],
                       ),

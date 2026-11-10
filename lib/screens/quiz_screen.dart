@@ -1376,7 +1376,7 @@ class _OptionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final p = Palette.of(context);
-    var border = planet.color.withValues(alpha: 0.48);
+    var border = p.border;
     IconData? icon;
     Color iconColor = p.text;
     switch (state) {
@@ -1400,51 +1400,28 @@ class _OptionButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(18),
           onTap: state == _OptionState.open ? onTap : null,
           child: Container(
-            constraints: const BoxConstraints(minHeight: 58),
+            constraints: const BoxConstraints(minHeight: 56),
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: <Color>[
-                  planet.color.withValues(alpha: 0.2),
-                  p.surface,
-                ],
-              ),
+              color: p.surface,
               borderRadius: BorderRadius.circular(18),
               border: Border.all(
                 color: border,
                 width: state == _OptionState.right || state == _OptionState.wrong
-                    ? 2.0
-                    : 1.3,
+                    ? 1.8
+                    : 1.0,
               ),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  color: border.withValues(alpha: 0.14),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ],
             ),
             child: Row(
               children: <Widget>[
-                Container(
-                  width: 4,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    color: planet.color,
-                    borderRadius: BorderRadius.circular(999),
-                  ),
-                ),
-                const SizedBox(width: 12),
                 PlanetBall(planet: planet, size: 28),
                 const SizedBox(width: 14),
                 Expanded(
                   child: Text(label,
                       style: TextStyle(
                           fontFamily: headingFont,
-                          fontSize: 16.5,
-                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                           color: p.text)),
                 ),
                 if (icon != null)
@@ -1477,28 +1454,26 @@ class _LevelCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final p = Palette.of(context);
-    final (icon, tint) = switch (level) {
-      QuizLevel.easy => (Icons.looks_one_outlined, p.good),
-      QuizLevel.medium => (Icons.looks_two_outlined, p.accent),
-      QuizLevel.hard => (Icons.looks_3_outlined, p.orbit),
+    final icon = switch (level) {
+      QuizLevel.easy => Icons.looks_one_outlined,
+      QuizLevel.medium => Icons.looks_two_outlined,
+      QuizLevel.hard => Icons.looks_3_outlined,
     };
     return InkWell(
       borderRadius: BorderRadius.circular(22),
       onTap: onTap,
       child: SurfaceCard(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        borderColor: tint.withValues(alpha: 0.5),
         child: Row(
           children: <Widget>[
             Container(
-              width: 44,
-              height: 44,
+              width: 42,
+              height: 42,
               decoration: BoxDecoration(
-                color: tint.withValues(alpha: 0.18),
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: tint.withValues(alpha: 0.45)),
+                color: p.surfaceHigh,
+                borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, color: tint, size: 26),
+              child: Icon(icon, color: p.accentText, size: 24),
             ),
             const SizedBox(width: 14),
             Expanded(
@@ -1508,7 +1483,7 @@ class _LevelCard extends StatelessWidget {
                   Text(quizLevelName(l, level),
                       style: TextStyle(
                           fontFamily: headingFont,
-                          fontSize: 17,
+                          fontSize: 16.5,
                           fontWeight: FontWeight.w700,
                           color: p.text)),
                   const SizedBox(height: 2),
@@ -1520,13 +1495,13 @@ class _LevelCard extends StatelessWidget {
                       child: Text(l.quizBest(best),
                           style: TextStyle(
                               fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: tint)),
+                              fontWeight: FontWeight.w600,
+                              color: p.accentText)),
                     ),
                 ],
               ),
             ),
-            Icon(Icons.play_circle_fill_rounded, color: tint, size: 28),
+            Icon(Icons.chevron_right_rounded, color: p.muted, size: 22),
           ],
         ),
       ),

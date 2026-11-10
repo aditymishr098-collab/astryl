@@ -16,9 +16,9 @@ TextStyle headingStyle(double size, Color color,
       height: height,
     );
 
-/// Astryl's Neon Cyber-Space colour palette:
-/// Electric Aurora Cyan (#00F0FF), Cosmic Violet (#9D4EDD), Solar Gold (#FFB800),
-/// and True AMOLED Deep Void (#040611).
+/// Astryl's Clean Minimal Deep-Space colour palette:
+/// Soft Starlight Blue (#5B9BFF), Matte Charcoal Slate (#10141F), and
+/// Deep Space Black (#06080E) inspired by Apple Astronomy & NASA.
 @immutable
 class Palette extends ThemeExtension<Palette> {
   const Palette({
@@ -45,14 +45,14 @@ class Palette extends ThemeExtension<Palette> {
   final Color text;
   final Color muted;
 
-  /// Electric Aurora Cyan, for filled buttons, neon highlights and active states.
+  /// Soft Starlight Blue, for filled buttons, active tabs and clean highlights.
   final Color accent;
   final Color onAccent;
 
-  /// Electric Cyan readable as text on [background].
+  /// Soft Starlight Blue readable as text on [background].
   final Color accentText;
 
-  /// Cosmic Violet for secondary neon gradients and orbital highlights.
+  /// Soft celestial blue-slate for orbital accents.
   final Color orbit;
   final Color orbitLine;
   final Color good;
@@ -60,36 +60,36 @@ class Palette extends ThemeExtension<Palette> {
   final Color star;
 
   static const Palette dark = Palette(
-    background: Color(0xFF040611),
-    surface: Color(0xFF0C1226),
-    surfaceHigh: Color(0xFF151E3D),
-    border: Color(0xFF25386B),
-    text: Color(0xFFF2F7FF),
-    muted: Color(0xFF8EA4D2),
-    accent: Color(0xFF00E5FF),
-    onAccent: Color(0xFF030712),
-    accentText: Color(0xFF26F0FF),
-    orbit: Color(0xFFA855F7),
-    orbitLine: Color(0xFF233463),
-    good: Color(0xFF00F59B),
-    bad: Color(0xFFFF5E7E),
-    star: Color(0xFFFFB800),
+    background: Color(0xFF06080E),
+    surface: Color(0xFF10141F),
+    surfaceHigh: Color(0xFF171D2B),
+    border: Color(0xFF222A3D),
+    text: Color(0xFFF3F6FC),
+    muted: Color(0xFF8C9BB5),
+    accent: Color(0xFF5B9BFF),
+    onAccent: Color(0xFF060A12),
+    accentText: Color(0xFF7DB0FF),
+    orbit: Color(0xFF6B8AFD),
+    orbitLine: Color(0xFF232C40),
+    good: Color(0xFF34D399),
+    bad: Color(0xFFF87171),
+    star: Color(0xFFFBBF24),
   );
 
   static const Palette light = Palette(
-    background: Color(0xFFF2F6FC),
+    background: Color(0xFFF4F6FA),
     surface: Color(0xFFFFFFFF),
-    surfaceHigh: Color(0xFFE5EEFA),
-    border: Color(0xFFD0DEF2),
-    text: Color(0xFF0B132B),
-    muted: Color(0xFF4F628E),
-    accent: Color(0xFF0099CC),
+    surfaceHigh: Color(0xFFE9EEF6),
+    border: Color(0xFFD5DFEE),
+    text: Color(0xFF0D1321),
+    muted: Color(0xFF56657F),
+    accent: Color(0xFF2B6CB0),
     onAccent: Color(0xFFFFFFFF),
-    accentText: Color(0xFF0077AA),
-    orbit: Color(0xFF7E22CE),
-    orbitLine: Color(0xFFC7D7EE),
-    good: Color(0xFF0D9488),
-    bad: Color(0xFFE11D48),
+    accentText: Color(0xFF2563EB),
+    orbit: Color(0xFF3B82F6),
+    orbitLine: Color(0xFFCBD5E1),
+    good: Color(0xFF059669),
+    bad: Color(0xFFDC2626),
     star: Color(0xFFD97706),
   );
 

@@ -249,64 +249,18 @@ class _SkyScreenState extends State<SkyScreen> {
           onToday: () => setState(() => _picked = null),
         ),
         const SizedBox(height: 12),
-        // Tonight's Live Sky Dome Hero Banner: Moon + Sun Arc + Visible Planet Badges.
+        // Clean Moon & Tonight's Sky summary card.
         SurfaceCard(
-          borderColor: p.accent.withValues(alpha: 0.55),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: <Color>[
-                      p.accent.withValues(alpha: 0.22),
-                      p.orbit.withValues(alpha: 0.22),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(999),
-                  border: Border.all(color: p.accent.withValues(alpha: 0.45)),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Icon(Icons.auto_awesome, size: 13, color: p.accentText),
-                    const SizedBox(width: 5),
-                    Text(
-                      Localizations.localeOf(context).languageCode == 'hi'
-                          ? 'लाइव स्काई डोम · ${cityName(l, city)}'
-                          : 'LIVE SKY DOME · ${cityName(l, city).toUpperCase()}',
-                      style: TextStyle(
-                        fontSize: 10.5,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 0.7,
-                        color: p.accentText,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 14),
               Row(
                 children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: p.accent.withValues(alpha: 0.24),
-                          blurRadius: 28,
-                        ),
-                      ],
-                    ),
-                    child: MoonView(
-                      age: phase.age,
-                      lit: phase.lit,
-                      size: 86,
-                      southern: city.lat < 0,
-                    ),
+                  MoonView(
+                    age: phase.age,
+                    lit: phase.lit,
+                    size: 80,
+                    southern: city.lat < 0,
                   ),
                   const SizedBox(width: 14),
                   Expanded(
@@ -316,7 +270,7 @@ class _SkyScreenState extends State<SkyScreen> {
                         Text(moonPhaseName(l, phaseIndex(phase.age)),
                             style: TextStyle(
                                 fontFamily: headingFont,
-                                fontSize: 21,
+                                fontSize: 20,
                                 fontWeight: FontWeight.w700,
                                 color: p.text)),
                         const SizedBox(height: 4),
@@ -327,38 +281,6 @@ class _SkyScreenState extends State<SkyScreen> {
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
                               color: p.accentText),
-                        ),
-                        const SizedBox(height: 8),
-                        Wrap(
-                          spacing: 6,
-                          runSpacing: 6,
-                          children: <Widget>[
-                            for (final night in sky.planets.where(
-                                (n) => n.visibility != SkyVisibility.notVisible))
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 3),
-                                decoration: BoxDecoration(
-                                  color: planetById(night.id)
-                                      .color
-                                      .withValues(alpha: 0.2),
-                                  borderRadius: BorderRadius.circular(999),
-                                  border: Border.all(
-                                    color: planetById(night.id)
-                                        .color
-                                        .withValues(alpha: 0.55),
-                                  ),
-                                ),
-                                child: Text(
-                                  '🪐 ${planetName(l, planetById(night.id))}',
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w700,
-                                    color: p.text,
-                                  ),
-                                ),
-                              ),
-                          ],
                         ),
                       ],
                     ),
