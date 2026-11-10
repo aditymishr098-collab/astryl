@@ -7,7 +7,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'data/crash_reporter.dart';
 import 'l10n/gen/app_localizations.dart';
-import 'screens/account_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/update_gate.dart';
 import 'state/app_state.dart';
@@ -99,16 +98,9 @@ class HelioraApp extends StatelessWidget {
               value: statusBarStyle(Theme.of(context).brightness),
               child: _withTextSize(context, child, settings.textScalePercent),
             ),
-            // The first time, the optional account page comes first ("Skip
-            // now" leaves it); after that the app opens directly.
-            home: UpdateGate(
-              child: ListenableBuilder(
-                listenable: state.account,
-                builder: (context, _) => state.account.needsPrompt && !kIsWeb
-                    ? const AccountScreen(firstRun: true)
-                    : const HomeScreen(),
-              ),
-            ),
+            // The app opens straight on Home. The account is optional and
+            // lives in the You tab.
+            home: const UpdateGate(child: HomeScreen()),
           );
         },
       ),

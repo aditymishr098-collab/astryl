@@ -238,9 +238,9 @@ The website is built with `python3 tools/build_site.py` (it needs Pillow for the
 
 | Version | What's new |
 |---|---|
-| **1.35.0** | **Streaks, real moons, widget.** The Daily 5 counts your streak and best streak, shows seven badges and a This week board, and your result can be shared as a picture. The moons of Jupiter (four) and Saturn (eight) are shown where they really are on any date. A new home-screen widget shows tonight's Moon phase. The status bar clock, signal and battery are dark on the light theme. |
+| **1.35.1** | **Cleaner start and You tab.** The app opens straight on Home (no account page first; the optional account is in the You tab). The You tab is lighter: a slim account row, the weight, jump and age calculators stay in Compare, and the crash-report switch moved down to the settings. The status bar clock, signal and battery are dark on the light theme. |
+| **1.35.0** | **Streaks, real moons, widget.** The Daily 5 counts your streak and best streak, shows seven badges and a This week board, and your result can be shared as a picture. The moons of Jupiter (four) and Saturn (eight) are shown where they really are on any date. A new home-screen widget shows tonight's Moon phase. |
 | **1.34.0** | **One backend: Supabase.** Accounts, sync, the Daily 5 and the leaderboard all live in one Supabase project. The server picks the questions and checks the answers and the time. A "Show me on the leaderboard" switch is in Account. |
-| **1.33.0** | **Website matches the app:** the same Clean Minimal Deep-Space look, dark by default. |
 
 Every version since 1.0.0 is in the [**changelog**](CHANGELOG.md).
 

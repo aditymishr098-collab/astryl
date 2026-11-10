@@ -379,6 +379,22 @@ class SettingsSections extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
+            ListenableBuilder(
+              listenable: state.account,
+              builder: (context, _) => SurfaceCard(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: SwitchListTile(
+                  title: Text(l.crashReportsTitle,
+                      style: TextStyle(fontSize: 15, color: p.text)),
+                  subtitle: Text(l.crashReportsNote,
+                      style:
+                          TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
+                  value: state.account.crashReports,
+                  onChanged: state.account.setCrashReports,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
           ],
           SectionLabel(l.updates),
           SurfaceCard(
