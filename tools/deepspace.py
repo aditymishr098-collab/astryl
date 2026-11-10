@@ -133,7 +133,7 @@ def black_hole_pages(h):
     hub = f'''<section class="hero2" style="padding-bottom:0">
 <div><h1 class="rise">{bt("Black", "ब्लैक")} <span class="grad">{bt("holes.", "होल।")}</span></h1>
 <p class="lead rise">{bt("The darkest objects in the universe, explained from the start. No maths needed, and every number comes from real measurements.", "ब्रह्मांड की सबसे अँधेरी चीज़ें, शुरू से समझाई हुई। गणित की ज़रूरत नहीं, और हर आँकड़ा असली माप से आया है।")}</p>
-<div class="btns rise"><a class="btn primary" href="black-holes/what-is-a-black-hole.html">{bt("Start here", "यहाँ से शुरू करें")} →</a><a class="btn" href="black-holes/famous-black-holes.html">{bt("Famous black holes", "मशहूर ब्लैक होल")}</a></div></div>
+<div class="btns rise"><a class="btn primary" href="black-holes/what-is-a-black-hole.html">{bt("Start here", "यहाँ से शुरू करें")} →</a><a class="btn" href="black-holes/famous-black-holes.html">{bt("Famous black holes", "मशहूर ब्लैक होल")}</a><a class="btn" href="black-hole-lab.html">🧪 {bt("Black hole lab", "ब्लैक होल lab")}</a></div></div>
 <div>{anatomy_svg(bt)}</div></section>
 <section class="blk">{facts([
         ("Our Galaxy's black hole", 'हमारी आकाशगंगा का ब्लैक होल', '4.3 million Suns', '43 लाख सूरज के बराबर'),
