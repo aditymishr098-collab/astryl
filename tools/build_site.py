@@ -11,6 +11,7 @@ from pathlib import Path
 import deepspace
 import galaxies
 import lab
+import universe
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / 'tools' / 'site_src'
@@ -342,7 +343,7 @@ def cons_svg(c):
 NAV_MAIN = [('planets.html', 'planets', bi('planetsTitle')), ('solar-system.html', 'solar', bi('solarSystemTitle')), ('sky.html', 'sky', bi('skyTitle')), ('quiz.html', 'quiz', bi('navQuiz'))]
 NAV_MORE = [('compare.html', 'compare', bi('navCompare')), ('you.html', 'you', bt('You', 'आप')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')),
             ('missions.html', 'missions', bi('missionsTitle')), ('spacecraft.html', 'spacecraft', bi('spacecraftTitle')),
-            ('galaxies.html', 'gx', bt('Galaxies', 'Galaxies')), ('black-holes.html', 'bh', bt('Black holes', 'ब्लैक होल'))]
+            ('galaxies.html', 'gx', bt('Galaxies', 'Galaxies')), ('cosmic-scale.html', 'scale', bt('Scale of the universe', 'ब्रह्मांड का पैमाना')), ('universe-timeline.html', 'tline', bt('Timeline', 'समयरेखा')), ('glossary.html', 'gloss', bt('Glossary', 'शब्दकोश')), ('black-holes.html', 'bh', bt('Black holes', 'ब्लैक होल'))]
 
 
 _ASSET_V = []
@@ -352,7 +353,7 @@ def asset_v():
     '''A short hash of the scripts and styles, so a changed file is never served from an old cache.'''
     if not _ASSET_V:
         h = hashlib.md5()
-        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js'):
+        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js'):
             h.update((SRC / name).read_bytes())
         h.update(data_js().encode('utf-8'))
         _ASSET_V.append(h.hexdigest()[:10])
@@ -461,7 +462,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
     p = '../' * depth
     def navlink(h, k, label):
         return f'<a href="{p}{h}"{" class=on" if k == page else ""}>{label}</a>'
-    more_on = page in ('compare', 'you', 'cons', 'maps', 'missions', 'bh', 'gx')
+    more_on = page in ('compare', 'you', 'cons', 'maps', 'missions', 'bh', 'gx', 'scale', 'tline', 'gloss')
     nav = (''.join(navlink(*x) for x in NAV_MAIN)
            + f'<details class="more"><summary{" class=on" if more_on else ""}>{bt("More", "और")} ▾</summary><div class="morepanel">'
            + ''.join(navlink(*x) for x in NAV_MORE) + '</div></details>')
@@ -624,6 +625,9 @@ def index_page():
              ('🗺️', 'surfaceMapTitle', 'Landing sites on the Moon and Mars', 'चाँद और मंगल पर उतरने की जगहें', 'maps.html'),
              ('⚫', bt('Black holes', 'ब्लैक होल'), 'How they form and what falling in would be like', 'कैसे बनते हैं और अंदर गिरना कैसा होगा', 'black-holes.html'),
              ('🌌', bt('Galaxies', 'Galaxies'), 'The Milky Way, Andromeda and beyond', 'आकाशगंगा, Andromeda और उसके आगे', 'galaxies.html'),
+             ('📏', bt('Scale of the universe', 'ब्रह्मांड का पैमाना'), 'From a proton to everything we can see', 'प्रोटॉन से लेकर वह सब जो हम देख सकते हैं', 'cosmic-scale.html'),
+             ('⏳', bt('Timeline', 'समयरेखा'), '13.8 billion years in one calendar year', '13.8 अरब साल एक कैलेंडर वर्ष में', 'universe-timeline.html'),
+             ('📖', bt('Glossary', 'शब्दकोश'), 'Space words in plain English and Hindi', 'अंतरिक्ष के शब्द, सरल English और हिंदी में', 'glossary.html'),
              ('🛰️', 'spacecraftTitle', 'How far Voyager and JWST are now', 'Voyager और JWST अभी कितनी दूर हैं', 'spacecraft.html'),
              ('⚖️', 'weightTitle', 'Weight, jump and age on every world', 'हर दुनिया पर वज़न, कूद और उम्र', 'you.html'),
              (pic('earth'), 'navCompare', 'Any two worlds side by side', 'कोई भी दो दुनियाएँ आमने-सामने', 'compare.html')]
@@ -935,6 +939,7 @@ def main():
     shutil.copy(SRC / 'moons.js', OUT / 'assets/moons.js')
     shutil.copy(SRC / 'fx.js', OUT / 'assets/fx.js')
     shutil.copy(SRC / 'lab.js', OUT / 'assets/lab.js')
+    shutil.copy(SRC / 'scale.js', OUT / 'assets/scale.js')
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#fbf7ee"/><circle r="30" fill="#1b3a8a"/><ellipse rx="50" ry="15" fill="none" stroke="#6a45d6" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#1b3a8a"/></svg>', encoding='utf-8')
     (OUT / 'fonts').mkdir()
@@ -947,7 +952,7 @@ def main():
         body_page(b, i)
     index_page(); planets_page(); simple_pages(); maps_page(); get_page(); privacy_page(); account_page(); not_found()
     helpers = dict(bt=bt, bi=bi, raw2=raw2, shell=shell, write=write, esc=esc, fmt=fmt, asset_v=asset_v)
-    deep = deepspace.build(helpers) + galaxies.build(helpers) + lab.build(helpers)
+    deep = deepspace.build(helpers) + galaxies.build(helpers) + lab.build(helpers) + universe.build(helpers)
     urls = ['', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'get.html', 'privacy.html', 'account.html', 'black-holes.html', 'galaxies.html'] + deep + [f'body/{b["id"]}.html' for b in BODIES]
     (OUT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}/{u}</loc></url>\n' for u in urls) + '</urlset>\n', encoding='utf-8')
     og_images()

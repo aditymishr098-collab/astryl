@@ -290,3 +290,10 @@ table.cols td:nth-child(n+2),table.cols th:nth-child(n+2){text-align:right}
 .simwrap{margin:10px 0}.simwrap canvas{width:100%;height:auto;border-radius:16px;border:1px solid var(--line);background:#04060d;cursor:grab;touch-action:none;display:block}
 .prose .row{align-items:center;gap:10px 14px;flex-wrap:wrap;margin:10px 0}
 .prose input[type=number],.prose select{max-width:220px}
+.scalebox{padding:20px}.scrow{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.scsize{font:700 1.7rem "Space Grotesk";color:var(--accent);margin:.1em 0 .4em}
+.scbar{position:relative;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--accent2),var(--accent));margin:20px 0 6px;opacity:.7}
+.scbar i{position:absolute;top:50%;width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--accent);transform:translate(-50%,-50%);transition:left .35s}
+.scends{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem;margin-bottom:10px}
+#scList tr[data-i].on td{background:color-mix(in srgb,var(--accent) 14%,transparent)}
+@media(prefers-reduced-motion:reduce){.scbar i{transition:none}}
