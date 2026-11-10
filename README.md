@@ -4,23 +4,22 @@
 
 # Astryl
 
-*Formerly Heliora.*
-
 **Know your space.**
 
 Real planet positions, rotating 3D worlds, a star map for your sky,<br>
-and an honest answer to "could humans live here?"
+a daily space quiz, and an honest answer to "could humans live here?"
 
 [![Latest release](https://img.shields.io/github/v/release/aditymishr098-collab/astryl?label=release&color=F5A524)](https://github.com/aditymishr098-collab/astryl/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/aditymishr098-collab/astryl/total?color=7AA2FF)](https://github.com/aditymishr098-collab/astryl/releases)
+[![CI](https://img.shields.io/github/actions/workflow/status/aditymishr098-collab/astryl/ci.yml?branch=main&label=CI)](https://github.com/aditymishr098-collab/astryl/actions/workflows/ci.yml)
 [![Website](https://img.shields.io/badge/website-astryl.space-7AA2FF)](https://astryl.space)
 [![License: AGPL v3](https://img.shields.io/badge/license-AGPL--3.0-blue)](LICENSE)
 ![Android](https://img.shields.io/badge/platform-Android-3DDC84?logo=android&logoColor=white)
 ![Flutter](https://img.shields.io/badge/built%20with-Flutter-02569B?logo=flutter&logoColor=white)
 
-[**⬇ Download the latest APK**](https://github.com/aditymishr098-collab/astryl/releases/latest)
+[**⬇ Download the latest APK**](https://github.com/aditymishr098-collab/astryl/releases/latest) · [**🌐 Open astryl.space**](https://astryl.space)
 
-[Website: astryl.space](https://astryl.space) · [Source: github.com/aditymishr098-collab/astryl](https://github.com/aditymishr098-collab/astryl) · [All releases](https://github.com/aditymishr098-collab/astryl/releases) · [Report a problem](https://github.com/aditymishr098-collab/astryl/issues)
+[Website](https://astryl.space) · [Releases](https://github.com/aditymishr098-collab/astryl/releases) · [Changelog](CHANGELOG.md) · [Privacy](https://astryl.space/privacy.html) · [Report a problem](https://github.com/aditymishr098-collab/astryl/issues)
 
 </div>
 
@@ -30,16 +29,18 @@ and an honest answer to "could humans live here?"
 
 <table>
   <tr>
-    <td align="center"><img src="docs/screenshots/explore.jpg" width="200" alt="Explore tab with planet cards and a 3D Earth"><br><sub><b>Explore in 3D</b></sub></td>
-    <td align="center"><img src="docs/screenshots/tonight.jpg" width="200" alt="Tonight's sky with the Moon"><br><sub><b>Tonight's sky</b></sub></td>
-    <td align="center"><img src="docs/screenshots/star-map.jpg" width="200" alt="Star map with constellations and planets"><br><sub><b>Star map</b></sub></td>
-    <td align="center"><img src="docs/screenshots/binocular.jpg" width="200" alt="Binocular guide"><br><sub><b>Binocular guide</b></sub></td>
+    <td align="center"><img src="docs/screenshots/explore.jpg" width="170" alt="Explore: the Solar System in 3D"><br><sub><b>Explore</b><br>the Solar System</sub></td>
+    <td align="center"><img src="docs/screenshots/tonight.jpg" width="170" alt="Tonight's sky with the Moon"><br><sub><b>Tonight's sky</b><br>Moon and sun times</sub></td>
+    <td align="center"><img src="docs/screenshots/sky.jpg" width="170" alt="Which planets can be seen tonight"><br><sub><b>Planets tonight</b><br>when and where</sub></td>
+    <td align="center"><img src="docs/screenshots/star-map.jpg" width="170" alt="Star map with constellations and planets"><br><sub><b>Star map</b><br>your own sky</sub></td>
+    <td align="center"><img src="docs/screenshots/compass.jpg" width="170" alt="Find Saturn with the phone compass"><br><sub><b>Find it</b><br>point your phone</sub></td>
   </tr>
   <tr>
-    <td align="center"><img src="docs/screenshots/sky-links.jpg" width="200" alt="Share, satellites and news cards"><br><sub><b>Satellites, news, share</b></sub></td>
-    <td align="center"><img src="docs/screenshots/news.jpg" width="200" alt="Space news"><br><sub><b>Space news</b></sub></td>
-    <td align="center"><img src="docs/screenshots/compare.jpg" width="200" alt="Compare Earth and Mars"><br><sub><b>Compare worlds</b></sub></td>
-    <td align="center"><img src="docs/screenshots/weight-v16.jpg" width="200" alt="Your weight on other planets"><br><sub><b>Your weight everywhere</b></sub></td>
+    <td align="center"><img src="docs/screenshots/compare.jpg" width="170" alt="Compare Earth and Mars"><br><sub><b>Compare</b><br>two worlds</sub></td>
+    <td align="center"><img src="docs/screenshots/quiz.jpg" width="170" alt="Daily 5 quiz with the leaderboard"><br><sub><b>Daily 5</b><br>streak and board</sub></td>
+    <td align="center"><img src="docs/screenshots/spacecraft.jpg" width="170" alt="Spacecraft now: Voyager 1 and 2"><br><sub><b>Spacecraft now</b><br>how far is Voyager</sub></td>
+    <td align="center"><img src="docs/screenshots/news.jpg" width="170" alt="Space news"><br><sub><b>Space news</b><br>live headlines</sub></td>
+    <td align="center"><img src="docs/screenshots/missions.jpg" width="170" alt="Space missions timeline"><br><sub><b>Missions</b><br>Sputnik to today</sub></td>
   </tr>
 </table>
 
@@ -47,63 +48,90 @@ and an honest answer to "could humans live here?"
 
 | | |
 |---|---|
-| 🔭 **Real sky, real maths** | Planet positions, the Moon, sunrise and sunset, eclipses and the star map are all calculated on your phone, not copied from a website. |
-| 🌐 **Always online** | Live data (space station, launches, news), sync and updates need internet. Planet facts and positions are calculated on your phone, and the last data stays on screen without internet. |
+| 🔭 **Real sky, real maths** | Planet positions, the Moon, the moons of Jupiter and Saturn, sunrise and sunset, eclipses and the star map are all calculated on your phone, not copied from a website. |
+| 🎯 **A reason to come back** | The Daily 5 quiz: the same five questions for everybody each day, a streak, badges and a leaderboard. |
 | 🔒 **Private** | No ads, no trackers. An account is optional, and the app works fully without one. Nothing is sent unless you agree. |
-| 🌍 **English and हिन्दी** | The whole app is in English and Hindi, or follows your phone. |
-| 🆓 **Open source** | AGPL-3.0 licence. Read it, change it, build it yourself; if you share a changed version, share its source too. |
+| 🌍 **English and हिन्दी** | The whole app and the website are in English and Hindi, or follow your phone. |
+| 🌐 **App and website together** | The same data and the same account work in the app and on [astryl.space](https://astryl.space). |
+| 🆓 **Open source** | AGPL-3.0. Read it, change it, build it yourself; if you share a changed version, share its source too. |
 
 ## Features
 
 ### 🪐 Explore
-- **2D map with real positions.** Every planet sits where it really is around the Sun today. Pick any date from 1800 to 2050, step 30 days back or forward, or press play and watch the planets move.
-- **3D worlds.** Rotate and zoom every body with your finger: Earth with moving clouds, Jupiter's Great Red Spot, Saturn's rings, the glowing Sun and the cracked ice of Europa.
+- **Eyes on the Solar System.** All the planets in one 3D scene at their real directions from the Sun, with colour-coded orbits. Drag to look around, pinch to zoom, tap a planet to fly to it. Pick any date from 1800 to 2050, step through time, or press play and watch the planets move.
+- **3D worlds.** Rotate and zoom every body with your finger: Earth with moving clouds, city lights and aurora, Jupiter's Great Red Spot, Saturn's rings, the glowing Sun and the cracked ice of Europa.
 - **18 worlds.** The Sun, all 8 planets, Pluto, our Moon and 7 famous moons: Io, Europa, Ganymede, Callisto, Titan, Enceladus and Triton.
+- **Real moons of Jupiter and Saturn.** On the planet page, the four big moons of Jupiter and eight of Saturn are drawn where they really are, for any date, with buttons to step in time and a play mode. The formulas are Jean Meeus' (see [How it works](#how-it-works)).
+- **Interior cutaway.** Tap the layers of any planet, moon or the Sun (crust, mantle, core, ocean, metallic hydrogen) to see what is inside.
+- **Telescope simulator.** See how a world looks to the naked eye, through binoculars (10×) and a telescope (100×), including Jupiter's moons and Saturn's rings.
 
 ### 🌙 Tonight's sky
-- **Which planets can I see tonight?** Pick your city (no location permission) and Astryl tells you which planets are up after dark, the best time to look, the direction and how high, plus rise and set times.
+- **Which planets can I see tonight?** Pick your city (no location permission needed) and Astryl tells you which planets are up after dark, the best time to look, the direction and how high, plus rise and set times.
 - **The Moon tonight.** Phase, how much of it is lit, moonrise and moonset, and the dates of the next full and new moon.
-- **The sky on any date.** Step a day back or forward, or pick any date from 1900 to 2049. The Moon, the sun times and the planets are worked out for that night. "Back to tonight" brings you home.
-- **Moon calendar.** A month of Moon phases, with the dates and times of the new moon, first quarter, full moon and last quarter. Tap a day for its phase, moonrise and moonset, or to see the whole sky on that day.
-- **Sun and light.** First light, sunrise, the end of the morning golden hour, solar noon, the start of the evening golden hour, sunset, last light, when the sky is fully dark, and the length of the day.
-- **Star map.** The sky above your city with 1,000 stars, 89 constellations, the Moon, the Sun and the planets. Drag to look around, pinch to zoom, tap a star, a planet or a constellation for its name, how bright it is and where it is right now. Switch stars, constellation lines and planets on or off, step the time an hour at a time, or open the full list of constellations.
-- **Constellation stories.** Short stories for eleven famous constellations (Orion, the Big Dipper, Polaris, Cassiopeia, Cygnus, Scorpius, Leo, Taurus, Gemini, Lyra and the Southern Cross), with how to find them. Everything is kept in the app, so the star map works offline.
-- **Binocular guide.** Twelve sights for ordinary binoculars (the Pleiades, the Orion Nebula, the Andromeda Galaxy and more) with where each one is tonight, how high it gets and when. Tap one to see it on the star map.
-- **Space events.** The next 12 months of full and new moons, planet oppositions, the best evenings and mornings to see Mercury and Venus, close meetings of planets, equinoxes and solstices, and the yearly meteor showers (with how bright the Moon will be). Tap the bell on an event and Astryl reminds you the evening before. Reminders are made on your phone and need no internet.
-- **Eclipses.** Total, annular, hybrid and partial solar eclipses and total, partial and penumbral lunar eclipses are in the events calendar for the next 12 months, with a bell for each. For your city, Astryl says whether the Moon is up during a lunar eclipse and gives a rough guess of how much of the Sun the Moon covers in a solar eclipse. It is only a guide: check an eclipse map before you travel, and never look at the Sun without eclipse glasses.
-- **Tonight in the sky, every evening (optional).** Switch it on in Settings and pick a time. Astryl shows a short note with the Moon's phase and the bright planets you can look for, using your chosen city. It is worked out on your phone. Android lets Astryl prepare about two weeks of notes ahead, so open the app now and then.
-- **Space station and rocket launches (needs internet).** Astryl shows where the International Space Station is right now on a map, when it passes over your city (and whether you can see it), and the list of upcoming rocket launches inside the events calendar. All of it has bells for reminders. It is off until you switch it on.
-- **Tiangong and Hubble (optional, needs internet).** The same switch shows where China's Tiangong space station and the Hubble Space Telescope are now and when each flies over your city, with a bell for every pass. Hubble is faint, so it is a challenge for a clear night.
-- **Space news (optional, needs internet).** The latest space headlines from the [Spaceflight News API](https://spaceflightnewsapi.net) (English, no account or key). Only text is downloaded; a story opens on the publisher's own website.
-- **Share tonight's sky.** One tap makes a picture with the Moon and the planets you can see from your city tonight, made on the phone, ready to send to friends.
-- **Spacecraft now.** How far Voyager 1, Voyager 2, New Horizons, the James Webb telescope, the space station, Hubble and the Mars rovers are from Earth right now, with how long a radio signal needs to reach them. The far probes are estimates (about 1%), the rest are fixed or calculated for today.
-- **Find it with your compass.** Tap the compass button next to the Moon or a planet, hold your phone up, and Astryl shows which way to turn and tilt until you are pointing right at it. It uses your phone's motion sensors only: no camera, no location.
+- **The sky on any date.** Step a day back or forward, or pick any date from 1900 to 2049.
+- **Moon calendar.** A month of Moon phases with the dates and times of the main phases. Tap a day for its phase, moonrise and moonset.
+- **Sun and light.** First light, sunrise, golden hours, solar noon, sunset, last light, when the sky is fully dark, and the length of the day.
+- **Star map.** The sky above your city with 1,000 stars, 89 constellations, the Moon, the Sun and the planets. Drag, pinch, tap a star or a constellation for its name, brightness and where it is right now. Step the time an hour at a time.
+- **Constellation stories.** Short stories for eleven famous constellations, with how to find them. Kept in the app, so the star map works offline.
+- **Binocular guide.** Twelve sights for ordinary binoculars (the Pleiades, the Orion Nebula, the Andromeda Galaxy and more), with where each one is tonight and when.
+- **Space events.** The next 12 months of full and new moons, planet oppositions, the best evenings and mornings for Mercury and Venus, close meetings of planets, equinoxes and solstices, meteor showers, and total, annular, hybrid and partial **eclipses**. A bell on every event reminds you the evening before, made on your phone with no internet.
+- **Daily sky note (optional).** A short evening note with the Moon's phase and the planets to look for, worked out on your phone, at a time you choose.
+- **Space station, Tiangong and Hubble.** Where each one is right now on a map, when it passes over your city and whether you can see it, with a bell for every pass.
+- **Rocket launches.** The upcoming launches, inside the events calendar.
+- **Space news.** The latest space headlines from the [Spaceflight News API](https://spaceflightnewsapi.net). Only text is downloaded; a story opens on the publisher's own site.
+- **Spacecraft now.** How far Voyager 1 and 2, New Horizons, the James Webb telescope, ISRO's Aditya-L1, the space station, Hubble and the Mars rovers are from Earth right now, and how long a radio signal needs to reach them.
+- **Find it with your compass.** Tap the compass next to the Moon or a planet, hold your phone up, and Astryl shows which way to turn and tilt until you point right at it. It uses motion sensors only: no camera, no location.
+- **Share tonight's sky.** One tap makes a picture of the Moon and the planets you can see from your city tonight.
+- **Moon phase widget.** A home-screen widget shows tonight's Moon phase and how much of it is lit (English or Hindi), and a tap opens Astryl. It is worked out from the date alone, so it needs no internet and sends nothing.
+
+### 🎯 Quiz and Daily 5
+- **Daily 5.** The same five questions for everybody every day (UTC). Right answers and speed make your score. The server picks the questions and checks your answers and your time, so nobody can post a made-up score.
+- **Leaderboard.** *Today*, *This week* and *All time* boards, and your own rank. A switch in Account (on by default) lets you hide yourself from the board.
+- **Streaks.** Your streak (days in a row that ends today or yesterday) and your best streak.
+- **Seven badges.** First run, 3, 7 and 30 days in a row, a perfect 5 of 5, 10 runs and 50 runs.
+- **Share your result.** One tap makes a score picture to send to friends, or copy it as text.
+- **Daily reminder (optional).** A notification with a teaser of the first question and your streak, at a time you choose.
+- **Level quiz.** Easy, Medium and Hard, 10 questions each, with a short "Why?" after each answer, a 50:50 and a hint. Your best score for each level is saved.
+- **60 seconds Blitz.** Three lives, a combo multiplier (2× and 3×) and a best score.
+- **Space badges.** Achievements for streaks, quiz stars and more.
 
 ### 🌍 Learn
-- **Planet facts.** Diameter, gravity, temperature, length of day and year, known moons, distance from the Sun and surface pressure, in an icon grid that grows with the text size.
+- **Planet facts.** Diameter, gravity, temperature, length of day and year, moons, distance from the Sun and surface pressure.
 - **Atmosphere and oxygen.** What each atmosphere is made of, and how its oxygen compares with Earth's.
-- **Could humans live here?** A simple 0 to 10 life score for every world, worked out from temperature, air pressure, oxygen, water, surface and gravity. Earth scores 10, Mars 4, Jupiter 0.
+- **Could humans live here?** A simple 0 to 10 life score for every world, from temperature, air pressure, oxygen, water, surface and gravity. Earth scores 10, Mars 4, Jupiter 0.
 - **How far is it?** Today's real distance from Earth, and how long light, a spacecraft or a car would need to get there.
 - **Compare.** Any two worlds side by side, with their true sizes drawn next to each other.
+- **Did you know?** Short facts about every world, and a fact of the day.
+- **Space missions.** A timeline of 15 famous missions from Sputnik 1 to Chandrayaan-3.
+- **Surface maps of the Moon and Mars.** Pinch to zoom, tap a marker for the story, coordinates and who sent it: 15 landing sites on the Moon (Luna 9, Apollo 11 to 17, Chang'e, Chandrayaan-3, SLIM and more) and 10 on Mars (Viking, Sojourner, Spirit, Opportunity, Phoenix, Curiosity, InSight, Perseverance, Zhurong). The map is drawn, not a photo, and every site is at its real latitude and longitude.
 
 ### 🙋 You
-- **Your weight and your jump** on every world, from the Moon to the Sun. Type how high you jump on Earth and see how high you would jump on each world.
-- **Did you know?** Two short facts about every world, on its page, and a fact of the day on the quiz page. Tap the card for the next one.
-- **Your age on other planets** and the date of your next birthday there.
-- **My birthday sky.** The Moon's phase and where the planets were on the day you were born, how many days old you are, and the dates of your 10,000th day, your 1 billionth second and other round numbers.
-- **Space missions.** A timeline of 15 famous missions from Sputnik 1 to Chandrayaan-3, each with a short story.
-- **Surface maps of the Moon and Mars.** Open the Moon or Mars and tap *Surface map*: a flat map with 15 landing sites on the Moon (Luna 9, Apollo 11 to 17, Chang'e 3, 4 and 5, Chandrayaan-3, SLIM and more) and 10 on Mars (Viking, Sojourner, Spirit, Opportunity, Phoenix, Curiosity, InSight, Perseverance, Zhurong). Pinch to zoom, tap a marker for the story, coordinates and who sent it. The map is drawn, not a photo: seas, basins, craters and volcanoes sit in the right places and every site is at its real latitude and longitude.
-- **Search and favourites.** Tap the search bar on the home screen to search planets, moons, missions and spacecraft, in your own language or in English. Tap the star on anything to keep it in your favourites, which show when the search box is empty. Starred planets also come first in the row of cards on the home screen.
-- **Quiz.** Three levels, 10 questions each: Easy (basics about planets), Medium (planets and moons) and Hard (tricky rankings). Answers are worked out from the data, and your best score for each level is saved.
-- **Share.** Turn a planet's card into a picture and send it to your friends.
+- **Space Passport.** Your rank, favourites, quiz stars, and a live cosmic odometer: how far you have travelled around the Sun and the Galaxy since you were born.
+- **Your weight and your jump** on every world, and **your age on other planets** with the date of your next birthday there.
+- **My birthday sky.** The Moon's phase and where the planets were on the day you were born, how old you are in days, and the dates of your 10,000th day and your 1 billionth second.
+- **Search and favourites.** Search planets, moons, missions and spacecraft in your language or in English. Star anything to keep it in your favourites.
+- **Share.** Turn a planet's card into a picture and send it to friends.
 
 ### ⚙️ Made for everyone
-- **Optional account.** Make an account with only a username and a password (no e-mail) and keep a recovery code for a forgotten password. Your favourites, quiz scores, language, theme, city and birth date then follow you between the app and [astryl.space](https://astryl.space). You can skip it, log out, or delete the account and everything stored for it from Settings. See [Privacy](#privacy) and [supabase/README.md](supabase/README.md).
-- **Use my location.** In the city list of *Tonight's sky*, one tap uses your approximate location for the sky above you. Android asks first; nothing leaves the phone for this.
-- **Backup and restore.** Save your favourites, settings, quiz scores, city and birth date in one small file, send it to yourself, and restore it on another phone. It is made on the phone and goes nowhere unless you send it. Bells for single events are not included, so set them again after restoring.
-- **Light, dark or system theme**, and a **text size** setting (Normal, Large, Larger) for easier reading.
-- **Two languages:** English and Hindi (हिन्दी), or the language of your phone. Planet and constellation names are translated too. Earlier versions had 20 languages; from 1.16.0 the app is kept in the two that are fully proofread.
-- **In-app updates.** New versions download inside the app with a progress bar, then the Android installer opens. Your settings are kept.
+- **Optional account.** A username and a password, no e-mail, and a recovery code for a forgotten password. Your favourites, quiz scores, language, theme, city and birth date then follow you between the app and the website. Skip it, log out, or delete the account and everything stored for it, any time.
+- **Use my location (optional).** One tap in the city list uses your approximate location for the sky above you. Android asks first.
+- **Backup and restore.** Save your favourites, settings, scores, city and birth date in one small file and restore it on another phone. It goes nowhere unless you send it.
+- **Light, dark or system theme**, and a **text size** setting (Normal, Large, Larger).
+- **English and हिन्दी**, or your phone's language. Planet and constellation names are translated too.
+- **Tablets and landscape.** A side rail and a wider layout on big screens.
+- **In-app updates.** Each time the app opens it checks GitHub for a newer release and offers it, with a progress bar and the Android installer.
+
+## 🌐 The website
+
+[**astryl.space**](https://astryl.space) is the same Astryl in your browser, with the same account, in English and Hindi, dark by default.
+
+- **Planets and 18 world pages** with facts, a 3D look, the interior, and for **Jupiter and Saturn their moons at their real positions** on any date.
+- **Solar system, Compare, You** (weight, jump and age), **Constellations**, **Surface maps**, **Space missions** and **Spacecraft now**.
+- **Tonight's sky**: the Moon, a calendar, the planets you can see tonight, and meteor showers.
+- **Daily 5 and the leaderboard**, with streaks, badges, a This week board and a share-as-picture button.
+- **Download page** with the newest version, its date and size, the **SHA-256** of the APK, what is new, and how many times Astryl has been downloaded.
+- **Link previews.** Every page has its own preview picture and structured data, so a shared link looks good in chats and search.
+- Hosted free on **GitHub Pages**; the pages are built from the app's own data by `tools/build_site.py`.
 
 ## Install
 
@@ -111,45 +139,74 @@ and an honest answer to "could humans live here?"
 2. Download the file `Astryl-vX.Y.Z.apk`.
 3. Open it and allow your browser to install apps if Android asks.
 
-If you have a version older than 1.17.5, see the 1.17.5 line in the changelog: the app id changed, so it installs as a new app and you move your data with Backup and Restore.
+To check the file, compare its SHA-256 with the one on [astryl.space/get.html](https://astryl.space/get.html) or on the release page. After that, Astryl updates itself: each time the app opens it checks GitHub for a newer release.
 
-After that, Astryl updates itself: each time the app opens it checks GitHub for a newer release.
+If you have a version older than 1.17.5, the app id changed (see the 1.17.5 line in the [changelog](CHANGELOG.md)): it installs as a new app and you move your data with Backup and Restore.
 
 ## Privacy
 
 [Astryl](https://astryl.space): **no ads, and an account only if you want one.** The full policy is at [astryl.space/privacy.html](https://astryl.space/privacy.html).
 
-- Planet data, positions and 3D surfaces are calculated on your phone. Astryl is an online app: it also uses the internet for the update check, crash reports and the live features below. Without internet it shows the last data it has.
-- **Live features are always on.** Astryl contacts `api.wheretheiss.at` (or `celestrak.org`) for the station's orbit data, `ll.thespacedevs.com` (Launch Library 2) for the launch list, and `api.spaceflightnewsapi.net` for the news. The orbits of Tiangong and Hubble come from `celestrak.org`. Nothing about you is sent; those services can only see your phone's internet address. The orbit data is saved on the phone, so the station keeps working for days without internet.
-- **The account is optional.** If you make one, a small server on [Supabase](https://supabase.com) stores your username, a hash of your password and of your recovery code, the date you accepted the privacy policy, and, if you keep sync on, your favourites, quiz scores, language, theme, city and birth date. Nothing is stored for a visitor who skips it. You can delete the account in Settings → Account and everything is removed.
-- **Three more switches, all off until you turn them on:** *count me as an active user* (a random number made on your phone, not linked to you), *share my country* (taken from your phone's language and region setting) and *share my approximate location* (needs an account and Android's location permission; only your latest place is kept, rounded to about 10 km, and it is updated only when you open the app). There is no background location.
-- The app can only call one function (`supabase/functions/account`); every table is locked, and the key inside the app is the public (publishable) one. The service key never leaves Supabase.
-- Besides that, the internet is used for updates. The app asks GitHub for the latest release and, when you tap **Download and install**, downloads the signed APK from that release. Nothing about you is sent; like any web request, GitHub sees your phone's internet address. Android only installs the APK if it is signed with the same key as the app you already have.
-- Your birth date and settings are saved only on your phone. Android's cloud backup is switched off for Astryl; the backup file in Settings is made only when you ask and goes only where you send it.
-- **Update check:** each time the app opens, it asks GitHub for the newest release and offers it first, with **Update now** and **Skip**.
-- **Crash reports (on by default, switch in Settings → Send crash reports):** if the app crashes, one small report (the error text, the technical trace, the app version, the Android version string and the app language) is sent to the project's own Supabase (`crashes` table, kept 90 days, only used to fix bugs). It has no name, account, device id or location.
+- Planet data, positions and 3D surfaces are calculated on your phone. Astryl is an online app: it also uses the internet for the update check, crash reports, the account and the live features below. Without internet it shows the last data it has.
+- **Live features.** Astryl contacts `api.wheretheiss.at` (or `celestrak.org`) for the station's orbit data, `celestrak.org` for Tiangong and Hubble, `ll.thespacedevs.com` (Launch Library 2) for the launch list, and `api.spaceflightnewsapi.net` for the news. Nothing about you is sent; those services can only see your phone's internet address. Orbit data is saved on the phone, so the station keeps working for days without internet.
+- **The account is optional.** If you make one, a small server on [Supabase](https://supabase.com) stores your username, a hash of your password and of your recovery code, the date you accepted the privacy policy, your Daily 5 runs, and, if you keep sync on, your favourites, quiz scores, language, theme, city and birth date. Nothing is stored for a visitor who skips it. Delete the account in the You tab and everything is removed.
+- **Three more switches, all off until you turn them on:** *count me as an active user* (a random number made on your phone, not linked to you), *share my country* (from your phone's language and region) and *share my approximate location* (needs an account and Android's permission; only your latest place is kept, rounded to about 10 km, updated only when you open the app). There is no background location.
+- **The leaderboard** shows only your username, and only if you leave *Show me on the leaderboard* on.
+- **Update check:** each time the app opens, it asks GitHub for the newest release. When you tap *Update now*, it downloads the signed APK from that release. Android only installs it if it is signed with the same key as the app you already have.
+- **Crash reports** (on by default, switch in the You tab): one small report (the error text, the technical trace, the app version, the Android version string and the app language) goes to the project's own Supabase, kept 90 days, only to fix bugs. It has no name, account, device id or location.
+- Your birth date and settings are kept on your phone. Android's cloud backup is switched off for Astryl; the backup file is made only when you ask.
+
+### Security
+
+- **Locked tables.** Every table in Supabase has row-level security on and no policy, so the public key inside the app and the website can read and write nothing by itself. The only door is one Edge Function, `account`. The service key stays inside Supabase and must never be put in the app, the website or this repository.
+- **Rate limits.** Sign-up, login and recovery are limited per address and per account, and repeated wrong recovery codes lock that account for a while.
+- **Server-checked quiz.** The Daily 5 questions, answers and timing live on the server; the app sends only the options you picked.
+- **Nightly encrypted backup.** A GitHub Action saves the profiles, recovery hashes, synced data and Daily 5 runs, encrypts them (AES-256, key from a passphrase only the owner knows) and keeps the file for 30 days. Passwords themselves are in Supabase Auth and are not in it. See [docs/BACKUP.md](docs/BACKUP.md).
+- **Signed releases.** The APK is built and signed by GitHub Actions from a version tag, and its SHA-256 is published with the release.
+
+More in [supabase/README.md](supabase/README.md).
 
 ## How it works
 
 | Part | How |
 |---|---|
-| Quiz and facts | Most answers are worked out from the same data as the planet pages, so they stay right when the data changes. A few (the moon with water geysers, the most volcanic moon, the moon that orbits backwards) are well known facts about one world. The "Did you know?" facts are written by hand from NASA sources. |
-| Eclipses | The Moon's position (Schlyter's method plus its distance) and the Sun's position decide when the Moon passes in front of the Sun or into Earth's shadow. Compared with the official eclipse lists for 2022 to 2029: all the main eclipses are found with the right type, times within a few minutes. Very faint penumbral eclipses are left out. The local estimate for a solar eclipse is rough (about 6% of the Sun's width). |
-| Spacecraft distances | Voyager 1 and 2 are placed from NASA's one-light-day dates (173.14 AU, 18 Nov 2026 and Nov 2035) and New Horizons from its 50 AU date (17 Apr 2021), then moved at their average speeds in a straight line. That is good to about 1%; the true distance from Earth wobbles by up to 1 AU over a year as Earth moves. The Mars rovers use the same orbit maths as the planet pages. The space station, Hubble and JWST use fixed typical values. |
-| Tonight alerts | Astryl sets up to 15 Android alarms ahead, one per evening, each with text worked out on the phone. They are set again each time the app is opened and after a restart or update. |
-| Planet facts | [NASA Planetary Fact Sheet](https://nssdc.gsfc.nasa.gov/planetary/factsheet/). Moon counts are NASA's known moons as of mid 2026. |
 | Real positions and distances | Keplerian orbital elements from JPL ([Standish](https://ssd.jpl.nasa.gov/planets/approx_pos.html)), valid 1800–2050, solved on the phone. Checked against the 2025 Mars and Saturn and the 2026 Jupiter oppositions. |
+| Moons of Jupiter and Saturn | Jean Meeus, *Astronomical Algorithms*: chapter 44 (the four big moons of Jupiter) and chapter 46 (eight moons of Saturn), with the ring tilt of chapter 45. Positions come out in planet radii as seen from Earth. They agree with the high-accuracy theory to about 0.1 radius for Jupiter and 0.2 for Saturn, plenty for a picture. The same code runs in the app (`lib/core/moons.dart`) and on the website (`tools/site_src/moons.js`), and the app's tests use numbers made by the website's code. |
 | 3D globes | A single fragment shader (`shaders/planet.frag`) draws every surface from noise, so the app ships with no image files. |
 | Tonight's sky | Rise, set and best viewing time from the same orbits plus the Moon from Paul Schlyter's method, all on the phone. Checked against London's sunrise on 21 June 2025 and the full and new moons of October 2025 and January 2026. |
-| Sun and light | The Sun's height in the sky is calculated every 2 minutes over the solar day of your city, and each time it crosses a level is found by interpolation: -0.833° for sunrise and sunset, 6° for the golden hours, -6° for first and last light, -18° for the fully dark sky. Solar noon is the top of the curve. Checked against London's shortest day and against the older sunrise code. Good to about 3 minutes. |
+| Sun and light | The Sun's height is calculated every 2 minutes over the solar day of your city and each crossing is found by interpolation: -0.833° for sunrise and sunset, 6° for the golden hours, -6° for first and last light, -18° for the fully dark sky. Good to about 3 minutes. |
 | Moon calendar | The Moon's phase on each day is taken at noon. The four main phases are found by searching for the moment the Sun to Moon angle reaches 0, 90, 180 or 270 degrees, good to about an hour. |
-| Space events | The same orbits and Moon maths find each event on the phone: oppositions where a planet is opposite the Sun in longitude, greatest elongations, planet pairs closer than 2°, and equinoxes and solstices. Checked against 2025–2026: Mars (16 Jan 2025), Saturn (21 Sep 2025) and Jupiter (10 Jan 2026) oppositions, Venus at 47° on 10 Jan 2025 and 15 Aug 2026, and the 2026 equinoxes and solstices within 15 minutes. Meteor shower peaks are typical yearly dates. |
-| Space station | The station's orbit data (a TLE) is downloaded once and the position is computed on the phone with SGP4 (`lib/core/sgp4.dart`), checked against Vallado's published test vectors. A pass counts as easy to see when the Sun is more than 6° below the horizon and the station is still lit by the Sun. |
-| Tiangong and Hubble | The orbit of each one (a TLE from CelesTrak, kept on the phone) is checked to carry the right catalogue number, then used with the same SGP4 code and pass finder as the space station. Hubble is only about magnitude 2 to 3 at its best, so it is hard to see. |
+| Space events | The same orbits and Moon maths find oppositions, greatest elongations, planet pairs closer than 2°, equinoxes and solstices. Checked against 2025–2026: Mars (16 Jan 2025), Saturn (21 Sep 2025) and Jupiter (10 Jan 2026) oppositions, Venus at 47° on 10 Jan 2025 and 15 Aug 2026, and the 2026 equinoxes and solstices within 15 minutes. Meteor shower peaks are typical yearly dates. |
+| Eclipses | The Moon's position (Schlyter's method plus its distance) and the Sun's position decide when the Moon passes in front of the Sun or into Earth's shadow. Compared with the official lists for 2022 to 2029: all the main eclipses are found with the right type, times within a few minutes. Very faint penumbral eclipses are left out. The local estimate for a solar eclipse is rough (about 6% of the Sun's width). |
+| Space station, Tiangong and Hubble | The orbit data (a TLE) is downloaded once and the position is computed on the phone with SGP4 (`lib/core/sgp4.dart`), checked against Vallado's published test vectors. A pass counts as easy to see when the Sun is more than 6° below the horizon and the satellite is still lit by the Sun. Hubble is only about magnitude 2 to 3 at its best, so it is hard to see. |
 | Rocket launches | The list comes from [Launch Library 2](https://thespacedevs.com/llapi). Times are "no earlier than" and change often, so the list is refreshed at most every 3 hours. |
-| Star map | About 1,000 stars (down to magnitude 4.6), the constellation lines and 12 binocular targets come from the [d3-celestial](https://github.com/ofrohn/d3-celestial) data (Hipparcos-based, BSD 3-clause, see `assets/licenses`) and are stored in `lib/data/sky_catalog.dart`. Positions are for the year 2000, so Astryl turns them to today's equinox with the IAU 1976 precession (up to about 0.4° by now, 0.28° for Sirius) before drawing them together with the Sun, Moon and planets. The sky is drawn with a stereographic projection. Checked on the phone-independent maths: Polaris stands at your latitude (within 1°), and Sirius reaches 33.1° from Yerevan. Stars fainter than magnitude 4.6 are not shown, so very dark skies will show more than the map. Names of stars and binocular objects stay in English, constellation names are translated into Hindi. |
+| Star map | About 1,000 stars (down to magnitude 4.6), the constellation lines and 12 binocular targets come from the [d3-celestial](https://github.com/ofrohn/d3-celestial) data (Hipparcos-based, BSD 3-clause). Positions are for the year 2000, so Astryl turns them to today's equinox with the IAU 1976 precession before drawing them with the Sun, Moon and planets, using a stereographic projection. Polaris stands at your latitude (within 1°). Names of stars stay in English; constellation names are translated into Hindi. |
 | Compass finder | The phone's rotation sensor gives where the back of the phone points; Android's magnetic-declination model turns magnetic north into true north. The target comes from the same orbit maths as Tonight's sky. |
+| Spacecraft distances | Voyager 1 and 2 are placed from NASA's one-light-day dates and New Horizons from its 50 AU date, then moved at their average speeds in a straight line: good to about 1%. The Mars rovers use the same orbit maths as the planet pages; the station, Hubble and JWST use fixed typical values. |
+| Daily 5 | The questions are made by the Edge Function from a fixed seed for each UTC day, so they are never stored. A run is one row per person per day: the server notes when it started, then finishes it once and works out the score itself from the correct answers and the time. Streaks, badges and the weekly board are counted by one SQL function (`astryl_board`). |
+| Quiz and facts | Most answers are worked out from the same data as the planet pages, so they stay right when the data changes. The "Did you know?" facts are written by hand from NASA sources. |
+| Reminders and alerts | Event bells and the daily sky note are Android alarms set on the phone (up to 15 ahead), each with text worked out on the phone. They are set again each time the app opens and after a restart or update. |
+| Moon phase widget | An Android home-screen widget (`MoonWidget.kt`) that works out the phase from the date and refreshes about every 30 minutes. |
 | Life score | Six simple rules in `lib/core/habitability.dart`. A teaching aid, not science. |
+| Planet facts | [NASA Planetary Fact Sheet](https://nssdc.gsfc.nasa.gov/planetary/factsheet/). Moon counts are NASA's known moons as of mid 2026. |
+
+## Project layout
+
+```
+lib/                 the Flutter app
+  core/              the maths: orbits, moons, sky, eclipses, SGP4, quiz, badges
+  data/              planets, cities, star catalogue, account, sync, updates
+  screens/           every screen        widgets/   shared widgets
+  l10n/              English and Hindi texts (app_en.arb, app_hi.arb)
+shaders/             planet.frag, the 3D surfaces
+android/             Android project, including the Moon phase widget
+site/                the website, built into plain files (do not edit by hand)
+tools/               build_site.py and its sources in site_src/
+supabase/            migrations, the account and backup Edge Functions
+test/                unit tests (orbits, moons, badges, Daily 5, accounts, maps)
+docs/                screenshots and BACKUP.md
+.github/workflows/   CI, release, website, backup, keep-alive
+```
 
 ## Build from source
 
@@ -161,117 +218,38 @@ flutter test
 flutter build apk --release
 ```
 
-Releases are built and signed by GitHub Actions when a version tag such as `v1.4.0` is pushed (see `.github/workflows/release.yml`). Every push to `main` is checked by `.github/workflows/ci.yml`.
+The website is built with `python3 tools/build_site.py` (it needs Pillow for the link-preview pictures).
 
-## Roadmap
-
-| Version | Plan |
+| Workflow | What it does |
 |---|---|
-| 1.12.0 | New look: search bar on the home screen, tinted planet cards with starred ones first, icon stats on the planet page |
-| 1.13.0 | Moon calendar, the sky on any date, sunrise, sunset and golden hour (done) |
-| 1.14.0 | New design: Space Grotesk and DM Sans fonts, big planet cards, a scrolling Explore page, a new planet page and bottom bar (done) |
-| 1.15.0 | Constellations and bright stars (kept in the app, offline), a star map you drag with your finger, constellation stories, binocular guide (done) |
-| 1.16.0 | Optional online features: space news, Tiangong and Hubble passes, a share card for tonight's sky; the app is kept in English and Hindi (done) |
-| 1.17.0 | Smoother animations and less battery use, backup and restore (done) |
-| 1.18.0 | Optional account, sync with the website, privacy policy (done) |
-| 1.19.0 | Update offered first on every start (with Skip), crash reports to the project's Supabase, new tagline "Know your space", a turning Milky Way on the website (done) |
-| 1.19.1 | Always online, account settings in the You tab (done) |
-| 1.19.2 | All settings inside the You tab, soft animations (done) |
-| 1.19.3 | More compact Home (done) |
-| 1.19.4 | All the planets in one 3D scene you can fly around (Space), weight, jump and age calculators moved to Compare (done) |
-| 1.19.5 | Hosted on Firebase (`astryl-space`), smooth hero planet fly-in, tab transitions and animated progress bars (done) |
-| 1.20.0 | Daily 5 quiz and live Today / All-time Leaderboard in the app, synced with astryl.space (done) |
-| 1.21.0 | The big moons of Jupiter and Saturn with their real positions, plus twinkling and shooting stars (done) |
-| 1.22.0 | Interactive Planet Interior Cutaway (Crust, Mantle, Core) and 3D Earth city lights / aurora (done) |
-| 1.23.0 | Telescope Zoom Simulator (1x / 10x / 100x) and ISRO Aditya-L1 Live Tracker (done) |
-| 1.24.0 | Unified "NASA Eyes on the Solar System" 3D Home view with colour-coded orbits, moon orbits, and live planet telemetry below (done) |
-| 1.25.0 | Real 3D catalog stars with spectral colours & diffraction spikes, 3D Milky Way band, Space Explorer Passport & Live Cosmic Odometer (done) |
-| 1.26.0 | Quiz engagement upgrade: Daily Streak, 60s Blitz Survival (3 lives & combo), 50:50 & Hint lifelines, scientific "Why?" explanations, Space Badges & 1-tap Share Card (done) |
-| 1.27.0 | Daily 5 Quiz & Streak Reminder notifications with 1st-question teaser and time picker (done) |
-| 1.28.0 | Cosmic Nebula Glassmorphism UI, 3D Animated Orbital Login Portal & Floating Navigation Dock (done) |
-| 1.29.0 | Complete Neon Cyber-Space UI Overhaul: Electric Cyan & Cosmic Violet theme, Mission Control Top HUD + Live Telemetry Ticker, 2-Column Holographic Planet Bento Grid, Live Sky Dome Banner, VS Arena Compare & Arcade Quiz (done) |
-| 1.30.0 | Responsive Tablet & Landscape Cockpit Layout: Vertical Neon Side Rail, Side-by-Side 3D Solar System & Live Telemetry Cockpit, 3-to-4 Column Holographic Planet Grid & Centered Wide-Screen Containers (done) |
-| 1.31.0 | Clean Minimal Deep-Space UI (Apple/NASA Style): Soft Starlight Blue (`#5B9BFF`) & Matte Charcoal Slate (`#10141F`) palette, clean minimal header & floating pill bar, simplified planet cards, Sky, Compare & Quiz screens (done) |
-| 1.32.0 | Compact Circular Search Button in Top Header so Astryl Logo & Title never get squeezed on phone screens (done) |
-| 1.33.0 | Website redesigned to match the app: Clean Minimal Deep-Space theme, Soft Starlight Blue, dark by default (done) |
-| 1.34.0 | Back on Supabase for everything (accounts, sync, Daily 5, leaderboard). The server picks the Daily 5 questions and checks the answers and the time; no passwords are stored anywhere (done) |
-| 1.35.0 | Daily 5 streaks, badges and a This week board; share your result as a picture; real positions of the moons of Jupiter and Saturn for any date; a Moon phase home-screen widget (done) |
+| `ci.yml` | On every push and pull request: gen-l10n, analyze and tests. |
+| `android-check.yml` | Builds a debug APK when the Android part or `pubspec.yaml` changes. |
+| `release.yml` | When a tag such as `v1.35.0` is pushed: builds, signs and attaches the APK to the release. |
+| `pages.yml` | Publishes the `site/` folder to GitHub Pages. |
+| `backup.yml` | Nightly encrypted backup of the online data. |
+| `keepalive.yml` | Keeps the free Supabase project awake. |
 
-Plans can change. An account stays optional, and nothing is collected unless you agree to it.
-
-## Fonts
-
-Titles use [Space Grotesk](https://fonts.google.com/specimen/Space+Grotesk) and the rest of the text uses [DM Sans](https://fonts.google.com/specimen/DM+Sans). Both are licensed under the SIL Open Font License (see `assets/fonts/OFL-*.txt`) and are kept inside the app, so nothing is downloaded. Devanagari (Hindi) uses the phone's own font.
-
-## Star data
-
-Stars, constellation lines, names and the Messier objects come from [d3-celestial](https://github.com/ofrohn/d3-celestial) by Olaf Frohn (BSD 3-clause licence, copy in `assets/licenses/d3-celestial-LICENSE.txt`), which is built on the Hipparcos catalogue.
-
-## Translations
-
-All texts live in `lib/l10n/app_en.arb` and `lib/l10n/app_hi.arb`. Found a wrong word? Edit the matching file and open a pull request. Help from native speakers is very welcome.
-
-## Changelog
+## Latest changes
 
 | Version | What's new |
 |---|---|
-| **1.18.0** | Optional online account (username and password, no e-mail) with a recovery code for a forgotten password, a "Skip now" choice and a privacy-policy tick box. Your favourites, quiz scores, language, theme, city and birth date sync with astryl.space. Settings → Account has switches for sync, the anonymous active-user count, country and approximate location, a new recovery code, log out and delete account. "Use my location" in the city list. New privacy policy on the website. Backend in `supabase/`. Your data and settings are kept |
-| **1.19.0** | Each time the app opens it asks GitHub for a newer version and offers it first, with **Update now** and **Skip**; the "Check for updates" button is gone. Crash reports (error text, app and Android version, language; no personal data) go to the project's own Supabase, with a switch in Settings and a line in the Privacy Policy. New tagline "Know your space". The website has a turning Milky Way and a scroll journey to the Solar System and the Moon. |
-| **1.19.1** | Astryl is always online now: the *Online features* switch is gone and the space station, launches and news are always on. The Account card and the crash-report switch moved from Settings to the **You** tab. |
-| **1.19.2** | The Settings screen is gone: everything moved into the **You** tab (Account, weight and age, then Appearance, Language, Daily sky note, Backup, About) and the gear button was removed. New *Report a bug* link. Soft fade-and-slide animations on the You tab and the start screen (off when the phone's "remove animations" is on). |
-| **1.19.3** | Home is more compact: smaller names and headings, shorter planet cards with the text right under the planet, and in the 3D view the details (oxygen, temperature, life score) now sit above the globe. |
-| **1.19.4** | New **Space** view next to 2D and 3D on Explore: all the planets in one 3D scene at their real directions from the Sun on the chosen date. Drag to look around, pinch to zoom, tap a planet (or its chip) and the camera flies to it, lit by the Sun, with a *Whole Solar System* button to fly back. Sizes and distances are not to scale. The weight, jump-height and age calculators moved from You to the bottom of **Compare**; You now holds just the account and the settings. |
-| **1.19.5** | Online backend and website hosting moved to Firebase (`astryl-space`). Smooth Hero fly-in animation when opening a planet from Home, soft tab fade transitions, and animated Life Score and Oxygen bars on the planet page. |
-| **1.20.0** | Daily 5 quiz and live Leaderboard inside the app's Quiz screen: play the same 5 daily questions (UTC) as on astryl.space with a live timer, earn speed + accuracy points, and see your Today and All-time rank on the shared Firebase leaderboard. |
-| **1.21.0** | Live orbital view for the major moons of Jupiter (Io, Europa, Ganymede, Callisto) and Saturn (Enceladus, Titan) on their planet pages with Play/Pause orbital animation, plus gentle star twinkling and shooting stars in Space and 2D views. |
-| **1.22.0** | Interactive **Interior Cutaway** card on every planet, moon and the Sun (tap concentric layers or chips to inspect Crust, Subsurface Ocean, Mantle, Metallic Hydrogen, and Core in English & Hindi), plus glowing night-side city lights and polar aurora on the 3D Earth globe (`shaders/planet.frag`). |
-| **1.23.0** | **Telescope Eyepiece Simulator** (`1x Naked eye`, `10x Binoculars`, `100x Telescope`) on every planet and moon page showing how the body looks through an eyepiece (including Jupiter's Galilean moons and Saturn's rings & Titan), plus **ISRO Aditya-L1** live distance & light-time tracker at the Sun–Earth L1 point in Spacecraft. |
-| **1.24.0** | Unified **Eyes on the Solar System** 3D Home screen: removes the separate 2D/3D/Space switch and opens directly into the full 3D interactive Solar System with colour-coded planet orbits, 3D moon orbits around focused planets, a live time scrubber bar, and the selected world's live telemetry & planet cards directly underneath. Removed F-Droid build files (`fdroid/`, `fastlane/`). |
-| **1.25.0** | **Real 3D Celestial Sphere & Milky Way in SpaceView**: 460 real catalog stars (`sky_catalog.dart` J2000 RA/Dec) with true O/B/A/F/G/K/M spectral colours, diffraction spikes & halos on 1st-magnitude stars (Sirius, Rigel, Betelgeuse, Vega, Antares), 3D constellation stick lines, a 3D Milky Way galactic dust band, always-dark deep-space skybox, and 3D shader planets at all zoom levels. Fixed website background canvas `z-index` and Firestore stats initialization. |
-| **1.26.0** | **Quiz Engagement & Space Passport Upgrade**: Added **Space Explorer Passport**, **Live Cosmic Odometer** (real-time km travelled around the Sun & Milky Way since birth), and **Next Space Birthday** countdown in the You tab. Upgraded Quiz in both app & website with **🔥 Daily Streak**, **⚡ 60s Blitz Survival Mode** (3 lives + 2x/3x combo multiplier), **`50:50` & `💡 Hint` lifelines**, **🔬 Cosmic Insight ("Why?")** explanations after each answer, **🏅 Space Badges/Achievements**, and **📤 1-Tap Score Card sharing**. |
-| **1.27.0** | **Daily 5 Quiz & Streak Reminder Notifications**: Added daily scheduled notifications (`tonight_alerts.dart`) with a teaser of that day's 1st Daily 5 question and streak alert, configurable from both the Quiz screen bell icon and the You tab settings. |
-| **1.28.0** | **Cosmic Nebula UI Redesign & Animated Orbital Login Portal**: Redesigned app theme (`theme.dart`, `common.dart`, `home_screen.dart`) with deep-space AMOLED nebula glass cards, floating pill navigation dock, and smooth scale+fade tab transitions. Upgraded `AccountScreen` (`account_screen.dart`) with a live twinkling starfield background, floating Saturn + orbiting Earth/Mars hero header, animated Create/Login pill switcher, live password strength meter, and VIP Secret Recovery Pass card. |
-| **1.29.0** | **Complete Neon Cyber-Space UI & Layout Overhaul**: New Electric Aurora Cyan (`#00E5FF`), Cosmic Violet (`#A855F7`), and Solar Gold (`#FFB800`) palette on true AMOLED black (`#040611`). Added a persistent **Mission Control Top HUD** with a scrolling **Live Cosmic Telemetry Ticker** (ISS speed, Moon illumination, Mars range, Aditya-L1, Voyager 1), streak pill, and commander rank badge. Replaced the bottom bar with a custom **Neon Capsule Floating Dock** (`_NeonCapsuleBottomDock`). Redesigned Home with a **2x2 Quick Launch Bento Grid** (Live ISS, Star Map, Deep Spacecraft, 60s Quiz Blitz) and a **2-Column Holographic Planet Deck** (`_HolographicPlanetCard`). Upgraded Sky with a **Live Sky Dome** hero banner, Compare with a **VS Arena** dual-tinted stat table, and Quiz with **Arcade Neon** option cards. |
-| **1.30.0** | **Responsive Tablet & Landscape Cockpit Layout**: Automatic tablet & wide-screen detection (`width >= 700`). Replaces the bottom dock on tablets with a vertical **Neon Glass Side Navigation Rail** (`_NeonSideRail`), turns the Home Explore screen into a **Side-by-Side Mission Cockpit** (3D Solar System + Time Scrubber on the left, live Planet Telemetry + Quick Launch Bento Grid on the right), expands the Holographic Planet Deck to **3 or 4 columns** on wide screens, and constrains secondary tabs, planet pages, search, spacecraft, and the login portal to balanced centered widths. |
-| **1.31.0** | **Clean Minimal Deep-Space Design (Soft Starlight Blue)**: Refined the entire app to a calm, distraction-free Apple Astronomy / NASA style using **Soft Starlight Blue (`#5B9BFF`)**, **Matte Charcoal Slate (`#10141F`)**, and **Deep Space Black (`#06080E`)** with subtle `1px` borders (`#222A3D`). Removed the scrolling live telemetry ticker, heavy neon glows, and multi-colored badges in favor of a clean minimal header, calm matte planet cards, clean shortcut tiles, and streamlined Sky, Compare, and Quiz layouts across phone and tablet screens. |
-| **1.34.0** | **One backend: Supabase.** Accounts, sync, the Daily 5 and the leaderboard all live in one Supabase project again. The Daily 5 questions come from the server, and the server checks your answers and the time (the app sends only the options you picked, not a score). A "Show me on the leaderboard" switch (on by default) is in Account. Firebase is no longer used. |
-| **1.35.0** | **Streaks, real moons, widget.** The Daily 5 now counts your streak and best streak and shows badges (first run, 3, 7 and 30 days in a row, a perfect 5 of 5, 10 and 50 runs) and a This week board. The result can be shared as a picture. The moons of Jupiter (four) and Saturn (eight) are shown where they really are on any date, with the formulas of Jean Meeus, the same as on the website. A new home-screen widget shows tonight's Moon phase and opens the app. |
-| **1.33.0** | **Website matches the app**: [astryl.space](https://astryl.space) now uses the same Clean Minimal Deep-Space look: Deep Space Black (`#06080E`), Matte Charcoal Slate cards (`#10141F`) with `1px` borders, a single Soft Starlight Blue (`#5B9BFF`) accent, no violet gradients, the app's logo, and dark theme by default (light theme still available). |
-| **1.32.0** | **Phone Header & Logo Fix**: Replaced the wide search text pill (`l.searchHint`) in the top header with a compact `38x38` circular search icon button so the **Astryl** logo (`32px`) and title (`22px`) have full breathing room on mobile screens. |
-| **1.17.6** | Surface maps for the Moon and Mars with 25 landing sites. Open the Moon or Mars and tap Surface map. Your data and settings are kept |
-| **1.17.5** | New app id `space.astryl.app` (it was `online.lumioapps.heliora`), after the website astryl.space. Android sees this as a **new app**, so it installs next to the old one instead of updating it. To move over: in the old app open Settings → Backup → Save, install 1.17.5, open Settings → Backup → Restore in the new app, then uninstall the old one. Reminders for single events are not kept, set them again |
-| **1.17.4** | The licence is now AGPL-3.0 (versions up to 1.17.3 stay under MIT). The name "Lumio Apps" is gone from the project texts; the copyright line is now Astryl and astryl.space. Settings → About has a new link to the website. Your data and settings are kept |
-| **1.17.3** | The app is now called **Astryl** (it was Heliora). New name on the home screen, in the update dialog, in shared texts and in file names; the repository is now github.com/aditymishr098-collab/astryl and the website is astryl.space. It installs over Heliora as an update: your data, settings and old backups are kept |
-| **1.17.2** | The project moved to an organisation account (github.com/lumio-apps/heliora). The update check, share texts and links point to it. Nothing else changes; your data and settings are kept |
-| **1.17.1** | Safer updates and storage: every address on the way to an update must be GitHub (redirects are checked one by one), Android's cloud backup and plain-http traffic are switched off, and the boot receiver ignores any other broadcast. README privacy text made more exact. Your data is kept |
-| **1.17.0** | Backup and restore (one small file with favourites, settings, quiz scores, city and birth date). Lighter on the battery: hidden tabs no longer animate, the 3D planet and the 2D play mode run at 30 frames a second when idle, the planet stands still when the phone asks for reduced motion, and the star map keeps its text layouts between frames |
-| **1.16.2** | The project moved to a personal GitHub account (github.com/aditymishr098-collab/heliora). The update check, share texts and links now point to the new address. Nothing else changes; your data and settings are kept |
-| **1.16.1** | Ready for F-Droid: store texts in English and Hindi, screenshots, and a build flag (`FDROID`) that turns the in-app updater off for that build. Nothing changes in the normal build |
-| **1.16.0** | Space news, Tiangong and Hubble passes with reminders, and a share card for tonight's sky (all online parts are off until you switch them on; the share card works offline). The app is now in English and Hindi only: the other 18 languages are removed. Your saved settings are kept; a removed language falls back to the phone's |
-| **1.15.0** | Star map with about 1,000 stars, 89 constellations, the Moon and planets (drag, pinch, tap), stories for 11 constellations, a binocular guide with where to look tonight, and the time of the sky in steps of one hour. 29 new texts in 20 languages |
-| **1.14.0** | New design: Space Grotesk and DM Sans fonts (bundled, no download), big glowing planet cards, an Explore page that scrolls with the Solar System in its own card, a new planet page with a centred planet, life-score badge and a three-column stats card, round buttons, bordered cards and a flatter bottom bar |
-| **1.13.0** | Moon calendar, the sky on any date (1900 to 2049), and a Sun and light card with golden hour, twilight and the dark-sky window. The Sky tab now starts with the Moon and the planets, with the other cards below |
-| **1.12.0** | New look: search bar on the home screen, tinted planet cards (starred ones first), icon stats on the planet page that grow with the text size |
-| **1.11.0** | Spacecraft now (Voyager, New Horizons, JWST, ISS, Hubble, Mars rovers), search and favourites, and a text size setting |
-| **1.10.0** | Eclipse calendar (solar and lunar) with reminders and a rough local guide, a daily "tonight in the sky" notification, "My birthday sky" and a timeline of 15 space missions |
-| **1.9.0** | Quiz with Easy, Medium and Hard levels (now with moon questions), "Did you know?" facts for every world in 20 languages, jump height on every world |
-| **1.8.0** | Online features (off by default): live International Space Station map and passes over your city, upcoming rocket launches in the events calendar, reminders for both |
-| **1.7.0** | Space events calendar for the next 12 months with reminders: Moon phases, oppositions, planet meetings, equinoxes, solstices and meteor showers |
-| **1.6.0** | Find the Moon and planets in the real sky with your phone's compass: turn and tilt guidance, 20 languages |
-| **1.5.0** | New Sky tab: planets visible tonight from your city, Moon phase, moonrise, next full and new moon, sunset and sunrise |
-| **1.4.0** | Distance from Earth today with travel times, true-scale size compare, share a planet card as a picture |
-| **1.3.0** | Real planet positions for any date (1800–2050) with play, your age on other planets |
-| **1.2.0** | Updates download and install inside the app |
-| **1.1.0** | The Sun, Pluto, the Moon and 7 major moons, "Could humans live here?" life score |
-| **1.0.0** | First release: 2D and 3D views, planet facts, atmosphere and oxygen, compare, weight, quiz, 20 languages |
+| **1.35.0** | **Streaks, real moons, widget.** The Daily 5 counts your streak and best streak, shows seven badges and a This week board, and your result can be shared as a picture. The moons of Jupiter (four) and Saturn (eight) are shown where they really are on any date. A new home-screen widget shows tonight's Moon phase. The status bar clock, signal and battery are dark on the light theme. |
+| **1.34.0** | **One backend: Supabase.** Accounts, sync, the Daily 5 and the leaderboard all live in one Supabase project. The server picks the questions and checks the answers and the time. A "Show me on the leaderboard" switch is in Account. |
+| **1.33.0** | **Website matches the app:** the same Clean Minimal Deep-Space look, dark by default. |
 
-## Links
+Every version since 1.0.0 is in the [**changelog**](CHANGELOG.md).
 
-- Website: [astryl.space](https://astryl.space)
-- Website source: the folder `site/`, built from the app's own data by `python3 tools/build_site.py` and published by GitHub Pages (`.github/workflows/pages.yml`)
-- Source code: [github.com/aditymishr098-collab/astryl](https://github.com/aditymishr098-collab/astryl)
-- Downloads: [latest release](https://github.com/aditymishr098-collab/astryl/releases/latest)
-- Bugs and ideas: [issues](https://github.com/aditymishr098-collab/astryl/issues)
+## Credits
+
+- Planet facts: [NASA](https://nssdc.gsfc.nasa.gov/planetary/factsheet/). Orbits: [JPL](https://ssd.jpl.nasa.gov/planets/approx_pos.html). Moons of Jupiter and Saturn: Jean Meeus, *Astronomical Algorithms*, ported with the help of the MIT-licensed [astronomia](https://github.com/commenthol/astronomia) library for checking.
+- Moon and Sun positions: Paul Schlyter's method. Satellites: SGP4 as published by David Vallado and CelesTrak orbit data.
+- Stars, constellation lines and the Messier objects: [d3-celestial](https://github.com/ofrohn/d3-celestial) by Olaf Frohn (BSD 3-clause, copy in `assets/licenses`), built on the Hipparcos catalogue.
+- Live data: [Spaceflight News API](https://spaceflightnewsapi.net), [Launch Library 2](https://thespacedevs.com/llapi), [Where the ISS at?](https://wheretheiss.at) and [CelesTrak](https://celestrak.org).
+- Fonts: [Space Grotesk](https://fonts.google.com/specimen/Space+Grotesk) for titles and [DM Sans](https://fonts.google.com/specimen/DM+Sans) for text, both under the SIL Open Font License (`assets/fonts/OFL-*.txt`) and kept inside the app. Devanagari uses the phone's own font.
+
+## Contributing
+
+Bugs and ideas are welcome in the [issues](https://github.com/aditymishr098-collab/astryl/issues). Found a wrong word? All texts live in `lib/l10n/app_en.arb` and `lib/l10n/app_hi.arb`: edit the matching file and open a pull request. Help from native Hindi speakers is very welcome. Before a pull request, run `flutter analyze` and `flutter test`.
 
 ## License
 
