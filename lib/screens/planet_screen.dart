@@ -323,6 +323,8 @@ class _PlanetScreenState extends State<PlanetScreen> {
             const SizedBox(height: 14),
             _SurfaceMapTile(planet: planet),
           ],
+          const SizedBox(height: 16),
+          _InteriorCutawayCard(planet: planet),
           if (moons.isNotEmpty) ...<Widget>[
             const SizedBox(height: 24),
             Text(l.majorMoons,
@@ -1000,4 +1002,331 @@ class _MoonOrbitPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _MoonOrbitPainter oldDelegate) => true;
+}
+
+class _LayerSpec {
+  const _LayerSpec({
+    required this.fraction,
+    required this.color,
+    required this.titleEn,
+    required this.titleHi,
+    required this.descEn,
+    required this.descHi,
+  });
+
+  final double fraction;
+  final Color color;
+  final String titleEn;
+  final String titleHi;
+  final String descEn;
+  final String descHi;
+}
+
+List<_LayerSpec> _layersFor(Planet planet) {
+  if (planet.isStar) {
+    return const <_LayerSpec>[
+      _LayerSpec(
+        fraction: 1.0,
+        color: Color(0xFFFF9800),
+        titleEn: 'Convective Zone',
+        titleHi: 'संवहन क्षेत्र (Convective Zone)',
+        descEn: 'Boiling plasma currents carrying heat to the visible photosphere (~5,500 °C).',
+        descHi: 'उबलते प्लाज़्मा की धाराएँ जो सतह (5,500 °C) तक गर्मी लाती हैं।',
+      ),
+      _LayerSpec(
+        fraction: 0.70,
+        color: Color(0xFFFFC107),
+        titleEn: 'Radiative Zone',
+        titleHi: 'विकिरण क्षेत्र (Radiative Zone)',
+        descEn: 'Dense layer where photons bounce for thousands of years (~2–7 million °C).',
+        descHi: 'घनी परत जहाँ प्रकाश कणों को बाहर निकलने में हज़ारों साल लगते हैं।',
+      ),
+      _LayerSpec(
+        fraction: 0.28,
+        color: Color(0xFFFFF59D),
+        titleEn: 'Thermonuclear Core',
+        titleHi: 'केंद्र (Thermonuclear Core)',
+        descEn: 'Fuses hydrogen into helium at ~15 million °C and 250 billion bar.',
+        descHi: '~1.5 करोड़ °C तापमान पर हाइड्रोजन से हीलियम बनता है।',
+      ),
+    ];
+  }
+  if (!planet.hasSurface) {
+    final isIceGiant = planet.style == SurfaceStyle.ice;
+    return <_LayerSpec>[
+      _LayerSpec(
+        fraction: 1.0,
+        color: planet.color,
+        titleEn: 'Molecular Hydrogen & Helium Envelope',
+        titleHi: 'हाइड्रोजन और हीलियम बादल परत',
+        descEn: 'Thick outer gas bands and high-speed jet streams.',
+        descHi: 'बाहरी गैस के घने बादल और तेज़ तूफ़ानी हवाएँ।',
+      ),
+      _LayerSpec(
+        fraction: 0.72,
+        color: isIceGiant ? const Color(0xFF26A69A) : const Color(0xFFD48846),
+        titleEn: isIceGiant
+            ? 'Ionic Slush Mantle (Water, Ammonia, Methane)'
+            : 'Liquid Metallic Hydrogen Mantle',
+        titleHi: isIceGiant
+            ? 'बर्फ़ और अमोनिया का मेंटल (Icy Mantle)'
+            : 'तरल धात्विक हाइड्रोजन (Metallic Hydrogen)',
+        descEn: isIceGiant
+            ? 'Hot, electrically conductive fluid ocean under extreme pressure.'
+            : 'Hydrogen squeezed so hard it conducts electricity and powers the magnetic field.',
+        descHi: isIceGiant
+            ? 'अत्यधिक दबाव में गर्म पानी, अमोनिया और मीथेन का महासागर।'
+            : 'इतने भारी दबाव में हाइड्रोजन धातु की तरह बिजली प्रवाहित करती है।',
+      ),
+      const _LayerSpec(
+        fraction: 0.25,
+        color: Color(0xFF90A4AE),
+        titleEn: 'Dense Rock & Ice Core',
+        titleHi: 'ठोस चट्टान और धातु का केंद्र (Core)',
+        descEn: 'Heavy central core up to ~20,000 °C and millions of bars.',
+        descHi: '~20,000 °C तापमान वाला भारी केंद्रीय भाग।',
+      ),
+    ];
+  }
+  if (planet.water == Water.ocean && planet.isMoon) {
+    return <_LayerSpec>[
+      _LayerSpec(
+        fraction: 1.0,
+        color: planet.color,
+        titleEn: 'Icy Crust',
+        titleHi: 'बर्फ़ की बाहरी परत (Icy Crust)',
+        descEn: 'Frozen surface shell crisscrossed by ridges and fractures.',
+        descHi: 'दरारों से भरी जमी हुई बर्फ़ की मोटी बाहरी परत।',
+      ),
+      const _LayerSpec(
+        fraction: 0.84,
+        color: Color(0xFF1E88E5),
+        titleEn: 'Subsurface Liquid Ocean',
+        titleHi: 'भूमिगत तरल महासागर (Subsurface Ocean)',
+        descEn: 'Global salty liquid water ocean kept warm by tidal flexing.',
+        descHi: 'बर्फ़ के नीचे छिपा खारे पानी का विशाल महासागर।',
+      ),
+      const _LayerSpec(
+        fraction: 0.56,
+        color: Color(0xFF8D6E63),
+        titleEn: 'Rocky Silicate Mantle',
+        titleHi: 'चट्टानी मेंटल (Rocky Mantle)',
+        descEn: 'Silicate rock layer surrounding the centre.',
+        descHi: 'महासागर के नीचे चट्टानी परत।',
+      ),
+      const _LayerSpec(
+        fraction: 0.28,
+        color: Color(0xFFFFB74D),
+        titleEn: 'Metallic Core',
+        titleHi: 'धातु का केंद्र (Metallic Core)',
+        descEn: 'Iron-nickel core at the heart of the moon.',
+        descHi: 'लोहे और निकल से बना केंद्रीय भाग।',
+      ),
+    ];
+  }
+  return <_LayerSpec>[
+    _LayerSpec(
+      fraction: 1.0,
+      color: planet.color,
+      titleEn: 'Crust',
+      titleHi: 'भूपर्पटी (Crust)',
+      descEn: 'Outermost solid rock shell with craters, valleys and mountains.',
+      descHi: 'सबसे बाहरी ठोस चट्टानी परत जिस पर पहाड़ और गड्ढे हैं।',
+    ),
+    const _LayerSpec(
+      fraction: 0.88,
+      color: Color(0xFFD84315),
+      titleEn: 'Silicate Mantle',
+      titleHi: 'मेंटल (Silicate Mantle)',
+      descEn: 'Thick layer of hot silicate rock beneath the crust.',
+      descHi: 'भूपर्पटी के नीचे गर्म चट्टानों की मोटी परत।',
+    ),
+    const _LayerSpec(
+      fraction: 0.52,
+      color: Color(0xFFFF8F00),
+      titleEn: 'Outer Core',
+      titleHi: 'बाहरी कोर (Outer Core)',
+      descEn: 'Molten iron-nickel layer that generates magnetic fields.',
+      descHi: 'पिघले हुए लोहे और निकल की परत।',
+    ),
+    const _LayerSpec(
+      fraction: 0.25,
+      color: Color(0xFFFFF176),
+      titleEn: 'Inner Core',
+      titleHi: 'आंतरिक कोर (Inner Core)',
+      descEn: 'Solid, ultra-dense iron-nickel centre (~5,000 °C on Earth).',
+      descHi: 'अत्यधिक दबाव में ठोस लोहे का सबसे भीतरी केंद्र।',
+    ),
+  ];
+}
+
+class _InteriorCutawayCard extends StatefulWidget {
+  const _InteriorCutawayCard({required this.planet});
+
+  final Planet planet;
+
+  @override
+  State<_InteriorCutawayCard> createState() => _InteriorCutawayCardState();
+}
+
+class _InteriorCutawayCardState extends State<_InteriorCutawayCard> {
+  int _selected = 0;
+
+  @override
+  void didUpdateWidget(_InteriorCutawayCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.planet.id != widget.planet.id) {
+      _selected = 0;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final p = Palette.of(context);
+    final isHi = Localizations.localeOf(context).languageCode == 'hi';
+    final layers = _layersFor(widget.planet);
+    final idx = _selected.clamp(0, layers.length - 1);
+    final active = layers[idx];
+
+    return SurfaceCard(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Icon(Icons.layers_outlined, size: 20, color: p.accentText),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  isHi
+                      ? 'आंतरिक संरचना (Interior Cutaway)'
+                      : 'Inside ${planetName(context.l10n, widget.planet)}',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: p.text,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                onTapUp: (details) {
+                  const box = 136.0;
+                  final center = const Offset(box / 2, box / 2);
+                  final dist = (details.localPosition - center).distance /
+                      (box / 2 - 6);
+                  for (var i = layers.length - 1; i >= 0; i--) {
+                    if (dist <= layers[i].fraction) {
+                      setState(() => _selected = i);
+                      break;
+                    }
+                  }
+                },
+                child: SizedBox(
+                  width: 136,
+                  height: 136,
+                  child: CustomPaint(
+                    painter: _CutawayPainter(
+                      layers: layers,
+                      selectedIndex: idx,
+                      borderColor: p.text,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      isHi ? active.titleHi : active.titleEn,
+                      style: TextStyle(
+                        fontFamily: headingFont,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: p.accentText,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      isHi ? active.descHi : active.descEn,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: p.text,
+                        height: 1.35,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: <Widget>[
+              for (var i = 0; i < layers.length; i++)
+                ChoiceChip(
+                  label: Text(
+                    isHi ? layers[i].titleHi : layers[i].titleEn,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                  selected: i == idx,
+                  onSelected: (_) => setState(() => _selected = i),
+                ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CutawayPainter extends CustomPainter {
+  _CutawayPainter({
+    required this.layers,
+    required this.selectedIndex,
+    required this.borderColor,
+  });
+
+  final List<_LayerSpec> layers;
+  final int selectedIndex;
+  final Color borderColor;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height / 2);
+    final maxR = math.min(size.width, size.height) / 2 - 6;
+
+    for (var i = 0; i < layers.length; i++) {
+      final layer = layers[i];
+      final r = maxR * layer.fraction;
+      final paint = Paint()
+        ..style = PaintingStyle.fill
+        ..color = layer.color;
+      canvas.drawCircle(center, r, paint);
+      if (i == selectedIndex) {
+        canvas.drawCircle(
+          center,
+          r,
+          Paint()
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 2.2
+            ..color = borderColor,
+        );
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _CutawayPainter oldDelegate) =>
+      oldDelegate.selectedIndex != selectedIndex ||
+      oldDelegate.layers != layers;
 }

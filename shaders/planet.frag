@@ -158,6 +158,19 @@ void main() {
     col *= 0.55 + 0.5 * z;
   } else {
     col *= 0.10 + 0.95 * diffuse;
+    // Earth night-side city lights and polar aurora
+    if (uStyle > 0.5 && uStyle < 1.5) {
+      float night = smoothstep(0.18, -0.08, dot(n, light));
+      float hLand = fbm(b * 2.2 + vec3(3.1));
+      float isLand = smoothstep(0.51, 0.55, hLand);
+      float cityMask = smoothstep(0.62, 0.78, fbm(b * 14.0 + vec3(5.2)));
+      col += vec3(1.0, 0.78, 0.36) * (night * isLand * cityMask * 0.75);
+
+      // Polar aurora oval around 65-72 deg latitude
+      float auroraBand = exp(-pow((abs(lat) - 1.18) * 11.0, 2.0));
+      float auroraWave = 0.5 + 0.5 * sin(lon * 7.0 + uTime * 1.4 + fbm(b * 5.0) * 4.0);
+      col += vec3(0.18, 0.92, 0.55) * (auroraBand * auroraWave * (0.35 + 0.65 * night) * 0.42);
+    }
   }
 
   // Atmosphere rim.
