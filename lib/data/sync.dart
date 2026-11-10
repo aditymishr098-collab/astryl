@@ -4,14 +4,11 @@ import 'settings.dart';
 /// Rules for the online account, kept free of any network code so they can
 /// be tested on their own.
 
-/// Firebase project and Web API key (public, safe in client code; access is
-/// controlled by Firebase Authentication and Firestore Security Rules).
-const String firebaseProjectId = 'astryl-space';
+/// Where the app talks to. The key is the public (publishable) one: it can
+/// only call the "account" function, which checks who is asking.
 const String accountApiUrl =
-    'https://firestore.googleapis.com/v1/projects/$firebaseProjectId/databases/(default)/documents';
-const String firebaseAuthUrl = 'https://identitytoolkit.googleapis.com/v1';
-const String firebaseTokenUrl = 'https://securetoken.googleapis.com/v1';
-const String accountApiKey = 'AIzaSyA-ZcWiNNMmVlDzTqPafBQmz9HIzLGag7g';
+    'https://pmfjjlfggzihbnbmqkao.supabase.co/functions/v1/account';
+const String accountApiKey = 'sb_publishable_2q49HssjpFg-5dnCRVBCSw_4O3cY8yH';
 const String privacyUrl = 'https://astryl.space/privacy.html';
 
 /// The version of the privacy policy the user ticked.
