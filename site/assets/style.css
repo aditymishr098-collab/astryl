@@ -297,3 +297,9 @@ table.cols td:nth-child(n+2),table.cols th:nth-child(n+2){text-align:right}
 .scends{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem;margin-bottom:10px}
 #scList tr[data-i].on td{background:color-mix(in srgb,var(--accent) 14%,transparent)}
 @media(prefers-reduced-motion:reduce){.scbar i{transition:none}}
+.pbar{height:8px;border-radius:8px;background:var(--card2);overflow:hidden}.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .4s}
+.plist{list-style:none;margin:14px 0;padding:0;display:grid;gap:8px}.plist li a{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;color:var(--text)}.plist li a:hover{text-decoration:none;border-color:var(--accent2)}
+.plist .tick{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:.8rem;color:transparent;flex:none}.plist li.done .tick{background:var(--accent);border-color:var(--accent);color:#fff}
+.badgebox{display:flex;gap:18px;align-items:center}#badge{filter:grayscale(1) opacity(.35);transition:filter .4s}#badge.on{filter:none}
+.opts .opt.right{border-color:#2fbf71;background:color-mix(in srgb,#2fbf71 18%,transparent)}.opts .opt.wrong{border-color:#e5484d;background:color-mix(in srgb,#e5484d 16%,transparent)}
+@media(prefers-reduced-motion:reduce){.pbar i,#badge{transition:none}}
