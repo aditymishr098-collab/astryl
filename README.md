@@ -113,11 +113,7 @@ and an honest answer to "could humans live here?"
 
 If you have a version older than 1.17.5, see the 1.17.5 line in the changelog: the app id changed, so it installs as a new app and you move your data with Backup and Restore.
 
-After that, Astryl updates itself: go to **Settings → Check for updates**, or let it check once a day.
-
-### F-Droid
-
-Astryl is prepared for [F-Droid](https://f-droid.org). That build is made from this source with `--dart-define=FDROID=true`, which removes the in-app updater and the permission to install apps: F-Droid brings the updates. The store texts and screenshots are in `fastlane/metadata/android` and a draft of the F-Droid recipe is in `fdroid/`. F-Droid signs its apps with its own key, so the F-Droid app and the GitHub APK cannot update each other: pick one source.
+After that, Astryl updates itself: each time the app opens it checks GitHub for a newer release.
 
 ## Privacy
 
@@ -188,6 +184,7 @@ Releases are built and signed by GitHub Actions when a version tag such as `v1.4
 | 1.21.0 | The big moons of Jupiter and Saturn with their real positions, plus twinkling and shooting stars (done) |
 | 1.22.0 | Interactive Planet Interior Cutaway (Crust, Mantle, Core) and 3D Earth city lights / aurora (done) |
 | 1.23.0 | Telescope Zoom Simulator (1x / 10x / 100x) and ISRO Aditya-L1 Live Tracker (done) |
+| 1.24.0 | Unified "NASA Eyes on the Solar System" 3D Home view with colour-coded orbits, moon orbits, and live planet telemetry below (done) |
 
 Plans can change. An account stays optional, and nothing is collected unless you agree to it.
 
@@ -218,6 +215,7 @@ All texts live in `lib/l10n/app_en.arb` and `lib/l10n/app_hi.arb`. Found a wrong
 | **1.21.0** | Live orbital view for the major moons of Jupiter (Io, Europa, Ganymede, Callisto) and Saturn (Enceladus, Titan) on their planet pages with Play/Pause orbital animation, plus gentle star twinkling and shooting stars in Space and 2D views. |
 | **1.22.0** | Interactive **Interior Cutaway** card on every planet, moon and the Sun (tap concentric layers or chips to inspect Crust, Subsurface Ocean, Mantle, Metallic Hydrogen, and Core in English & Hindi), plus glowing night-side city lights and polar aurora on the 3D Earth globe (`shaders/planet.frag`). |
 | **1.23.0** | **Telescope Eyepiece Simulator** (`1x Naked eye`, `10x Binoculars`, `100x Telescope`) on every planet and moon page showing how the body looks through an eyepiece (including Jupiter's Galilean moons and Saturn's rings & Titan), plus **ISRO Aditya-L1** live distance & light-time tracker at the Sun–Earth L1 point in Spacecraft. |
+| **1.24.0** | Unified **Eyes on the Solar System** 3D Home screen: removes the separate 2D/3D/Space switch and opens directly into the full 3D interactive Solar System with colour-coded planet orbits, 3D moon orbits around focused planets, a live time scrubber bar, and the selected world's live telemetry & planet cards directly underneath. Removed F-Droid build files (`fdroid/`, `fastlane/`). |
 | **1.17.6** | Surface maps for the Moon and Mars with 25 landing sites. Open the Moon or Mars and tap Surface map. Your data and settings are kept |
 | **1.17.5** | New app id `space.astryl.app` (it was `online.lumioapps.heliora`), after the website astryl.space. Android sees this as a **new app**, so it installs next to the old one instead of updating it. To move over: in the old app open Settings → Backup → Save, install 1.17.5, open Settings → Backup → Restore in the new app, then uninstall the old one. Reminders for single events are not kept, set them again |
 | **1.17.4** | The licence is now AGPL-3.0 (versions up to 1.17.3 stay under MIT). The name "Lumio Apps" is gone from the project texts; the copyright line is now Astryl and astryl.space. Settings → About has a new link to the website. Your data and settings are kept |

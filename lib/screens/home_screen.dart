@@ -5,16 +5,13 @@ import 'package:flutter/scheduler.dart';
 import '../core/format.dart';
 import '../core/habitability.dart';
 import '../core/orbits.dart';
-import '../data/planets.dart';
 import '../data/cities.dart';
-import '../data/settings.dart';
+import '../data/planets.dart';
 import '../data/tonight_alerts.dart';
 import '../l10n/names.dart';
 import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
-import '../widgets/globe_view.dart';
-import '../widgets/orbit_view.dart';
 import '../widgets/space_view.dart';
 import 'compare_screen.dart';
 import 'planet_screen.dart';
@@ -264,17 +261,15 @@ class _ExploreTabState extends State<ExploreTab>
   Widget build(BuildContext context) {
     final l = context.l10n;
     final p = Palette.of(context);
-    final state = AppScope.of(context);
-    final mode = state.settings.viewMode;
     final selected = planetById(_selectedId);
     final width = MediaQuery.sizeOf(context).width;
-    final viewHeight = (width - 40).clamp(260.0, 420.0);
-    final spaceHeight = ((width - 40) * 1.2).clamp(300.0, 520.0);
+    final spaceHeight = ((width - 40) * 1.15).clamp(320.0, 520.0);
+    final isHi = Localizations.localeOf(context).languageCode == 'hi';
 
     return ListView(
       padding: const EdgeInsets.only(bottom: 24),
       children: <Widget>[
-        // Header: logo and name.
+        // Header: logo, title and LIVE badge.
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
           child: Row(
@@ -282,7 +277,6 @@ class _ExploreTabState extends State<ExploreTab>
               const HelioraLogo(size: 36),
               const SizedBox(width: 12),
               Expanded(
-                // Shrinks instead of wrapping when the text is large.
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   alignment: AlignmentDirectional.centerStart,
@@ -293,12 +287,42 @@ class _ExploreTabState extends State<ExploreTab>
                   ),
                 ),
               ),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: p.good.withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(999),
+                  border: Border.all(color: p.good.withValues(alpha: 0.5)),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Container(
+                      width: 7,
+                      height: 7,
+                      decoration:
+                          BoxDecoration(shape: BoxShape.circle, color: p.good),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      isHi ? '3D लाइव सौरमंडल' : 'EYES ON SOLAR SYSTEM',
+                      style: TextStyle(
+                        fontSize: 10.5,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.5,
+                        color: p.good,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
         // Search bar.
         Padding(
-          padding: const EdgeInsets.fromLTRB(20, 18, 20, 0),
+          padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
           child: Semantics(
             button: true,
             label: l.searchTooltip,
@@ -316,7 +340,7 @@ class _ExploreTabState extends State<ExploreTab>
                 ),
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
                   child: Row(
                     children: <Widget>[
                       Icon(Icons.search, color: p.muted),
@@ -336,60 +360,19 @@ class _ExploreTabState extends State<ExploreTab>
             ),
           ),
         ),
-        // Big planet cards.
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
-          child: Text(l.planetsTitle, style: headingStyle(17, p.text)),
+        const SizedBox(height: 14),
+        // Planet & Moon selector chips right above the 3D NASA Eyes viewport.
+        _PlanetChips(
+          bodies: allBodies,
+          selectedId: _spaceFocus ?? '',
+          onSelect: (planet) => _focusSpace(planet.id),
         ),
-        _PopularCards(selectedId: _selectedId, onTap: _openPlanet),
-        // The Solar System, flat or 3D.
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Text(l.solarSystemTitle,
-                    style: headingStyle(17, p.text)),
-              ),
-              _ViewToggle(
-                mode: mode,
-                onChanged: (m) => state.setViewMode(m),
-              ),
-            ],
-          ),
-        ),
-        if (mode == ViewMode.globe) ...<Widget>[
-          _PlanetChips(
-            selectedId: _selectedId,
-            onSelect: (planet) => setState(() => _selectedId = planet.id),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-            child: _GlobeInfoCard(
-              planet: selected,
-              onOpen: () => _openPlanet(selected),
-            ),
-          ),
-        ],
-        if (mode == ViewMode.space) ...<Widget>[
-          _PlanetChips(
-            bodies: spaceBodies,
-            selectedId: _spaceFocus ?? '',
-            onSelect: (planet) => _focusSpace(planet.id),
-          ),
-          if (_spaceFocus != null)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-              child: _GlobeInfoCard(
-                planet: planetById(_spaceFocus!),
-                onOpen: () => _openPlanet(planetById(_spaceFocus!)),
-              ),
-            ),
-        ],
+        const SizedBox(height: 10),
+        // Unified 3D "Eyes on the Solar System" interactive viewport.
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Container(
-            height: mode == ViewMode.space ? spaceHeight : viewHeight,
+            height: spaceHeight,
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
               color: p.surface,
@@ -398,46 +381,56 @@ class _ExploreTabState extends State<ExploreTab>
             ),
             child: !widget.active
                 ? const SizedBox.shrink()
-                : (mode == ViewMode.flat
-                    ? OrbitView(
-                        date: _date,
-                        selectedId: _selectedId,
-                        onPlanetTap: _openPlanet,
-                        nameOf: (planet) => planetName(l, planet),
-                      )
-                    : (mode == ViewMode.globe
-                        ? GlobeView(planet: selected)
-                        : SpaceView(
-                            date: _date,
-                            focusId: _spaceFocus,
-                            onFocus: _focusSpace,
-                            nameOf: (planet) => planetName(l, planet),
-                            backLabel: l.spaceBack,
-                          ))),
+                : SpaceView(
+                    date: _date,
+                    focusId: _spaceFocus,
+                    onFocus: _focusSpace,
+                    nameOf: (planet) => planetName(l, planet),
+                    backLabel: l.spaceBack,
+                  ),
           ),
         ),
-        if (mode != ViewMode.globe)
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: _DateBar(
-              date: _date,
-              playing: _playing,
-              onPick: _pickDate,
-              onBack: () => _setDate(_date.subtract(const Duration(days: 30))),
-              onForward: () => _setDate(_date.add(const Duration(days: 30))),
-              onPlay: _togglePlay,
-              onToday: () => _setDate(DateTime.now()),
-            ),
-          ),
+        // Live time scrubber bar directly under the 3D viewport.
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+          padding: const EdgeInsets.only(top: 6),
+          child: _DateBar(
+            date: _date,
+            playing: _playing,
+            onPick: _pickDate,
+            onBack: () => _setDate(_date.subtract(const Duration(days: 30))),
+            onForward: () => _setDate(_date.add(const Duration(days: 30))),
+            onPlay: _togglePlay,
+            onToday: () => _setDate(DateTime.now()),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
           child: Text(
-            mode == ViewMode.flat
-                ? l.positionsNote
-                : (mode == ViewMode.globe ? l.dragToRotate : l.spaceHint),
+            l.spaceHint,
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 12, color: p.muted),
           ),
+        ),
+        // Selected Planet / Moon live telemetry & details card right below!
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 14, 20, 6),
+          child: _GlobeInfoCard(
+            planet: selected,
+            date: _date,
+            onOpen: () => _openPlanet(selected),
+          ),
+        ),
+        // All planets & worlds explorer below the telemetry details.
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 18, 20, 12),
+          child: Text(l.planetsTitle, style: headingStyle(17, p.text)),
+        ),
+        _PopularCards(
+          selectedId: _selectedId,
+          onTap: (planet) {
+            _focusSpace(planet.id);
+            _openPlanet(planet);
+          },
         ),
       ],
     );
@@ -515,68 +508,6 @@ class _DateBar extends StatelessWidget {
             child: Text(l.today),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _ViewToggle extends StatelessWidget {
-  const _ViewToggle({required this.mode, required this.onChanged});
-
-  final ViewMode mode;
-  final ValueChanged<ViewMode> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final p = Palette.of(context);
-    final light = Theme.of(context).brightness == Brightness.light;
-    Widget option(String label, ViewMode value) {
-      final on = mode == value;
-      return Semantics(
-        selected: on,
-        button: true,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(999),
-          onTap: () => onChanged(value),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            constraints: const BoxConstraints(minWidth: 48, minHeight: 40),
-            alignment: Alignment.center,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-              color: on ? (light ? p.text : p.accent) : Colors.transparent,
-              borderRadius: BorderRadius.circular(999),
-            ),
-            child: Text(
-              label,
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
-                color: on ? (light ? Colors.white : p.onAccent) : p.muted,
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-
-    return Semantics(
-      label: context.l10n.viewMode,
-      child: Container(
-        padding: const EdgeInsets.all(3),
-        decoration: BoxDecoration(
-          color: p.surface,
-          borderRadius: BorderRadius.circular(999),
-          border: light ? Border.all(color: p.border) : null,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            option('2D', ViewMode.flat),
-            option('3D', ViewMode.globe),
-            option(context.l10n.spaceMode, ViewMode.space),
-          ],
-        ),
       ),
     );
   }
@@ -762,15 +693,33 @@ class _PlanetChips extends StatelessWidget {
 }
 
 class _GlobeInfoCard extends StatelessWidget {
-  const _GlobeInfoCard({required this.planet, required this.onOpen});
+  const _GlobeInfoCard({
+    required this.planet,
+    required this.date,
+    required this.onOpen,
+  });
 
   final Planet planet;
+  final DateTime date;
   final VoidCallback onOpen;
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     final p = Palette.of(context);
+    final t = PlanetText(context);
+    final isHi = Localizations.localeOf(context).languageCode == 'hi';
+    final double earthDistKm;
+    if (planet.id == 'earth') {
+      earthDistKm = 0;
+    } else if (planet.id == 'moon') {
+      earthDistKm = 384400;
+    } else {
+      final id = planet.isMoon ? (planet.parentId ?? 'earth') : planet.id;
+      earthDistKm =
+          id == 'sun' || hasOrbit(id) ? distanceFromEarthKm(id, date) : 0;
+    }
+
     Widget stat(String label, String value) {
       return Expanded(
         child: Column(
@@ -782,8 +731,10 @@ class _GlobeInfoCard extends StatelessWidget {
                 style: TextStyle(fontSize: 12, color: p.muted)),
             const SizedBox(height: 2),
             Text(value,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.w600, color: p.text)),
+                    fontSize: 15, fontWeight: FontWeight.w700, color: p.text)),
           ],
         ),
       );
@@ -797,30 +748,55 @@ class _GlobeInfoCard extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
+              PlanetBall(planet: planet, size: 32),
+              const SizedBox(width: 12),
               Expanded(
-                child: Text(
-                  planetName(l, planet),
-                  style: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.w700, color: p.text),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      planetName(l, planet),
+                      style: TextStyle(
+                          fontFamily: headingFont,
+                          fontSize: 19,
+                          fontWeight: FontWeight.w700,
+                          color: p.text),
+                    ),
+                    Text(
+                      bodySubtitle(l, planet),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 12, color: p.muted),
+                    ),
+                  ],
                 ),
               ),
-              Flexible(
-                child: Text(
-                  bodySubtitle(l, planet),
-                  textAlign: TextAlign.end,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 12, color: p.muted),
-                ),
+              FilledButton.tonalIcon(
+                onPressed: onOpen,
+                icon: const Icon(Icons.open_in_new, size: 16),
+                label: Text(l.openDetails),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 14),
           Row(
             children: <Widget>[
-              stat(l.oxygen, formatPercent(context, planet.oxygenPercent)),
+              stat(l.diameter, t.diameter(planet)),
+              stat(l.gravity, t.relativeGravity(planet)),
               stat(l.avgTempShort,
                   '${formatNumber(context, planet.meanTempC)} °C'),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: <Widget>[
+              stat(
+                earthDistKm > 0
+                    ? l.distanceFromEarth
+                    : (isHi ? 'सूर्य से दूरी' : l.distance),
+                earthDistKm > 0 ? t.kilometres(earthDistKm) : t.distance(planet),
+              ),
+              stat(l.oxygen, formatPercent(context, planet.oxygenPercent)),
               stat(l.lifeScoreShort,
                   '${formatNumber(context, lifeScore(planet).total)}/${formatNumber(context, LifeScore.maxTotal)}'),
             ],
@@ -842,7 +818,6 @@ class _GlobeInfoCard extends StatelessWidget {
                       color: planet.breathable ? p.good : p.bad),
                 ),
               ),
-              TextButton(onPressed: onOpen, child: Text(l.openDetails)),
             ],
           ),
         ],

@@ -24,7 +24,7 @@ const List<double> _orbitRadii = <double>[
 ];
 
 Planet? _bodyById(String id) {
-  for (final body in spaceBodies) {
+  for (final body in allBodies) {
     if (body.id == id) {
       return body;
     }
@@ -44,6 +44,9 @@ double _orbitRadius(Planet p) => _orbitRadii[(p.order - 1).clamp(0, 8)];
 double _bodyRadius(Planet p) {
   if (p.id == 'sun') {
     return _sunRadius;
+  }
+  if (p.isMoon) {
+    return 1.3;
   }
   return 2.2 * (1.5 + 3.2 * math.sqrt(p.diameterKm / 12756));
 }
@@ -77,6 +80,19 @@ class _V3 {
 _V3 _positionOf(Planet p, DateTime date) {
   if (p.id == 'sun') {
     return _V3.zero;
+  }
+  if (p.isMoon) {
+    final parent = planetById(p.parentId ?? 'earth');
+    final parentPos = _positionOf(parent, date);
+    final moons = moonsOf(parent.id);
+    final idx = math.max(0, moons.indexWhere((m) => m.id == p.id));
+    final baseR = _bodyRadius(parent) * (parent.hasRings ? 2.4 : 1.8);
+    final r = baseR + idx * 5.2;
+    final j2000 = DateTime.utc(2000, 1, 1, 12);
+    final days = date.toUtc().difference(j2000).inMinutes / 1440.0;
+    final period = p.yearDays > 0 ? p.yearDays : 1.0;
+    final a = ((days / period) * 2 * math.pi) + idx * 1.1;
+    return parentPos + _V3(math.cos(a) * r, math.sin(a) * r, 0);
   }
   final lon = heliocentricLongitude(p.id, clampOrbitDate(date)) * math.pi / 180;
   final r = _orbitRadius(p);
@@ -142,8 +158,18 @@ class _Placed {
   final double radius;
 }
 
-List<_Placed> _place(_SceneState s, _Camera cam, DateTime date) {
+List<_Placed> _place(
+  _SceneState s,
+  _Camera cam,
+  DateTime date,
+  String? focusId,
+) {
   final out = <_Placed>[];
+  final activePlanetId = focusId == null
+      ? null
+      : (_bodyById(focusId)?.isMoon == true
+          ? _bodyById(focusId)!.parentId
+          : focusId);
   for (final planet in spaceBodies) {
     final world = _positionOf(planet, date);
     final depth = cam.depth(world);
@@ -152,6 +178,17 @@ List<_Placed> _place(_SceneState s, _Camera cam, DateTime date) {
     }
     out.add(_Placed(planet, world, cam.screen(world, depth), depth,
         _bodyRadius(planet) / depth * cam.focal));
+  }
+  if (activePlanetId != null) {
+    for (final moon in moonsOf(activePlanetId)) {
+      final world = _positionOf(moon, date);
+      final depth = cam.depth(world);
+      if (depth < 1) {
+        continue;
+      }
+      out.add(_Placed(moon, world, cam.screen(world, depth), depth,
+          _bodyRadius(moon) / depth * cam.focal));
+    }
   }
   // Far ones first, so near ones are drawn on top.
   out.sort((a, b) => b.depth.compareTo(a.depth));
@@ -205,7 +242,7 @@ class _SpaceViewState extends State<SpaceView>
         return;
       }
       // One shader object per body, so no draw can borrow another's values.
-      for (final body in spaceBodies) {
+      for (final body in allBodies) {
         _shaders[body.id] = program.fragmentShader();
       }
       _frame.value++;
@@ -333,7 +370,8 @@ class _SpaceViewState extends State<SpaceView>
     if (_size.isEmpty) {
       return;
     }
-    final placed = _place(_scene, _Camera(_scene, _size), widget.date);
+    final placed =
+        _place(_scene, _Camera(_scene, _size), widget.date, widget.focusId);
     _Placed? best;
     var bestDistance = double.infinity;
     for (final item in placed) {
@@ -500,21 +538,22 @@ class _SpacePainter extends CustomPainter {
 
     _paintOrbits(canvas, cam, bounds);
 
-    for (final item in _place(scene, cam, date)) {
+    for (final item in _place(scene, cam, date, focusId)) {
       _paintBody(canvas, size, cam, item);
     }
   }
 
   void _paintOrbits(Canvas canvas, _Camera cam, Rect bounds) {
-    final paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1
-      ..color = palette.orbitLine;
     const steps = 96;
     for (final planet in spaceBodies) {
       if (planet.id == 'sun') {
         continue;
       }
+      final isFocused = planet.id == focusId;
+      final paint = Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = isFocused ? 1.8 : 1.15
+        ..color = planet.color.withValues(alpha: isFocused ? 0.82 : 0.36);
       final r = _orbitRadius(planet);
       final path = Path();
       var drawing = false;
@@ -531,10 +570,51 @@ class _SpacePainter extends CustomPainter {
           path.lineTo(at.dx, at.dy);
         } else {
           path.moveTo(at.dx, at.dy);
-          drawing = true;
         }
       }
       canvas.drawPath(path, paint);
+    }
+
+    // Draw moon orbit rings when focused on a planet with moons
+    final activePlanetId = focusId == null
+        ? null
+        : (_bodyById(focusId!)?.isMoon == true
+            ? _bodyById(focusId!)!.parentId
+            : focusId);
+    if (activePlanetId != null) {
+      final parent = planetById(activePlanetId);
+      final parentPos = _positionOf(parent, date);
+      final moons = moonsOf(activePlanetId);
+      for (var mIdx = 0; mIdx < moons.length; mIdx++) {
+        final moon = moons[mIdx];
+        final baseR = _bodyRadius(parent) * (parent.hasRings ? 2.4 : 1.8);
+        final mr = baseR + mIdx * 5.2;
+        final mPath = Path();
+        var drawing = false;
+        for (var i = 0; i <= 64; i++) {
+          final a = i / 64 * 2 * math.pi;
+          final p = parentPos + _V3(math.cos(a) * mr, math.sin(a) * mr, 0);
+          final depth = cam.depth(p);
+          if (depth < 1) {
+            drawing = false;
+            continue;
+          }
+          final at = cam.screen(p, depth);
+          if (drawing) {
+            mPath.lineTo(at.dx, at.dy);
+          } else {
+            mPath.moveTo(at.dx, at.dy);
+            drawing = true;
+          }
+        }
+        canvas.drawPath(
+          mPath,
+          Paint()
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 0.9
+            ..color = moon.color.withValues(alpha: 0.45),
+        );
+      }
     }
   }
 
