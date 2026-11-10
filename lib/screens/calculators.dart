@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -144,9 +146,10 @@ class _CalculatorsState extends State<Calculators> {
   }
 }
 
-/// "Your age on other planets": the user's age in each planet's years and
-/// the days until their next birthday there.
-class _AgeSection extends StatelessWidget {
+/// "Your age on other planets": the user's age in each planet's years, a live
+/// cosmic odometer since birth, next planetary birthday highlight, and the days
+/// until their next birthday on every world.
+class _AgeSection extends StatefulWidget {
   const _AgeSection();
 
   /// Bodies with a year around the Sun: the planets and Pluto.
@@ -154,6 +157,29 @@ class _AgeSection extends StatelessWidget {
     ...planets,
     planetById('pluto'),
   ];
+
+  @override
+  State<_AgeSection> createState() => _AgeSectionState();
+}
+
+class _AgeSectionState extends State<_AgeSection> {
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   Future<void> _pick(BuildContext context, DateTime? current) async {
     final state = AppScope.read(context);
@@ -173,17 +199,44 @@ class _AgeSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
+    final isHi = Localizations.localeOf(context).languageCode == 'hi';
     final p = Palette.of(context);
     final saved = AppScope.of(context).settings.birthDate;
     final now = DateTime.now();
     final DateTime? birth =
         saved != null && saved.isBefore(now) ? saved : null;
 
+    Planet? nextBdayPlanet;
+    var minDaysToBday = 999999;
+    var nextAgeTurn = 1;
+    if (birth != null) {
+      for (final body in _AgeSection._bodies) {
+        final d = daysToNextBirthday(birth, now, body.yearDays);
+        if (d < minDaysToBday) {
+          minDaysToBday = d;
+          nextBdayPlanet = body;
+          nextAgeTurn = ageOn(birth, now, body.yearDays).floor() + 1;
+        }
+      }
+    }
+
+    final secsAlive = birth == null
+        ? 0.0
+        : now.difference(birth).inMilliseconds / 1000.0;
+    // Earth orbital speed ~29.78 km/s; Solar System galactic orbit ~220 km/s
+    final solarKm = secsAlive * 29.78;
+    final galacticKm = secsAlive * 220.0;
+    final fullMoons = secsAlive / (29.53059 * 86400.0);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Text(l.ageTitle,
-            style: TextStyle(fontFamily: headingFont, fontSize: 22, fontWeight: FontWeight.w700, color: p.text)),
+            style: TextStyle(
+                fontFamily: headingFont,
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                color: p.text)),
         const SizedBox(height: 12),
         SurfaceCard(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -213,6 +266,135 @@ class _AgeSection extends StatelessWidget {
         Text(l.ageNote, style: TextStyle(fontSize: 12, color: p.muted)),
         if (birth != null) ...<Widget>[
           const SizedBox(height: 12),
+          // 1. Live Cosmic Odometer Card
+          SurfaceCard(
+            borderColor: p.accent.withValues(alpha: 0.45),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Icon(Icons.rocket_launch_outlined,
+                        size: 18, color: p.accentText),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        isHi
+                            ? 'आपका लाइव अंतरिक्ष सफ़र (जन्म से अब तक)'
+                            : 'Your live cosmic journey since birth',
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: p.accentText),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  '${formatNumber(context, solarKm / 1e6, decimals: 3)} ${isHi ? "मिलियन किमी" : "million km"}',
+                  style: TextStyle(
+                    fontFamily: headingFont,
+                    fontSize: 23,
+                    fontWeight: FontWeight.w700,
+                    color: p.text,
+                  ),
+                ),
+                Text(
+                  isHi
+                      ? 'पृथ्वी के साथ सूर्य की परिक्रमा करते हुए (29.78 km/s)'
+                      : 'Travelled around the Sun aboard Earth (29.78 km/s)',
+                  style: TextStyle(fontSize: 12, color: p.muted),
+                ),
+                const SizedBox(height: 10),
+                const Divider(height: 1),
+                const SizedBox(height: 10),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            '${formatNumber(context, galacticKm / 1e9, decimals: 3)} ${isHi ? "अरब किमी" : "billion km"}',
+                            style: TextStyle(
+                                fontFamily: headingFont,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: p.text),
+                          ),
+                          Text(
+                            isHi
+                                ? 'आकाशगंगा (Milky Way) में सफ़र'
+                                : 'Through the Milky Way (220 km/s)',
+                            style: TextStyle(fontSize: 11.5, color: p.muted),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            formatNumber(context, fullMoons, decimals: 1),
+                            style: TextStyle(
+                                fontFamily: headingFont,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: p.text),
+                          ),
+                          Text(
+                            isHi
+                                ? 'चाँद की परिक्रमाएँ (Full Moons)'
+                                : 'Lunar orbits experienced',
+                            style: TextStyle(fontSize: 11.5, color: p.muted),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // 2. Next Planetary Birthday Countdown Highlight
+          if (nextBdayPlanet != null) ...<Widget>[
+            const SizedBox(height: 12),
+            SurfaceCard(
+              child: Row(
+                children: <Widget>[
+                  PlanetBall(planet: nextBdayPlanet, size: 42),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          isHi
+                              ? 'अगला अंतरिक्ष जन्मदिन: ${planetName(l, nextBdayPlanet)}'
+                              : 'Next space birthday: ${planetName(l, nextBdayPlanet)}',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                              color: p.text),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          isHi
+                              ? '${planetName(l, nextBdayPlanet)} पर आप $minDaysToBday दिन में $nextAgeTurn वर्ष के होंगे!'
+                              : 'You turn $nextAgeTurn on ${planetName(l, nextBdayPlanet)} in $minDaysToBday days!',
+                          style: TextStyle(fontSize: 13, color: p.muted),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+          const SizedBox(height: 12),
           SurfaceCard(
             padding: EdgeInsets.zero,
             child: ListTile(
@@ -233,40 +415,55 @@ class _AgeSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          for (final body in _bodies) ...<Widget>[
+          for (final body in _AgeSection._bodies) ...<Widget>[
             SurfaceCard(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               borderColor: body.id == 'earth' ? p.accentText : null,
-              child: Row(
+              child: Column(
                 children: <Widget>[
-                  PlanetBall(planet: body, size: 32),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(planetName(l, body),
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: p.text)),
-                        Text(
-                          l.nextBirthday(formatNumber(context,
-                              daysToNextBirthday(birth, now, body.yearDays))),
-                          style: TextStyle(fontSize: 12, color: p.muted),
+                  Row(
+                    children: <Widget>[
+                      PlanetBall(planet: body, size: 32),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(planetName(l, body),
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: p.text)),
+                            Text(
+                              l.nextBirthday(formatNumber(context,
+                                  daysToNextBirthday(birth, now, body.yearDays))),
+                              style: TextStyle(fontSize: 12, color: p.muted),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      Text(
+                        l.valueYears(formatNumber(
+                            context, ageOn(birth, now, body.yearDays),
+                            decimals: body.yearDays > 3000 ? 3 : 1)),
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                          color: p.accentText,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    l.valueYears(formatNumber(
-                        context, ageOn(birth, now, body.yearDays),
-                        decimals: body.yearDays > 3000 ? 3 : 1)),
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700,
-                      color: p.accentText,
+                  const SizedBox(height: 8),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(99),
+                    child: LinearProgressIndicator(
+                      minHeight: 4,
+                      value: (ageOn(birth, now, body.yearDays) % 1.0)
+                          .clamp(0.0, 1.0),
+                      backgroundColor: p.surfaceHigh,
+                      valueColor: AlwaysStoppedAnimation<Color>(body.color),
                     ),
                   ),
                 ],

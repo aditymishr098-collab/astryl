@@ -230,8 +230,20 @@
       if (!birth.value) { ageOut.innerHTML = ''; bdOut.innerHTML = ''; return; }
       var p = birth.value.split('-').map(Number), b = Date.UTC(p[0], p[1] - 1, p[2], 12), now = Date.now(), days = (now - b) / 86400000;
       if (days < 0) { ageOut.innerHTML = ''; bdOut.innerHTML = ''; return; }
-      var h = '<h2>' + t('ageTitle') + '</h2><div class="grid sm">';
-      planets.forEach(function (pl) { var yrs = days / pl.year, next = Math.ceil((Math.floor(yrs) + 1) * pl.year - days); h += '<div class="card"><h3>' + bname(pl.id) + '</h3><div class="life" style="font-size:1.6rem">' + fmt(yrs, 1) + '</div><p>' + t('nextBirthday', { days: fmt(next) }) + '</p></div>'; });
+      var secs = (now - b) / 1000, solM = secs * 29.78 / 1e6, galB = secs * 220 / 1e9, fMoons = secs / (29.53059 * 86400);
+      var hi = lang === 'hi';
+      var nextPl = planets[0], minD = 999999, nextTurn = 1;
+      planets.forEach(function (pl) {
+        var yrs = days / pl.year, next = Math.ceil((Math.floor(yrs) + 1) * pl.year - days);
+        if (next < minD) { minD = next; nextPl = pl; nextTurn = Math.floor(yrs) + 1; }
+      });
+      var h = '<div class="card" style="margin:14px 0;border-color:var(--accent)"><h3>🚀 ' + (hi ? 'आपका लाइव अंतरिक्ष सफ़र (जन्म से अब तक)' : 'Your live cosmic journey since birth') + '</h3>' +
+        '<div class="stats"><div class="stat"><b>' + fmt(solM, 2) + (hi ? ' मिलियन किमी' : ' million km') + '</b><span>' + (hi ? 'सूर्य की परिक्रमा (29.78 km/s)' : 'Around the Sun (29.78 km/s)') + '</span></div>' +
+        '<div class="stat"><b>' + fmt(galB, 3) + (hi ? ' अरब किमी' : ' billion km') + '</b><span>' + (hi ? 'आकाशगंगा (Milky Way) में सफ़र' : 'Through the Milky Way (220 km/s)') + '</span></div>' +
+        '<div class="stat"><b>' + fmt(fMoons, 1) + '</b><span>' + (hi ? 'चाँद की परिक्रमाएँ' : 'Lunar orbits') + '</span></div>' +
+        '<div class="stat"><b>' + bname(nextPl.id) + ' (' + fmt(minD) + 'd)</b><span>' + (hi ? 'अगला अंतरिक्ष जन्मदिन (वर्ष ' + nextTurn + ')' : 'Next space birthday (turn ' + nextTurn + ')') + '</span></div></div></div>';
+      h += '<h2>' + t('ageTitle') + '</h2><div class="grid sm">';
+      planets.forEach(function (pl) { var yrs = days / pl.year, next = Math.ceil((Math.floor(yrs) + 1) * pl.year - days); h += '<div class="card"><h3>' + bname(pl.id) + '</h3><div class="life" style="font-size:1.6rem">' + fmt(yrs, 1) + '</div><div class="progress" style="margin:8px 0"><i style="width:' + ((yrs % 1) * 100).toFixed(0) + '%;background:' + pl.color + '"></i></div><p>' + t('nextBirthday', { days: fmt(next) }) + '</p></div>'; });
       ageOut.innerHTML = h + '</div>';
       var ph = moonPhase(b), bh = '<h2>' + t('birthdayTitle') + '</h2><div class="card pcard">' + moonSvg(ph.age, 64) + '<div><b>' + t('birthdayMoon') + '</b><br>' + t(PHASE[phaseIndex(ph.age)]) + ' · ' + t('illuminated', { percent: fmt(ph.lit * 100) }) + '</div></div>';
       bh += '<p>' + t('birthdayDaysOld', { count: fmt(Math.floor(days)) }) + '</p><h3>' + t('birthdayMilestones') + '</h3><div class="grid sm">';
