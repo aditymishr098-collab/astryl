@@ -12,8 +12,10 @@
   };
 
   /* ---------- language and theme ---------- */
-  var lang = store.get('astryl-lang') || ((navigator.language || 'en').slice(0, 2) === 'hi' ? 'hi' : 'en');
-  if (lang !== 'hi') lang = 'en';
+  var LANGS = ['en', 'hi', 'es', 'pt', 'fr', 'ar'], SHORT = { en: 'EN', hi: 'हि', es: 'ES', pt: 'PT', fr: 'FR', ar: 'ع' };
+  var LOCALE = { en: 'en-US', hi: 'hi-IN', es: 'es-ES', pt: 'pt-PT', fr: 'fr-FR', ar: 'ar' };
+  var lang = store.get('astryl-lang');
+  if (LANGS.indexOf(lang) < 0) { lang = (navigator.language || 'en').slice(0, 2); if (LANGS.indexOf(lang) < 0) lang = 'en'; }
   var page = document.body.dataset.page || '';
   var renderers = [];
 
@@ -23,13 +25,14 @@
     return s;
   }
   function fmt(n, dec) {
-    return Number(n).toLocaleString(lang === 'hi' ? 'hi-IN' : 'en-US', { maximumFractionDigits: dec || 0, minimumFractionDigits: 0 });
+    return Number(n).toLocaleString(LOCALE[lang], { maximumFractionDigits: dec || 0, minimumFractionDigits: 0 });
   }
   function setLang(l) {
     lang = l;
     document.documentElement.lang = l;
+    document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
     store.set('astryl-lang', l);
-    var b = $('#langBtn'); if (b) b.textContent = l === 'hi' ? 'English' : 'हिन्दी';
+    var b = $('#langCur'); if (b) b.textContent = SHORT[l];
     renderers.forEach(function (f) { f(); });
     changed();
   }
@@ -45,7 +48,8 @@
   }
   applyTheme();
   document.addEventListener('click', function (e) {
-    if (e.target.id === 'langBtn') setLang(lang === 'hi' ? 'en' : 'hi');
+    var lb = e.target.closest ? e.target.closest('[data-lang]') : null;
+    if (lb) { setLang(lb.getAttribute('data-lang')); var dd = $('#langDd'); if (dd) dd.removeAttribute('open'); }
     if (e.target.id === 'themeBtn') {
       theme = isDark() ? 'light' : 'dark'; store.set('astryl-theme', theme); applyTheme(); changed();
     }
@@ -143,7 +147,7 @@
     var lit = '<path d="M0,-' + R + ' A' + R + ',' + R + ' 0 0 1 0,' + R + ' A' + rx.toFixed(2) + ',' + R + ' 0 0 ' + sweep + ' 0,-' + R + 'Z" fill="#e9e6da" transform="' + (wan ? 'scale(-1,1)' : '') + '"/>';
     return '<svg viewBox="-22 -22 44 44" width="' + size + '" height="' + size + '"><circle r="' + R + '" fill="#2a2f4a"/>' + lit + '<circle r="' + R + '" fill="none" stroke="#5b6390" stroke-width=".6"/></svg>';
   }
-  function dateText(ms, opts) { return new Date(ms).toLocaleDateString(lang === 'hi' ? 'hi-IN' : 'en-GB', opts || { day: 'numeric', month: 'short', year: 'numeric' }); }
+  function dateText(ms, opts) { return new Date(ms).toLocaleDateString(lang === 'en' ? 'en-GB' : LOCALE[lang], opts || { day: 'numeric', month: 'short', year: 'numeric' }); }
 
   /* ---------- latest release (home, get-the-app) ---------- */
   function release() {
@@ -167,7 +171,7 @@
         .filter(function (l) { return l && !/^Full Changelog/i.test(l) && !/^What's Changed$/i.test(l); }).slice(0, 12).join('\n');
     }
     onRender(function () {
-      var hi = lang === 'hi', when = new Date(j.published_at || j.created_at).toLocaleDateString(hi ? 'hi-IN' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      var hi = lang === 'hi', when = new Date(j.published_at || j.created_at).toLocaleDateString(lang === 'en' ? 'en-GB' : LOCALE[lang], { day: 'numeric', month: 'long', year: 'numeric' });
       var hash = apk && apk.digest ? String(apk.digest).replace(/^sha256:/, '') : '';
       var h = '<h3>' + (hi ? 'नया version ' : 'Latest version ') + esc(j.tag_name) + '</h3><p class="note">' + (hi ? 'जारी: ' : 'Released ') + esc(when) + (apk ? ' · ' + (apk.size / 1048576).toFixed(0) + ' MB' : '') + ' · ' + (hi ? 'सभी versions के कुल download: ' : 'Downloads, all versions: ') + total.toLocaleString(hi ? 'hi-IN' : 'en-GB') + '</p>';
       if (hash) h += '<p><b>SHA-256</b><br><code style="word-break:break-all">' + esc(hash) + '</code></p><p class="note">' + (hi ? 'Download के बाद जाँचने के लिए: ' : 'To check your download: ') + '<code>sha256sum ' + esc(apk.name) + '</code></p>';
@@ -841,7 +845,7 @@
       box.innerHTML = '<div class="pcard">' + moonSvg(p.age, 110) + '<div><h2 style="margin:0">' + t(PHASE[phaseIndex(p.age)]) + '</h2><p>' + t('illuminated', { percent: fmt(p.lit * 100) }) + '</p><p>' + t('nextFull') + ': <b>' + dateText(nf) + '</b><br>' + t('nextNew') + ': <b>' + dateText(nn) + '</b></p></div></div>';
       // month
       var y = view.getFullYear(), m = view.getMonth(), days = new Date(y, m + 1, 0).getDate(), first = (new Date(y, m, 1).getDay() + 6) % 7;
-      $('#calTitle').textContent = view.toLocaleDateString(lang === 'hi' ? 'hi-IN' : 'en-GB', { month: 'long', year: 'numeric' });
+      $('#calTitle').textContent = view.toLocaleDateString(lang === 'en' ? 'en-GB' : LOCALE[lang], { month: 'long', year: 'numeric' });
       var wk = lang === 'hi' ? ['सो', 'मं', 'बु', 'गु', 'शु', 'श', 'र'] : ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
       var h = wk.map(function (x) { return '<div class="h">' + x + '</div>'; }).join('');
       for (var i = 0; i < first; i++) h += '<div></div>';
@@ -987,14 +991,15 @@
   }
 
   /* ---------- small API for cosmos.js (home page animation) ---------- */
-  window.ASTRYL_API = { helio: helio, moonEcl: moonEcl, moonPhase: moonPhase, sunLon: sunLon, bname: bname, t: t, onRender: onRender, lang: function () { return lang; } };
+  window.ASTRYL_API = { setLang: setLang, langs: LANGS, helio: helio, moonEcl: moonEcl, moonPhase: moonPhase, sunLon: sunLon, bname: bname, t: t, onRender: onRender, lang: function () { return lang; } };
 
   /* The More menu closes when you tap elsewhere or press Escape. */
-  document.addEventListener('click', function (e) { var d = document.querySelector('details.more[open]'); if (d && !d.contains(e.target)) d.removeAttribute('open'); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { var d = document.querySelector('details.more[open]'); if (d) d.removeAttribute('open'); } });
+  document.addEventListener('click', function (e) { document.querySelectorAll('details.more[open]').forEach(function (d) { if (!d.contains(e.target)) d.removeAttribute('open'); }); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') document.querySelectorAll('details.more[open]').forEach(function (d) { d.removeAttribute('open'); }); });
 
   /* ---------- go ---------- */
   document.documentElement.lang = lang;
-  var lb = $('#langBtn'); if (lb) lb.textContent = lang === 'hi' ? 'English' : 'हिन्दी';
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  var lcur = $('#langCur'); if (lcur) lcur.textContent = SHORT[lang];
   release(); homeFact(); homeMoon(); planetsPage(); comparePage(); youPage(); quizPage(); solarPage(); skyPage(); spacecraftPage(); bodyPage();
 })();
