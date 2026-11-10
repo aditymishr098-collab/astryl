@@ -8,7 +8,6 @@ import '../theme.dart';
 import '../widgets/common.dart';
 import '../widgets/motion.dart';
 import 'account_screen.dart';
-import 'calculators.dart';
 import 'settings_screen.dart';
 
 /// The "You" tab: Space Explorer Passport, optional account, Weight/Jump/Age
@@ -34,10 +33,9 @@ class YouScreen extends StatelessWidget {
         const SizedBox(height: 16),
         if (!kIsWeb) ...<Widget>[
           const FadeSlideIn(child: _AccountCard()),
-          const SizedBox(height: 24),
+          const SizedBox(height: 28),
         ],
-        const FadeSlideIn(child: Calculators()),
-        const SizedBox(height: 28),
+        // The weight, jump and age calculators are in the Compare tab.
         Text(l.settings,
             style: TextStyle(
                 fontFamily: headingFont,
@@ -200,7 +198,7 @@ class _PassportStat extends StatelessWidget {
   }
 }
 
-/// The optional account and the crash-report switch, at the top of "You".
+/// The optional account, one slim row at the top of "You".
 class _AccountCard extends StatelessWidget {
   const _AccountCard();
 
@@ -228,8 +226,10 @@ class _AccountCard extends StatelessWidget {
                     style: TextStyle(
                         fontWeight: FontWeight.w600, color: p.text)),
               ),
-              subtitle: Text(l.settingsAccountSubtitle,
-                  style: TextStyle(fontSize: 12, color: p.muted)),
+              subtitle: account.loggedIn
+                  ? null
+                  : Text(l.settingsAccountSubtitle,
+                      style: TextStyle(fontSize: 12, color: p.muted)),
               trailing: account.loggedIn
                   ? Icon(Icons.chevron_right, color: p.muted)
                   : FilledButton.tonalIcon(
@@ -244,14 +244,6 @@ class _AccountCard extends StatelessWidget {
                 MaterialPageRoute<void>(
                     builder: (_) => const AccountHubScreen()),
               ),
-            ),
-            SwitchListTile(
-              title: Text(l.crashReportsTitle,
-                  style: TextStyle(fontSize: 15, color: p.text)),
-              subtitle: Text(l.crashReportsNote,
-                  style: TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
-              value: account.crashReports,
-              onChanged: account.setCrashReports,
             ),
           ],
         ),
