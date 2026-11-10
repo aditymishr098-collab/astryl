@@ -311,6 +311,14 @@ class _SkyScreenState extends State<SkyScreen> {
           ),
         ),
         const SizedBox(height: 12),
+        _NavCard(
+          icon: Icons.public,
+          title: today ? l.planetsTonight : l.planetsThatNight,
+          hint: l.planetsTonightHint,
+          builder: (_) => PlanetsTonightScreen(
+              planets: sky.planets, city: city, time: _time, today: today),
+        ),
+        const SizedBox(height: 12),
         calendarCard,
         const SizedBox(height: 12),
         _NavCard(
@@ -336,15 +344,6 @@ class _SkyScreenState extends State<SkyScreen> {
           time: _time,
         ),
         const SizedBox(height: 20),
-        Text(today ? l.planetsTonight : l.planetsThatNight,
-            style: TextStyle(fontFamily: headingFont, fontSize: 18, fontWeight: FontWeight.w700, color: p.text)),
-        const SizedBox(height: 12),
-        for (final night in sky.planets) ...<Widget>[
-          _PlanetNightCard(
-              night: night, city: city, time: _time, canFind: today),
-          const SizedBox(height: 8),
-        ],
-        const SizedBox(height: 4),
         if (!kIsWeb)
           _NavCard(
             icon: Icons.ios_share_outlined,
@@ -541,6 +540,46 @@ class _SunCard extends StatelessWidget {
                   formatNumber(context, minutes))),
           const SizedBox(height: 6),
           Text(l.sunNote, style: TextStyle(fontSize: 12, color: p.muted)),
+        ],
+      ),
+    );
+  }
+}
+
+/// The page behind "Planets tonight": every planet with its status, the best
+/// time to look, the direction and height, and the rise and set times.
+class PlanetsTonightScreen extends StatelessWidget {
+  const PlanetsTonightScreen({
+    super.key,
+    required this.planets,
+    required this.city,
+    required this.time,
+    required this.today,
+  });
+
+  final List<BodyNight> planets;
+  final City city;
+  final String Function(DateTime? t) time;
+  final bool today;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final p = Palette.of(context);
+    return Scaffold(
+      appBar: AppBar(title: Text(today ? l.planetsTonight : l.planetsThatNight)),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+        children: <Widget>[
+          for (final night in planets) ...<Widget>[
+            _PlanetNightCard(
+                night: night, city: city, time: time, canFind: today),
+            const SizedBox(height: 8),
+          ],
+          const SizedBox(height: 8),
+          Text(l.cityNote,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 12, color: p.muted)),
         ],
       ),
     );

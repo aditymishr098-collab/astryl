@@ -71,7 +71,7 @@ a daily space quiz, and an honest answer to "could humans live here?"
 - **Telescope simulator.** See how a world looks to the naked eye, through binoculars (10×) and a telescope (100×), including Jupiter's moons and Saturn's rings.
 
 ### 🌙 Tonight's sky
-- **Which planets can I see tonight?** Pick your city (no location permission needed) and Astryl tells you which planets are up after dark, the best time to look, the direction and how high, plus rise and set times.
+- **Planets tonight (its own page).** Pick your city (no location permission needed) and Astryl tells you which planets are up after dark, the best time to look, the direction and how high, plus rise and set times.
 - **The Moon tonight.** Phase, how much of it is lit, moonrise and moonset, and the dates of the next full and new moon.
 - **The sky on any date.** Step a day back or forward, or pick any date from 1900 to 2049.
 - **Moon calendar.** A month of Moon phases with the dates and times of the main phases. Tap a day for its phase, moonrise and moonset.
@@ -156,7 +156,7 @@ If you have a version older than 1.17.5, the app id changed (see the 1.17.5 line
 - Planet data, positions and 3D surfaces are calculated on your phone. Astryl is an online app: the first start needs internet to make an account or log in, and it also uses the internet for the update check, crash reports, sync and the live features below. After that, without internet it shows the last data it has.
 - **Live features.** Astryl contacts `api.wheretheiss.at` (or `celestrak.org`) for the station's orbit data, `celestrak.org` for Tiangong and Hubble, `ll.thespacedevs.com` (Launch Library 2) for the launch list, and `api.spaceflightnewsapi.net` for the news. Nothing about you is sent; those services can only see your phone's internet address. Orbit data is saved on the phone, so the station keeps working for days without internet.
 - **The account.** The app needs one (the website does not). A small server on [Supabase](https://supabase.com) stores your username, a hash of your password and of your recovery code, the date you accepted the privacy policy, your Daily 5 runs, and, if you keep sync on, your favourites, quiz scores, language, theme, city and birth date. Nothing is stored for a website visitor who has no account. Delete the account in the You tab and everything is removed.
-- **Three more switches, all off until you turn them on:** *count me as an active user* (a random number made on your phone, not linked to you), *share my country* (from your phone's language and region) and *share my approximate location* (needs an account and Android's permission; only your latest place is kept, rounded to about 10 km, updated only when you open the app). There is no background location.
+- **Switches in your account.** *Show me on the leaderboard* is on (turn it off to hide your name). *Count me as an active user* (a random number made on your phone, not linked to you) and *share my country* (from your phone's language and region) are off until you turn them on. *Share my approximate location* is on if you allow Android's location permission when you make an account: only your latest place is kept, rounded to about 10 km, in the project's Supabase, updated when you open the app, and deleted when you switch it off. There is no background location.
 - **The leaderboard** shows only your username, and only if you leave *Show me on the leaderboard* on.
 - **Update check:** each time the app opens, it asks GitHub for the newest release. When you tap *Update now*, it downloads the signed APK from that release. Android only installs it if it is signed with the same key as the app you already have.
 - **Crash reports** (on by default, switch in the You tab): one small report (the error text, the technical trace, the app version, the Android version string and the app language) goes to the project's own Supabase, kept 90 days, only to fix bugs. It has no name, account, device id or location.
@@ -239,9 +239,9 @@ The website is built with `python3 tools/build_site.py` (it needs Pillow for the
 
 | Version | What's new |
 |---|---|
+| **1.35.3** | **Simpler sign-up, Planets tonight page.** Making an account now asks only for a username, a password and a tick for the privacy policy. When the recovery code is saved, Android is asked for the location (it sets your city and keeps your approximate place, rounded to about 10 km, in the project's Supabase; switch it off in your account) and for notifications (the daily sky note). Saying no is fine. In Sky, "Planets tonight" is its own page, like Space events. The website sign-up form is as simple. |
 | **1.35.2** | **Account first.** The app opens on a page to make an account or log in; there is no "Skip" any more, and logging out brings the page back. Phones that skipped it before see it once, and everything already on the phone is kept. The privacy texts say the account is needed for the app. |
 | **1.35.1** | **Cleaner start and You tab.** The app opens straight on Home (no account page first; the optional account is in the You tab). The You tab is lighter: a slim account row, the weight, jump and age calculators stay in Compare, and the crash-report switch moved down to the settings. The status bar clock, signal and battery are dark on the light theme. |
-| **1.35.0** | **Streaks, real moons, widget.** The Daily 5 counts your streak and best streak, shows seven badges and a This week board, and your result can be shared as a picture. The moons of Jupiter (four) and Saturn (eight) are shown where they really are on any date. A new home-screen widget shows tonight's Moon phase. |
 
 Every version since 1.0.0 is in the [**changelog**](CHANGELOG.md).
 
