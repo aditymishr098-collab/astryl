@@ -2442,4 +2442,8 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get spaceHint =>
       'घुमाने के लिए खींचें · ज़ूम के लिए पिंच करें · किसी ग्रह पर टैप करके वहाँ पहुँचें · आकार और दूरी पैमाने पर नहीं';
+
+  @override
+  String get spacecraftAdityal1 =>
+      'भारत (ISRO) की पहली सौर वेधशाला। सूर्य और पृथ्वी के बीच L1 बिंदु (15 लाख किमी) पर रहकर हर समय सूर्य के कोरोना और सौर तूफ़ानों पर नज़र रखती है।';
 }

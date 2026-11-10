@@ -4273,6 +4273,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Drag to look around · Pinch to zoom · Tap a planet to fly to it · Sizes and distances not to scale'**
   String get spaceHint;
+
+  /// No description provided for @spacecraftAdityal1.
+  ///
+  /// In en, this message translates to:
+  /// **'India\'s (ISRO) first solar observatory. Placed in a halo orbit around the Sun–Earth L1 point (1.5 million km away) to watch the Sun\'s corona and solar storms non-stop.'**
+  String get spacecraftAdityal1;
 }
 
 class _AppLocalizationsDelegate

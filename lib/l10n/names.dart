@@ -346,9 +346,7 @@ String spacecraftText(AppLocalizations l, String id) {
     case 'jwst':
       return l.spacecraftJwst;
     case 'adityal1':
-      return l.localeName.startsWith('hi')
-          ? 'भारत (ISRO) की पहली सौर वेधशाला। सूर्य और पृथ्वी के बीच L1 बिंदु (15 लाख किमी) पर रहकर हर समय सूर्य के कोरोना और सौर तूफ़ानों पर नज़र रखती है।'
-          : 'India\'s (ISRO) first solar observatory. Placed in a halo orbit around the Sun–Earth L1 point (1.5 million km away) to watch the Sun\'s corona and solar storms non-stop.';
+      return l.spacecraftAdityal1;
     case 'iss':
       return l.spacecraftIss;
     case 'hubble':

@@ -2441,4 +2441,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get spaceHint =>
       'Drag to look around · Pinch to zoom · Tap a planet to fly to it · Sizes and distances not to scale';
+
+  @override
+  String get spacecraftAdityal1 =>
+      'India\'s (ISRO) first solar observatory. Placed in a halo orbit around the Sun–Earth L1 point (1.5 million km away) to watch the Sun\'s corona and solar storms non-stop.';
 }

@@ -220,3 +220,30 @@ body.gate-open{overflow:hidden}
 .lb li.me{border-color:var(--accent2);background:color-mix(in srgb,var(--accent2) 10%,var(--card))}
 .lb li b{font-variant-numeric:tabular-nums}
 .daily .ok{color:var(--good)}.daily .no{color:var(--bad)}
+
+/* NASA Eyes 3D Solar System & Interactive Simulators */
+.eyes-wrap{display:flex;flex-direction:column;gap:12px}
+.eyes-chips{display:flex;flex-wrap:wrap;gap:6px}
+.eyes-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--text);font:600 .86rem "DM Sans",sans-serif;cursor:pointer;transition:transform .18s,border-color .18s,background .18s}
+.eyes-chip:hover{border-color:var(--accent);transform:translateY(-1px)}
+.eyes-chip.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 18%,var(--card));color:var(--accent)}
+.eyes-chip i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.eyes-stage{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:#04060e}
+.eyes-badge{position:absolute;left:14px;top:14px;padding:5px 11px;border-radius:999px;background:rgba(8,14,32,.78);backdrop-filter:blur(6px);border:1px solid rgba(110,160,255,.35);color:#7ce2ff;font:700 .75rem "Space Grotesk",sans-serif;letter-spacing:.05em;pointer-events:none}
+.eyes-back{position:absolute;right:14px;top:14px;background:rgba(8,14,32,.82);backdrop-filter:blur(6px);color:#fff;border-color:rgba(140,175,255,.4)}
+.eyes-tel-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.eyes-dot{width:46px;height:46px;border-radius:50%;flex-shrink:0;box-shadow:0 0 18px rgba(100,150,255,.3)}
+.eyes-live-tag{font:700 .72rem "Space Grotesk",sans-serif;color:var(--good);letter-spacing:.06em}
+.sim-flex{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.cut-layer{transition:opacity .2s,stroke-width .2s}
+.cut-layer:hover{opacity:.88}
+
+/* 3D Card Tilt & Spotlight Glow + Planet Spin */
+.card,a.sc{position:relative;overflow:hidden;transform-style:preserve-3d;will-change:transform}
+.card::after,a.sc::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%),color-mix(in srgb,var(--accent) 13%,transparent),transparent 70%);opacity:0;transition:opacity .25s}
+.card:hover::after,a.sc:hover::after{opacity:1}
+.pcard svg,.bodyhead svg{transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+.pcard:hover svg,.bodyhead:hover svg{transform:rotate(14deg) scale(1.07)}
+.meter i,.progress i{transition:width .9s cubic-bezier(.22,1,.36,1)}
+#skyBgCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1;opacity:.65}
+[data-theme="light"] #skyBgCanvas{opacity:.18}

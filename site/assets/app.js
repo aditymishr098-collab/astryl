@@ -344,41 +344,281 @@
     onRender(draw);
   }
 
-  /* ---------- page: solar system (live positions) ---------- */
+  /* ---------- page: solar system (NASA Eyes 3D live explorer) ---------- */
   function solarPage() {
     var cv = $('#solar'); if (!cv) return;
     var ctx = cv.getContext('2d'), day = $('#solDay'), lab = $('#solDate'), playBtn = $('#solPlay'), todayBtn = $('#solToday');
+    var chipsBox = $('#solChips'), backBtn = $('#solBack'), telBox = $('#solTelemetry');
     var ms = Date.now(), playing = false, last = 0;
-    var size = 640; cv.width = size * 2; cv.height = size * 2; cv.style.width = '100%'; cv.style.maxWidth = size + 'px'; cv.style.aspectRatio = '1';
-    function draw() {
-      var S = cv.width, c = S / 2, maxR = S / 2 - 40;
-      ctx.clearRect(0, 0, S, S); ctx.fillStyle = '#05070f'; ctx.fillRect(0, 0, S, S);
-      function rr(au) { return Math.sqrt(au / 40) * maxR; }
-      ctx.lineWidth = 2; ctx.strokeStyle = 'rgba(150,160,210,.25)';
-      planets.concat([byId.pluto]).forEach(function (p) { var a = D.orbits[p.id][0]; ctx.beginPath(); ctx.arc(c, c, rr(a), 0, 7); ctx.stroke(); });
-      var g = ctx.createRadialGradient(c, c, 2, c, c, 34); g.addColorStop(0, '#fff3c4'); g.addColorStop(.4, '#ffb13b'); g.addColorStop(1, 'rgba(255,140,30,0)');
-      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(c, c, 34, 0, 7); ctx.fill();
-      ctx.font = '600 26px "DM Sans",sans-serif'; ctx.textAlign = 'left';
-      planets.concat([byId.pluto]).forEach(function (p) {
-        var h = helio(p.id, ms), au = Math.sqrt(h.x * h.x + h.y * h.y), ang = Math.atan2(h.y, h.x), x = c + rr(au) * Math.cos(ang), y = c - rr(au) * Math.sin(ang);
-        var rad_ = p.id === 'jupiter' || p.id === 'saturn' ? 13 : p.id === 'uranus' || p.id === 'neptune' ? 10 : p.id === 'pluto' ? 6 : 8;
-        ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(x, y, rad_, 0, 7); ctx.fill();
-        if (p.id === 'saturn') { ctx.strokeStyle = 'rgba(230,210,160,.8)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.ellipse(x, y, 22, 7, -.3, 0, 7); ctx.stroke(); ctx.lineWidth = 2; }
-        ctx.fillStyle = 'rgba(235,238,255,.9)'; var nm = bname(p.id), tw = ctx.measureText(nm).width; ctx.fillText(nm, x + rad_ + 6 + tw > S - 6 ? x - rad_ - 6 - tw : x + rad_ + 6, y + 8);
-      });
-      lab.textContent = dateText(ms);
+    var yaw = -0.65, pitch = 0.52, zoom = 1.0, targetZoom = 1.0;
+    var selected = 'earth', camX = 0, camY = 0, targetX = 0, targetY = 0;
+    var dragging = false, lx = 0, ly = 0, hitList = [];
+    var stars = [];
+    for (var si = 0; si < 160; si++) stars.push({ x: Math.random(), y: Math.random(), r: 0.7 + Math.random() * 1.4, p: Math.random() * 6.28 });
+
+    cv.width = 1280; cv.height = 820; cv.style.width = '100%'; cv.style.borderRadius = '18px'; cv.style.cursor = 'grab';
+
+    var ORBIT_C = { mercury: '#b0b5c4', venus: '#e8b668', earth: '#4da3ff', mars: '#e56b4e', jupiter: '#d99a62', saturn: '#dfc07c', uranus: '#73d4e0', neptune: '#4d7bff', pluto: '#a68d7c' };
+    var MOONS = {
+      earth: [{ id: 'moon', r: 0.42, p: 27.32, c: '#d2d6e0', sz: 4.5 }],
+      jupiter: [
+        { id: 'io', r: 0.36, p: 1.769, c: '#f2c94c', sz: 4 },
+        { id: 'europa', r: 0.50, p: 3.551, c: '#bce0fd', sz: 3.8 },
+        { id: 'ganymede', r: 0.66, p: 7.155, c: '#b8a99a', sz: 5 },
+        { id: 'callisto', r: 0.84, p: 16.689, c: '#8c8275', sz: 4.5 }
+      ],
+      saturn: [
+        { id: 'enceladus', r: 0.44, p: 1.370, c: '#e8f6ff', sz: 3.6 },
+        { id: 'titan', r: 0.76, p: 15.945, c: '#e8a850', sz: 5.2 }
+      ],
+      neptune: [{ id: 'triton', r: 0.54, p: -5.877, c: '#b5d6e8', sz: 4.2 }]
+    };
+
+    function compR(au) { return Math.pow(au, 0.44) * 3.1; }
+    function worldPos(id, tMs) {
+      if (id === 'sun') return { x: 0, y: 0, z: 0 };
+      var b = byId[id];
+      if (b && b.kind === 'moon') {
+        var par = worldPos(b.parent, tMs), mlist = MOONS[b.parent] || [];
+        var m = mlist.filter(function (x) { return x.id === id; })[0] || { r: 0.45, p: b.year || 10 };
+        var ang = ((tMs / 86400000) / m.p) * Math.PI * 2;
+        return { x: par.x + Math.cos(ang) * m.r, y: par.y + Math.sin(ang) * m.r, z: 0 };
+      }
+      var h = helio(id, tMs), au = Math.sqrt(h.x * h.x + h.y * h.y), ang2 = Math.atan2(h.y, h.x), r = compR(au);
+      return { x: Math.cos(ang2) * r, y: Math.sin(ang2) * r, z: 0 };
     }
-    function setMs(v) { ms = Math.min(MAX, Math.max(MIN, v)); day.value = Math.round((ms - Date.now()) / 86400000); draw(); }
-    day.addEventListener('input', function () { ms = Date.now() + parseInt(day.value, 10) * 86400000; draw(); });
-    playBtn.addEventListener('click', function () { playing = !playing; playBtn.textContent = playing ? t('pause') : t('play'); if (playing) { last = 0; requestAnimationFrame(tick); } });
+    function proj(wx, wy, wz, W, H, sc) {
+      var dx = wx - camX, dy = wy - camY, dz = wz;
+      var cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+      var x1 = dx * cy - dy * sy, y1 = dx * sy + dy * cy;
+      var z2 = y1 * cp - dz * sp, y2 = y1 * sp + dz * cp;
+      var fov = 24, d = fov + z2; if (d < 1.2) return null;
+      var p = (fov / d) * sc;
+      return { x: W / 2 + x1 * p, y: H / 2 - y2 * p, p: p / sc, depth: d };
+    }
+
+    function renderChips() {
+      if (!chipsBox) return;
+      var order = ['sun', 'mercury', 'venus', 'earth', 'moon', 'mars', 'jupiter', 'io', 'europa', 'ganymede', 'callisto', 'saturn', 'titan', 'enceladus', 'uranus', 'neptune', 'triton', 'pluto'];
+      chipsBox.innerHTML = order.map(function (id) {
+        var b = byId[id]; if (!b) return '';
+        var on = selected === id ? ' on' : '';
+        return '<button class="eyes-chip' + on + '" data-pick="' + id + '"><i style="background:' + b.color + '"></i>' + bname(id) + '</button>';
+      }).join('');
+    }
+
+    function renderTelemetry() {
+      if (!telBox) return;
+      var b = byId[selected] || byId.earth, now = ms;
+      var dEarth = selected === 'earth' ? 0 : distFromEarthKm(selected === 'moon' ? 'moon' : (b.kind === 'moon' ? b.parent : selected), now);
+      if (selected === 'moon') dEarth = 384400;
+      var dSun = selected === 'sun' ? 0 : (b.dist * 1e6);
+      var ox = oxy(b);
+      var sub = b.kind === 'star' ? t('kindStar') : (b.id === 'pluto' ? t('kindDwarf') : (b.kind === 'moon' ? t('moonOf', { planet: bname(b.parent) }) : t('planetOrder', { n: b.order })));
+      telBox.innerHTML =
+        '<div class="eyes-tel-head">' +
+          '<div class="eyes-dot" style="background:radial-gradient(circle at 32% 30%,' + b.colors[2] + ',' + b.colors[0] + ' 60%,' + b.colors[1] + ')"></div>' +
+          '<div style="flex:1"><div class="eyes-live-tag">● ' + (lang === 'hi' ? 'लाइव टेलीमेट्री' : 'LIVE TELEMETRY') + '</div><h3 style="margin:2px 0 0">' + bname(b.id) + '</h3><small class="note">' + sub + '</small></div>' +
+          '<a class="btn primary" href="body/' + b.id + '.html">' + t('openDetails') + ' →</a>' +
+        '</div>' +
+        '<div class="stats" style="margin-top:12px">' +
+          '<div class="stat"><b>' + PT.diameter(b) + '</b><span>' + t('diameter') + '</span></div>' +
+          '<div class="stat"><b>' + PT.gravity(b) + '</b><span>' + t('gravity') + '</span></div>' +
+          '<div class="stat"><b>' + PT.temp(b) + '</b><span>' + t('avgTempShort') + '</span></div>' +
+          '<div class="stat"><b>' + (selected === 'earth' ? '0 km' : PT.km(dEarth)) + '</b><span>' + t('distanceFromEarth') + '</span></div>' +
+          '<div class="stat"><b>' + (selected === 'sun' ? '0 km' : PT.km(dSun)) + '</b><span>' + t('distance') + '</span></div>' +
+          '<div class="stat"><b>' + fmt(ox, 2) + '%</b><span>' + t('oxygen') + '</span></div>' +
+        '</div>';
+      if (backBtn) backBtn.style.display = selected !== 'sun' ? 'inline-flex' : 'none';
+    }
+
+    function selectBody(id) {
+      selected = id;
+      var b = byId[id];
+      targetZoom = id === 'sun' ? 1.0 : (b && b.kind === 'moon' ? 2.6 : 1.85);
+      renderChips();
+      renderTelemetry();
+    }
+
+    function drawFrame(ts) {
+      var W = cv.width, H = cv.height;
+      var tp = worldPos(selected, ms);
+      targetX = tp.x; targetY = tp.y;
+      camX += (targetX - camX) * 0.14;
+      camY += (targetY - camY) * 0.14;
+      zoom += (targetZoom - zoom) * 0.14;
+
+      var sc = Math.min(W, H) * 0.048 * zoom;
+      ctx.clearRect(0, 0, W, H);
+      var bg = ctx.createRadialGradient(W * 0.5, H * 0.45, 20, W * 0.5, H * 0.5, W * 0.7);
+      bg.addColorStop(0, '#0c1328'); bg.addColorStop(0.6, '#060914'); bg.addColorStop(1, '#03050b');
+      ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+
+      // Twinkling stars
+      var sec = (ts || Date.now()) * 0.001;
+      stars.forEach(function (s) {
+        var al = 0.25 + 0.55 * (0.5 + 0.5 * Math.sin(sec * 1.8 + s.p));
+        ctx.fillStyle = 'rgba(215,228,255,' + al.toFixed(2) + ')';
+        ctx.beginPath(); ctx.arc(s.x * W, s.y * H, s.r, 0, 7); ctx.fill();
+      });
+
+      // Planet orbit rings
+      planets.concat([byId.pluto]).forEach(function (p) {
+        var a = D.orbits[p.id][0], r = compR(a), col = ORBIT_C[p.id] || '#8899cc';
+        var isSel = selected === p.id || (byId[selected] && byId[selected].parent === p.id);
+        ctx.strokeStyle = col; ctx.globalAlpha = isSel ? 0.68 : 0.26; ctx.lineWidth = isSel ? 2.4 : 1.4;
+        ctx.beginPath();
+        var started = false;
+        for (var i = 0; i <= 96; i++) {
+          var ang = (i / 96) * Math.PI * 2;
+          var pt = proj(Math.cos(ang) * r, Math.sin(ang) * r, 0, W, H, sc);
+          if (!pt) continue;
+          if (!started) { ctx.moveTo(pt.x, pt.y); started = true; } else ctx.lineTo(pt.x, pt.y);
+        }
+        ctx.stroke();
+      });
+      ctx.globalAlpha = 1;
+
+      // Moon orbit rings around focused parent or Earth/Jupiter/Saturn
+      Object.keys(MOONS).forEach(function (pid) {
+        var show = selected === pid || (byId[selected] && byId[selected].parent === pid) || zoom > 1.35;
+        if (!show) return;
+        var par = worldPos(pid, ms);
+        MOONS[pid].forEach(function (m) {
+          ctx.strokeStyle = m.c; ctx.globalAlpha = 0.38; ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          var st = false;
+          for (var j = 0; j <= 48; j++) {
+            var a2 = (j / 48) * Math.PI * 2;
+            var pt2 = proj(par.x + Math.cos(a2) * m.r, par.y + Math.sin(a2) * m.r, 0, W, H, sc);
+            if (!pt2) continue;
+            if (!st) { ctx.moveTo(pt2.x, pt2.y); st = true; } else ctx.lineTo(pt2.x, pt2.y);
+          }
+          ctx.stroke();
+        });
+      });
+      ctx.globalAlpha = 1;
+
+      // Collect bodies to depth-sort
+      var drawables = [];
+      var sunP = proj(0, 0, 0, W, H, sc);
+      if (sunP) drawables.push({ id: 'sun', b: byId.sun, pt: sunP, rad: 22 * sunP.p });
+      planets.concat([byId.pluto]).forEach(function (p) {
+        var wp = worldPos(p.id, ms), pt = proj(wp.x, wp.y, wp.z, W, H, sc);
+        if (!pt) return;
+        var baseR = p.id === 'jupiter' || p.id === 'saturn' ? 14 : (p.id === 'uranus' || p.id === 'neptune' ? 11 : (p.id === 'pluto' ? 6.5 : 8.8));
+        drawables.push({ id: p.id, b: p, pt: pt, rad: Math.max(4.5, baseR * pt.p * Math.pow(zoom, 0.25)) });
+      });
+      Object.keys(MOONS).forEach(function (pid) {
+        var show = selected === pid || (byId[selected] && byId[selected].parent === pid) || zoom > 1.45;
+        if (!show) return;
+        MOONS[pid].forEach(function (m) {
+          var wp = worldPos(m.id, ms), pt = proj(wp.x, wp.y, wp.z, W, H, sc);
+          if (pt) drawables.push({ id: m.id, b: byId[m.id], pt: pt, rad: Math.max(3.2, m.sz * pt.p * Math.pow(zoom, 0.35)), isMoon: true });
+        });
+      });
+
+      drawables.sort(function (a, b) { return b.pt.depth - a.pt.depth; });
+      hitList = [];
+
+      drawables.forEach(function (d) {
+        var x = d.pt.x, y = d.pt.y, r = d.rad, b = d.b;
+        hitList.push({ id: d.id, x: x, y: y, r: Math.max(16, r + 8) });
+        if (d.id === 'sun') {
+          var sg = ctx.createRadialGradient(x, y, r * 0.1, x, y, r * 2.6);
+          sg.addColorStop(0, '#fff7d6'); sg.addColorStop(0.35, '#ffb838'); sg.addColorStop(1, 'rgba(255,140,20,0)');
+          ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(x, y, r * 2.6, 0, 7); ctx.fill();
+        }
+        if (d.id === 'saturn') {
+          ctx.strokeStyle = 'rgba(230,208,155,0.82)'; ctx.lineWidth = Math.max(2, r * 0.26);
+          ctx.beginPath(); ctx.ellipse(x, y, r * 2.1, r * 0.65, -0.28, 0, 7); ctx.stroke();
+        }
+        var pg = ctx.createRadialGradient(x - r * 0.32, y - r * 0.32, r * 0.1, x, y, r);
+        pg.addColorStop(0, b.colors[2]); pg.addColorStop(0.55, b.colors[0]); pg.addColorStop(1, b.colors[1]);
+        ctx.fillStyle = pg; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
+
+        if (selected === d.id) {
+          ctx.strokeStyle = '#7ce2ff'; ctx.lineWidth = 2.2;
+          ctx.beginPath(); ctx.arc(x, y, r + 6, 0, 7); ctx.stroke();
+        }
+        ctx.font = (d.isMoon ? '500 18px' : '600 22px') + ' "DM Sans",sans-serif';
+        ctx.fillStyle = selected === d.id ? '#7ce2ff' : 'rgba(235,240,255,0.92)';
+        ctx.fillText(bname(d.id), x + r + 7, y + 6);
+      });
+
+      lab.textContent = dateText(ms);
+      if (playing || Math.abs(targetX - camX) > 0.002 || Math.abs(targetY - camY) > 0.002 || Math.abs(targetZoom - zoom) > 0.002) {
+        requestAnimationFrame(loop);
+      }
+    }
+
+    function loop(ts) {
+      if (playing) {
+        if (last) {
+          ms += (ts - last) / 1000 * 18 * 86400000;
+          if (ms > MAX) ms = MIN;
+          day.value = Math.max(day.min, Math.min(day.max, Math.round((ms - Date.now()) / 86400000)));
+        }
+        last = ts;
+      }
+      drawFrame(ts);
+    }
+
+    // Pointer interaction: drag to rotate 3D camera, click a body to fly to it
+    var downX = 0, downY = 0;
+    cv.addEventListener('pointerdown', function (e) {
+      dragging = true; lx = downX = e.clientX; ly = downY = e.clientY;
+      cv.setPointerCapture(e.pointerId); cv.style.cursor = 'grabbing';
+    });
+    cv.addEventListener('pointermove', function (e) {
+      if (!dragging) return;
+      var dx = e.clientX - lx, dy = e.clientY - ly;
+      lx = e.clientX; ly = e.clientY;
+      yaw -= dx * 0.007;
+      pitch = Math.max(0.12, Math.min(1.42, pitch + dy * 0.006));
+      drawFrame();
+    });
+    cv.addEventListener('pointerup', function (e) {
+      if (!dragging) return;
+      dragging = false; cv.style.cursor = 'grab';
+      if (Math.hypot(e.clientX - downX, e.clientY - downY) < 6) {
+        var rect = cv.getBoundingClientRect();
+        var cx = (e.clientX - rect.left) * (cv.width / rect.width);
+        var cy = (e.clientY - rect.top) * (cv.height / rect.height);
+        for (var i = hitList.length - 1; i >= 0; i--) {
+          var h = hitList[i];
+          if (Math.hypot(cx - h.x, cy - h.y) <= h.r) {
+            selectBody(h.id); requestAnimationFrame(loop); break;
+          }
+        }
+      }
+    });
+    cv.addEventListener('wheel', function (e) {
+      e.preventDefault();
+      targetZoom = Math.max(0.55, Math.min(3.5, targetZoom * (e.deltaY < 0 ? 1.12 : 0.9)));
+      requestAnimationFrame(loop);
+    }, { passive: false });
+
+    if (chipsBox) chipsBox.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-pick]');
+      if (btn) { selectBody(btn.dataset.pick); requestAnimationFrame(loop); }
+    });
+    if (backBtn) backBtn.addEventListener('click', function () { selectBody('sun'); requestAnimationFrame(loop); });
+
+    function setMs(v) { ms = Math.min(MAX, Math.max(MIN, v)); day.value = Math.round((ms - Date.now()) / 86400000); renderTelemetry(); drawFrame(); }
+    day.addEventListener('input', function () { ms = Date.now() + parseInt(day.value, 10) * 86400000; renderTelemetry(); drawFrame(); });
+    playBtn.addEventListener('click', function () { playing = !playing; playBtn.textContent = playing ? t('pause') : t('play'); if (playing) { last = 0; requestAnimationFrame(loop); } });
     todayBtn.addEventListener('click', function () { playing = false; playBtn.textContent = t('play'); setMs(Date.now()); });
-    function tick(ts) { if (!playing) return; if (last) { ms += (ts - last) / 1000 * 20 * 86400000; if (ms > MAX) ms = MIN; day.value = Math.max(day.min, Math.min(day.max, Math.round((ms - Date.now()) / 86400000))); draw(); } last = ts; requestAnimationFrame(tick); }
-    onRender(function () { playBtn.textContent = playing ? t('pause') : t('play'); todayBtn.textContent = t('today'); draw(); });
     $('#solMonthBack').addEventListener('click', function () { setMs(ms - 30 * 86400000); });
     $('#solMonthFwd').addEventListener('click', function () { setMs(ms + 30 * 86400000); });
-    // Distances from Earth today.
+
     var tbl = $('#solTable');
     onRender(function () {
+      playBtn.textContent = playing ? t('pause') : t('play');
+      todayBtn.textContent = t('today');
+      renderChips();
+      renderTelemetry();
+      drawFrame();
       var now = Date.now(), h = '<table class="cmp cols"><tr><th></th><th>' + t('distanceFromEarth') + '</th><th>' + t('lightTime') + '</th></tr>';
       planets.filter(function (p) { return p.id !== 'earth'; }).concat([byId.sun]).forEach(function (p) { var km = distFromEarthKm(p.id, now); h += '<tr><td>' + bname(p.id) + '</td><td class="w">' + PT.km(km) + '</td><td>' + PT.duration(km / C_KMS) + '</td></tr>'; });
       tbl.innerHTML = h + '</table>';
@@ -440,13 +680,139 @@
     onRender(draw); setInterval(draw, 5000);
   }
 
-  /* ---------- page: a body (distance from Earth today) ---------- */
+  /* ---------- page: a body (distance, interior cutaway, telescope zoom, moon orbits) ---------- */
   function bodyPage() {
-    var box = $('#travel'); if (!box) return;
-    onRender(function () {
-      var km = distFromEarthKm(box.dataset.body, Date.now());
-      box.innerHTML = '<div class="stats"><div class="stat"><b>' + PT.km(km) + '</b><span>' + t('distanceFromEarth') + '</span></div><div class="stat"><b>' + PT.duration(km / C_KMS) + '</b><span>' + t('lightTime') + '</span></div><div class="stat"><b>' + PT.duration(km / (60000 / 3600)) + '</b><span>' + t('bySpacecraft') + '</span></div><div class="stat"><b>' + PT.duration(km / 100 * 3600) + '</b><span>' + t('byCar') + '</span></div></div>';
-    });
+    var box = $('#travel');
+    if (box) {
+      onRender(function () {
+        var km = distFromEarthKm(box.dataset.body, Date.now());
+        box.innerHTML = '<div class="stats"><div class="stat"><b>' + PT.km(km) + '</b><span>' + t('distanceFromEarth') + '</span></div><div class="stat"><b>' + PT.duration(km / C_KMS) + '</b><span>' + t('lightTime') + '</span></div><div class="stat"><b>' + PT.duration(km / (60000 / 3600)) + '</b><span>' + t('bySpacecraft') + '</span></div><div class="stat"><b>' + PT.duration(km / 100 * 3600) + '</b><span>' + t('byCar') + '</span></div></div>';
+      });
+    }
+
+    // 1. Interactive Interior Cutaway
+    var cutBox = $('#cutawaySim');
+    if (cutBox) {
+      var id = cutBox.dataset.body, b = byId[id] || byId.earth, pickedIdx = 0;
+      function getLayers(bid) {
+        var hi = lang === 'hi';
+        if (bid === 'sun') return [
+          { n: hi ? 'केंद्र (Core)' : 'Core', r: 0.28, c: '#fff5cc', d: hi ? '1.5 करोड़ °C — परमाणु संलयन (Nuclear fusion) यहाँ हाइड्रोजन को हीलियम में बदलता है।' : '15 million °C — nuclear fusion turns hydrogen into helium here.' },
+          { n: hi ? 'विकिरण क्षेत्र (Radiative Zone)' : 'Radiative Zone', r: 0.68, c: '#ffae34', d: hi ? 'फ़ोटॉन को इस घनी परत से बाहर निकलने में लाखों साल लग जाते हैं।' : 'Photons take over 100,000 years to bounce through this dense plasma layer.' },
+          { n: hi ? 'संवहन क्षेत्र और प्रकाशमंडल' : 'Convection Zone & Photosphere', r: 1.0, c: '#e85d1a', d: hi ? 'उबलते प्लाज़्मा की धाराएँ गर्मी को सतह (5,500 °C) तक लाती हैं।' : 'Boiling plasma currents carry heat to the 5,500 °C visible surface.' }
+        ];
+        if (bid === 'jupiter' || bid === 'saturn') return [
+          { n: hi ? 'चट्टानी और बर्फीला केंद्र' : 'Rocky & Icy Core', r: 0.22, c: '#9b7e6b', d: hi ? 'पृथ्वी से कई गुना भारी अति-उच्च दबाव वाला गर्म केंद्र।' : 'Dense, super-heated core many times heavier than Earth.' },
+          { n: hi ? 'धात्विक हाइड्रोजन (Metallic H₂)' : 'Liquid Metallic Hydrogen', r: 0.68, c: '#5c85d6', d: hi ? 'इतना दबाव कि हाइड्रोजन बिजली के सुचालक तरल धातु में बदल जाती है।' : 'Extreme pressure squeezes hydrogen into an electrically conductive liquid metal.' },
+          { n: hi ? 'गैसीय वायुमंडल और बादल' : 'Molecular Hydrogen & Clouds', r: 1.0, c: b.colors[0], d: hi ? 'अमोनिया और हाइड्रोजन के तेज़ तूफ़ानी बादलों की बाहरी परत।' : 'Swirling ammonia cloud bands and deep hydrogen-helium atmosphere.' }
+        ];
+        if (bid === 'uranus' || bid === 'neptune') return [
+          { n: hi ? 'चट्टानी केंद्र (Silicate Core)' : 'Silicate-Nickel Core', r: 0.25, c: '#7d746d', d: hi ? 'लोहे और सिलिकेट चट्टानों का छोटा ठोस केंद्र।' : 'Compact rocky core of iron, nickel and silicate rock.' },
+          { n: hi ? 'गर्म बर्फीला मेंटल (Icy Mantle)' : 'Superionic Water-Ammonia Mantle', r: 0.78, c: '#3898b8', d: hi ? 'पानी, अमोनिया और मीथेन का उच्च-दबाव वाला गर्म महासागर।' : 'Hot, dense fluid of water, ammonia and methane ices under immense pressure.' },
+          { n: hi ? 'मीथेन-हाइड्रोजन वायुमंडल' : 'Hydrogen-Methane Atmosphere', r: 1.0, c: b.colors[0], d: hi ? 'मीथेन गैस लाल रोशनी सोखकर इसे नीला/फ़िरोज़ी रंग देती है।' : 'Methane gas absorbs red light, giving the world its cyan/azure colour.' }
+        ];
+        if (['europa', 'enceladus', 'ganymede', 'callisto', 'titan', 'triton', 'pluto'].indexOf(bid) >= 0) return [
+          { n: hi ? 'चट्टानी केंद्र (Rocky Core)' : 'Rocky Silicate Core', r: 0.52, c: '#8f7968', d: hi ? 'चट्टान और धातु का भीतरी भाग जो ज्वारीय खिंचाव से गर्म रहता है।' : 'Silicate rock interior warmed by tidal flexing and radioactive decay.' },
+          { n: hi ? 'बर्फ़ के नीचे तरल महासागर' : 'Subsurface Liquid Ocean', r: 0.84, c: '#2980b9', d: hi ? 'बर्फ़ की पपड़ी के नीचे गहरा खारा समुद्र — जीवन की संभावना!' : 'Deep global ocean of liquid water beneath the frozen crust.' },
+          { n: hi ? 'बर्फीली पपड़ी (Icy Crust)' : 'Frozen Ice Shell', r: 1.0, c: b.colors[2], d: hi ? 'दरारों और गीज़र वाली ठोस बर्फ़ की बाहरी सतह।' : 'Hard water-ice shell criss-crossed by ridges, fractures and geysers.' }
+        ];
+        return [
+          { n: hi ? 'धात्विक केंद्र (Metallic Core)' : 'Iron-Nickel Core', r: bid === 'mercury' ? 0.75 : 0.38, c: '#f5b041', d: hi ? 'लोहे और निकल का भारी केंद्र जो चुंबकीय क्षेत्र बनाता है।' : 'Dense iron-nickel core at thousands of degrees Celsius.' },
+          { n: hi ? 'सिलिकेट मेंटल (Mantle)' : 'Silicate Mantle', r: 0.88, c: '#d35400', d: hi ? 'गर्म और सघन चट्टानों की मोटी परत।' : 'Thick shell of hot, dense silicate rock beneath the crust.' },
+          { n: hi ? 'बाहरी पपड़ी (Crust)' : 'Outer Crust', r: 1.0, c: b.colors[0], d: hi ? 'क्रेटर, पहाड़ों और घाटियों वाली बाहरी ठोस सतह।' : 'Solid outer surface of craters, plains, mountains and valleys.' }
+        ];
+      }
+      function drawCutaway() {
+        var layers = getLayers(id);
+        if (pickedIdx >= layers.length) pickedIdx = 0;
+        var svg = '<svg viewBox="-120 -120 240 240" width="210" height="210" style="flex-shrink:0;cursor:pointer">';
+        for (var i = layers.length - 1; i >= 0; i--) {
+          var L = layers[i], R = L.r * 100, sel = i === pickedIdx;
+          svg += '<circle class="cut-layer" data-idx="' + i + '" r="' + R + '" fill="' + L.c + '" stroke="' + (sel ? '#fff' : 'rgba(0,0,0,0.35)') + '" stroke-width="' + (sel ? 3 : 1) + '"/>';
+        }
+        svg += '<line x1="0" y1="-102" x2="0" y2="102" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3"/></svg>';
+        var btns = layers.map(function (L, idx) {
+          return '<button class="eyes-chip' + (idx === pickedIdx ? ' on' : '') + '" data-idx="' + idx + '"><i style="background:' + L.c + '"></i>' + L.n + '</button>';
+        }).join('');
+        var cur = layers[pickedIdx];
+        cutBox.innerHTML = '<div class="sim-flex">' + svg + '<div style="flex:1"><div class="eyes-chips" style="margin-bottom:10px">' + btns + '</div><h3 style="margin:4px 0;color:var(--accent)">' + cur.n + '</h3><p style="margin:0;color:var(--text)">' + cur.d + '</p></div></div>';
+      }
+      cutBox.addEventListener('click', function (e) {
+        var el = e.target.closest('[data-idx]');
+        if (el) { pickedIdx = parseInt(el.dataset.idx, 10); drawCutaway(); }
+      });
+      onRender(drawCutaway);
+    }
+
+    // 2. Telescope Eyepiece Simulator (1x / 10x / 100x)
+    var telSim = $('#telescopeSim');
+    if (telSim) {
+      var tid = telSim.dataset.body, tb = byId[tid] || byId.earth, mag = 1;
+      function drawTel() {
+        var hi = lang === 'hi';
+        var r = mag === 1 ? 3.5 : (mag === 10 ? 14 : 44);
+        if (tid === 'sun' || tid === 'moon') r = mag === 1 ? 16 : (mag === 10 ? 42 : 76);
+        var ring = tid === 'saturn' && mag >= 10 ? '<ellipse rx="' + (r * 2.1) + '" ry="' + (r * 0.6) + '" fill="none" stroke="#dcc286" stroke-width="' + (mag === 100 ? 5 : 2) + '" transform="rotate(-20)"/>' : '';
+        var jMoons = tid === 'jupiter' && mag >= 10 ? '<circle cx="' + (-r - 14) + '" cy="-6" r="2.2" fill="#ffe4a0"/><circle cx="' + (r + 12) + '" cy="5" r="2.2" fill="#d0ecff"/><circle cx="' + (r + 26) + '" cy="11" r="2.6" fill="#e0d4c0"/><circle cx="' + (-r - 30) + '" cy="-12" r="2.2" fill="#b8b0a4"/>' : '';
+        var svg = '<svg viewBox="-100 -100 200 200" width="200" height="200" style="flex-shrink:0;border-radius:50%;background:#04060e;border:3px solid rgba(130,155,220,0.4);box-shadow:inset 0 0 28px #000">' +
+          '<line x1="-95" y1="0" x2="-18" y2="0" stroke="rgba(120,170,255,0.22)"/><line x1="18" y1="0" x2="95" y2="0" stroke="rgba(120,170,255,0.22)"/>' +
+          '<line x1="0" y1="-95" x2="0" y2="-18" stroke="rgba(120,170,255,0.22)"/><line x1="0" y1="18" x2="0" y2="95" stroke="rgba(120,170,255,0.22)"/>' +
+          '<circle cx="-55" cy="-42" r="1" fill="#fff" opacity=".6"/><circle cx="48" cy="-50" r="1.2" fill="#fff" opacity=".5"/><circle cx="-40" cy="58" r="1" fill="#fff" opacity=".7"/>' +
+          ring + '<circle r="' + r + '" fill="' + tb.colors[0] + '"/>' + jMoons +
+          '<text x="0" y="84" text-anchor="middle" fill="#8fa8ff" font-size="11" font-weight="700">' + mag + 'x FOV</text></svg>';
+        var desc = mag === 1
+          ? (hi ? '1x नंगी आँख: रात के आसमान में यह एक चमकते तारे जैसा बिंदु दिखता है।' : '1x Naked eye: Appears as a steady point of light against the background stars.')
+          : (mag === 10
+            ? (hi ? '10x बाइनोक्युलर: एक छोटी डिस्क और प्रमुख चंद्रमा (जैसे बृहस्पति के 4 चंद्रमा) दिखने लगते हैं।' : '10x Binoculars: Resolves into a small disc; bright moons like Jupiter\'s Galilean moons appear as pinpoints.')
+            : (hi ? '100x टेलिस्कोप: बादलों की पट्टियाँ, ध्रुवीय बर्फ़, क्रेटर या शनि के छल्ले साफ़ दिखाई देते हैं।' : '100x Backyard telescope: Cloud bands, polar caps, craters or Saturn\'s rings stand out clearly in the eyepiece.'));
+        var btns = [1, 10, 100].map(function (m) {
+          var lbl = m === 1 ? (hi ? '1x नंगी आँख' : '1x Naked eye') : (m === 10 ? (hi ? '10x बाइनोक्युलर' : '10x Binoculars') : (hi ? '100x टेलिस्कोप' : '100x Telescope'));
+          return '<button class="eyes-chip' + (mag === m ? ' on' : '') + '" data-mag="' + m + '">' + lbl + '</button>';
+        }).join('');
+        telSim.innerHTML = '<div class="sim-flex">' + svg + '<div style="flex:1"><div class="eyes-chips" style="margin-bottom:10px">' + btns + '</div><p style="margin:6px 0 0;color:var(--text)">' + desc + '</p></div></div>';
+      }
+      telSim.addEventListener('click', function (e) {
+        var btn = e.target.closest('[data-mag]');
+        if (btn) { mag = parseInt(btn.dataset.mag, 10); drawTel(); }
+      });
+      onRender(drawTel);
+    }
+
+    // 3. Live Moon Orbit Simulator (for Jupiter & Saturn)
+    var mSim = $('#moonOrbitSim');
+    if (mSim) {
+      var mid = mSim.dataset.body, mPlaying = true, mDays = (Date.now() - Date.UTC(2025, 0, 1)) / 86400000;
+      var mList = mid === 'jupiter'
+        ? [{ n: 'Io', r: 34, p: 1.769, c: '#f2c94c' }, { n: 'Europa', r: 52, p: 3.551, c: '#bce0fd' }, { n: 'Ganymede', r: 72, p: 7.155, c: '#d0c4b4' }, { n: 'Callisto', r: 94, p: 16.689, c: '#9e9488' }]
+        : [{ n: 'Enceladus', r: 48, p: 1.370, c: '#dcf2ff' }, { n: 'Titan', r: 86, p: 15.945, c: '#f0ad4e' }];
+      mSim.innerHTML = '<div class="sim-flex"><canvas id="moonOrbCv" width="240" height="240" style="width:210px;height:210px;border-radius:14px;background:#050812"></canvas><div style="flex:1"><p id="moonOrbDesc" style="color:var(--text);margin-top:0"></p><div class="eyes-chips" id="moonOrbLegend"></div><button class="btn" id="moonOrbToggle" style="margin-top:10px">⏸ Pause</button></div></div>';
+      var mCv = $('#moonOrbCv'), mCtx = mCv.getContext('2d'), mBtn = $('#moonOrbToggle');
+      function renderMoonLegend() {
+        $('#moonOrbDesc').textContent = lang === 'hi'
+          ? (mid === 'jupiter' ? 'बृहस्पति के 4 गैलीलियन चंद्रमा (आयो, यूरोपा, गैनिमीड, कैलिस्टो) अपनी असली गति के अनुपात में परिक्रमा कर रहे हैं।' : 'शनि के प्रमुख चंद्रमा एन्सेलेडस और टाइटन अपनी कक्षाओं में घूम रहे हैं।')
+          : (mid === 'jupiter' ? 'Jupiter\'s 4 Galilean moons (Io, Europa, Ganymede, Callisto) orbiting at their real relative speeds.' : 'Saturn\'s major moons Enceladus and Titan orbiting in real relative periods.');
+        $('#moonOrbLegend').innerHTML = mList.map(function (m) { return '<span class="eyes-chip"><i style="background:' + m.c + '"></i>' + m.n + ' (' + m.p + 'd)</span>'; }).join('');
+        mBtn.textContent = mPlaying ? t('pause') : t('play');
+      }
+      function tickMoons() {
+        if (mPlaying) mDays += 0.035;
+        mCtx.clearRect(0, 0, 240, 240);
+        var cx = 120, cy = 120;
+        mCtx.fillStyle = byId[mid].colors[0]; mCtx.beginPath(); mCtx.arc(cx, cy, 14, 0, 7); mCtx.fill();
+        mList.forEach(function (m) {
+          mCtx.strokeStyle = 'rgba(160,180,230,0.22)'; mCtx.lineWidth = 1.2;
+          mCtx.beginPath(); mCtx.arc(cx, cy, m.r, 0, 7); mCtx.stroke();
+          var ang = (mDays / m.p) * Math.PI * 2, mx = cx + Math.cos(ang) * m.r, my = cy + Math.sin(ang) * m.r;
+          mCtx.fillStyle = m.c; mCtx.beginPath(); mCtx.arc(mx, my, 5, 0, 7); mCtx.fill();
+          mCtx.fillStyle = 'rgba(235,240,255,0.88)'; mCtx.font = '600 11px "DM Sans",sans-serif';
+          mCtx.fillText(m.n, mx + 7, my + 4);
+        });
+        if (mPlaying) requestAnimationFrame(tickMoons);
+      }
+      mBtn.addEventListener('click', function () { mPlaying = !mPlaying; renderMoonLegend(); if (mPlaying) requestAnimationFrame(tickMoons); });
+      onRender(renderMoonLegend);
+      requestAnimationFrame(tickMoons);
+    }
   }
 
   /* ---------- small API for cosmos.js (home page animation) ---------- */

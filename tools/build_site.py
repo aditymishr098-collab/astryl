@@ -152,7 +152,7 @@ BY = {b['id']: b for b in BODIES}
 NAME_KEY = dict(mercury='planetMercury', venus='planetVenus', earth='planetEarth', mars='planetMars', jupiter='planetJupiter', saturn='planetSaturn', uranus='planetUranus', neptune='planetNeptune', sun='bodySun', moon='bodyMoon', pluto='bodyPluto', io='moonIo', europa='moonEuropa', ganymede='moonGanymede', callisto='moonCallisto', titan='moonTitan', enceladus='moonEnceladus', triton='moonTriton')
 
 assert len(BODIES) == 18, len(BODIES)
-assert len(ORBITS) == 9 and len(MISSIONS) == 15 and len(CRAFT) == 7 and len(CONS) == 89, (len(ORBITS), len(MISSIONS), len(CRAFT), len(CONS))
+assert len(ORBITS) == 9 and len(MISSIONS) == 15 and len(CRAFT) == 8 and len(CONS) == 89, (len(ORBITS), len(MISSIONS), len(CRAFT), len(CONS))
 assert len(SITES) == 25 and len(FEATS) == 27, (len(SITES), len(FEATS))
 assert len(METEORS) == 8 and len(FACT_IDS) == 18 and MILESTONES
 
@@ -461,9 +461,13 @@ def body_page(b, i):
     nxt = BODIES[i + 1] if i + 1 < len(BODIES) else None
     pn = '<div class="pn">' + (f'<a class="btn" href="{prev["id"]}.html">← {bname(prev["id"])}</a>' if prev else '<span></span>') + (f'<a class="btn" href="{nxt["id"]}.html">{bname(nxt["id"])} →</a>' if nxt else '<span></span>') + '</div>'
     wt = f'<h2>{bi("weightFeelsLike", weight="60")}</h2><div class="card"><div class="life">{val(lambda lg: fmt(lg, 60 * b["g"] / 9.8, 1) + " kg")}</div><p class="note">{bi("gravityTimes", factor={lg: fmt(lg, b["g"] / 9.8, 2) for lg in ("en", "hi")})} · <a href="../you.html">{bi("weightTitle")}</a></p></div>' if b['hasSurface'] or True else ''
+    moon_orb = f'<section class="blk"><h2>{bt("Live moon orbits", "चंद्रमाओं की लाइव परिक्रमा")}</h2><div class="card" id="moonOrbitSim" data-body="{idn}"></div></section>' if idn in ('jupiter', 'saturn') else ''
     body = f'''<p style="margin-top:20px"><a href="../planets.html">← {bi("planetsTitle")}</a></p>
 <div class="bodyhead">{planet_svg(b)}<div><h1 style="margin:0">{bname(idn)}</h1><p class="sub" style="margin:.2em 0 0">{sub}</p></div></div>
 <div class="stats">{"".join(stats)}</div>
+<section class="blk"><h2>{bt("Inside this world · Tap a layer", "आंतरिक संरचना · किसी परत पर टैप करें")}</h2><div class="card" id="cutawaySim" data-body="{idn}"></div></section>
+<section class="blk"><h2>{bt("Telescope eyepiece simulator", "दूरबीन ज़ूम सिम्युलेटर (1x · 10x · 100x)")}</h2><div class="card" id="telescopeSim" data-body="{idn}"></div></section>
+{moon_orb}
 <section class="blk">{atm}</section>
 <section class="blk">{lifehtml}</section>
 <section class="blk">{wt}</section>
@@ -551,13 +555,14 @@ def planets_page():
 
 def simple_pages():
     # solar system
-    body = f'''<section class="blk"><h1>{bi("solarSystemTitle")}</h1><p class="sub">{bt("Real positions of the planets on this date. Sizes and distances are not to scale. Use the slider or play to move through time.", "इस तारीख़ पर ग्रहों की असली स्थिति। आकार और दूरी पैमाने के हिसाब से नहीं हैं। Slider या play से समय में आगे-पीछे जाइए।")}</p>
-<div style="max-width:640px"><canvas id="solar"></canvas></div>
-<div class="row"><button class="btn" id="solMonthBack">« {bi("monthBack")}</button><button class="btn" id="solPlay">▶</button><button class="btn" id="solToday"></button><button class="btn" id="solMonthFwd">{bi("monthForward")} »</button><b id="solDate"></b></div>
-<input type="range" id="solDay" min="-3650" max="3650" value="0" style="width:100%;max-width:640px" aria-label="Date">
-<p class="note">{bt("Radius is stretched (square root of the distance) so all planets fit. In the app you also get a 3D view with zoom.", "सारे ग्रह दिखें इसलिए दूरी (वर्गमूल के हिसाब से) खींची गई है। App में zoom वाला 3D view भी है।")}</p></section>
+    body = f'''<section class="blk"><h1>{bi("solarSystemTitle")}</h1><p class="sub">{bt("NASA Eyes-style 3D Solar System explorer: drag to rotate in 3D, scroll/pinch to zoom, and tap any planet or moon to fly the camera to it and see live telemetry below.", "NASA Eyes जैसा 3D लाइव सौरमंडल: घुमाने के लिए खींचें, ज़ूम करें, और किसी भी ग्रह या चंद्रमा पर क्लिक करके वहाँ उड़कर जाएँ व नीचे लाइव आँकड़े देखें।")}</p>
+<div class="eyes-wrap"><div class="eyes-chips" id="solChips"></div><div class="eyes-stage"><canvas id="solar"></canvas><div class="eyes-badge">● <span class="t" lang="en">EYES ON SOLAR SYSTEM · 3D LIVE</span><span class="t" lang="hi">3D लाइव सौरमंडल</span></div><button class="btn eyes-back" id="solBack" style="display:none">← {bi("spaceBack")}</button></div>
+<div class="row" style="margin-top:12px"><button class="btn" id="solMonthBack">« {bi("monthBack")}</button><button class="btn" id="solPlay">▶</button><button class="btn" id="solToday"></button><button class="btn" id="solMonthFwd">{bi("monthForward")} »</button><b id="solDate"></b></div>
+<input type="range" id="solDay" min="-3650" max="3650" value="0" style="width:100%" aria-label="Date">
+<div class="card eyes-telemetry" id="solTelemetry"></div></div>
+<p class="note">{bt("Drag to tilt & rotate 3D camera · Click a planet to fly to it and see its 3D moon orbits · Distances compressed so inner and outer worlds fit together.", "3D कैमरा घुमाने के लिए खींचें · किसी ग्रह पर क्लिक करके उसकी और उसके चंद्रमाओं की 3D कक्षा देखें।")}</p></section>
 <section class="blk"><h2>{bi("distanceFromEarth")}</h2><div id="solTable"></div></section>'''
-    write('solar-system.html', shell('Solar System today', 'सौरमंडल आज', 'solar', body, 'Real positions of the planets on any date, and how far each one is from Earth today.', canonical='solar-system.html'))
+    write('solar-system.html', shell('Solar System 3D Live', '3D लाइव सौरमंडल', 'solar', body, 'Interactive 3D Solar System explorer with real planet positions, moon orbits and live telemetry.', canonical='solar-system.html'))
     # compare
     body = f'''<section class="blk"><h1>{bi("compareTitle")}</h1><p class="sub">{bi("compareHint")}</p><div class="row"><select id="cmpA" aria-label="A"></select><span>vs</span><select id="cmpB" aria-label="B"></select></div><div id="cmpOut"></div></section>'''
     write('compare.html', shell('Compare planets', 'ग्रहों की तुलना', 'compare', body, 'Compare any two planets or moons side by side.', canonical='compare.html'))
@@ -733,7 +738,7 @@ def privacy_page():
 </ul>
 
 <h2 id="s6">{bt("6. Where the data is kept and who handles it", "6. Data कहाँ रखा जाता है और कौन सँभालता है")}</h2>
-<p>{bt("Account data is stored with Supabase (database and login service), on servers in Singapore. The app and this website reach it only through one function that checks who is asking; the tables themselves cannot be read from outside. To limit abuse, a hashed (not readable) key and a counter are kept for up to 2 days; no IP address is stored in readable form. This website is hosted on GitHub Pages, and downloads and the update check use GitHub; both follow GitHub's own privacy statement. We do not sell data, show ads, use third-party analytics or trackers, or share data with anyone else.", "खाते का data Supabase (database और login service) के पास, सिंगापुर के servers पर, रखा जाता है। App और यह website उस तक सिर्फ़ एक function से पहुँचते हैं, जो जाँचता है कि कौन माँग रहा है; tables को बाहर से पढ़ा नहीं जा सकता। दुरुपयोग रोकने के लिए hash किया हुआ (पढ़ने लायक़ नहीं) key और एक counter ज़्यादा से ज़्यादा 2 दिन रखा जाता है; IP address पढ़ने लायक़ रूप में नहीं रखा जाता। यह website GitHub Pages पर है, और downloads व update check GitHub से होते हैं; दोनों GitHub की अपनी privacy policy के हिसाब से चलते हैं। हम data बेचते नहीं, विज्ञापन नहीं दिखाते, बाहरी analytics या trackers इस्तेमाल नहीं करते, और किसी और से data साझा नहीं करते।")}</p>
+<p>{bt("Account data is stored with Google Firebase / Cloud Firestore (project astryl-space). Password verification and recovery codes use salted SHA-256 hashes. This website is hosted on Firebase Hosting (astryl.space), and downloads and the update check use GitHub; both follow their respective privacy statements. We do not sell data, show ads, use third-party analytics or trackers, or share data with anyone else.", "खाते का data Google Firebase / Cloud Firestore (project astryl-space) पर सुरक्षित रखा जाता है। Password और recovery code salted SHA-256 hash के रूप में रखे जाते हैं। यह website Firebase Hosting (astryl.space) पर है, और downloads व update check GitHub से होते हैं। हम data बेचते नहीं, विज्ञापन नहीं दिखाते, बाहरी analytics या trackers इस्तेमाल नहीं करते, और किसी और से data साझा नहीं करते।")}</p>
 
 <h2 id="s7">{bt("7. This website", "7. यह website")}</h2>
 <ul>

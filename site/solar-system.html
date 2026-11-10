@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Solar System today · Astryl</title>
-<meta name="description" content="Real positions of the planets on any date, and how far each one is from Earth today.">
+<title>Solar System 3D Live · Astryl</title>
+<meta name="description" content="Interactive 3D Solar System explorer with real planet positions, moon orbits and live telemetry.">
 <link rel="canonical" href="https://astryl.space/solar-system.html">
-<meta property="og:title" content="Solar System today · Astryl"><meta property="og:description" content="Real positions of the planets on any date, and how far each one is from Earth today."><meta property="og:type" content="website"><meta property="og:url" content="https://astryl.space/solar-system.html"><meta name="theme-color" content="#fbf7ee">
+<meta property="og:title" content="Solar System 3D Live · Astryl"><meta property="og:description" content="Interactive 3D Solar System explorer with real planet positions, moon orbits and live telemetry."><meta property="og:type" content="website"><meta property="og:url" content="https://astryl.space/solar-system.html"><meta name="theme-color" content="#fbf7ee">
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="assets/style.css?v=f4243c90b7">
+<link rel="stylesheet" href="assets/style.css?v=f9ccac84af">
 <script>try{var s=localStorage,l=s.getItem("astryl-lang")||((navigator.language||"en").slice(0,2)==="hi"?"hi":"en");document.documentElement.lang=l==="hi"?"hi":"en";if(s.getItem("astryl-theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}if(window.IntersectionObserver&&!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))document.documentElement.classList.add("js")</script>
 </head>
 <body data-page="solar" data-root="">
@@ -19,11 +19,12 @@
 <div class="tools"><button id="langBtn" aria-label="Language">हिन्दी</button><button id="themeBtn" aria-label="Theme">☾</button><a class="btn primary dlnav" href="get.html">⬇ <span class="t" lang="en">Download</span><span class="t" lang="hi">Download</span></a></div>
 </div></header>
 <main class="wrap">
-<section class="blk"><h1><span class="t" lang="en">Solar system</span><span class="t" lang="hi">सौर मंडल</span></h1><p class="sub"><span class="t" lang="en">Real positions of the planets on this date. Sizes and distances are not to scale. Use the slider or play to move through time.</span><span class="t" lang="hi">इस तारीख़ पर ग्रहों की असली स्थिति। आकार और दूरी पैमाने के हिसाब से नहीं हैं। Slider या play से समय में आगे-पीछे जाइए।</span></p>
-<div style="max-width:640px"><canvas id="solar"></canvas></div>
-<div class="row"><button class="btn" id="solMonthBack">« <span class="t" lang="en">30 days earlier</span><span class="t" lang="hi">30 दिन पहले</span></button><button class="btn" id="solPlay">▶</button><button class="btn" id="solToday"></button><button class="btn" id="solMonthFwd"><span class="t" lang="en">30 days later</span><span class="t" lang="hi">30 दिन बाद</span> »</button><b id="solDate"></b></div>
-<input type="range" id="solDay" min="-3650" max="3650" value="0" style="width:100%;max-width:640px" aria-label="Date">
-<p class="note"><span class="t" lang="en">Radius is stretched (square root of the distance) so all planets fit. In the app you also get a 3D view with zoom.</span><span class="t" lang="hi">सारे ग्रह दिखें इसलिए दूरी (वर्गमूल के हिसाब से) खींची गई है। App में zoom वाला 3D view भी है।</span></p></section>
+<section class="blk"><h1><span class="t" lang="en">Solar system</span><span class="t" lang="hi">सौर मंडल</span></h1><p class="sub"><span class="t" lang="en">NASA Eyes-style 3D Solar System explorer: drag to rotate in 3D, scroll/pinch to zoom, and tap any planet or moon to fly the camera to it and see live telemetry below.</span><span class="t" lang="hi">NASA Eyes जैसा 3D लाइव सौरमंडल: घुमाने के लिए खींचें, ज़ूम करें, और किसी भी ग्रह या चंद्रमा पर क्लिक करके वहाँ उड़कर जाएँ व नीचे लाइव आँकड़े देखें।</span></p>
+<div class="eyes-wrap"><div class="eyes-chips" id="solChips"></div><div class="eyes-stage"><canvas id="solar"></canvas><div class="eyes-badge">● <span class="t" lang="en">EYES ON SOLAR SYSTEM · 3D LIVE</span><span class="t" lang="hi">3D लाइव सौरमंडल</span></div><button class="btn eyes-back" id="solBack" style="display:none">← <span class="t" lang="en">Whole Solar System</span><span class="t" lang="hi">पूरा सौर मंडल</span></button></div>
+<div class="row" style="margin-top:12px"><button class="btn" id="solMonthBack">« <span class="t" lang="en">30 days earlier</span><span class="t" lang="hi">30 दिन पहले</span></button><button class="btn" id="solPlay">▶</button><button class="btn" id="solToday"></button><button class="btn" id="solMonthFwd"><span class="t" lang="en">30 days later</span><span class="t" lang="hi">30 दिन बाद</span> »</button><b id="solDate"></b></div>
+<input type="range" id="solDay" min="-3650" max="3650" value="0" style="width:100%" aria-label="Date">
+<div class="card eyes-telemetry" id="solTelemetry"></div></div>
+<p class="note"><span class="t" lang="en">Drag to tilt &amp; rotate 3D camera · Click a planet to fly to it and see its 3D moon orbits · Distances compressed so inner and outer worlds fit together.</span><span class="t" lang="hi">3D कैमरा घुमाने के लिए खींचें · किसी ग्रह पर क्लिक करके उसकी और उसके चंद्रमाओं की 3D कक्षा देखें।</span></p></section>
 <section class="blk"><h2><span class="t" lang="en">Distance from Earth today</span><span class="t" lang="hi">आज पृथ्वी से दूरी</span></h2><div id="solTable"></div></section>
 </main>
 <footer><div class="wrap cols">
@@ -31,5 +32,5 @@
 <div><span class="t" lang="en">Free and open source</span><span class="t" lang="hi">मुफ़्त और open source</span><br><a href="https://github.com/aditymishr098-collab/astryl"><span class="t" lang="en">Source code on GitHub</span><span class="t" lang="hi">GitHub पर source code</span></a><br><a href="https://github.com/aditymishr098-collab/astryl/blob/main/LICENSE">AGPL-3.0</a> · <a href="privacy.html"><span class="t" lang="en">Privacy Policy</span><span class="t" lang="hi">Privacy Policy</span></a><br><a href="account.html"><span class="t" lang="en">Account</span><span class="t" lang="hi">खाता</span></a></div>
 <div><span class="t" lang="en">Facts: NASA Planetary Fact Sheet</span><span class="t" lang="hi">तथ्य: NASA Planetary Fact Sheet</span><br><a href="get.html"><span class="t" lang="en">Download the app</span><span class="t" lang="hi">App download करें</span></a></div>
 </div></footer>
-<script src="assets/data.js?v=f4243c90b7"></script><script src="assets/app.js?v=f4243c90b7"></script><script src="assets/account.js?v=f4243c90b7"></script><script src="assets/fx.js?v=f4243c90b7"></script>
+<script src="assets/data.js?v=f9ccac84af"></script><script src="assets/app.js?v=f9ccac84af"></script><script src="assets/account.js?v=f9ccac84af"></script><script src="assets/fx.js?v=f9ccac84af"></script>
 </body></html>
