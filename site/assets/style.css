@@ -280,3 +280,10 @@ header.top{z-index:20}
 .sitebar .bar>div:first-child{flex:1 1 240px}
 .sitebar .bar b{display:block}
 .sitebar .bar .btns{margin:0}
+
+/* deep space pages */
+.prose{max-width:46em}.prose p{line-height:1.7}.prose h2{margin-top:1.7em}.prose .callout{margin:1.2em 0}
+.bhart{width:100%;height:auto;display:block;border-radius:18px;border:1px solid var(--line)}
+table.cols td:nth-child(n+2),table.cols th:nth-child(n+2){text-align:right}
+.prose .stats{margin:1em 0}.card .stats{margin:.6em 0}
+.bhart text.t{display:inline}html[lang=hi] .bhart text.t[lang=en],html[lang=en] .bhart text.t[lang=hi]{display:none}
