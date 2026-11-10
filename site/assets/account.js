@@ -388,6 +388,9 @@
         st = st || {};
         var countries = [];
         if (st.countriesJson) { try { countries = JSON.parse(st.countriesJson); } catch (e) {} }
+        if (!st.registered && !st.views_30d) {
+          setDoc('stats/global', { registered: 1, active_today: 1, active_7d: 1, active_30d: 1, views_30d: 1 }, null).catch(function () {});
+        }
         return {
           registered: st.registered || 0, active_today: st.active_today || 0,
           active_7d: st.active_7d || 0, active_30d: st.active_30d || 0,

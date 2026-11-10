@@ -6,6 +6,7 @@ import 'package:flutter/scheduler.dart';
 
 import '../core/orbits.dart';
 import '../data/planets.dart';
+import '../data/sky_catalog.dart';
 import '../theme.dart';
 import 'common.dart';
 import 'globe_view.dart';
@@ -475,15 +476,114 @@ class _SpacePainter extends CustomPainter {
   final String? focusId;
   final String Function(Planet planet) nameOf;
 
-  /// Stars as directions, so they turn with the camera but never get nearer.
-  static final List<_V3> _stars = () {
-    final rng = math.Random(11);
-    return List<_V3>.generate(140, (_) {
-      final z = rng.nextDouble() * 2 - 1;
-      final a = rng.nextDouble() * 2 * math.pi;
-      final r = math.sqrt(1 - z * z);
-      return _V3(r * math.cos(a), r * math.sin(a), z);
-    });
+  /// Real 3D celestial sphere stars from [catalogStars] with realistic spectral
+  /// colors, magnitudes and names, plus a 3D Milky Way galactic dust band.
+  static _V3 _raDecToV3(double raDeg, double decDeg) {
+    final ra = raDeg * math.pi / 180.0;
+    final dec = decDeg * math.pi / 180.0;
+    final cd = math.cos(dec);
+    return _V3(cd * math.cos(ra), cd * math.sin(ra), math.sin(dec));
+  }
+
+  static Color _starSpectralColor(StarData s, int index) {
+    switch (s.name) {
+      case 'Betelgeuse':
+      case 'Antares':
+      case 'Aldebaran':
+      case 'Gacrux':
+        return const Color(0xFFFFB07A); // M/K red-orange supergiants
+      case 'Arcturus':
+      case 'Capella':
+      case 'Pollux':
+      case 'Toliman':
+        return const Color(0xFFFFE29A); // G/K warm yellow-orange
+      case 'Rigel':
+      case 'Spica':
+      case 'Bellatrix':
+      case 'Alnilam':
+      case 'Alnitak':
+      case 'Shaula':
+      case 'Regulus':
+      case 'Acrux':
+      case 'Hadar':
+        return const Color(0xFFA8CBFF); // O/B hot blue-white
+      case 'Sirius':
+      case 'Vega':
+      case 'Deneb':
+      case 'Altair':
+      case 'Fomalhaut':
+        return const Color(0xFFEAF3FF); // A brilliant white-blue
+      default:
+        const tints = <Color>[
+          Color(0xFFEAF2FF),
+          Color(0xFFD2E4FF),
+          Color(0xFFFFF4DC),
+          Color(0xFFFFDFB8),
+          Color(0xFFBBD6FF),
+        ];
+        return tints[index % tints.length];
+    }
+  }
+
+  static final List<({_V3 dir, double radius, Color color, String name, double mag})>
+      _realStars = () {
+    final list = <({_V3 dir, double radius, Color color, String name, double mag})>[];
+    final count = math.min(catalogStars.length, 460);
+    for (var i = 0; i < count; i++) {
+      final s = catalogStars[i];
+      final r = (2.5 - s.mag * 0.42).clamp(0.55, 2.75).toDouble();
+      list.add((
+        dir: _raDecToV3(s.ra, s.dec),
+        radius: r,
+        color: _starSpectralColor(s, i),
+        name: s.name,
+        mag: s.mag,
+      ));
+    }
+    return list;
+  }();
+
+  static final List<List<_V3>> _constellationPolylines = () {
+    const featured = <String>{
+      'Ori', 'UMa', 'UMi', 'Cas', 'Cyg', 'Sco', 'Leo', 'Tau', 'Gem', 'Cru', 'Lyr', 'Aql', 'Peg', 'And'
+    };
+    final out = <List<_V3>>[];
+    for (final c in catalogConstellations) {
+      if (!featured.contains(c.id)) {
+        continue;
+      }
+      for (final seg in c.lines) {
+        final pts = <_V3>[];
+        for (var i = 0; i + 1 < seg.length; i += 2) {
+          pts.add(_raDecToV3(seg[i], seg[i + 1]));
+        }
+        if (pts.length >= 2) {
+          out.add(pts);
+        }
+      }
+    }
+    return out;
+  }();
+
+  static final List<({_V3 dir, double size, Color color})> _milkyWayCloud = () {
+    final rng = math.Random(42);
+    final out = <({_V3 dir, double size, Color color})>[];
+    const tilt = 1.08; // ~62 deg galactic plane tilt
+    final ct = math.cos(tilt), st = math.sin(tilt);
+    for (var i = 0; i < 68; i++) {
+      final a = (i / 68.0) * 2 * math.pi + (rng.nextDouble() - 0.5) * 0.14;
+      final spread = (rng.nextDouble() - 0.5) * 0.24;
+      final x0 = math.cos(a);
+      final y0 = math.sin(a);
+      final z0 = spread;
+      final dir = _V3(x0, y0 * ct - z0 * st, y0 * st + z0 * ct).normalized();
+      out.add((
+        dir: dir,
+        size: 32.0 + rng.nextDouble() * 44.0,
+        color: i.isEven ? const Color(0xFF4F74D8) : const Color(0xFF835CD8),
+      ));
+    }
+    return out;
   }();
 
   @override
@@ -494,46 +594,137 @@ class _SpacePainter extends CustomPainter {
     final cam = _Camera(scene, size);
     final bounds = Offset.zero & size;
 
-    if (palette.star.a > 0) {
-      for (var i = 0; i < _stars.length; i++) {
-        final d = _stars[i];
+    // Deep space background gradient so the 3D scene always looks like real space
+    final bgPaint = Paint()
+      ..shader = ui.Gradient.radial(
+        cam.center,
+        math.max(size.width, size.height) * 0.85,
+        const <Color>[Color(0xFF0A1126), Color(0xFF050813), Color(0xFF020308)],
+        const <double>[0.0, 0.58, 1.0],
+      );
+    canvas.drawRect(bounds, bgPaint);
+
+    // 1. 3D Milky Way Galactic Band
+    for (final cloud in _milkyWayCloud) {
+      final depth = cloud.dir.dot(cam.fwd);
+      if (depth <= 0.08) {
+        continue;
+      }
+      final at = Offset(
+        cam.center.dx + cloud.dir.dot(cam.right) / depth * cam.focal,
+        cam.center.dy - cloud.dir.dot(cam.up) / depth * cam.focal,
+      );
+      if (bounds.inflate(90).contains(at)) {
+        final r = cloud.size / depth;
+        final nebPaint = Paint()
+          ..shader = ui.Gradient.radial(
+            at,
+            r,
+            <Color>[
+              cloud.color.withValues(alpha: 0.065),
+              cloud.color.withValues(alpha: 0.0),
+            ],
+          );
+        canvas.drawCircle(at, r, nebPaint);
+      }
+    }
+
+    // 2. Subtle 3D Constellation Stick Lines on the celestial sphere
+    final linePaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 0.75
+      ..color = const Color(0xFF6E9BFF).withValues(alpha: 0.16);
+    for (final seg in _constellationPolylines) {
+      final path = Path();
+      var started = false;
+      for (final d in seg) {
         final depth = d.dot(cam.fwd);
-        if (depth <= 0.05) {
+        if (depth <= 0.08) {
+          started = false;
           continue;
         }
         final at = Offset(
-            cam.center.dx + d.dot(cam.right) / depth * cam.focal,
-            cam.center.dy - d.dot(cam.up) / depth * cam.focal);
-        if (bounds.contains(at)) {
-          final twinkle =
-              0.45 + 0.55 * (0.5 + 0.5 * math.sin(scene.time * 2.2 + i * 1.9));
-          final starPaint = Paint()
-            ..color = palette.star.withValues(alpha: palette.star.a * twinkle);
-          canvas.drawCircle(at, i.isEven ? 1.0 : 1.4, starPaint);
+          cam.center.dx + d.dot(cam.right) / depth * cam.focal,
+          cam.center.dy - d.dot(cam.up) / depth * cam.focal,
+        );
+        if (!started) {
+          path.moveTo(at.dx, at.dy);
+          started = true;
+        } else {
+          path.lineTo(at.dx, at.dy);
         }
       }
+      canvas.drawPath(path, linePaint);
+    }
 
-      // Periodic shooting star streak across the 3D space background
-      final cycle = scene.time % 8.5;
-      if (cycle < 0.75) {
-        final progress = cycle / 0.75;
-        final seed = (scene.time ~/ 8.5) % 5;
-        final startX = size.width * (0.18 + seed * 0.14);
-        final startY = size.height * (0.12 + (seed.isEven ? 0.08 : 0.22));
-        final dx = 135.0;
-        final dy = 65.0;
-        final head = Offset(startX + dx * progress, startY + dy * progress);
-        final tail = Offset(
-          startX + dx * math.max(0.0, progress - 0.28),
-          startY + dy * math.max(0.0, progress - 0.28),
-        );
-        final fade = math.sin(progress * math.pi);
-        final streakPaint = Paint()
-          ..strokeWidth = 1.6
-          ..strokeCap = StrokeCap.round
-          ..color = palette.star.withValues(alpha: (palette.star.a * fade).clamp(0.0, 1.0));
-        canvas.drawLine(tail, head, streakPaint);
+    // 3. 460 Real Catalog Stars (RA/Dec) with spectral colors, halos & diffraction spikes
+    for (var i = 0; i < _realStars.length; i++) {
+      final st = _realStars[i];
+      final depth = st.dir.dot(cam.fwd);
+      if (depth <= 0.05) {
+        continue;
       }
+      final at = Offset(
+        cam.center.dx + st.dir.dot(cam.right) / depth * cam.focal,
+        cam.center.dy - st.dir.dot(cam.up) / depth * cam.focal,
+      );
+      if (!bounds.contains(at)) {
+        continue;
+      }
+      final twinkle =
+          0.62 + 0.38 * (0.5 + 0.5 * math.sin(scene.time * 2.4 + i * 1.7));
+      final r = st.radius;
+
+      // Soft halo and 4-point diffraction spikes for 1st-magnitude bright stars
+      if (st.mag < 1.35) {
+        canvas.drawCircle(
+          at,
+          r * 3.4,
+          Paint()..color = st.color.withValues(alpha: 0.18 * twinkle),
+        );
+        final spikeLen = r * 4.2;
+        final spikePaint = Paint()
+          ..strokeWidth = 0.85
+          ..color = st.color.withValues(alpha: 0.42 * twinkle);
+        canvas.drawLine(
+            at.translate(-spikeLen, 0), at.translate(spikeLen, 0), spikePaint);
+        canvas.drawLine(
+            at.translate(0, -spikeLen), at.translate(0, spikeLen), spikePaint);
+      } else if (st.mag < 2.3) {
+        canvas.drawCircle(
+          at,
+          r * 2.2,
+          Paint()..color = st.color.withValues(alpha: 0.12 * twinkle),
+        );
+      }
+
+      canvas.drawCircle(
+        at,
+        r,
+        Paint()..color = st.color.withValues(alpha: (0.95 * twinkle).clamp(0.2, 1.0)),
+      );
+    }
+
+    // 4. Periodic 3D shooting star streak across deep space
+    final cycle = scene.time % 8.5;
+    if (cycle < 0.75) {
+      final progress = cycle / 0.75;
+      final seed = (scene.time ~/ 8.5) % 5;
+      final startX = size.width * (0.18 + seed * 0.14);
+      final startY = size.height * (0.12 + (seed.isEven ? 0.08 : 0.22));
+      const dx = 135.0;
+      const dy = 65.0;
+      final head = Offset(startX + dx * progress, startY + dy * progress);
+      final tail = Offset(
+        startX + dx * math.max(0.0, progress - 0.28),
+        startY + dy * math.max(0.0, progress - 0.28),
+      );
+      final fade = math.sin(progress * math.pi);
+      final streakPaint = Paint()
+        ..strokeWidth = 1.6
+        ..strokeCap = StrokeCap.round
+        ..color = Colors.white.withValues(alpha: (0.85 * fade).clamp(0.0, 1.0));
+      canvas.drawLine(tail, head, streakPaint);
     }
 
     _paintOrbits(canvas, cam, bounds);
@@ -640,7 +831,7 @@ class _SpacePainter extends CustomPainter {
     }
 
     final shader = shaders[planet.id];
-    final detailed = shader != null && !shaderFailed && r >= 7;
+    final detailed = shader != null && !shaderFailed && r >= 3.2;
     final roll = planet.tiltDeg * math.pi / 180;
     final rings = planet.hasRings && detailed;
 
@@ -697,7 +888,9 @@ class _SpacePainter extends CustomPainter {
         text: TextSpan(
           text: nameOf(planet),
           style: TextStyle(
-            color: planet.id == focusId ? palette.accentText : palette.text,
+            color: planet.id == focusId
+                ? const Color(0xFF7CE2FF)
+                : const Color(0xFFEAF0FF),
             fontSize: 11.5,
             fontWeight: FontWeight.w600,
           ),

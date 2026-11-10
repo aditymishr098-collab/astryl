@@ -245,5 +245,6 @@ body.gate-open{overflow:hidden}
 .pcard svg,.bodyhead svg{transition:transform .55s cubic-bezier(.2,.8,.2,1)}
 .pcard:hover svg,.bodyhead:hover svg{transform:rotate(14deg) scale(1.07)}
 .meter i,.progress i{transition:width .9s cubic-bezier(.22,1,.36,1)}
-#skyBgCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1;opacity:.65}
-[data-theme="light"] #skyBgCanvas{opacity:.18}
+header.top,main.wrap,footer{position:relative;z-index:2}
+#skyBgCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.65}
+:root:not([data-theme=dark]) #skyBgCanvas{opacity:.18}
