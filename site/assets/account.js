@@ -293,9 +293,7 @@
       if (create) h += field('pass2', t('acctPasswordAgain'), pwType(), '', 'new-password');
       h += check('show', w('showPassword'), '', ui.show);
       if (create) {
-        h += check('consent', t('acctConsent'), '', !!ui.f.consent) + '<p><a href="' + ROOT + 'privacy.html" target="_blank" rel="noopener">' + esc(t('acctReadPolicy')) + '</a></p>' +
-          '<h3>' + esc(t('acctOptionalTitle')) + '</h3>' + check('showOnBoard', w('boardShow'), w('boardShowNote'), ui.f.showOnBoard !== false) + check('countMe', t('acctCountMe'), t('acctCountMeNote'), !!ui.f.countMe) + check('shareCountry', t('acctShareCountry'), t('acctShareCountryNote'), !!ui.f.shareCountry) +
-          '<p class="note">' + esc(w('webNote')) + '</p>';
+        h += check('consent', t('acctConsent'), '', !!ui.f.consent) + '<p><a href="' + ROOT + 'privacy.html" target="_blank" rel="noopener">' + esc(t('acctReadPolicy')) + '</a></p>';
       }
       if (ui.err) h += '<p class="no">' + esc(ui.err) + '</p>';
       h += '<p><button class="btn primary" type="button" data-act="submit"' + (ui.busy || (create && !ui.f.consent) ? ' disabled' : '') + '>' + esc(create ? t('acctTabCreate') : recover ? t('acctRecoverButton') : t('acctTabLogin')) + '</button></p>';

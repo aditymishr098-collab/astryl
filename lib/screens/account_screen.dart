@@ -90,9 +90,6 @@ class _AccountScreenState extends State<AccountScreen>
   final _code = TextEditingController();
   bool _show = false;
   bool _consent = false;
-  bool _countMe = false;
-  bool _country = false;
-  bool _location = false;
   bool _busy = false;
   String? _error;
   String? _recoveryCode;
@@ -187,9 +184,9 @@ class _AccountScreenState extends State<AccountScreen>
           final code = await _account.signUp(
             username: user,
             password: _pass.text,
-            countMe: _countMe,
-            shareCountry: _country,
-            shareLocation: _location,
+            countMe: false,
+            shareCountry: false,
+            shareLocation: false,
           );
           if (!mounted) {
             return;
@@ -220,22 +217,25 @@ class _AccountScreenState extends State<AccountScreen>
     }
   }
 
-  Future<void> _toggleLocation(bool value) async {
-    if (value && !await askForLocation(context)) {
+  /// After a new account has saved its recovery code: Android is asked for
+  /// the approximate location and for notifications. A "no" is fine; the app
+  /// works the same. With the location, the city is set and the approximate
+  /// place (rounded to about 10 km) is kept in the account's own Supabase.
+  Future<void> _afterCode() async {
+    if (_busy) {
       return;
     }
-    if (mounted) {
-      setState(() => _location = value);
-    }
-  }
-
-  Future<void> _afterCode() async {
+    setState(() => _busy = true);
     final account = _account;
-    if (account.prefs.shareLocation) {
+    final state = AppScope.read(context);
+    final place = await state.bridge.getLocation(ask: true);
+    if (place.ok) {
+      await state.setMyLocationCity(place.lat, place.lon);
+      await account.setShareLocation(true);
       await account.shareLocationNow(force: true);
     }
-    if (account.prefs.countMe) {
-      await account.ping();
+    if (await state.bridge.requestNotifications()) {
+      await state.setTonightAlert(true);
     }
     if (mounted) {
       _finish();
@@ -480,16 +480,6 @@ class _AccountScreenState extends State<AccountScreen>
             label: Text(l.acctReadPolicy),
           ),
         ),
-        const SizedBox(height: 8),
-        const Divider(height: 1),
-        const SizedBox(height: 12),
-        SectionLabel(l.acctOptionalTitle),
-        _option(l.acctCountMe, l.acctCountMeNote, _countMe,
-            (v) => setState(() => _countMe = v), p),
-        _option(l.acctShareCountry, l.acctShareCountryNote, _country,
-            (v) => setState(() => _country = v), p),
-        _option(l.acctShareLocation, l.acctShareLocationNote, _location,
-            _toggleLocation, p),
       ],
       if (_error != null) ...<Widget>[
         const SizedBox(height: 12),
@@ -568,26 +558,6 @@ class _AccountScreenState extends State<AccountScreen>
         ),
       ],
     ];
-  }
-
-  Widget _option(String title, String note, bool value,
-      ValueChanged<bool> onChanged, Palette p) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            title: Text(title, style: TextStyle(fontSize: 14.5, color: p.text)),
-            value: value,
-            onChanged: _busy ? null : onChanged,
-          ),
-          Text(note,
-              style: TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
-        ],
-      ),
-    );
   }
 
   List<Widget> _codeView(AppLocalizations l, Palette p, bool isHi) {

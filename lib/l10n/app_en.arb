@@ -1040,6 +1040,7 @@
   "textSizeNote": "Makes the text in Astryl bigger. It never goes below your phone's own text size.",
   "skyOtherNight": "The night sky",
   "planetsThatNight": "Planets that night",
+  "planetsTonightHint": "Which planets are up, when and where to look",
   "previousDay": "Previous day",
   "nextDay": "Next day",
   "pickDate": "Choose a date",
