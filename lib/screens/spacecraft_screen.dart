@@ -24,20 +24,26 @@ class SpacecraftScreen extends StatelessWidget {
         title: Text(l.spacecraftTitle,
             style: const TextStyle(fontWeight: FontWeight.w700)),
       ),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
-        children: <Widget>[
-          Text(l.spacecraftSubtitle,
-              style: TextStyle(fontSize: 14, color: p.muted, height: 1.4)),
-          const SizedBox(height: 16),
-          for (final craft in spacecraft) ...<Widget>[
-            SpacecraftCard(craft: craft, now: now),
-            const SizedBox(height: 8),
-          ],
-          const SizedBox(height: 4),
-          Text(l.spacecraftNote,
-              style: TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
-        ],
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 820),
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+            children: <Widget>[
+              Text(l.spacecraftSubtitle,
+                  style: TextStyle(fontSize: 14, color: p.muted, height: 1.4)),
+              const SizedBox(height: 16),
+              for (final craft in spacecraft) ...<Widget>[
+                SpacecraftCard(craft: craft, now: now),
+                const SizedBox(height: 8),
+              ],
+              const SizedBox(height: 4),
+              Text(l.spacecraftNote,
+                  style: TextStyle(fontSize: 12, color: p.muted, height: 1.4)),
+            ],
+          ),
+        ),
       ),
     );
   }

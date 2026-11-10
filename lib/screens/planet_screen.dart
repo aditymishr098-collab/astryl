@@ -191,11 +191,15 @@ class _PlanetScreenState extends State<PlanetScreen> {
           ),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
-        children: <Widget>[
-          RepaintBoundary(
-            key: _cardKey,
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 820),
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
+            children: <Widget>[
+              RepaintBoundary(
+                key: _cardKey,
             child: ColoredBox(
               color: p.background,
               child: Column(
@@ -468,11 +472,13 @@ class _PlanetScreenState extends State<PlanetScreen> {
               ],
             ),
           ),
-          const SizedBox(height: 20),
-          Text(l.dataSource,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12, color: p.muted)),
-        ],
+              const SizedBox(height: 20),
+              Text(l.dataSource,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 12, color: p.muted)),
+            ],
+          ),
+        ),
       ),
     );
   }

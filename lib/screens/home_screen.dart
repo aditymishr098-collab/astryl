@@ -122,6 +122,15 @@ class _HomeScreenState extends State<HomeScreen> {
     _syncQuizAlerts(state);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final p = Palette.of(context);
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final isTablet = screenWidth >= 700;
+    final navLabels = <String>[
+      l.navExplore,
+      l.navSky,
+      l.navCompare,
+      l.navYou,
+      l.navQuiz,
+    ];
     return Scaffold(
       extendBody: false,
       body: Stack(
@@ -147,44 +156,70 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           SafeArea(
             bottom: false,
-            child: Column(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                _MissionControlHudBar(
-                  onTapProfile: () => setState(() => _tab = 3),
-                  onTapStreak: () => setState(() => _tab = 4),
-                  onTapSearch: () => Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                        builder: (_) => const SearchScreen()),
+                if (isTablet)
+                  _NeonSideRail(
+                    selectedIndex: _tab,
+                    onSelect: (i) => setState(() => _tab = i),
+                    labels: navLabels,
                   ),
-                ),
                 Expanded(
-                  child: IndexedStack(
-                    index: _tab,
+                  child: Column(
                     children: <Widget>[
-                      for (final (i, tab) in <Widget>[
-                        ExploreTab(
-                          active: _tab == 0,
-                          onSelectTab: (t) => setState(() => _tab = t),
-                        ),
-                        const SkyScreen(),
-                        const CompareScreen(),
-                        const YouScreen(),
-                        const QuizScreen(),
-                      ].indexed)
-                        TickerMode(
-                          enabled: _tab == i,
-                          child: AnimatedOpacity(
-                            opacity: _tab == i ? 1.0 : 0.0,
-                            duration: const Duration(milliseconds: 240),
-                            curve: Curves.easeOutCubic,
-                            child: AnimatedScale(
-                              scale: _tab == i ? 1.0 : 0.985,
-                              duration: const Duration(milliseconds: 240),
-                              curve: Curves.easeOutCubic,
-                              child: tab,
+                      Center(
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 1200),
+                          child: _MissionControlHudBar(
+                            onTapProfile: () => setState(() => _tab = 3),
+                            onTapStreak: () => setState(() => _tab = 4),
+                            onTapSearch: () => Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                  builder: (_) => const SearchScreen()),
                             ),
                           ),
                         ),
+                      ),
+                      Expanded(
+                        child: IndexedStack(
+                          index: _tab,
+                          children: <Widget>[
+                            for (final (i, tab) in <Widget>[
+                              ExploreTab(
+                                active: _tab == 0,
+                                onSelectTab: (t) => setState(() => _tab = t),
+                              ),
+                              const SkyScreen(),
+                              const CompareScreen(),
+                              const YouScreen(),
+                              const QuizScreen(),
+                            ].indexed)
+                              TickerMode(
+                                enabled: _tab == i,
+                                child: AnimatedOpacity(
+                                  opacity: _tab == i ? 1.0 : 0.0,
+                                  duration: const Duration(milliseconds: 240),
+                                  curve: Curves.easeOutCubic,
+                                  child: AnimatedScale(
+                                    scale: _tab == i ? 1.0 : 0.985,
+                                    duration: const Duration(milliseconds: 240),
+                                    curve: Curves.easeOutCubic,
+                                    child: Align(
+                                      alignment: Alignment.topCenter,
+                                      child: ConstrainedBox(
+                                        constraints: BoxConstraints(
+                                          maxWidth: i == 0 ? 1200 : 880,
+                                        ),
+                                        child: tab,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -193,15 +228,83 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: _NeonCapsuleBottomDock(
-        selectedIndex: _tab,
-        onSelect: (i) => setState(() => _tab = i),
-        labels: <String>[
-          l.navExplore,
-          l.navSky,
-          l.navCompare,
-          l.navYou,
-          l.navQuiz,
+      bottomNavigationBar: isTablet
+          ? null
+          : _NeonCapsuleBottomDock(
+              selectedIndex: _tab,
+              onSelect: (i) => setState(() => _tab = i),
+              labels: navLabels,
+            ),
+    );
+  }
+}
+
+/// Vertical Neon Cyber-Space Side Navigation Rail for Tablets & Landscape screens.
+class _NeonSideRail extends StatelessWidget {
+  const _NeonSideRail({
+    required this.selectedIndex,
+    required this.onSelect,
+    required this.labels,
+  });
+
+  final int selectedIndex;
+  final ValueChanged<int> onSelect;
+  final List<String> labels;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = Palette.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      width: 96,
+      margin: const EdgeInsets.fromLTRB(12, 6, 4, 14),
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: isDark
+              ? <Color>[
+                  const Color(0xFF0A1128).withValues(alpha: 0.96),
+                  const Color(0xFF130E2B).withValues(alpha: 0.96),
+                ]
+              : <Color>[Colors.white, p.surfaceHigh],
+        ),
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(
+          color: p.accent.withValues(alpha: isDark ? 0.45 : 0.3),
+          width: 1.3,
+        ),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: p.accent.withValues(alpha: isDark ? 0.14 : 0.05),
+            blurRadius: 24,
+            offset: const Offset(4, 0),
+          ),
+        ],
+      ),
+      child: Column(
+        children: <Widget>[
+          const Padding(
+            padding: EdgeInsets.only(bottom: 10),
+            child: HelioraLogo(size: 32),
+          ),
+          Divider(color: p.border.withValues(alpha: 0.6), height: 12),
+          const SizedBox(height: 4),
+          for (var i = 0; i < labels.length; i++) ...<Widget>[
+            Expanded(
+              child: _DockItem(
+                icon: selectedIndex == i
+                    ? _NeonCapsuleBottomDock._icons[i].$2
+                    : _NeonCapsuleBottomDock._icons[i].$1,
+                label: labels[i],
+                selected: selectedIndex == i,
+                isPrimary3D: i == 0,
+                onTap: () => onSelect(i),
+              ),
+            ),
+            if (i < labels.length - 1) const SizedBox(height: 6),
+          ],
         ],
       ),
     );
@@ -731,50 +834,42 @@ class _ExploreTabState extends State<ExploreTab>
     final p = Palette.of(context);
     final selected = planetById(_selectedId);
     final width = MediaQuery.sizeOf(context).width;
-    final spaceHeight = ((width - 32) * 1.08).clamp(300.0, 480.0);
+    final isTablet = width >= 720;
+    final spaceHeight = isTablet
+        ? 410.0
+        : ((width - 32) * 1.08).clamp(300.0, 480.0);
     final isHi = Localizations.localeOf(context).languageCode == 'hi';
 
-    return ListView(
-      padding: const EdgeInsets.only(bottom: 28, top: 4),
-      children: <Widget>[
-        // Planet & Moon selector chips right above the 3D NASA Eyes viewport.
-        _PlanetChips(
-          bodies: allBodies,
-          selectedId: _spaceFocus ?? '',
-          onSelect: (planet) => _focusSpace(planet.id),
-        ),
-        const SizedBox(height: 8),
-        // Unified 3D "Eyes on the Solar System" interactive viewport with Neon Cockpit Rim.
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Container(
-            height: spaceHeight,
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              color: p.surface,
-              borderRadius: BorderRadius.circular(26),
-              border: Border.all(
-                  color: p.accent.withValues(alpha: 0.5), width: 1.5),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  color: p.accent.withValues(alpha: 0.14),
-                  blurRadius: 24,
-                  offset: const Offset(0, 6),
-                ),
-              ],
-            ),
-            child: !widget.active
-                ? const SizedBox.shrink()
-                : SpaceView(
-                    date: _date,
-                    focusId: _spaceFocus,
-                    onFocus: _focusSpace,
-                    nameOf: (planet) => planetName(l, planet),
-                    backLabel: l.spaceBack,
-                  ),
+    final viewportWidget = Container(
+      height: spaceHeight,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: p.surface,
+        borderRadius: BorderRadius.circular(26),
+        border: Border.all(
+            color: p.accent.withValues(alpha: 0.5), width: 1.5),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: p.accent.withValues(alpha: 0.14),
+            blurRadius: 24,
+            offset: const Offset(0, 6),
           ),
-        ),
-        // Live time scrubber bar directly under the 3D viewport.
+        ],
+      ),
+      child: !widget.active
+          ? const SizedBox.shrink()
+          : SpaceView(
+              date: _date,
+              focusId: _spaceFocus,
+              onFocus: _focusSpace,
+              nameOf: (planet) => planetName(l, planet),
+              backLabel: l.spaceBack,
+            ),
+    );
+
+    final dateAndHint = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(top: 6),
           child: _DateBar(
@@ -795,24 +890,81 @@ class _ExploreTabState extends State<ExploreTab>
             style: TextStyle(fontSize: 12, color: p.muted),
           ),
         ),
-        // Selected Planet / Moon live telemetry & details card right below!
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 6),
-          child: _GlobeInfoCard(
-            planet: selected,
-            date: _date,
-            onOpen: () => _openPlanet(selected),
-          ),
+      ],
+    );
+
+    return ListView(
+      padding: const EdgeInsets.only(bottom: 28, top: 4),
+      children: <Widget>[
+        // Planet & Moon selector chips right above the 3D NASA Eyes viewport.
+        _PlanetChips(
+          bodies: allBodies,
+          selectedId: _spaceFocus ?? '',
+          onSelect: (planet) => _focusSpace(planet.id),
         ),
-        // Quick Launch Mission Bento Tiles (4 interactive shortcuts)
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 14, 16, 6),
-          child: _QuickLaunchBentoGrid(
-            isHi: isHi,
-            onOpenQuiz: () => widget.onSelectTab?.call(4),
+        const SizedBox(height: 8),
+        if (isTablet)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                  flex: 6,
+                  child: Column(
+                    children: <Widget>[
+                      viewportWidget,
+                      dateAndHint,
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  flex: 5,
+                  child: Column(
+                    children: <Widget>[
+                      _GlobeInfoCard(
+                        planet: selected,
+                        date: _date,
+                        onOpen: () => _openPlanet(selected),
+                      ),
+                      const SizedBox(height: 14),
+                      _QuickLaunchBentoGrid(
+                        isHi: isHi,
+                        onOpenQuiz: () => widget.onSelectTab?.call(4),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
+        else ...<Widget>[
+          // Unified 3D "Eyes on the Solar System" interactive viewport with Neon Cockpit Rim.
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: viewportWidget,
           ),
-        ),
-        // Holographic 2-Column Planet Showcase Grid
+          dateAndHint,
+          // Selected Planet / Moon live telemetry & details card right below!
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 6),
+            child: _GlobeInfoCard(
+              planet: selected,
+              date: _date,
+              onOpen: () => _openPlanet(selected),
+            ),
+          ),
+          // Quick Launch Mission Bento Tiles (4 interactive shortcuts)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 6),
+            child: _QuickLaunchBentoGrid(
+              isHi: isHi,
+              onOpenQuiz: () => widget.onSelectTab?.call(4),
+            ),
+          ),
+        ],
+        // Holographic Planet Showcase Grid (2 columns on phone, 3-4 on tablet)
         Padding(
           padding: const EdgeInsets.fromLTRB(18, 18, 18, 10),
           child: Row(
@@ -1112,50 +1264,48 @@ class _PopularCards extends StatelessWidget {
         if (!favorites.contains(b.id)) b,
     ];
 
-    final rows = <Widget>[];
-    for (var i = 0; i < bodies.length; i += 2) {
-      if (i > 0) {
-        rows.add(const SizedBox(height: 12));
-      }
-      final left = bodies[i];
-      final right = i + 1 < bodies.length ? bodies[i + 1] : null;
-      rows.add(
-        IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Expanded(
-                child: _HolographicPlanetCard(
-                  planet: left,
-                  selected: left.id == selectedId,
-                  starred: favorites.contains(left.id),
-                  l: l,
-                  p: p,
-                  onTap: () => onTap(left),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: right != null
-                    ? _HolographicPlanetCard(
-                        planet: right,
-                        selected: right.id == selectedId,
-                        starred: favorites.contains(right.id),
-                        l: l,
-                        p: p,
-                        onTap: () => onTap(right),
-                      )
-                    : const SizedBox.shrink(),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(children: rows),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final cols = constraints.maxWidth >= 880
+              ? 4
+              : constraints.maxWidth >= 580
+                  ? 3
+                  : 2;
+          final rows = <Widget>[];
+          for (var i = 0; i < bodies.length; i += cols) {
+            if (i > 0) {
+              rows.add(const SizedBox(height: 12));
+            }
+            rows.add(
+              IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    for (var c = 0; c < cols; c++) ...<Widget>[
+                      if (c > 0) const SizedBox(width: 12),
+                      Expanded(
+                        child: i + c < bodies.length
+                            ? _HolographicPlanetCard(
+                                planet: bodies[i + c],
+                                selected: bodies[i + c].id == selectedId,
+                                starred: favorites.contains(bodies[i + c].id),
+                                l: l,
+                                p: p,
+                                onTap: () => onTap(bodies[i + c]),
+                              )
+                            : const SizedBox.shrink(),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            );
+          }
+          return Column(children: rows);
+        },
+      ),
     );
   }
 }

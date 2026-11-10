@@ -123,42 +123,48 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
         ],
       ),
-      body: ListView(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
-        children: <Widget>[
-          if (!searching) SectionLabel(l.favoritesTitle),
-          if (empty)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 24),
-              child: Text(
-                searching ? l.searchEmpty(query.trim()) : l.favoritesEmpty,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 15, color: p.muted, height: 1.4),
-              ),
-            ),
-          if (bodies.isNotEmpty) ...<Widget>[
-            if (searching) SectionLabel(l.searchBodies),
-            for (final b in bodies) ...<Widget>[
-              _BodyTile(planet: b, onTap: () => _openBody(b)),
-              const SizedBox(height: 8),
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 820),
+          child: ListView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+            children: <Widget>[
+              if (!searching) SectionLabel(l.favoritesTitle),
+              if (empty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: Text(
+                    searching ? l.searchEmpty(query.trim()) : l.favoritesEmpty,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 15, color: p.muted, height: 1.4),
+                  ),
+                ),
+              if (bodies.isNotEmpty) ...<Widget>[
+                if (searching) SectionLabel(l.searchBodies),
+                for (final b in bodies) ...<Widget>[
+                  _BodyTile(planet: b, onTap: () => _openBody(b)),
+                  const SizedBox(height: 8),
+                ],
+              ],
+              if (foundMissions.isNotEmpty) ...<Widget>[
+                if (searching) SectionLabel(l.searchMissions),
+                for (final m in foundMissions) ...<Widget>[
+                  MissionCard(mission: m),
+                  const SizedBox(height: 8),
+                ],
+              ],
+              if (foundCraft.isNotEmpty) ...<Widget>[
+                if (searching) SectionLabel(l.searchSpacecraft),
+                for (final c in foundCraft) ...<Widget>[
+                  SpacecraftCard(craft: c),
+                  const SizedBox(height: 8),
+                ],
+              ],
             ],
-          ],
-          if (foundMissions.isNotEmpty) ...<Widget>[
-            if (searching) SectionLabel(l.searchMissions),
-            for (final m in foundMissions) ...<Widget>[
-              MissionCard(mission: m),
-              const SizedBox(height: 8),
-            ],
-          ],
-          if (foundCraft.isNotEmpty) ...<Widget>[
-            if (searching) SectionLabel(l.searchSpacecraft),
-            for (final c in foundCraft) ...<Widget>[
-              SpacecraftCard(craft: c),
-              const SizedBox(height: 8),
-            ],
-          ],
-        ],
+          ),
+        ),
       ),
     );
   }

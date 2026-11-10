@@ -277,95 +277,102 @@ class _AccountScreenState extends State<AccountScreen>
             ),
           ),
           SafeArea(
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 36),
-              children: <Widget>[
-                if (_recoveryCode != null)
-                  ..._codeView(l, p, isHi)
-                else ...<Widget>[
-                  FadeSlideIn(
-                    child: _AnimatedOrbitalHero(
-                      animation: _heroCtrl,
-                      title: _mode == _Mode.recover
-                          ? l.acctRecoverTitle
-                          : l.acctCreateTitle,
-                      subtitle: l.acctIntro,
-                      isHi: isHi,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  if (_mode != _Mode.recover)
-                    FadeSlideIn(
-                      delay: const Duration(milliseconds: 70),
-                      child: _AnimatedModePill(
-                        mode: _mode,
-                        createLabel: l.acctTabCreate,
-                        loginLabel: l.acctTabLogin,
-                        enabled: !_busy,
-                        onChanged: (next) => setState(() {
-                          _mode = next;
-                          _error = null;
-                        }),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 540),
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 36),
+                  children: <Widget>[
+                    if (_recoveryCode != null)
+                      ..._codeView(l, p, isHi)
+                    else ...<Widget>[
+                      FadeSlideIn(
+                        child: _AnimatedOrbitalHero(
+                          animation: _heroCtrl,
+                          title: _mode == _Mode.recover
+                              ? l.acctRecoverTitle
+                              : l.acctCreateTitle,
+                          subtitle: l.acctIntro,
+                          isHi: isHi,
+                        ),
                       ),
-                    ),
-                  const SizedBox(height: 16),
-                  FadeSlideIn(
-                    delay: const Duration(milliseconds: 130),
-                    child: SurfaceCard(
-                      padding: const EdgeInsets.all(20),
-                      borderColor: p.accent.withValues(alpha: 0.32),
-                      child: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 280),
-                        switchInCurve: Curves.easeOutCubic,
-                        switchOutCurve: Curves.easeInCubic,
-                        transitionBuilder: (child, anim) => FadeTransition(
-                          opacity: anim,
-                          child: SlideTransition(
-                            position: Tween<Offset>(
-                              begin: const Offset(0, 0.04),
-                              end: Offset.zero,
-                            ).animate(anim),
-                            child: child,
+                      const SizedBox(height: 20),
+                      if (_mode != _Mode.recover)
+                        FadeSlideIn(
+                          delay: const Duration(milliseconds: 70),
+                          child: _AnimatedModePill(
+                            mode: _mode,
+                            createLabel: l.acctTabCreate,
+                            loginLabel: l.acctTabLogin,
+                            enabled: !_busy,
+                            onChanged: (next) => setState(() {
+                              _mode = next;
+                              _error = null;
+                            }),
                           ),
                         ),
-                        child: Column(
-                          key: ValueKey<_Mode>(_mode),
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: _form(l, p, isHi),
-                        ),
-                      ),
-                    ),
-                  ),
-                  if (widget.firstRun) ...<Widget>[
-                    const SizedBox(height: 16),
-                    FadeSlideIn(
-                      delay: const Duration(milliseconds: 200),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          OutlinedButton.icon(
-                            style: OutlinedButton.styleFrom(
-                              minimumSize: const Size.fromHeight(50),
+                      const SizedBox(height: 16),
+                      FadeSlideIn(
+                        delay: const Duration(milliseconds: 130),
+                        child: SurfaceCard(
+                          padding: const EdgeInsets.all(20),
+                          borderColor: p.accent.withValues(alpha: 0.32),
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 280),
+                            switchInCurve: Curves.easeOutCubic,
+                            switchOutCurve: Curves.easeInCubic,
+                            transitionBuilder: (child, anim) => FadeTransition(
+                              opacity: anim,
+                              child: SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: const Offset(0, 0.04),
+                                  end: Offset.zero,
+                                ).animate(anim),
+                                child: child,
+                              ),
                             ),
-                            onPressed: _busy
-                                ? null
-                                : () => _account.markPromptDone(),
-                            icon: const Icon(Icons.explore_outlined, size: 19),
-                            label: Text(l.acctSkip),
+                            child: Column(
+                              key: ValueKey<_Mode>(_mode),
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: _form(l, p, isHi),
+                            ),
                           ),
-                          const SizedBox(height: 8),
-                          Text(
-                            l.acctSkipNote,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 12, color: p.muted, height: 1.4),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                      if (widget.firstRun) ...<Widget>[
+                        const SizedBox(height: 16),
+                        FadeSlideIn(
+                          delay: const Duration(milliseconds: 200),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              OutlinedButton.icon(
+                                style: OutlinedButton.styleFrom(
+                                  minimumSize: const Size.fromHeight(50),
+                                ),
+                                onPressed: _busy
+                                    ? null
+                                    : () => _account.markPromptDone(),
+                                icon: const Icon(Icons.explore_outlined,
+                                    size: 19),
+                                label: Text(l.acctSkip),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                l.acctSkipNote,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 12, color: p.muted, height: 1.4),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ],
                   ],
-                ],
-              ],
+                ),
+              ),
             ),
           ),
         ],
