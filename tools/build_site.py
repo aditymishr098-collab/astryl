@@ -334,8 +334,10 @@ def cons_svg(c):
 
 
 # ------------------------------------------------------------------ page shell
-NAV = [('index.html', 'home', bt('Home', 'होम')), ('planets.html', 'planets', bi('planetsTitle')), ('solar-system.html', 'solar', bi('solarSystemTitle')), ('compare.html', 'compare', bi('navCompare')),
-       ('you.html', 'you', bt('You', 'आप')), ('quiz.html', 'quiz', bi('navQuiz')), ('sky.html', 'sky', bi('skyTitle')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')), ('missions.html', 'missions', bi('missionsTitle'))]
+# The top menu keeps four main pages; the rest sit under "More". Home is the logo.
+NAV_MAIN = [('planets.html', 'planets', bi('planetsTitle')), ('solar-system.html', 'solar', bi('solarSystemTitle')), ('sky.html', 'sky', bi('skyTitle')), ('quiz.html', 'quiz', bi('navQuiz'))]
+NAV_MORE = [('compare.html', 'compare', bi('navCompare')), ('you.html', 'you', bt('You', 'आप')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')),
+            ('missions.html', 'missions', bi('missionsTitle')), ('spacecraft.html', 'spacecraft', bi('spacecraftTitle'))]
 
 
 _ASSET_V = []
@@ -452,7 +454,12 @@ def og_images():
 
 def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', scripts=True, extra_head='', ld=None):
     p = '../' * depth
-    nav = ''.join(f'<a href="{p}{h}"{" class=on" if k == page else ""}>{label}</a>' for h, k, label in NAV)
+    def navlink(h, k, label):
+        return f'<a href="{p}{h}"{" class=on" if k == page else ""}>{label}</a>'
+    more_on = page in ('compare', 'you', 'cons', 'maps', 'missions')
+    nav = (''.join(navlink(*x) for x in NAV_MAIN)
+           + f'<details class="more"><summary{" class=on" if more_on else ""}>{bt("More", "और")} ▾</summary><div class="morepanel">'
+           + ''.join(navlink(*x) for x in NAV_MORE) + '</div></details>')
     url = f'{SITE}/{canonical}' if canonical else SITE + '/'
     og = og_name(canonical)
     _OG.setdefault(og, title_en)
@@ -477,7 +484,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 <header class="top"><div class="wrap bar">
 <a class="brand" href="{p}index.html">{logo_svg()}Astryl</a>
 <nav class="links">{nav}</nav>
-<div class="tools"><button id="langBtn" aria-label="Language">हिन्दी</button><button id="themeBtn" aria-label="Theme">☾</button><a class="btn primary dlnav" href="{p}get.html">⬇ {bt("Download", "Download")}</a></div>
+<div class="tools"><button id="langBtn" aria-label="Language">हिन्दी</button><button id="themeBtn" aria-label="Theme">☾</button><span id="acctNav" class="acctnav"><a class="btn" href="{p}account.html?mode=login">{bt("Log in", "Login")}</a><a class="btn primary" href="{p}account.html">{bt("Sign up", "खाता बनाएँ")}</a></span></div>
 </div></header>
 <main class="wrap">
 {body}
@@ -485,7 +492,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 <footer><div class="wrap cols">
 <div><b>Astryl</b><br>{bt("Know your space.", "अपने अंतरिक्ष को जानिए।")}<br>© 2026 Astryl · <a href="{SITE}">astryl.space</a></div>
 <div>{bt("Free and open source", "मुफ़्त और open source")}<br><a href="{REPO}">{bt("Source code on GitHub", "GitHub पर source code")}</a><br><a href="{REPO}/blob/main/LICENSE">AGPL-3.0</a> · <a href="{p}privacy.html">{bt("Privacy Policy", "Privacy Policy")}</a><br><a href="{p}account.html">{bt("Account", "खाता")}</a></div>
-<div>{bt("Facts: NASA Planetary Fact Sheet", "तथ्य: NASA Planetary Fact Sheet")}<br><a href="{p}get.html">{bt("Download the app", "App download करें")}</a></div>
+<div>{bt("Facts: NASA Planetary Fact Sheet", "तथ्य: NASA Planetary Fact Sheet")}<br><a class="btn" href="{p}get.html">⬇ {bt("Download the app", "App download करें")}</a></div>
 </div></footer>
 {"<script src=\"" + p + "assets/data.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/app.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/account.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/fx.js?v=" + asset_v() + "\"></script>" if scripts else ""}
 </body></html>
@@ -620,6 +627,7 @@ def index_page():
 <h1 class="rise">{bt("Explore the", "खोजिए")} <span class="grad">{bt("Universe.", "ब्रह्मांड।")}</span></h1>
 <p class="lead rise">{bt("Planets, moons, stars and space missions: real positions and real numbers for any date, in English and Hindi.", "ग्रह, चाँद, तारे और अंतरिक्ष missions: किसी भी तारीख़ की असली स्थिति और असली आँकड़े, English और हिंदी में।")}</p>
 <div class="btns rise"><a class="btn primary" href="planets.html">{bt("Explore space", "अंतरिक्ष खोजिए")} →</a><a class="btn" href="quiz.html">{bt("Take the quiz", "Quiz खेलिए")}</a></div>
+<p class="acctline rise">{bt("Free account: your favourites, scores and streak follow you between the app and this website.", "मुफ़्त खाता: आपके favourites, scores और streak app और website दोनों में साथ चलते हैं।")} <a href="account.html">{bt("Create account", "खाता बनाएँ")} →</a></p>
 <div class="chips rise"><span class="chip">{bt("Free", "मुफ़्त")}</span><span class="chip">{bt("Open source", "Open source")}</span><span class="chip">{bt("No ads", "कोई विज्ञापन नहीं")}</span><span class="chip">{bt("English + हिन्दी", "English + हिन्दी")}</span></div>
 </div>
 {orrery_svg()}

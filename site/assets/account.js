@@ -250,7 +250,14 @@
   function codeCard(code) {
     return '<div class="codebox"><div class="code" id="codeText">' + esc(code) + '</div><button class="btn" type="button" data-act="copy">' + esc(t('acctCopy')) + '</button></div>';
   }
+  /* The header shows the name of the person who is logged in. */
+  function navAccount() {
+    var el = $('#acctNav'); if (!el) return;
+    var s = getSession();
+    if (s && s.username) el.innerHTML = '<a class="btn primary" href="' + (document.body.dataset.root || '') + 'account.html">\uD83D\uDC64 ' + esc(s.username) + '</a>';
+  }
   function draw() {
+    navAccount();
     var root = $('#acct'); if (!root) return;
     var s = getSession(), h = '';
     if (s && !ui.code && gateEl) { closeGate(true); }
@@ -389,6 +396,7 @@
     root.addEventListener('change', onChange);
     root.addEventListener('input', function (e) { if (e.target.dataset && e.target.dataset.f) ui.f[e.target.dataset.f] = e.target.value; });
     root.addEventListener('keydown', function (e) { if (e.key === 'Enter' && e.target.dataset && e.target.dataset.f && !ui.code && !getSession()) { e.preventDefault(); submit(); } });
+    if (/[?&]mode=login/.test(location.search) && !getSession()) ui.mode = 'login';
     draw(); onLang(draw);
     if (getSession()) sync();
   }
@@ -554,6 +562,6 @@
     draw(); loadBoard(); onLang(draw);
   }
 
-  welcome(); accountPage(); dailyPage(); statsBlock(); ping(); track();
+  navAccount(); welcome(); accountPage(); dailyPage(); statsBlock(); ping(); track();
   if (getSession() && !$('#acct')) sync();
 })();

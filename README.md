@@ -134,7 +134,8 @@ a daily space quiz, and an honest answer to "could humans live here?"
 - **Solar system, Compare, You** (weight, jump and age), **Constellations**, **Surface maps**, **Space missions** and **Spacecraft now**.
 - **Tonight's sky**: the Moon, a calendar, the planets you can see tonight, and meteor showers.
 - **Daily 5 and the leaderboard**, with streaks, badges, a This week board and a share-as-picture button.
-- **Download page** with the newest version, its date and size, the **SHA-256** of the APK, what is new, and how many times Astryl has been downloaded.
+- **Account first.** *Log in* and *Sign up* sit at the top of every page (they show your name once you are in), and a first visit opens a welcome page with the account form and a *Continue without account* button. The account is the same as in the app.
+- **Download page** (linked from the footer) with the newest version, its date and size, the **SHA-256** of the APK, what is new, and how many times Astryl has been downloaded.
 - **Link previews.** Every page has its own preview picture and structured data, so a shared link looks good in chats and search.
 - Hosted free on **GitHub Pages**; the pages are built from the app's own data by `tools/build_site.py`.
 
