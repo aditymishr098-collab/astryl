@@ -30,7 +30,8 @@
       statsNote: 'Active means people who chose to be counted. Downloads are counted by GitHub.',
       webNote: 'On this website your language, theme and quiz scores sync. Sharing your location is only in the app.',
       loading: 'Loading…', showPassword: 'Show password',
-      statsViews: 'Page views (30 days)',
+      statsViews: 'Page views (30 days)', statsVisitors: 'Visitors (30 days)',
+      barLocText: 'Share your approximate place (about 10 km) so we can see where Astryl is used? Only a rounded point is added to a count; nothing else is sent and it is not tied to you.', barLocYes: 'Share', barLocNo: 'No thanks', barClose: 'Close', barNews: 'News',
       boardTitle: 'Daily 5', boardIntro: 'The same 5 questions for everybody, every day (UTC). Right answers and speed make your score.',
       boardLogin: 'Log in to play today\'s 5 and join the leaderboard.', boardPlay: 'Play today\'s 5', boardTimerNote: 'The clock starts when you press play.',
       boardQ: 'Question {n} of 5', boardSubmitting: 'Checking your answers…', boardDone: 'Today\'s result', boardPoints: '{p} points', boardRight: '{c} of 5 right',
@@ -51,7 +52,8 @@
       statsNote: 'Active यानी वे लोग जिन्होंने गिने जाना चुना है। Downloads की गिनती GitHub करता है।',
       webNote: 'इस website पर आपकी भाषा, theme और quiz scores sync होते हैं। Location साझा करना सिर्फ़ app में है।',
       loading: 'Loading…', showPassword: 'Password दिखाएँ',
-      statsViews: 'Page views (30 दिन)',
+      statsViews: 'Page views (30 दिन)', statsVisitors: 'Visitors (30 दिन)',
+      barLocText: 'क्या आप अपनी अनुमानित जगह (लगभग 10 km) बताएँगे, ताकि हम देख सकें कि Astryl कहाँ इस्तेमाल होता है? गिनती में सिर्फ़ एक गोल किया हुआ बिंदु जुड़ता है; और कुछ नहीं जाता और यह आपसे जुड़ा नहीं होता।', barLocYes: 'बताएँ', barLocNo: 'अभी नहीं', barClose: 'बंद करें', barNews: 'ख़बर',
       boardTitle: 'Daily 5', boardIntro: 'हर दिन सबके लिए वही 5 सवाल (UTC)। सही जवाब और तेज़ी से आपका score बनता है।',
       boardLogin: 'आज के 5 खेलने और leaderboard में आने के लिए log in कीजिए।', boardPlay: 'आज के 5 खेलिए', boardTimerNote: 'Play दबाते ही घड़ी चालू हो जाती है।',
       boardQ: 'सवाल {n} / 5', boardSubmitting: 'जवाब जाँचे जा रहे हैं…', boardDone: 'आज का नतीजा', boardPoints: '{p} अंक', boardRight: '5 में से {c} सही',
@@ -197,6 +199,7 @@
   function closeGate(remember) {
     if (remember) store.set('astryl-gate', '1');
     if (!gateEl) return;
+    try { document.dispatchEvent(new Event('astryl-gate-closed')); } catch (e) {}
     var g = gateEl; gateEl = null;
     document.body.classList.remove('gate-open');
     g.classList.add('out');
@@ -237,6 +240,58 @@
     try { var u = new URL(document.referrer); if (u.hostname && u.hostname !== location.hostname) ref = u.hostname.replace(/^www\./, '').slice(0, 80); } catch (e) {}
     var wd = window.innerWidth || 1000;
     api('visit', { page: page, lang: lang(), ref: ref, device: wd < 640 ? 's' : wd < 1024 ? 'm' : 'l' }).catch(function () {});
+  }
+
+  /* ---------- notices at the bottom: news from the team, and the place question ---------- */
+  var barEl = null, newsItem = null;
+  function barAllowed() {
+    try {
+      if (navigator.doNotTrack === '1' || window.doNotTrack === '1' || navigator.globalPrivacyControl) return false;
+      if (/[?&]bar=1/.test(location.search)) return !!window.fetch;
+      if (location.protocol === 'file:' || /^(localhost|127\.)/.test(location.hostname) || navigator.webdriver) return false;
+    } catch (e) { return false; }
+    return !!window.fetch;
+  }
+  function drawBar() {
+    if (!barEl) { barEl = document.createElement('div'); barEl.className = 'sitebar'; barEl.setAttribute('role', 'region'); barEl.setAttribute('aria-label', 'Notices'); document.body.appendChild(barEl); }
+    var h = '';
+    if (newsItem) {
+      var hi = lang() === 'hi', ti = (hi && newsItem.title_hi) || newsItem.title_en || '', bo = (hi && newsItem.body_hi) || newsItem.body_en || '';
+      h += '<div class="bar"><div><b>' + esc(w('barNews')) + ': ' + esc(ti) + '</b><span>' + esc(bo) + '</span></div><button type="button" class="btn" data-bar="newsClose">' + esc(w('barClose')) + '</button></div>';
+    }
+    if (askPlace) {
+      h += '<div class="bar"><div><span>' + esc(w('barLocText')) + '</span></div><div class="btns"><button type="button" class="btn primary" data-bar="locYes">' + esc(w('barLocYes')) + '</button><button type="button" class="btn" data-bar="locNo">' + esc(w('barLocNo')) + '</button></div></div>';
+    }
+    barEl.innerHTML = h;
+    barEl.style.display = h ? '' : 'none';
+  }
+  var askPlace = false;
+  function notices() {
+    if (!barAllowed()) return;
+    var passedGate = !!getSession() || store.get('astryl-gate') === '1';
+    if (!passedGate) { document.addEventListener('astryl-gate-closed', notices, { once: true }); return; }
+    askPlace = !store.get('astryl-loc') && !!navigator.geolocation;
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('[data-bar]') : null; if (!b) return;
+      var act = b.dataset.bar;
+      if (act === 'newsClose') { if (newsItem) store.set('astryl-news-seen', String(newsItem.id)); newsItem = null; return drawBar(); }
+      if (act === 'locNo') { store.set('astryl-loc', 'no'); askPlace = false; return drawBar(); }
+      if (act === 'locYes') {
+        askPlace = false; drawBar();
+        try {
+          navigator.geolocation.getCurrentPosition(function (pos) {
+            store.set('astryl-loc', 'yes');
+            api('place', { lat: pos.coords.latitude, lon: pos.coords.longitude }).catch(function () {});
+          }, function () { store.set('astryl-loc', 'no'); }, { timeout: 12000, maximumAge: 600000 });
+        } catch (x) { store.set('astryl-loc', 'no'); }
+      }
+    });
+    api('news').then(function (j) {
+      var items = (j && j.items) || [], seen = parseInt(store.get('astryl-news-seen') || '0', 10) || 0;
+      newsItem = items.length && items[0].id > seen ? items[0] : null;
+      drawBar();
+    }, function () { drawBar(); });
+    drawBar(); onLang(drawBar);
   }
 
   /* ---------- account page ---------- */
@@ -451,7 +506,7 @@
     var data = {};
     function paint() {
       var n = function (v) { return v === undefined ? '–' : Number(v).toLocaleString(lang() === 'hi' ? 'hi-IN' : 'en-US'); };
-      var h = '<div class="stat"><b>' + n(data.registered) + '</b><span>' + esc(w('statsRegistered')) + '</span></div><div class="stat"><b>' + n(data.active) + '</b><span>' + esc(w('statsActive')) + '</span></div><div class="stat"><b>' + n(data.views) + '</b><span>' + esc(w('statsViews')) + '</span></div><div class="stat"><b>' + n(data.downloads) + '</b><span>' + esc(w('statsDownloads')) + '</span></div>';
+      var h = '<div class="stat"><b>' + n(data.registered) + '</b><span>' + esc(w('statsRegistered')) + '</span></div><div class="stat"><b>' + n(data.active) + '</b><span>' + esc(w('statsActive')) + '</span></div><div class="stat"><b>' + n(data.visitors) + '</b><span>' + esc(w('statsVisitors')) + '</span></div><div class="stat"><b>' + n(data.views) + '</b><span>' + esc(w('statsViews')) + '</span></div><div class="stat"><b>' + n(data.downloads) + '</b><span>' + esc(w('statsDownloads')) + '</span></div>';
       box.innerHTML = h;
       var c = $('#statsCountries');
       if (c) {
@@ -463,7 +518,7 @@
     }
     paint(); onLang(paint);
     fetch(API + '?action=stats', { headers: { apikey: KEY } }).then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (j) {
-      data.registered = j.registered; data.active = j.active_30d; data.views = j.views_30d; data.countries = j.countries; paint();
+      data.registered = j.registered; data.active = j.active_30d; data.views = j.views_30d; data.visitors = j.visitors_30d; data.countries = j.countries; paint();
     }).catch(function () {});
     fetch('https://api.github.com/repos/' + REPO + '/releases?per_page=100').then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (rs) {
       var total = 0;
@@ -606,7 +661,7 @@
     draw(); loadBoard(); onLang(draw);
   }
 
-  navAccount(); welcome(); accountPage(); dailyPage(); statsBlock(); ping(); track();
+  navAccount(); welcome(); accountPage(); dailyPage(); statsBlock(); ping(); track(); notices();
   if (getSession()) fetchAvatar();
   if (getSession() && !$('#acct')) sync();
 })();
