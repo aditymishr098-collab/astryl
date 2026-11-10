@@ -1,0 +1,42 @@
+# Every night: copies the accounts and Daily 5 tables from Supabase, encrypts
+# them and keeps the encrypted file for 30 days as a workflow artifact.
+# (Supabase's free plan has no backups of its own. This repository is public, so
+# the file is encrypted before it is stored.)
+#
+# Needs these repository secrets (Settings > Secrets and variables > Actions):
+#   BACKUP_TOKEN       the same value as the Edge Function secret BACKUP_TOKEN
+#   BACKUP_PASSPHRASE  the passphrase the file is encrypted with (keep a copy safe)
+# How to open a backup: docs/BACKUP.md
+name: Backup
+
+on:
+  schedule:
+    - cron: '41 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Copy and encrypt
+        env:
+          BACKUP_TOKEN: ${{ secrets.BACKUP_TOKEN }}
+          BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          test -n "$BACKUP_TOKEN" && test -n "$BACKUP_PASSPHRASE" || { echo "Backup secrets are not set"; exit 1; }
+          curl --fail --silent --show-error --max-time 120 \
+            -H "x-backup-token: $BACKUP_TOKEN" \
+            -o backup.json \
+            "https://pmfjjlfggzihbnbmqkao.supabase.co/functions/v1/backup"
+          python3 -c "import json; d=json.load(open('backup.json')); print({k: len(v) for k, v in d.items() if isinstance(v, list)})"
+          openssl enc -aes-256-cbc -pbkdf2 -iter 200000 -salt \
+            -pass env:BACKUP_PASSPHRASE -in backup.json -out "astryl-backup-$(date -u +%F).enc"
+          rm backup.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: astryl-backup
+          path: astryl-backup-*.enc
+          retention-days: 30
