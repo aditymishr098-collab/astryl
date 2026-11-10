@@ -989,6 +989,10 @@
   /* ---------- small API for cosmos.js (home page animation) ---------- */
   window.ASTRYL_API = { helio: helio, moonEcl: moonEcl, moonPhase: moonPhase, sunLon: sunLon, bname: bname, t: t, onRender: onRender, lang: function () { return lang; } };
 
+  /* The More menu closes when you tap elsewhere or press Escape. */
+  document.addEventListener('click', function (e) { var d = document.querySelector('details.more[open]'); if (d && !d.contains(e.target)) d.removeAttribute('open'); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { var d = document.querySelector('details.more[open]'); if (d) d.removeAttribute('open'); } });
+
   /* ---------- go ---------- */
   document.documentElement.lang = lang;
   var lb = $('#langBtn'); if (lb) lb.textContent = lang === 'hi' ? 'English' : 'हिन्दी';
