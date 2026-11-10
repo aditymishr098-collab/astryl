@@ -379,6 +379,8 @@ class _PlanetScreenState extends State<PlanetScreen> {
           if (planet.id != 'earth') ...<Widget>[
             const SizedBox(height: 12),
             _TravelCard(planet: planet),
+            const SizedBox(height: 12),
+            _TelescopeZoomCard(planet: planet),
           ],
           const SizedBox(height: 16),
           SurfaceCard(
@@ -1329,4 +1331,276 @@ class _CutawayPainter extends CustomPainter {
   bool shouldRepaint(covariant _CutawayPainter oldDelegate) =>
       oldDelegate.selectedIndex != selectedIndex ||
       oldDelegate.layers != layers;
+}
+
+class _TelescopeZoomCard extends StatefulWidget {
+  const _TelescopeZoomCard({required this.planet});
+
+  final Planet planet;
+
+  @override
+  State<_TelescopeZoomCard> createState() => _TelescopeZoomCardState();
+}
+
+class _TelescopeZoomCardState extends State<_TelescopeZoomCard> {
+  /// 0 = 1x (Naked eye), 1 = 10x (Binoculars), 2 = 100x (Telescope).
+  int _zoomLevel = 2;
+
+  String _description(Planet p, int zoom, bool isHi) {
+    if (p.id == 'sun') {
+      return isHi
+          ? 'चेतावनी: बिना प्रमाणित सोलर फ़िल्टर के सूर्य को कभी भी दूरबीन या नंगी आँखों से न देखें!'
+          : 'Warning: Never look at the Sun through binoculars or a telescope without a certified solar filter!';
+    }
+    if (zoom == 0) {
+      if (p.id == 'moon') {
+        return isHi
+          ? '1x (नंगी आँखें): चंद्रमा की कलाएँ और गहरे लावा के मैदान (Maria) साफ़ दिखाई देते हैं।'
+          : '1x (Naked eye): Lunar phases and dark lava plains (Maria) are clearly visible.';
+      }
+      if (p.isMoon || p.id == 'uranus' || p.id == 'neptune' || p.id == 'pluto') {
+        return isHi
+            ? '1x (नंगी आँखें): यह पिंड बहुत धुंधला है और बिना दूरबीन के नंगी आँखों से नहीं दिखता।'
+            : '1x (Naked eye): Too faint to see with the unaided eye from Earth.';
+      }
+      return isHi
+          ? '1x (नंगी आँखें): रात के आकाश में एक चमकते तारे जैसा बिंदु दिखता है जो टिमटिमाता नहीं है।'
+          : '1x (Naked eye): Appears as a steady, non-twinkling point of light in the night sky.';
+    }
+    if (zoom == 1) {
+      if (p.id == 'moon') {
+        return isHi
+            ? '10x (Binoculars): बड़े गड्ढे (Tycho, Copernicus) और पहाड़ियाँ उभरकर दिखने लगती हैं।'
+            : '10x (Binoculars): Major craters (Tycho, Copernicus) and terminator shadows stand out sharply.';
+      }
+      if (p.id == 'jupiter') {
+        return isHi
+            ? '10x (Binoculars): बृहस्पति एक छोटी डिस्क जैसा दिखता है और उसके 4 गैलीलियन चंद्रमा पास में चमकते बिंदुओं जैसे दिखते हैं!'
+            : '10x (Binoculars): Shows a tiny bright disc flanked by up to 4 pinprick Galilean moons!';
+      }
+      if (p.id == 'saturn') {
+        return isHi
+            ? '10x (Binoculars): शनि थोड़ा अंडाकार (elongated) दिखता है क्योंकि उसके छल्ले बाहर निकले हैं।'
+            : '10x (Binoculars): Looks slightly oval because of its surrounding ring system.';
+      }
+      return isHi
+          ? '10x (Binoculars): रंग अधिक स्पष्ट दिखता है और तारा-समूह के बीच इसे पहचानना आसान होता है।'
+          : '10x (Binoculars): Reveals the planet\'s distinct colour and helps spot it against background stars.';
+    }
+    // 100x Telescope
+    if (p.id == 'saturn') {
+      return isHi
+          ? '100x (Telescope): शनि के शानदार छल्ले (Rings) और उसका सबसे बड़ा चंद्रमा Titan साफ़ दिखाई देते हैं!'
+          : '100x (Telescope): Saturn\'s rings and its largest moon Titan are unmistakably visible!';
+    }
+    if (p.id == 'jupiter') {
+      return isHi
+          ? '100x (Telescope): बादलों की भूरे रंग की पट्टियाँ (Cloud bands), Great Red Spot और चारों बड़े चंद्रमा साफ़ दिखते हैं।'
+          : '100x (Telescope): Dark equatorial cloud belts, the Great Red Spot and all 4 Galilean moons are clearly resolved.';
+    }
+    if (p.id == 'mars') {
+      return isHi
+          ? '100x (Telescope): लाल-नारंगी डिस्क, गहरे क्षेत्र और सफेद ध्रुवीय बर्फ़ की टोपी (Polar ice cap) दिखती है।'
+          : '100x (Telescope): Rust-orange disc with dark surface markings and a bright polar ice cap.';
+    }
+    if (p.id == 'venus' || p.id == 'mercury') {
+      return isHi
+          ? '100x (Telescope): चंद्रमा की तरह ही इसकी भी कलाएँ (Crescent से लेकर Gibbous phase तक) साफ़ दिखती हैं!'
+          : '100x (Telescope): Shows distinct Moon-like phases (from thin crescent to gibbous) as it orbits the Sun!';
+    }
+    return isHi
+        ? '100x (Telescope): तारों से अलग एक छोटी रंगीन डिस्क के रूप में दिखाई देता है।'
+        : '100x (Telescope): Resolves into a small, distinctly coloured planetary disc.';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final p = Palette.of(context);
+    final isHi = Localizations.localeOf(context).languageCode == 'hi';
+    final planet = widget.planet;
+
+    return SurfaceCard(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Icon(Icons.ads_click_outlined, size: 20, color: p.accentText),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  isHi
+                      ? 'टेलीस्कोप ज़ूम सिम्युलेटर (Telescope View)'
+                      : 'Telescope Eyepiece Simulator',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: p.text,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: <Widget>[
+              ChoiceChip(
+                label: Text(isHi ? '1x नंगी आँख' : '1x Naked eye'),
+                selected: _zoomLevel == 0,
+                onSelected: (_) => setState(() => _zoomLevel = 0),
+              ),
+              const SizedBox(width: 8),
+              ChoiceChip(
+                label: const Text('10x Binoculars'),
+                selected: _zoomLevel == 1,
+                onSelected: (_) => setState(() => _zoomLevel = 1),
+              ),
+              const SizedBox(width: 8),
+              ChoiceChip(
+                label: const Text('100x Telescope'),
+                selected: _zoomLevel == 2,
+                onSelected: (_) => setState(() => _zoomLevel = 2),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          Center(
+            child: SizedBox(
+              width: 180,
+              height: 180,
+              child: CustomPaint(
+                painter: _EyepiecePainter(
+                  planet: planet,
+                  zoomLevel: _zoomLevel,
+                  borderColor: p.border,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            _description(planet, _zoomLevel, isHi),
+            style: TextStyle(fontSize: 13, color: p.text, height: 1.4),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _EyepiecePainter extends CustomPainter {
+  _EyepiecePainter({
+    required this.planet,
+    required this.zoomLevel,
+    required this.borderColor,
+  });
+
+  final Planet planet;
+  final int zoomLevel;
+  final Color borderColor;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = size.width / 2 - 4;
+
+    // Dark night-sky circular eyepiece field of view
+    canvas.save();
+    canvas.clipPath(
+        Path()..addOval(Rect.fromCircle(center: center, radius: radius)));
+    canvas.drawCircle(
+      center,
+      radius,
+      Paint()..color = const Color(0xFF070912),
+    );
+
+    // Background field stars inside eyepiece
+    final rng = math.Random(planet.id.hashCode + zoomLevel * 17);
+    final starPaint = Paint()..color = const Color(0x99FFFFFF);
+    for (var i = 0; i < 18; i++) {
+      final sx = center.dx + (rng.nextDouble() * 2 - 1) * radius * 0.85;
+      final sy = center.dy + (rng.nextDouble() * 2 - 1) * radius * 0.85;
+      canvas.drawCircle(Offset(sx, sy), i.isEven ? 0.9 : 1.3, starPaint);
+    }
+
+    // Target size inside eyepiece based on zoom level
+    final double bodyR;
+    if (planet.id == 'moon' || planet.id == 'sun') {
+      bodyR = zoomLevel == 0 ? 12.0 : (zoomLevel == 1 ? 36.0 : 68.0);
+    } else if (planet.id == 'jupiter' || planet.id == 'saturn') {
+      bodyR = zoomLevel == 0 ? 2.5 : (zoomLevel == 1 ? 7.5 : 26.0);
+    } else {
+      bodyR = zoomLevel == 0 ? 2.0 : (zoomLevel == 1 ? 5.0 : 16.0);
+    }
+
+    // Soft atmospheric glow in eyepiece
+    canvas.drawCircle(
+      center,
+      bodyR * 1.6,
+      Paint()..color = planet.color.withValues(alpha: 0.22),
+    );
+    paintPlanetBall(canvas, planet, center, bodyR);
+
+    // Galilean moons line in 10x and 100x for Jupiter
+    if (planet.id == 'jupiter' && zoomLevel >= 1) {
+      final dotPaint = Paint()..color = const Color(0xFFFFF3C4);
+      final dists = zoomLevel == 1
+          ? const <double>[-24, -14, 16, 28]
+          : const <double>[-58, -38, 42, 66];
+      for (final dx in dists) {
+        canvas.drawCircle(
+          center + Offset(dx, -dx * 0.18),
+          zoomLevel == 1 ? 1.5 : 2.3,
+          dotPaint,
+        );
+      }
+    }
+
+    // Titan dot in 100x for Saturn
+    if (planet.id == 'saturn' && zoomLevel == 2) {
+      canvas.drawCircle(
+        center + const Offset(54, -14),
+        2.4,
+        Paint()..color = const Color(0xFFE5B869),
+      );
+    }
+
+    // Subtle crosshair reticle
+    final reticlePaint = Paint()
+      ..strokeWidth = 0.7
+      ..color = const Color(0x30FFFFFF);
+    canvas.drawLine(
+        Offset(center.dx - radius, center.dy),
+        Offset(center.dx - bodyR - 10, center.dy),
+        reticlePaint);
+    canvas.drawLine(
+        Offset(center.dx + bodyR + 10, center.dy),
+        Offset(center.dx + radius, center.dy),
+        reticlePaint);
+    canvas.drawLine(
+        Offset(center.dx, center.dy - radius),
+        Offset(center.dx, center.dy - bodyR - 10),
+        reticlePaint);
+    canvas.drawLine(
+        Offset(center.dx, center.dy + bodyR + 10),
+        Offset(center.dx, center.dy + radius),
+        reticlePaint);
+
+    canvas.restore();
+
+    // Eyepiece rim
+    canvas.drawCircle(
+      center,
+      radius,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 3
+        ..color = borderColor,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _EyepiecePainter oldDelegate) =>
+      oldDelegate.zoomLevel != zoomLevel || oldDelegate.planet != planet;
 }

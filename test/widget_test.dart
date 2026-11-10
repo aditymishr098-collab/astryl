@@ -1069,7 +1069,7 @@ void main() {
     Spacecraft byId(String id) => spacecraft.firstWhere((c) => c.id == id);
 
     test('are listed once each with a name', () {
-      expect(spacecraft.length, 7);
+      expect(spacecraft.length, 8);
       expect(spacecraft.map((c) => c.id).toSet().length, spacecraft.length);
       for (final c in spacecraft) {
         expect(c.name, isNotEmpty);

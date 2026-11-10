@@ -187,7 +187,7 @@ Releases are built and signed by GitHub Actions when a version tag such as `v1.4
 | 1.20.0 | Daily 5 quiz and live Today / All-time Leaderboard in the app, synced with astryl.space (done) |
 | 1.21.0 | The big moons of Jupiter and Saturn with their real positions, plus twinkling and shooting stars (done) |
 | 1.22.0 | Interactive Planet Interior Cutaway (Crust, Mantle, Core) and 3D Earth city lights / aurora (done) |
-| 1.23.0 | Telescope Zoom Simulator (1x / 10x / 100x) and ISRO Aditya-L1 Live Tracker |
+| 1.23.0 | Telescope Zoom Simulator (1x / 10x / 100x) and ISRO Aditya-L1 Live Tracker (done) |
 
 Plans can change. An account stays optional, and nothing is collected unless you agree to it.
 
@@ -217,6 +217,7 @@ All texts live in `lib/l10n/app_en.arb` and `lib/l10n/app_hi.arb`. Found a wrong
 | **1.20.0** | Daily 5 quiz and live Leaderboard inside the app's Quiz screen: play the same 5 daily questions (UTC) as on astryl.space with a live timer, earn speed + accuracy points, and see your Today and All-time rank on the shared Firebase leaderboard. |
 | **1.21.0** | Live orbital view for the major moons of Jupiter (Io, Europa, Ganymede, Callisto) and Saturn (Enceladus, Titan) on their planet pages with Play/Pause orbital animation, plus gentle star twinkling and shooting stars in Space and 2D views. |
 | **1.22.0** | Interactive **Interior Cutaway** card on every planet, moon and the Sun (tap concentric layers or chips to inspect Crust, Subsurface Ocean, Mantle, Metallic Hydrogen, and Core in English & Hindi), plus glowing night-side city lights and polar aurora on the 3D Earth globe (`shaders/planet.frag`). |
+| **1.23.0** | **Telescope Eyepiece Simulator** (`1x Naked eye`, `10x Binoculars`, `100x Telescope`) on every planet and moon page showing how the body looks through an eyepiece (including Jupiter's Galilean moons and Saturn's rings & Titan), plus **ISRO Aditya-L1** live distance & light-time tracker at the Sun–Earth L1 point in Spacecraft. |
 | **1.17.6** | Surface maps for the Moon and Mars with 25 landing sites. Open the Moon or Mars and tap Surface map. Your data and settings are kept |
 | **1.17.5** | New app id `space.astryl.app` (it was `online.lumioapps.heliora`), after the website astryl.space. Android sees this as a **new app**, so it installs next to the old one instead of updating it. To move over: in the old app open Settings → Backup → Save, install 1.17.5, open Settings → Backup → Restore in the new app, then uninstall the old one. Reminders for single events are not kept, set them again |
 | **1.17.4** | The licence is now AGPL-3.0 (versions up to 1.17.3 stay under MIT). The name "Lumio Apps" is gone from the project texts; the copyright line is now Astryl and astryl.space. Settings → About has a new link to the website. Your data and settings are kept |

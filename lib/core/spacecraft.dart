@@ -123,6 +123,12 @@ const List<Spacecraft> spacecraft = <Spacecraft>[
     fixedKm: 1500000,
   ),
   Spacecraft(
+    id: 'adityal1',
+    name: 'Aditya-L1 (ISRO)',
+    kind: SpacecraftKind.fixedDistance,
+    fixedKm: 1500000,
+  ),
+  Spacecraft(
     id: 'iss',
     name: 'ISS',
     kind: SpacecraftKind.lowOrbit,
