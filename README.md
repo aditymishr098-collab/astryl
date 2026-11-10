@@ -29,18 +29,23 @@ a daily space quiz, and an honest answer to "could humans live here?"
 
 <table>
   <tr>
-    <td align="center"><img src="docs/screenshots/explore.jpg" width="170" alt="Explore: the Solar System in 3D"><br><sub><b>Explore</b><br>the Solar System</sub></td>
+    <td align="center"><img src="docs/screenshots/explore.jpg" width="170" alt="Explore: the Solar System in 3D"><br><sub><b>Explore in 3D</b><br>the Solar System</sub></td>
     <td align="center"><img src="docs/screenshots/tonight.jpg" width="170" alt="Tonight's sky with the Moon"><br><sub><b>Tonight's sky</b><br>Moon and sun times</sub></td>
     <td align="center"><img src="docs/screenshots/sky.jpg" width="170" alt="Which planets can be seen tonight"><br><sub><b>Planets tonight</b><br>when and where</sub></td>
     <td align="center"><img src="docs/screenshots/star-map.jpg" width="170" alt="Star map with constellations and planets"><br><sub><b>Star map</b><br>your own sky</sub></td>
     <td align="center"><img src="docs/screenshots/compass.jpg" width="170" alt="Find Saturn with the phone compass"><br><sub><b>Find it</b><br>point your phone</sub></td>
   </tr>
   <tr>
+    <td align="center"><img src="docs/screenshots/iss.jpg" width="170" alt="Space station map and passes"><br><sub><b>Space station</b><br>live map and passes</sub></td>
+    <td align="center"><img src="docs/screenshots/tiangong.jpg" width="170" alt="Tiangong and Hubble passes"><br><sub><b>Tiangong and Hubble</b><br>passes over you</sub></td>
     <td align="center"><img src="docs/screenshots/compare.jpg" width="170" alt="Compare Earth and Mars"><br><sub><b>Compare</b><br>two worlds</sub></td>
     <td align="center"><img src="docs/screenshots/quiz.jpg" width="170" alt="Daily 5 quiz with the leaderboard"><br><sub><b>Daily 5</b><br>streak and board</sub></td>
+  </tr>
+  <tr>
     <td align="center"><img src="docs/screenshots/spacecraft.jpg" width="170" alt="Spacecraft now: Voyager 1 and 2"><br><sub><b>Spacecraft now</b><br>how far is Voyager</sub></td>
     <td align="center"><img src="docs/screenshots/news.jpg" width="170" alt="Space news"><br><sub><b>Space news</b><br>live headlines</sub></td>
     <td align="center"><img src="docs/screenshots/missions.jpg" width="170" alt="Space missions timeline"><br><sub><b>Missions</b><br>Sputnik to today</sub></td>
+    <td align="center"><img src="docs/screenshots/you.jpg" width="170" alt="You tab: account and settings"><br><sub><b>You</b><br>account and settings</sub></td>
   </tr>
 </table>
 
