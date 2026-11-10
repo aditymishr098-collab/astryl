@@ -6,7 +6,7 @@ conversions are worked out here from the distances, not typed in.
 import math
 import random
 
-from dskit import Kit, Section
+from dskit import Kit, Section, article_ld
 
 LY_KM = 9.4607e12          # kilometres in one light-year
 VOYAGER_KMS = 17.0         # Voyager 1, km per second (about 61,000 km/h)
@@ -88,6 +88,9 @@ def build(h):
         ('galaxies-you-can-see', 'Galaxies you can see', 'जो galaxies आप देख सकते हैं', 'What your eyes, binoculars and a small telescope can reach.', 'आपकी आँखें, दूरबीन और छोटा telescope कहाँ तक पहुँचते हैं।', '👀'),
     ]
     S = Section(k, 'galaxies', 'galaxies.html', 'gx', 'Galaxies', 'Galaxies', SLUGS)
+    REL = [('cosmic-scale.html', '📏', 'Scale of the universe', 'ब्रह्मांड का पैमाना'), ('universe-timeline.html', '⏳', 'Timeline of the universe', 'ब्रह्मांड की समयरेखा'), ('black-holes.html', '⚫', 'Black holes', 'ब्लैक होल'), ('deep-space-quiz.html#galaxies', '🎲', 'Galaxy quiz', 'Galaxy quiz')]
+    _page = S.page
+    S.page = lambda *a, **kw: _page(*a, related=REL, **kw)
     out = []
 
     # ---- hub
@@ -295,4 +298,4 @@ def build(h):
 def shell_hub(h, body):
     return h['shell']('Galaxies explained', 'Galaxies, आसान भाषा में', 'gx', body,
                       'Galaxies explained simply: the Milky Way, Andromeda, galaxy types, the Local Group, how galaxies form and collide, and which ones you can see. Free, in English and Hindi.',
-                      canonical='galaxies.html')
+                      canonical='galaxies.html', ld=article_ld(h['SITE'], 'Galaxies explained', 'Galaxies explained simply: the Milky Way, Andromeda, galaxy types, the Local Group, how galaxies form and collide, and which ones you can see.', 'galaxies.html', [('Astryl', ''), ('Galaxies', 'galaxies.html')]))

@@ -35,6 +35,6 @@ def build(h):
 <section class="blk callout">{bt("Want the story behind the numbers?", "इन आँकड़ों के पीछे की कहानी चाहिए?")} <a href="black-holes/falling-into-a-black-hole.html">{bt("Falling into a black hole", "ब्लैक होल में गिरना")} →</a></section>'''
     html = h['shell']('Black hole lab', 'ब्लैक होल lab', 'bh', body,
                       'Free black hole tools: a gravitational lensing simulator, a Schwarzschild radius calculator for any mass and a gravitational time dilation calculator.',
-                      canonical='black-hole-lab.html', extra_head=f'<script defer src="assets/lab.js?v={h["asset_v"]()}"></script>')
+                      canonical='black-hole-lab.html', ld=[{'@context': 'https://schema.org', '@type': 'WebApplication', 'name': 'Black hole lab', 'applicationCategory': 'EducationalApplication', 'operatingSystem': 'Any', 'url': h['SITE'] + '/black-hole-lab.html', 'inLanguage': ['en', 'hi'], 'isAccessibleForFree': True, 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}}], extra_head=f'<script defer src="assets/lab.js?v={h["asset_v"]()}"></script>')
     h['write']('black-hole-lab.html', html)
     return ['black-hole-lab.html']

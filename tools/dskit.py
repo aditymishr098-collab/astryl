@@ -1,6 +1,21 @@
 """Small helpers shared by the deep space page modules (black holes, galaxies, ...)."""
 
 
+PUBLISHED = '2026-11-11'
+
+
+def article_ld(site, title, desc, path, crumbs):
+    """Article and breadcrumb data for search engines. crumbs: [(name, path)] from the home page down to this page."""
+    url = f'{site}/{path}'
+    return [
+        {'@context': 'https://schema.org', '@type': 'Article', 'headline': title, 'description': desc, 'inLanguage': ['en', 'hi'], 'url': url,
+         'mainEntityOfPage': url, 'image': f'{site}/img/og/{path.split("/")[-1][:-5]}.jpg', 'datePublished': PUBLISHED, 'dateModified': PUBLISHED,
+         'author': {'@type': 'Organization', 'name': 'Astryl', 'url': site}, 'publisher': {'@type': 'Organization', 'name': 'Astryl', 'url': site}},
+        {'@context': 'https://schema.org', '@type': 'BreadcrumbList',
+         'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'name': n, 'item': f'{site}/{pth}'} for i, (n, pth) in enumerate(crumbs)]},
+    ]
+
+
 class Kit:
     def __init__(self, h):
         self.h = h
@@ -8,6 +23,7 @@ class Kit:
         self.shell = h['shell']
         self.fmt = h['fmt']
         self.bi = h['bi']
+        self.site = h['SITE']
 
     def P(self, en, hi):
         return f'<p>{self.bt(en, hi)}</p>'
@@ -40,6 +56,13 @@ class Kit:
         th = ''.join(cell(c, 'th') for c in head)
         trs = ''.join('<tr>' + ''.join(cell(c, 'td', ' class="w"' if (i == len(r) - 1 and cols) else '') for i, c in enumerate(r)) + '</tr>' for r in rows)
         return f'<table class="cmp{" cols" if cols else ""}"><tr>{th}</tr>{trs}</table>'
+
+    def keep_exploring(self, prefix, items):
+        """A row of links to related pages and a share button. items: [(href, icon, en, hi)]"""
+        bt = self.bt
+        cards = ''.join(f'<a class="sc" href="{prefix}{h}"><span class="ic">{ic}</span><span><b>{bt(en, hi)}</b></span><span class="go">→</span></a>' for h, ic, en, hi in items)
+        return (f'<section class="blk"><h2>{bt("Keep exploring", "आगे खोजिए")}</h2><div class="sc-grid" style="padding-top:6px">{cards}</div>'
+                f'<p><button class="btn" type="button" data-share>↗ {bt("Share this page", "यह page share करें")}</button></p></section>')
 
     def note(self, en, hi):
         return f'<p class="note">{self.bt(en, hi)}</p>'
@@ -74,8 +97,13 @@ class Section:
         return (f'<p style="margin-top:20px"><a href="../{self.hub_file}">← {bt(self.hub_en, self.hub_hi)}</a></p>'
                 f'<section class="blk"><h1>{bt(en, hi)}</h1><p class="sub">{bt(lead_en, lead_hi)}</p></section>')
 
-    def page(self, slug, body, en, hi, desc, ld=None):
-        html = self.k.shell(en, hi, self.nav_key, body, desc, depth=1, canonical=f'{self.folder}/{slug}.html', ld=ld)
+    def page(self, slug, body, en, hi, desc, ld=None, related=None):
+        k = self.k
+        if related:
+            body += k.keep_exploring('../', related)
+        path = f'{self.folder}/{slug}.html'
+        ld = ld or article_ld(k.site, en, desc, path, [('Astryl', ''), (self.hub_en, self.hub_file), (en, path)])
+        html = k.shell(en, hi, self.nav_key, body, desc, depth=1, canonical=path, ld=ld)
         return {'file': f'{self.folder}/{slug}.html', 'html': html}
 
     def cards(self):
