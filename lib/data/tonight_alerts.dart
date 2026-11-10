@@ -1,5 +1,6 @@
 import 'dart:ui' show Locale;
 
+import '../core/facts.dart';
 import '../core/format.dart';
 import '../core/quiz.dart';
 import '../core/sky.dart';
@@ -215,3 +216,59 @@ Future<void> scheduleQuizAlerts(
   }
 }
 
+
+/// Builds the next [days] "Did you know?" notes at [minutes] after midnight.
+/// The fact of a day is the same one the Quiz and Explore tabs show for it.
+List<TonightAlert> buildFactAlerts({
+  required AppLocalizations l,
+  required int minutes,
+  required DateTime now,
+  int days = tonightAlertDays,
+}) {
+  final soon = now.add(const Duration(minutes: 1));
+  final out = <TonightAlert>[];
+  for (var i = 0; i < days; i++) {
+    final at = DateTime(
+        now.year, now.month, now.day + i, minutes ~/ 60, minutes % 60);
+    if (!at.isAfter(soon)) {
+      continue;
+    }
+    final ref = factOfTheDay(at);
+    final texts = bodyFacts(l, ref.bodyId);
+    if (ref.index >= texts.length) {
+      continue;
+    }
+    out.add(TonightAlert(
+      id: 'fact:$i',
+      at: at,
+      title: '\u{1F4A1} ${l.factTitle} \u00B7 ${planetName(l, planetById(ref.bodyId))}',
+      body: texts[ref.index],
+    ));
+  }
+  return out;
+}
+
+/// Sets the Android alarms for [alerts] (`fact:0`..`fact:14`), and removes
+/// the days that are not in the list.
+Future<void> scheduleFactAlerts(
+  NativeBridge bridge,
+  List<TonightAlert> alerts, {
+  required String channel,
+  int days = tonightAlertDays,
+}) async {
+  final have = <String>{for (final a in alerts) a.id};
+  for (var i = 0; i < days; i++) {
+    if (!have.contains('fact:$i')) {
+      await bridge.cancelReminder('fact:$i');
+    }
+  }
+  for (final a in alerts) {
+    await bridge.scheduleReminder(
+      id: a.id,
+      at: a.at,
+      title: a.title,
+      body: a.body,
+      channel: channel,
+    );
+  }
+}

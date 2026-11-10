@@ -236,6 +236,7 @@ class _AccountScreenState extends State<AccountScreen>
     }
     if (await state.bridge.requestNotifications()) {
       await state.setTonightAlert(true);
+      await state.setFactAlert(true);
     }
     if (mounted) {
       _finish();

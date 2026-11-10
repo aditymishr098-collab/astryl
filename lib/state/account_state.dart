@@ -83,6 +83,27 @@ class AccountState extends ChangeNotifier {
   Future<void> setCrashReports(bool on) =>
       _set(_prefs.copyWith(crashReports: on));
 
+  bool get newsOn => _prefs.newsOn;
+
+  /// Switches the announcements from the Astryl team on or off.
+  Future<void> setNews(bool on) async {
+    await _set(_prefs.copyWith(newsOn: on));
+    await _configureNews();
+  }
+
+  Future<void> _configureNews() async {
+    final chosen = _read().localeCode;
+    final lang = chosen.isNotEmpty
+        ? chosen
+        : PlatformDispatcher.instance.locale.languageCode;
+    await _bridge.configureNews(
+      on: _prefs.newsOn,
+      url: accountApiUrl,
+      key: accountApiKey,
+      lang: lang == 'hi' ? 'hi' : 'en',
+    );
+  }
+
   Future<void> markPromptDone() => _set(_prefs.copyWith(promptDone: true));
 
   String? get _country {
@@ -496,6 +517,7 @@ class AccountState extends ChangeNotifier {
     await ping();
     await shareLocationNow();
     await refreshAvatar();
+    await _configureNews();
   }
 
   /// The public counter, or null when offline.

@@ -155,6 +155,33 @@ class AppState extends ChangeNotifier {
     await _update(_settings.copyWith(quizBests: bests));
   }
 
+  /// Whether the daily "Did you know?" notification is switched on.
+  bool get factAlert => (_settings.quizBests['factAlert'] ?? 0) == 1;
+
+  /// When the "Did you know?" note is shown, in minutes after midnight
+  /// (default 720 = 12:00).
+  int get factMinutes => _settings.quizBests['factMinutes'] ?? 720;
+
+  /// Turns the daily "Did you know?" note on or off. Turning it off removes
+  /// the notes that were already set.
+  Future<void> setFactAlert(bool value) async {
+    final bests = Map<String, int>.of(_settings.quizBests)
+      ..['factAlert'] = value ? 1 : 0;
+    await _update(_settings.copyWith(quizBests: bests));
+    if (!value) {
+      for (var i = 0; i < tonightAlertDays; i++) {
+        await _bridge.cancelReminder('fact:$i');
+      }
+    }
+  }
+
+  /// Sets when the "Did you know?" note is shown, in minutes after midnight.
+  Future<void> setFactMinutes(int minutes) async {
+    final bests = Map<String, int>.of(_settings.quizBests)
+      ..['factMinutes'] = minutes.clamp(0, 1439);
+    await _update(_settings.copyWith(quizBests: bests));
+  }
+
   /// Whether [key] (see favorites.dart) is starred.
   bool isFavorite(String key) => _settings.favorites.contains(key);
 

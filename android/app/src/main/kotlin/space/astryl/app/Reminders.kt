@@ -99,14 +99,33 @@ object Reminders {
         store.edit().remove(id).apply()
         try {
             val record = JSONObject(value)
+            post(
+                context,
+                id,
+                record.getString("title"),
+                record.getString("body"),
+                CHANNEL,
+                record.optString("channel", "Space events")
+            )
+        } catch (e: Exception) {
+            // A reminder that cannot be shown is dropped.
+        }
+    }
+
+    /** Shows one notification now; tapping it opens Astryl. */
+    fun post(
+        context: Context,
+        id: String,
+        title: String,
+        body: String,
+        channelId: String,
+        channelName: String
+    ) {
+        try {
             val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 manager.createNotificationChannel(
-                    NotificationChannel(
-                        CHANNEL,
-                        record.optString("channel", "Space events"),
-                        NotificationManager.IMPORTANCE_DEFAULT
-                    )
+                    NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT)
                 )
             }
             val open = context.packageManager.getLaunchIntentForPackage(context.packageName)
@@ -114,17 +133,17 @@ object Reminders {
                 (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0)
             val tap = PendingIntent.getActivity(context, id.hashCode(), open, flags)
             val icon = context.resources.getIdentifier("ic_stat_heliora", "drawable", context.packageName)
-            val notification = NotificationCompat.Builder(context, CHANNEL)
+            val notification = NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(if (icon != 0) icon else android.R.drawable.star_on)
-                .setContentTitle(record.getString("title"))
-                .setContentText(record.getString("body"))
-                .setStyle(NotificationCompat.BigTextStyle().bigText(record.getString("body")))
+                .setContentTitle(title)
+                .setContentText(body)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(body))
                 .setContentIntent(tap)
                 .setAutoCancel(true)
                 .build()
             manager.notify(id.hashCode(), notification)
         } catch (e: Exception) {
-            // A reminder that cannot be shown is dropped.
+            // A notification that cannot be shown is dropped.
         }
     }
 }
@@ -146,6 +165,7 @@ class BootReceiver : BroadcastReceiver() {
             intent.action == Intent.ACTION_MY_PACKAGE_REPLACED
         ) {
             Reminders.rescheduleAll(context)
+            NewsCheck.rescheduleIfOn(context)
         }
     }
 }

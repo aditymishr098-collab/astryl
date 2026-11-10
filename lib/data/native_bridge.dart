@@ -152,6 +152,27 @@ class NativeBridge {
     }
   }
 
+  /// Starts (or stops) the check for new announcements. Android asks the
+  /// project's function "what is new?" about every six hours and shows each
+  /// new announcement as a notification.
+  Future<void> configureNews({
+    required bool on,
+    required String url,
+    required String key,
+    required String lang,
+  }) async {
+    try {
+      await _channel.invokeMethod<bool>('configureNews', <String, Object>{
+        'on': on,
+        'url': url,
+        'key': key,
+        'lang': lang,
+      });
+    } on Exception {
+      // Tried again the next time the app opens.
+    }
+  }
+
   /// Removes the reminder named [id].
   Future<void> cancelReminder(String id) async {
     try {

@@ -77,6 +77,7 @@ class AccountPrefs {
     this.shareLocation = false,
     this.showOnBoard = true,
     this.crashReports = true,
+    this.newsOn = true,
     this.syncedMs = 0,
     this.lastPingMs = 0,
     this.lastLocationMs = 0,
@@ -101,6 +102,9 @@ class AccountPrefs {
   /// Whether a crash sends a small anonymous report (no account, no name).
   final bool crashReports;
 
+  /// Whether announcements from the Astryl team are shown as notifications.
+  final bool newsOn;
+
   /// When the phone last agreed with the account (ms since 1970, server time).
   final int syncedMs;
   final int lastPingMs;
@@ -120,6 +124,7 @@ class AccountPrefs {
     bool? shareLocation,
     bool? showOnBoard,
     bool? crashReports,
+    bool? newsOn,
     int? syncedMs,
     int? lastPingMs,
     int? lastLocationMs,
@@ -136,6 +141,7 @@ class AccountPrefs {
       shareLocation: shareLocation ?? this.shareLocation,
       showOnBoard: showOnBoard ?? this.showOnBoard,
       crashReports: crashReports ?? this.crashReports,
+      newsOn: newsOn ?? this.newsOn,
       syncedMs: syncedMs ?? this.syncedMs,
       lastPingMs: lastPingMs ?? this.lastPingMs,
       lastLocationMs: lastLocationMs ?? this.lastLocationMs,
@@ -153,6 +159,7 @@ class AccountPrefs {
         'shareLocation': shareLocation,
         'showOnBoard': showOnBoard,
         'crashReports': crashReports,
+        'newsOn': newsOn,
         'syncedMs': syncedMs,
         'lastPingMs': lastPingMs,
         'lastLocationMs': lastLocationMs,
@@ -182,6 +189,7 @@ class AccountPrefs {
       shareLocation: b('shareLocation', d.shareLocation),
       showOnBoard: b('showOnBoard', d.showOnBoard),
       crashReports: b('crashReports', d.crashReports),
+      newsOn: b('newsOn', d.newsOn),
       syncedMs: i('syncedMs'),
       lastPingMs: i('lastPingMs'),
       lastLocationMs: i('lastLocationMs'),

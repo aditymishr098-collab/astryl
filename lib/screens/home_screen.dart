@@ -34,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _tab = 0;
   String _alertKey = '';
   String _quizAlertKey = '';
+  String _factAlertKey = '';
 
   @override
   void initState() {
@@ -113,12 +114,41 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  /// Prepares the next 15 days' "Did you know?" notes.
+  void _syncFactAlerts(AppState state) {
+    if (kIsWeb || !state.factAlert) {
+      _factAlertKey = '';
+      return;
+    }
+    final now = DateTime.now();
+    final locale = Localizations.localeOf(context);
+    final key = '${state.factMinutes}-${locale.languageCode}-'
+        '${now.year}-${now.month}-${now.day}';
+    if (key == _factAlertKey) {
+      return;
+    }
+    _factAlertKey = key;
+    final l = context.l10n;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) {
+        return;
+      }
+      final alerts = buildFactAlerts(
+        l: l,
+        minutes: state.factMinutes,
+        now: now,
+      );
+      await scheduleFactAlerts(state.bridge, alerts, channel: l.factTitle);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     final state = AppScope.of(context);
     _syncTonightAlerts(state);
     _syncQuizAlerts(state);
+    _syncFactAlerts(state);
     final screenWidth = MediaQuery.sizeOf(context).width;
     final isTablet = screenWidth >= 700;
     final navLabels = <String>[
