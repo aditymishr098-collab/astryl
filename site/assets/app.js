@@ -82,6 +82,7 @@
   var KM_AU = 149597870.7, C_KMS = 299792.458;
   function rad(d) { return d * Math.PI / 180; }
   function deg(r) { return r * 180 / Math.PI; }
+  function esc(x) { return String(x).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function n360(d) { return ((d % 360) + 360) % 360; }
   var MIN = Date.UTC(1800, 0, 1), MAX = Date.UTC(2050, 11, 31);
   function clampMs(ms) { return Math.min(MAX, Math.max(MIN, ms)); }
@@ -147,11 +148,34 @@
   /* ---------- latest release (home, get-the-app) ---------- */
   function release() {
     var btns = $$('.dl-btn'); if (!btns.length || !window.fetch) return;
-    fetch('https://api.github.com/repos/aditymishr098-collab/astryl/releases/latest').then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (j) {
+    fetch('https://api.github.com/repos/aditymishr098-collab/astryl/releases?per_page=60').then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (list) {
+      list = (list || []).filter(function (r) { return !r.draft && !r.prerelease; });
+      var j = list[0]; if (!j) return;
       var apk = (j.assets || []).filter(function (a) { return /\.apk$/i.test(a.name); })[0];
       btns.forEach(function (b) { if (apk) b.href = apk.browser_download_url; });
       $$('.ver').forEach(function (v) { v.textContent = j.tag_name + (apk ? ' · ' + (apk.size / 1048576).toFixed(0) + ' MB' : ''); });
-    }).catch(function () {});
+      var total = 0;
+      list.forEach(function (r) { (r.assets || []).forEach(function (a) { if (/\.apk$/i.test(a.name)) total += a.download_count || 0; }); });
+      relCard(j, apk, total);
+    }).catch(function () { var c = $('#relCard'); if (c) c.style.display = 'none'; });
+  }
+  /* The "latest version" card on the download page. */
+  function relCard(j, apk, total) {
+    var box = $('#relCard'); if (!box) return;
+    function plain(md) {
+      return String(md || '').replace(/\r/g, '').split('\n').map(function (l) { return l.replace(/^#+\s*/, '').replace(/\*\*/g, '').replace(/`/g, '').replace(/^\*\s+/, '• ').replace(/\s*in https?:\/\/\S+$/, '').trim(); })
+        .filter(function (l) { return l && !/^Full Changelog/i.test(l) && !/^What's Changed$/i.test(l); }).slice(0, 12).join('\n');
+    }
+    onRender(function () {
+      var hi = lang === 'hi', when = new Date(j.published_at || j.created_at).toLocaleDateString(hi ? 'hi-IN' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      var hash = apk && apk.digest ? String(apk.digest).replace(/^sha256:/, '') : '';
+      var h = '<h3>' + (hi ? 'नया version ' : 'Latest version ') + esc(j.tag_name) + '</h3><p class="note">' + (hi ? 'जारी: ' : 'Released ') + esc(when) + (apk ? ' · ' + (apk.size / 1048576).toFixed(0) + ' MB' : '') + ' · ' + (hi ? 'सभी versions के कुल download: ' : 'Downloads, all versions: ') + total.toLocaleString(hi ? 'hi-IN' : 'en-GB') + '</p>';
+      if (hash) h += '<p><b>SHA-256</b><br><code style="word-break:break-all">' + esc(hash) + '</code></p><p class="note">' + (hi ? 'Download के बाद जाँचने के लिए: ' : 'To check your download: ') + '<code>sha256sum ' + esc(apk.name) + '</code></p>';
+      var notes = plain(j.body);
+      if (notes) h += '<details><summary><b>' + (hi ? 'इस version में नया क्या है' : 'What is new in this version') + '</b></summary><pre style="white-space:pre-wrap;font:inherit;margin:.6em 0 0">' + esc(notes) + '</pre></details>';
+      h += '<p><a href="' + esc(j.html_url) + '">' + (hi ? 'GitHub पर पूरा release' : 'Full release on GitHub') + ' →</a></p>';
+      box.innerHTML = h;
+    });
   }
 
   /* ---------- page: home ---------- */
@@ -790,8 +814,27 @@
   }
 
   /* ---------- page: sky (moon today, calendar, meteor showers) ---------- */
+  /* Which planets can be seen tonight: from how far each one is from the Sun in the sky. */
+  function tonightPlanets() {
+    var box = $('#planetsTonight'); if (!box) return;
+    var ids = ['mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune'];
+    onRender(function () {
+      var ms = Date.now(), hi = lang === 'hi', e = helio('earth', ms), sl = sunLon(ms);
+      var rows = ids.map(function (id) {
+        var p = helio(id, ms), lon = n360(deg(Math.atan2(p.y - e.y, p.x - e.x))), diff = n360(lon - sl), el = diff > 180 ? 360 - diff : diff;
+        var evening = diff < 180, msg, cls = '';
+        if (el < 12) { msg = hi ? 'सूर्य के बहुत पास, नहीं दिखेगा' : 'Too close to the Sun to see'; cls = 'no'; }
+        else if (el > 165) { msg = hi ? 'सामने (opposition): रात भर आसमान में' : 'Opposite the Sun: up all night'; cls = 'ok'; }
+        else if (evening) { msg = el < 40 ? (hi ? 'शाम का आसमान, सूर्यास्त के बाद पश्चिम में' : 'Evening sky, low in the west after sunset') : (hi ? 'शाम का आसमान' : 'Evening sky'); cls = 'ok'; }
+        else { msg = el < 40 ? (hi ? 'सुबह का आसमान, सूर्योदय से पहले पूर्व में' : 'Morning sky, low in the east before sunrise') : (hi ? 'सुबह का आसमान' : 'Morning sky'); }
+        return '<li><span class="nm"><b>' + esc(bname(id)) + '</b><small>' + esc(msg) + '</small></span><b class="' + cls + '">' + Math.round(el) + '°</b></li>';
+      });
+      box.innerHTML = '<p class="sub" style="margin-top:0">' + (hi ? 'हर ग्रह सूर्य से कितने अंश दूर है (दाईं ओर)। ज़्यादा दूरी का मतलब है अँधेरे आसमान में बेहतर दिखना। मोटा अनुमान, किसी भी जगह के लिए।' : 'How far each planet is from the Sun in the sky (right). More distance means a darker sky to see it in. A rough guide, the same for any place.') + '</p><ol class="lb plain">' + rows.join('') + '</ol><p class="note">' + (hi ? 'बृहस्पति और शनि के चाँदों की आज की स्थिति उनके पेज पर देखिए।' : 'See where the moons of Jupiter and Saturn are tonight on their pages.') + ' <a href="body/jupiter.html">' + bname('jupiter') + '</a> · <a href="body/saturn.html">' + bname('saturn') + '</a></p>';
+    });
+  }
   function skyPage() {
     var box = $('#moonNow'); if (!box) return;
+    tonightPlanets();
     var view = new Date(); view = new Date(view.getFullYear(), view.getMonth(), 1);
     function draw() {
       var now = Date.now(), p = moonPhase(now), nf = nextPhase(now, 180), nn = nextPhase(now, 0);

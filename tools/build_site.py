@@ -352,10 +352,112 @@ def asset_v():
     return _ASSET_V[0]
 
 
-def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', scripts=True, extra_head=''):
+
+# ---------- share images (Open Graph) and structured data ----------
+_OG = {}
+
+
+def og_name(canonical):
+    name = canonical[:-5] if canonical.endswith('.html') else canonical
+    return name.split('/')[-1] or 'home'
+
+
+def ld_json(obj):
+    return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/') + '</script>\n'
+
+
+def _hex(c):
+    c = c.lstrip('#')
+    return tuple(int(c[i:i + 2], 16) for i in (0, 2, 4))
+
+
+def _mix(a, b, t):
+    return tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3))
+
+
+def make_og(name, title):
+    """A 1200x630 picture for link previews: the world on the right, its name on the left."""
+    import random
+    from PIL import Image, ImageDraw, ImageFont
+    W, H = 1200, 630
+    img = Image.new('RGB', (W, H), (6, 8, 14))
+    px = ImageDraw.Draw(img)
+    for y in range(H):
+        px.line([(0, y), (W, y)], fill=_mix((6, 8, 14), (16, 22, 46), y / H))
+    rnd = random.Random(name)
+    for _ in range(140):
+        x, y, r = rnd.randrange(W), rnd.randrange(H), rnd.choice((1, 1, 1, 2))
+        c = rnd.randrange(110, 230)
+        px.ellipse([x - r, y - r, x + r, y + r], fill=(c, c, min(255, c + 25)))
+    body = next((b for b in BODIES if b['id'] == name), None)
+    cols = [_hex(c) for c in (body['colors'] if body else ['#7aa2ff', '#3b5bd6', '#cfe0ff'])]
+    base, dark, light = cols[0], _mix(cols[0], (0, 0, 0), 0.55), _mix(cols[-1] if len(cols) > 1 else cols[0], (255, 255, 255), 0.35)
+    cx, cy, R = 900, 315, 185
+    rings = bool(body and body.get('rings')) or body is None
+    layer = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    ld = ImageDraw.Draw(layer)
+    if rings:
+        for rr, w, a in ((1.75, 16, 190), (2.05, 10, 150), (2.3, 5, 120)):
+            ld.ellipse([cx - R * rr, cy - R * rr * 0.28, cx + R * rr, cy + R * rr * 0.28], outline=(223, 192, 124, a), width=w)
+        layer = layer.rotate(14, center=(cx, cy), resample=Image.BICUBIC)
+        img.paste(layer, (0, 0), layer)
+    sphere = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    sd = ImageDraw.Draw(sphere)
+    steps = 60
+    for i in range(steps):
+        t = i / (steps - 1)
+        r = R * (1 - 0.78 * t)
+        ox, oy = -0.38 * R * t, -0.38 * R * t
+        col = _mix(dark, base, min(1, t * 1.6)) if t < 0.625 else _mix(base, light, (t - 0.625) / 0.375)
+        sd.ellipse([cx + ox - r, cy + oy - r, cx + ox + r, cy + oy + r], fill=col + (255,))
+    mask = Image.new('L', (W, H), 0)
+    ImageDraw.Draw(mask).ellipse([cx - R, cy - R, cx + R, cy + R], fill=255)
+    img.paste(sphere, (0, 0), mask)
+    if rings:
+        front = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+        fd = ImageDraw.Draw(front)
+        for rr, w, a in ((1.75, 16, 190), (2.05, 10, 150), (2.3, 5, 120)):
+            fd.arc([cx - R * rr, cy - R * rr * 0.28, cx + R * rr, cy + R * rr * 0.28], 0, 180, fill=(223, 192, 124, a), width=w)
+        front = front.rotate(14, center=(cx, cy), resample=Image.BICUBIC)
+        img.paste(front, (0, 0), front)
+    fonts = ROOT / 'assets/fonts'
+    f_brand = ImageFont.truetype(str(fonts / 'SpaceGrotesk-Bold.ttf'), 40)
+    f_title = ImageFont.truetype(str(fonts / 'SpaceGrotesk-Bold.ttf'), 82)
+    f_small = ImageFont.truetype(str(fonts / 'DMSans-Medium.ttf'), 32)
+    d = ImageDraw.Draw(img)
+    d.text((70, 60), 'Astryl', font=f_brand, fill=(122, 162, 255))
+    words, lines, cur = title.split(), [], ''
+    for w in words:
+        t = (cur + ' ' + w).strip()
+        if d.textlength(t, font=f_title) > 600 and cur:
+            lines.append(cur)
+            cur = w
+        else:
+            cur = t
+    lines.append(cur)
+    y = 250 - (len(lines) - 1) * 46
+    for ln in lines[:3]:
+        d.text((70, y), ln, font=f_title, fill=(240, 244, 255))
+        y += 96
+    d.text((70, 540), 'Know your space  ·  astryl.space', font=f_small, fill=(160, 176, 214))
+    out = OUT / 'img/og'
+    out.mkdir(parents=True, exist_ok=True)
+    img.save(out / f'{name}.jpg', quality=82, optimize=True, progressive=False)
+
+
+def og_images():
+    for name, title in sorted(_OG.items()):
+        make_og(name, title)
+
+
+def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', scripts=True, extra_head='', ld=None):
     p = '../' * depth
     nav = ''.join(f'<a href="{p}{h}"{" class=on" if k == page else ""}>{label}</a>' for h, k, label in NAV)
     url = f'{SITE}/{canonical}' if canonical else SITE + '/'
+    og = og_name(canonical)
+    _OG.setdefault(og, title_en)
+    ogimg = f'{SITE}/img/og/{og}.jpg'
+    ldtag = ld_json(ld) if ld else ''
     return f'''<!doctype html>
 <html lang="en">
 <head>
@@ -365,10 +467,11 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 <meta name="description" content="{esc(desc_en)}">
 <link rel="canonical" href="{url}">
 <meta property="og:title" content="{esc(title_en)} · Astryl"><meta property="og:description" content="{esc(desc_en)}"><meta property="og:type" content="website"><meta property="og:url" content="{url}"><meta name="theme-color" content="#06080e">
+<meta property="og:image" content="{ogimg}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{esc(title_en)} · Astryl"><meta name="twitter:description" content="{esc(desc_en)}"><meta name="twitter:image" content="{ogimg}">
 <link rel="icon" href="{p}assets/icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="{p}assets/style.css?v={asset_v()}">
 <script>try{{var s=localStorage,l=s.getItem("astryl-lang")||((navigator.language||"en").slice(0,2)==="hi"?"hi":"en");document.documentElement.lang=l==="hi"?"hi":"en";if(s.getItem("astryl-theme")!=="light")document.documentElement.setAttribute("data-theme","dark")}}catch(e){{document.documentElement.setAttribute("data-theme","dark")}}if(window.IntersectionObserver&&!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))document.documentElement.classList.add("js")</script>
-{extra_head}</head>
+{ldtag}{extra_head}</head>
 <body data-page="{page}" data-root="{p}">
 <div class="stars"></div>
 <header class="top"><div class="wrap bar">
@@ -475,7 +578,7 @@ def body_page(b, i):
 <section class="blk">{moons}{dyn}</section>
 {pn}'''
     en_name = tr('en', NAME_KEY[idn])
-    write(f'body/{idn}.html', shell(en_name, tr('hi', NAME_KEY[idn]), 'planets', body, f'{en_name}: size, gravity, temperature, day and year length, atmosphere and facts. From the Astryl Solar System app.', depth=1, canonical=f'body/{idn}.html', extra_head=f'<script defer src="../assets/moons.js?v={asset_v()}"></script>' if idn in ('jupiter', 'saturn') else ''))
+    write(f'body/{idn}.html', shell(en_name, tr('hi', NAME_KEY[idn]), 'planets', body, f'{en_name}: size, gravity, temperature, day and year length, atmosphere and facts. From the Astryl Solar System app.', depth=1, canonical=f'body/{idn}.html', extra_head=f'<script defer src="../assets/moons.js?v={asset_v()}"></script>' if idn in ('jupiter', 'saturn') else '', ld=[{'@context': 'https://schema.org', '@type': 'WebPage', 'name': f'{en_name} · Astryl', 'url': f'{SITE}/body/{idn}.html', 'about': {'@type': 'Thing', 'name': en_name}, 'inLanguage': ['en', 'hi'], 'isPartOf': {'@type': 'WebSite', 'name': 'Astryl', 'url': SITE + '/'}}, {'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [{'@type': 'ListItem', 'position': 1, 'name': 'Astryl', 'item': SITE + '/'}, {'@type': 'ListItem', 'position': 2, 'name': 'Planets and moons', 'item': SITE + '/planets.html'}, {'@type': 'ListItem', 'position': 3, 'name': en_name, 'item': f'{SITE}/body/{idn}.html'}]}]))
 
 
 def orrery_svg():
@@ -539,7 +642,7 @@ def index_page():
 </section>
 <section class="blk"><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))"><div class="card" id="dailyFact"></div></div></section>
 <section class="blk"><h2>{bt("This website in numbers", "यह website आँकड़ों में")}</h2><div class="stats" id="stats"></div><p class="note" id="statsCountries"></p><p class="note" id="statsNote"></p></section>'''
-    write('index.html', shell('Explore the Universe', 'ब्रह्मांड खोजिए', 'home', body, 'Astryl: planets, moons, stars and space missions. Real positions and real numbers for any date, free and open source, in English and Hindi.', canonical='', extra_head=f'<script defer src="assets/cosmos.js?v={asset_v()}"></script>'))
+    write('index.html', shell('Explore the Universe', 'ब्रह्मांड खोजिए', 'home', body, 'Astryl: planets, moons, stars and space missions. Real positions and real numbers for any date, free and open source, in English and Hindi.', canonical='', extra_head=f'<script defer src="assets/cosmos.js?v={asset_v()}"></script>', ld=[{'@context': 'https://schema.org', '@type': 'SoftwareApplication', 'name': 'Astryl', 'applicationCategory': 'EducationalApplication', 'operatingSystem': 'Android', 'description': 'Planets, moons, stars and space missions with real positions and real numbers for any date, in English and Hindi. Free and open source.', 'url': SITE + '/', 'downloadUrl': SITE + '/get.html', 'license': 'https://www.gnu.org/licenses/agpl-3.0.html', 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}, 'inLanguage': ['en', 'hi']}, {'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Astryl', 'url': SITE + '/', 'inLanguage': ['en', 'hi']}]))
 
 
 def planets_page():
@@ -578,6 +681,7 @@ def simple_pages():
     write('quiz.html', shell('Planet quiz', 'ग्रहों की quiz', 'quiz', body, 'A planet and moon quiz with three levels, built from real planet data.', canonical='quiz.html'))
     # sky
     body = f'''<section class="blk"><h1>{bi("skyTitle")}</h1><div class="card" id="moonNow"></div></section>
+<section class="blk"><h2>{bt("Planets tonight", "आज रात के ग्रह")}</h2><div class="card" id="planetsTonight"></div></section>
 <section class="blk"><h2>{bi("moonCalendar")}</h2><div class="row"><button class="btn" id="calPrev">‹ {bi("previousMonth")}</button><b id="calTitle"></b><button class="btn" id="calNext">{bi("nextMonth")} ›</button></div><div class="moons" id="calGrid"></div><div id="calPhases" style="margin-top:14px"></div><p class="note">{bi("moonCalendarNote")}</p></section>
 <section class="blk"><h2>{bi("eventsTitle")}</h2><p class="sub">{bt("Meteor shower peaks for the next 12 months, with how bright the Moon will be on the peak night.", "अगले 12 महीनों में उल्कापात के चरम दिन, और उस रात चाँद कितना चमकीला होगा।")}</p><div class="grid" id="showers"></div></section>
 <section class="blk callout"><b>{bt("Want it for your city?", "अपने शहर के लिए चाहिए?")}</b> {bt("The app adds moonrise and sunset for your city, which planets you can see, eclipses, a live star map and a compass planet finder, all offline.", "App में आपके शहर के लिए चाँद-सूरज के उगने-डूबने के समय, कौन-से ग्रह दिखेंगे, ग्रहण, live star map और compass से ग्रह ढूँढना है, सब ऑफ़लाइन।")} <a href="get.html">{bt("Get the app", "App पाएँ")}</a></section>'''
@@ -654,6 +758,7 @@ def get_page():
     body = f'''<section class="blk"><h1>{bt("Get Astryl", "Astryl पाएँ")}</h1>
 <p class="sub">{bt("Astryl is only on GitHub Releases. There is no Play Store or other store listing, so nobody else controls it.", "Astryl सिर्फ़ GitHub Releases पर है। Play Store या किसी और store पर नहीं, इसलिए इस पर किसी और का control नहीं।")}</p>
 <div class="btns"><a class="btn primary dl-btn" href="{REPO}/releases/latest">⬇ {bt("Download the APK", "APK download करें")}</a><a class="btn" href="{REPO}/releases">{bt("All versions", "सभी versions")}</a></div><p class="note"><span class="ver"></span></p></section>
+<section class="blk"><div class="card" id="relCard"><p class="note">{bt("Loading the latest version…", "नया version देखा जा रहा है…")}</p></div></section>
 <section class="blk"><h2>{bt("Install", "Install कैसे करें")}</h2>
 <ol class="steps">
 <li>{bt("Download the APK from the button above on your phone.", "ऊपर के button से अपने फ़ोन में APK download करें।")}</li>
@@ -819,7 +924,8 @@ def main():
     index_page(); planets_page(); simple_pages(); maps_page(); get_page(); privacy_page(); account_page(); not_found()
     urls = ['', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'get.html', 'privacy.html', 'account.html'] + [f'body/{b["id"]}.html' for b in BODIES]
     (OUT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}/{u}</loc></url>\n' for u in urls) + '</urlset>\n', encoding='utf-8')
-    print('pages:', len(list(OUT.rglob('*.html'))))
+    og_images()
+    print('pages:', len(list(OUT.rglob('*.html'))), 'share images:', len(_OG))
 
 
 if __name__ == '__main__':
