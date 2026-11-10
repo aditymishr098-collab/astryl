@@ -193,8 +193,8 @@ class AtmosphereBar extends StatelessWidget {
   }
 }
 
-/// A rounded card with Cosmic Nebula glass finish, subtle gradient depth,
-/// and a soft ambient shadow in dark mode.
+/// A rounded card with Neon Cyber-Space glass finish, subtle cyan/violet
+/// gradient rim, and a deep ambient glow in dark mode.
 class SurfaceCard extends StatelessWidget {
   const SurfaceCard({
     super.key,
@@ -224,34 +224,41 @@ class SurfaceCard extends StatelessWidget {
                 end: Alignment.bottomRight,
                 colors: isDark
                     ? <Color>[
-                        Color.lerp(p.surfaceHigh, p.surface, 0.35)!,
+                        Color.lerp(p.surfaceHigh, p.accent, 0.08)!,
                         p.surface,
+                        Color.lerp(p.surface, p.orbit, 0.06)!,
                       ]
                     : <Color>[
                         p.surface,
-                        Color.lerp(p.surface, p.surfaceHigh, 0.25)!,
+                        Color.lerp(p.surface, p.surfaceHigh, 0.35)!,
                       ],
               )
             : null,
         borderRadius: BorderRadius.circular(24),
-        border: borderColor != null
-            ? Border.all(color: borderColor!, width: 1.5)
-            : Border.all(
-                color: isDark
-                    ? p.border.withValues(alpha: 0.85)
-                    : p.border,
-              ),
+        border: Border.all(
+          color: borderColor ??
+              (isDark
+                  ? p.accent.withValues(alpha: 0.28)
+                  : p.border),
+          width: borderColor != null ? 1.5 : 1.15,
+        ),
         boxShadow: isDark
             ? <BoxShadow>[
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.32),
+                  color: (borderColor ?? p.accent).withValues(alpha: 0.08),
+                  blurRadius: 20,
+                  spreadRadius: 0,
+                  offset: const Offset(0, 4),
+                ),
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.48),
                   blurRadius: 18,
                   offset: const Offset(0, 8),
                 ),
               ]
             : <BoxShadow>[
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.04),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),

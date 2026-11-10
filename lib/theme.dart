@@ -16,7 +16,9 @@ TextStyle headingStyle(double size, Color color,
       height: height,
     );
 
-/// Astryl's colours: Cosmic Nebula dark ("deep space") and a crisp light theme.
+/// Astryl's Neon Cyber-Space colour palette:
+/// Electric Aurora Cyan (#00F0FF), Cosmic Violet (#9D4EDD), Solar Gold (#FFB800),
+/// and True AMOLED Deep Void (#040611).
 @immutable
 class Palette extends ThemeExtension<Palette> {
   const Palette({
@@ -43,12 +45,14 @@ class Palette extends ThemeExtension<Palette> {
   final Color text;
   final Color muted;
 
-  /// Sol amber, for filled buttons and highlights.
+  /// Electric Aurora Cyan, for filled buttons, neon highlights and active states.
   final Color accent;
   final Color onAccent;
 
-  /// Amber that is readable as text on [background].
+  /// Electric Cyan readable as text on [background].
   final Color accentText;
+
+  /// Cosmic Violet for secondary neon gradients and orbital highlights.
   final Color orbit;
   final Color orbitLine;
   final Color good;
@@ -56,37 +60,37 @@ class Palette extends ThemeExtension<Palette> {
   final Color star;
 
   static const Palette dark = Palette(
-    background: Color(0xFF060A17),
-    surface: Color(0xFF10172E),
-    surfaceHigh: Color(0xFF182242),
-    border: Color(0xFF283660),
-    text: Color(0xFFF0F4FF),
-    muted: Color(0xFF98A6C8),
-    accent: Color(0xFFFFB02E),
-    onAccent: Color(0xFF060A17),
-    accentText: Color(0xFFFFB83D),
-    orbit: Color(0xFF6EA8FF),
-    orbitLine: Color(0xFF26335A),
-    good: Color(0xFF6CE59B),
-    bad: Color(0xFFFF8F70),
-    star: Color(0xFF6B7BA8),
+    background: Color(0xFF040611),
+    surface: Color(0xFF0C1226),
+    surfaceHigh: Color(0xFF151E3D),
+    border: Color(0xFF25386B),
+    text: Color(0xFFF2F7FF),
+    muted: Color(0xFF8EA4D2),
+    accent: Color(0xFF00E5FF),
+    onAccent: Color(0xFF030712),
+    accentText: Color(0xFF26F0FF),
+    orbit: Color(0xFFA855F7),
+    orbitLine: Color(0xFF233463),
+    good: Color(0xFF00F59B),
+    bad: Color(0xFFFF5E7E),
+    star: Color(0xFFFFB800),
   );
 
   static const Palette light = Palette(
-    background: Color(0xFFF6F4EF),
+    background: Color(0xFFF2F6FC),
     surface: Color(0xFFFFFFFF),
-    surfaceHigh: Color(0xFFEFEBE2),
-    border: Color(0xFFE4E0D6),
-    text: Color(0xFF141B33),
-    muted: Color(0xFF5A6480),
-    accent: Color(0xFFF5A524),
-    onAccent: Color(0xFF141B33),
-    accentText: Color(0xFFA85F00),
-    orbit: Color(0xFF3554C8),
-    orbitLine: Color(0xFFDCD7CB),
-    good: Color(0xFF1E7A3E),
-    bad: Color(0xFFB3401A),
-    star: Color(0x00000000),
+    surfaceHigh: Color(0xFFE5EEFA),
+    border: Color(0xFFD0DEF2),
+    text: Color(0xFF0B132B),
+    muted: Color(0xFF4F628E),
+    accent: Color(0xFF0099CC),
+    onAccent: Color(0xFFFFFFFF),
+    accentText: Color(0xFF0077AA),
+    orbit: Color(0xFF7E22CE),
+    orbitLine: Color(0xFFC7D7EE),
+    good: Color(0xFF0D9488),
+    bad: Color(0xFFE11D48),
+    star: Color(0xFFD97706),
   );
 
   static Palette of(BuildContext context) =>
@@ -160,7 +164,7 @@ ThemeData buildTheme(Brightness brightness) {
     primary: p.accent,
     onPrimary: p.onAccent,
     secondary: p.orbit,
-    onSecondary: isDark ? p.background : Colors.white,
+    onSecondary: Colors.white,
     error: p.bad,
     onError: p.background,
     surface: p.background,
@@ -195,12 +199,14 @@ ThemeData buildTheme(Brightness brightness) {
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         elevation: 0,
+        backgroundColor: p.accent,
+        foregroundColor: p.onAccent,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
         textStyle: const TextStyle(
           fontFamily: bodyFont,
           fontSize: 15,
           fontWeight: FontWeight.w700,
-          letterSpacing: 0.2,
+          letterSpacing: 0.3,
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
@@ -210,7 +216,7 @@ ThemeData buildTheme(Brightness brightness) {
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         foregroundColor: p.text,
-        side: BorderSide(color: p.border, width: 1.3),
+        side: BorderSide(color: p.accent.withValues(alpha: 0.45), width: 1.3),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
         textStyle: const TextStyle(
           fontFamily: bodyFont,
@@ -225,7 +231,7 @@ ThemeData buildTheme(Brightness brightness) {
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: isDark
-          ? const Color(0xFF0B1124).withValues(alpha: 0.85)
+          ? const Color(0xFF080D1F).withValues(alpha: 0.9)
           : p.surfaceHigh.withValues(alpha: 0.5),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
       border: OutlineInputBorder(
@@ -250,9 +256,9 @@ ThemeData buildTheme(Brightness brightness) {
     navigationBarTheme: NavigationBarThemeData(
       height: 68,
       backgroundColor: isDark
-          ? const Color(0xFF0D1429).withValues(alpha: 0.94)
+          ? const Color(0xFF090E22).withValues(alpha: 0.95)
           : Colors.white.withValues(alpha: 0.95),
-      indicatorColor: p.accent.withValues(alpha: isDark ? 0.18 : 0.22),
+      indicatorColor: p.accent.withValues(alpha: isDark ? 0.2 : 0.22),
       indicatorShape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),

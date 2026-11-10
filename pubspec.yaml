@@ -2,7 +2,7 @@ name: heliora
 description: "Astryl - know your space. Planets, moons, the sky and space missions, in 2D and 3D."
 publish_to: 'none'
 
-version: 1.28.0+42
+version: 1.29.0+43
 
 environment:
   sdk: ^3.5.0
