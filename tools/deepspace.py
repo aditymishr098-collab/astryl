@@ -5,6 +5,8 @@ the Event Horizon Telescope and LIGO papers; the sizes in the table are worked
 out here from the masses, not typed in.
 """
 
+from dskit import Kit, article_ld
+
 G = 6.674e-11        # m^3 kg^-1 s^-2
 C = 299792458.0      # m/s
 M_SUN = 1.989e30     # kg
@@ -70,6 +72,7 @@ def anatomy_svg(bt):
 # ------------------------------------------------------------------ the pages
 def black_hole_pages(h):
     bt, shell, esc, fmt, bi = h['bt'], h['shell'], h['esc'], h['fmt'], h['bi']
+    k = Kit(h)
     raw2 = h['raw2']
 
     def P(en, hi):
@@ -122,7 +125,11 @@ def black_hole_pages(h):
 
     def page(slug, body, en, hi, desc):
         meta = next(s for s in SLUGS if s[0] == slug)
-        html = shell(en, hi, 'bh', body, desc, depth=1, canonical=f'black-holes/{slug}.html', extra_head=f'<script defer src="../assets/learn.js?v={h["asset_v"]()}"></script>')
+        rel = k.keep_exploring('../', [('black-hole-lab.html', '🧪', 'Black hole lab', 'ब्लैक होल lab'), ('black-holes-101.html', '🎓', 'Black holes 101', 'Black holes 101'), ('galaxies.html', '🌌', 'Galaxies', 'Galaxies'), ('glossary.html', '📖', 'Glossary', 'शब्दकोश')])
+        body = body + rel
+        path = f'black-holes/{slug}.html'
+        ld = article_ld(h['SITE'], en, desc, path, [('Astryl', ''), ('Black holes', 'black-holes.html'), (en, path)])
+        html = shell(en, hi, 'bh', body, desc, depth=1, canonical=path, ld=ld, extra_head=f'<script defer src="../assets/learn.js?v={h["asset_v"]()}"></script>')
         return {'file': f'black-holes/{slug}.html', 'html': html}
 
     out = []
@@ -145,7 +152,7 @@ def black_hole_pages(h):
 <section class="blk callout"><b>{bt("Want to test yourself?", "खुद को परखना है?")}</b> {bt("Play the Daily 5 on the Quiz page, or open the app for the planets and the sky tonight.", "Quiz page पर Daily 5 खेलिए, या ग्रहों और आज रात के आसमान के लिए app खोलिए।")} <a href="quiz.html">{bt("Quiz", "Quiz")} →</a></section>'''
     out.append({'file': 'black-holes.html', 'html': shell('Black holes explained', 'ब्लैक होल, आसान भाषा में', 'bh', hub,
                 'Black holes explained simply: what they are, how they form, what happens if you fall in, the famous ones and how we photographed them. Free, in English and Hindi.',
-                canonical='black-holes.html')})
+                canonical='black-holes.html', ld=article_ld(h['SITE'], 'Black holes explained', 'Black holes explained simply: what they are, how they form, what happens if you fall in, the famous ones and how we photographed them.', 'black-holes.html', [('Astryl', ''), ('Black holes', 'black-holes.html')]))})
 
     # ---- 1. what is a black hole
     s = 'what-is-a-black-hole'

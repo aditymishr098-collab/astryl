@@ -455,6 +455,7 @@ c06c8c03	Jupiter has more than twice the mass of all the other planets put toget
 734e899d	Jupiter's gravity squeezes and stretches Io, and the heat from this powers its volcanoes.
 ee2bd724	Just like home
 4ef00a20	Keel
+9877d236	Keep exploring
 d626102c	Kind
 100e26cc	Know your space.
 b043a899	Known moons
@@ -687,6 +688,7 @@ b3531be8	Seven short pages
 7520fc6c	Shape groups are a simplification. Many galaxies do not fit neatly and astronomers use finer classes.
 9e98019a	Share my approximate location (app only, needs an account): when you make an account, the app asks Android for the location permission. If you allow it, this switch is on and the app sends Android's approximate location (a few kilometres) when you open it, at most once a day. The server rounds it to about 10 km and keeps only the latest place with its date, tied to your account. There is no location in the background. Switch it off in your account and the place is deleted from the server. If you say no to the permission, nothing is sent.
 c3981998	Share my country: the country from your phone's (or browser's) language and region setting, kept with that random number and shown only as a count per country. It is not worked out from your IP address or your location.
+1fe381cb	Share this page
 970da5f1	Shield
 7e774a36	Show me on the leaderboard (on by default): the Daily 5 leaderboard shows your username, score, right answers and time. Switch it off in your account (website or the You tab in the app) and your name no longer appears; your own rank stays visible to you.
 d9776f07	Sign up

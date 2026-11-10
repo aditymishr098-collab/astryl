@@ -48,6 +48,18 @@
   }
   applyTheme();
   document.addEventListener('click', function (e) {
+    var sh = e.target.closest ? e.target.closest('[data-share]') : null;
+    if (sh) {
+      var url = location.href.split('#')[0], ttl = document.title;
+      if (navigator.share) { navigator.share({ title: ttl, url: url }).catch(function () {}); }
+      else if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(function () {
+          var old = sh.innerHTML;
+          sh.innerHTML = '✓ <span class="t" lang="en">Link copied</span><span class="t" lang="hi">Link copy हो गया</span>';
+          setTimeout(function () { sh.innerHTML = old; }, 2000);
+        }).catch(function () {});
+      }
+    }
     var lb = e.target.closest ? e.target.closest('[data-lang]') : null;
     if (lb) { setLang(lb.getAttribute('data-lang')); var dd = $('#langDd'); if (dd) dd.removeAttribute('open'); }
     if (e.target.id === 'themeBtn') {

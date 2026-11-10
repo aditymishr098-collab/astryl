@@ -419,6 +419,67 @@ def _mix(a, b, t):
     return tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3))
 
 
+BH_PAGES = {'black-holes', 'black-hole-lab', 'black-holes-101', 'what-is-a-black-hole', 'how-black-holes-form', 'event-horizon-and-singularity',
+            'falling-into-a-black-hole', 'famous-black-holes', 'how-we-see-black-holes', 'black-hole-myths-and-big-questions'}
+GX_PAGES = {'galaxies', 'what-is-a-galaxy', 'the-milky-way', 'andromeda-galaxy', 'types-of-galaxies', 'the-local-group',
+            'galaxy-formation-and-collisions', 'galaxies-you-can-see'}
+COSMOS_PAGES = {'cosmic-scale', 'universe-timeline', 'glossary', 'deep-space-quiz'}
+
+
+def og_theme(name):
+    return 'bh' if name in BH_PAGES else 'gx' if name in GX_PAGES else 'cosmos' if name in COSMOS_PAGES else ''
+
+
+def _og_theme_art(img, theme, name):
+    """Black hole, spiral galaxy or star-cloud pictures for the share cards of the deep space pages."""
+    import random
+    from PIL import Image, ImageDraw, ImageFilter
+    W, H = img.size
+    cx, cy = 900, 315
+    rnd = random.Random('art' + theme)
+    if theme == 'bh':
+        glow = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+        gd = ImageDraw.Draw(glow)
+        gd.ellipse([cx - 230, cy - 230, cx + 230, cy + 230], fill=(255, 150, 50, 70))
+        gd.polygon([(cx - 14, cy), (cx - 60, 0), (cx + 60, 0), (cx + 14, cy)], fill=(125, 176, 255, 70))
+        gd.polygon([(cx - 14, cy), (cx - 60, H), (cx + 60, H), (cx + 14, cy)], fill=(125, 176, 255, 70))
+        img.paste(glow.filter(ImageFilter.GaussianBlur(28)), (0, 0), glow.filter(ImageFilter.GaussianBlur(28)))
+        disk = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+        dd = ImageDraw.Draw(disk)
+        for rr, w, a, col in ((3.1, 6, 110, (255, 140, 50)), (2.6, 12, 170, (255, 170, 70)), (2.15, 16, 220, (255, 196, 110)), (1.8, 12, 240, (255, 220, 150))):
+            dd.ellipse([cx - 120 * rr, cy - 120 * rr * 0.2, cx + 120 * rr, cy + 120 * rr * 0.2], outline=col + (a,), width=w)
+        disk = disk.rotate(-12, center=(cx, cy), resample=Image.BICUBIC)
+        img.paste(disk, (0, 0), disk)
+        pd = ImageDraw.Draw(img)
+        pd.ellipse([cx - 112, cy - 112, cx + 112, cy + 112], fill=(0, 0, 0), outline=(255, 226, 170), width=3)
+        front = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+        fd = ImageDraw.Draw(front)
+        for rr, w, a, col in ((2.15, 16, 220, (255, 196, 110)), (1.8, 12, 240, (255, 220, 150))):
+            fd.arc([cx - 120 * rr, cy - 120 * rr * 0.2, cx + 120 * rr, cy + 120 * rr * 0.2], 0, 180, fill=col + (a,), width=w)
+        front = front.rotate(-12, center=(cx, cy), resample=Image.BICUBIC)
+        img.paste(front, (0, 0), front)
+    else:
+        layer = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+        ld = ImageDraw.Draw(layer)
+        arms = 4 if theme == 'gx' else 2
+        for k in range(arms):
+            for i in range(900):
+                t = i / 900 * 6.0
+                r = 28 * math.exp(0.2126 * t) * (1 + rnd.uniform(-0.05, 0.05))
+                a = t + k * (2 * math.pi / arms)
+                x, y = cx + r * math.cos(a) + rnd.gauss(0, 7 + r * 0.04), cy + r * math.sin(a) * 0.62 + rnd.gauss(0, 5 + r * 0.03)
+                col = (170, 200, 255) if k % 2 == 0 else (190, 160, 255)
+                rad = rnd.choice((1, 1, 2, 2, 3))
+                ld.ellipse([x - rad, y - rad, x + rad, y + rad], fill=col + (rnd.randrange(90, 230),))
+        halo = layer.filter(ImageFilter.GaussianBlur(9))
+        img.paste(halo, (0, 0), halo)
+        img.paste(layer, (0, 0), layer)
+        core = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+        ImageDraw.Draw(core).ellipse([cx - 70, cy - 40, cx + 70, cy + 40], fill=(255, 215, 150, 190))
+        core = core.filter(ImageFilter.GaussianBlur(20))
+        img.paste(core, (0, 0), core)
+
+
 def make_og(name, title):
     """A 1200x630 picture for link previews: the world on the right, its name on the left."""
     import random
@@ -433,11 +494,14 @@ def make_og(name, title):
         x, y, r = rnd.randrange(W), rnd.randrange(H), rnd.choice((1, 1, 1, 2))
         c = rnd.randrange(110, 230)
         px.ellipse([x - r, y - r, x + r, y + r], fill=(c, c, min(255, c + 25)))
+    theme = og_theme(name)
+    if theme:
+        _og_theme_art(img, theme, name)
     body = next((b for b in BODIES if b['id'] == name), None)
     cols = [_hex(c) for c in (body['colors'] if body else ['#7aa2ff', '#3b5bd6', '#cfe0ff'])]
     base, dark, light = cols[0], _mix(cols[0], (0, 0, 0), 0.55), _mix(cols[-1] if len(cols) > 1 else cols[0], (255, 255, 255), 0.35)
     cx, cy, R = 900, 315, 185
-    rings = bool(body and body.get('rings')) or body is None
+    rings = bool(body and body.get('rings')) or (body is None and not theme)
     layer = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     ld = ImageDraw.Draw(layer)
     if rings:
@@ -456,7 +520,8 @@ def make_og(name, title):
         sd.ellipse([cx + ox - r, cy + oy - r, cx + ox + r, cy + oy + r], fill=col + (255,))
     mask = Image.new('L', (W, H), 0)
     ImageDraw.Draw(mask).ellipse([cx - R, cy - R, cx + R, cy + R], fill=255)
-    img.paste(sphere, (0, 0), mask)
+    if not theme:
+        img.paste(sphere, (0, 0), mask)
     if rings:
         front = Image.new('RGBA', (W, H), (0, 0, 0, 0))
         fd = ImageDraw.Draw(front)
@@ -520,6 +585,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 <meta name="description" content="{esc(desc_en)}">
 <link rel="canonical" href="{url}">
 <meta property="og:title" content="{esc(title_en)} · Astryl"><meta property="og:description" content="{esc(desc_en)}"><meta property="og:type" content="website"><meta property="og:url" content="{url}"><meta name="theme-color" content="#06080e">
+<meta property="og:site_name" content="Astryl"><meta name="robots" content="max-image-preview:large"><meta property="og:image:alt" content="{esc(title_en)} · Astryl">
 <meta property="og:image" content="{ogimg}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{esc(title_en)} · Astryl"><meta name="twitter:description" content="{esc(desc_en)}"><meta name="twitter:image" content="{ogimg}">
 <link rel="icon" href="{p}assets/icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="{p}assets/style.css?v={asset_v()}">
@@ -952,7 +1018,7 @@ def account_page():
 
 def not_found():
     body = f'''<section class="blk" style="text-align:center;padding:80px 0"><h1>404</h1><p class="sub" style="margin:auto">{bt("This page drifted off into space.", "यह page अंतरिक्ष में खो गया।")}</p><p><a class="btn primary" href="/index.html">{bt("Back home", "होम पर लौटें")}</a></p></section>'''
-    write('404.html', shell('Page not found', 'Page नहीं मिला', 'home', body, 'Page not found.', scripts=False).replace('href="index.html"', 'href="/index.html"').replace('href="assets/', 'href="/assets/'))
+    write('404.html', shell('Page not found', 'Page नहीं मिला', 'home', body, 'Page not found.', scripts=False, extra_head='<meta name="robots" content="noindex">').replace('href="index.html"', 'href="/index.html"').replace('href="assets/', 'href="/assets/'))
 
 
 def data_js():
@@ -997,7 +1063,7 @@ def main():
     for i, b in enumerate(BODIES):
         body_page(b, i)
     index_page(); planets_page(); simple_pages(); maps_page(); get_page(); privacy_page(); account_page(); not_found()
-    helpers = dict(bt=bt, bi=bi, raw2=raw2, shell=shell, write=write, esc=esc, fmt=fmt, asset_v=asset_v)
+    helpers = dict(bt=bt, bi=bi, raw2=raw2, shell=shell, write=write, esc=esc, fmt=fmt, asset_v=asset_v, SITE=SITE)
     deep = deepspace.build(helpers) + galaxies.build(helpers) + lab.build(helpers) + universe.build(helpers) + learn.build(helpers)
     urls = ['', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'get.html', 'privacy.html', 'account.html', 'black-holes.html', 'galaxies.html'] + deep + [f'body/{b["id"]}.html' for b in BODIES]
     (OUT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}/{u}</loc></url>\n' for u in urls) + '</urlset>\n', encoding='utf-8')

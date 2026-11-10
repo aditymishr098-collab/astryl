@@ -2,7 +2,7 @@
 import json
 from datetime import datetime, timedelta
 
-from dskit import Kit
+from dskit import Kit, article_ld
 
 LY = 9.4607e15
 AU = 1.495978707e11
@@ -147,7 +147,7 @@ def build(h):
 <script type="application/json" id="scaleData">{json.dumps(data, ensure_ascii=False)}</script>'''
     out.append(('cosmic-scale.html', h['shell']('Scale of the universe', 'ब्रह्मांड का पैमाना', 'scale', body,
                 'An interactive scale of the universe, from a proton to the observable universe in 18 steps, with how long light takes to cross each.',
-                canonical='cosmic-scale.html', extra_head=f'<script defer src="assets/scale.js?v={asset_v()}"></script>')))
+                canonical='cosmic-scale.html', ld=article_ld(h['SITE'], 'Scale of the universe', 'An interactive scale of the universe, from a proton to the observable universe.', 'cosmic-scale.html', [('Astryl', ''), ('Scale of the universe', 'cosmic-scale.html')]), extra_head=f'<script defer src="assets/scale.js?v={asset_v()}"></script>')))
 
     # ---------- timeline
     items = ''
@@ -178,7 +178,7 @@ def build(h):
 {note("Future dates are predictions from current physics and may change.", "भविष्य की तारीख़ें मौजूदा भौतिकी की भविष्यवाणियाँ हैं और बदल सकती हैं।")}</section>'''
     out.append(('universe-timeline.html', h['shell']('Timeline of the universe', 'ब्रह्मांड की समयरेखा', 'tline', body,
                 'The 13.8 billion year history of the universe squeezed into one calendar year: first stars, the Sun, life, dinosaurs and humans, and what comes next.',
-                canonical='universe-timeline.html')))
+                canonical='universe-timeline.html', ld=article_ld(h['SITE'], 'Timeline of the universe', 'The history of the universe squeezed into one calendar year.', 'universe-timeline.html', [('Astryl', ''), ('Timeline of the universe', 'universe-timeline.html')]))))
 
     # ---------- glossary
     terms = sorted(GLOSSARY, key=lambda g: g[0].lower())
