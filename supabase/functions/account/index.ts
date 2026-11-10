@@ -257,14 +257,39 @@ async function handle(req: Request, b: any): Promise<Response> {
       const ref = /^[a-z0-9.-]{1,80}$/.test(String(b.ref ?? "")) ? String(b.ref) : "";
       // The country comes from the request's edge location when it has one.
       const country = cleanCountry(req.headers.get("cf-ipcountry")) ?? "";
+      // A one-way code for "one visitor on one day", to count different
+      // people. It is made from the address, the UTC day and a secret that
+      // never leaves this function, so it cannot be turned back into an
+      // address, and it is different on every day. The address is not kept.
+      const visitor = ip === "unknown" ? null : await sha256Hex(
+        "astryl-visitor:" + todayUtc() + ":" + SERVICE_KEY + ":" + ip,
+      );
       const { error } = await admin.rpc("astryl_visit", {
         p_page: page,
         p_lang: lang,
         p_device: device,
         p_ref: ref,
         p_country: country,
+        p_visitor: visitor,
       });
       if (error) throw new Fail(500, "visit_failed");
+      return reply({ ok: true });
+    }
+
+    case "place": {
+      // A visitor agreed to share an approximate place (about 10 km). It is
+      // only added to a count for the day; nothing ties it to the visitor.
+      await hit("place:" + ip, 5, 3600);
+      const lat = Number(b.lat);
+      const lon = Number(b.lon);
+      if (!Number.isFinite(lat) || !Number.isFinite(lon) || Math.abs(lat) > 90 || Math.abs(lon) > 180) {
+        throw new Fail(400, "bad_location");
+      }
+      const { error } = await admin.rpc("astryl_place", {
+        p_lat: Math.round(lat * 10) / 10,
+        p_lon: Math.round(lon * 10) / 10,
+      });
+      if (error) throw new Fail(500, "place_failed");
       return reply({ ok: true });
     }
 

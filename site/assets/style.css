@@ -274,3 +274,9 @@ header.top{z-index:20}
 .whoami{display:flex;gap:16px;align-items:center}
 .whoami .btns{margin:8px 0}
 .whoami small{display:block}
+
+.sitebar{position:fixed;left:16px;right:16px;bottom:16px;z-index:15;display:flex;flex-direction:column;gap:10px;max-width:640px;margin:0 auto}
+.sitebar .bar{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;box-shadow:var(--shadow);font-size:14px;line-height:1.4}
+.sitebar .bar>div:first-child{flex:1 1 240px}
+.sitebar .bar b{display:block}
+.sitebar .bar .btns{margin:0}
