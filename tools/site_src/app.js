@@ -36,8 +36,8 @@
   function changed() { try { document.dispatchEvent(new Event('astryl-change')); } catch (e) {} }
   function onRender(f) { renderers.push(f); f(); }
 
-  var theme = store.get('astryl-theme');
-  function isDark() { return theme === 'dark'; }
+  var theme = store.get('astryl-theme') || 'dark';
+  function isDark() { return theme !== 'light'; }
   function applyTheme() {
     if (isDark()) document.documentElement.setAttribute('data-theme', 'dark');
     else document.documentElement.removeAttribute('data-theme');

@@ -3,8 +3,8 @@
 @font-face{font-family:"DM Sans";src:url(../fonts/DMSans-Bold.ttf);font-weight:700;font-display:swap}
 @font-face{font-family:"Space Grotesk";src:url(../fonts/SpaceGrotesk-Medium.ttf);font-weight:500;font-display:swap}
 @font-face{font-family:"Space Grotesk";src:url(../fonts/SpaceGrotesk-Bold.ttf);font-weight:700;font-display:swap}
-:root{--bg:#fbf7ee;--bg2:#f3ecdc;--card:#fffdf8;--card2:#f5efe1;--line:#e4dac4;--text:#12203d;--muted:#5a6580;--accent:#1b3a8a;--accent2:#2147b0;--on:#fff;--violet:#6a45d6;--good:#0b7a64;--bad:#b83a3a;--shadow:0 10px 30px rgba(40,50,90,.10)}
-:root[data-theme=dark]{--bg:#0b1226;--bg2:#101a36;--card:#141f40;--card2:#1a2850;--line:#25346a;--text:#eaf0ff;--muted:#98a6d0;--accent:#6f9bff;--accent2:#8ab4ff;--on:#07102a;--violet:#a58bff;--good:#3ccfb0;--bad:#ef6b6b;--shadow:0 10px 40px rgba(0,0,0,.35)}
+:root{--bg:#f4f6fa;--bg2:#e9eef6;--card:#ffffff;--card2:#e9eef6;--line:#d5dfee;--text:#0d1321;--muted:#56657f;--accent:#2b6cb0;--accent2:#2563eb;--on:#ffffff;--violet:#3b82f6;--good:#059669;--bad:#dc2626;--shadow:0 6px 18px rgba(13,19,33,.04)}
+:root[data-theme=dark]{--bg:#06080e;--bg2:#0c101a;--card:#10141f;--card2:#171d2b;--line:#222a3d;--text:#f3f6fc;--muted:#8c9bb5;--accent:#5b9bff;--accent2:#7db0ff;--on:#060a12;--violet:#6b8afd;--good:#34d399;--bad:#f87171;--shadow:0 8px 24px rgba(0,0,0,.35)}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.6 "DM Sans",system-ui,sans-serif;-webkit-text-size-adjust:100%}
 h1,h2,h3{font-family:"Space Grotesk","DM Sans",sans-serif;line-height:1.2;margin:0 0 .5em}
@@ -39,7 +39,7 @@ section.blk{padding:34px 0}
 .sub{color:var(--muted);max-width:40em;margin-top:-.2em}
 .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
 .grid.sm{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:var(--shadow)}
 a.card{color:var(--text);display:block;transition:transform .15s,border-color .15s}
 a.card:hover{transform:translateY(-3px);border-color:var(--accent2);text-decoration:none}
 .card h3{margin-bottom:.3em}.card p{margin:.2em 0;color:var(--muted);font-size:.95rem}
@@ -143,7 +143,7 @@ header.top.scrolled{box-shadow:0 6px 24px rgba(30,40,90,.10)}
 .btn.primary:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);transform:translateX(-120%);transition:transform .6s}
 .btn.primary:hover:after{transform:translateX(120%)}
 .tools .dlnav{padding:7px 14px;font-size:.9rem;border-radius:10px}
-.grad{background:linear-gradient(90deg,var(--accent),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+.grad{color:var(--accent2)}
 .hero2{display:grid;grid-template-columns:1.05fr .95fr;gap:24px;align-items:center;padding:44px 0 20px}
 @media(max-width:860px){.hero2{grid-template-columns:1fr;padding-top:24px}}
 .hero2 h1{font-size:clamp(2.5rem,7.5vw,4.6rem);line-height:1.04;letter-spacing:-.02em}
@@ -169,7 +169,7 @@ a.sc .go{margin-left:auto;color:var(--accent);font-size:1.2rem;transition:transf
 .duo .opts .opt:hover{background:var(--accent);color:var(--on);text-decoration:none}
 .moonrow{display:flex;gap:14px;align-items:center;margin:12px 0}.moonrow svg{width:64px;height:64px}
 section.blk>h2:first-child{position:relative;padding-bottom:.35em}
-section.blk>h2:first-child:after{content:"";display:block;width:44px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--violet));margin-top:.35em}
+section.blk>h2:first-child:after{content:"";display:block;width:36px;height:3px;border-radius:3px;background:var(--accent);margin-top:.35em}
 /* scroll reveal: only when scripts run and motion is allowed */
 html.js .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
 html.js .rv.in{opacity:1;transform:none}

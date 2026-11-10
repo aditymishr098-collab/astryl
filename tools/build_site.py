@@ -306,7 +306,7 @@ def planet_svg(b, size=100, uid=''):
 
 
 def logo_svg():
-    return '<svg viewBox="-60 -60 120 120" aria-hidden="true"><circle r="34" fill="#1b3a8a"/><ellipse rx="56" ry="17" fill="none" stroke="#6a45d6" stroke-width="6" transform="rotate(-24)"/><circle cx="46" cy="-22" r="7" fill="#1b3a8a"/></svg>'
+    return '<svg viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="28" fill="#10141f" stroke="#222a3d" stroke-width="4"/><g transform="rotate(-22 60 60)"><ellipse cx="60" cy="60" rx="44" ry="17" fill="none" stroke="#5b9bff" stroke-width="5" opacity=".75"/><circle cx="60" cy="60" r="19" fill="#f5a524"/><path d="M16,60 A44,17 0 0 0 104,60" fill="none" stroke="#5b9bff" stroke-width="5"/><circle cx="104" cy="60" r="7.5" fill="#7db0ff"/></g></svg>'
 
 
 def cons_svg(c):
@@ -364,10 +364,10 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 <title>{esc(title_en)} · Astryl</title>
 <meta name="description" content="{esc(desc_en)}">
 <link rel="canonical" href="{url}">
-<meta property="og:title" content="{esc(title_en)} · Astryl"><meta property="og:description" content="{esc(desc_en)}"><meta property="og:type" content="website"><meta property="og:url" content="{url}"><meta name="theme-color" content="#fbf7ee">
+<meta property="og:title" content="{esc(title_en)} · Astryl"><meta property="og:description" content="{esc(desc_en)}"><meta property="og:type" content="website"><meta property="og:url" content="{url}"><meta name="theme-color" content="#06080e">
 <link rel="icon" href="{p}assets/icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="{p}assets/style.css?v={asset_v()}">
-<script>try{{var s=localStorage,l=s.getItem("astryl-lang")||((navigator.language||"en").slice(0,2)==="hi"?"hi":"en");document.documentElement.lang=l==="hi"?"hi":"en";if(s.getItem("astryl-theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}}catch(e){{}}if(window.IntersectionObserver&&!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))document.documentElement.classList.add("js")</script>
+<script>try{{var s=localStorage,l=s.getItem("astryl-lang")||((navigator.language||"en").slice(0,2)==="hi"?"hi":"en");document.documentElement.lang=l==="hi"?"hi":"en";if(s.getItem("astryl-theme")!=="light")document.documentElement.setAttribute("data-theme","dark")}}catch(e){{document.documentElement.setAttribute("data-theme","dark")}}if(window.IntersectionObserver&&!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))document.documentElement.classList.add("js")</script>
 {extra_head}</head>
 <body data-page="{page}" data-root="{p}">
 <div class="stars"></div>
