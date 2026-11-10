@@ -193,13 +193,48 @@ def esc(s):
     return html.escape(s, quote=True)
 
 
+# More languages (see tools/i18n/README.md). English and Hindi are written by hand for every
+# text; the others are looked up by a short hash of the English text. A text with no
+# translation simply shows in English, because the CSS only hides the English span when a
+# translated span exists (data-tr).
+EXTRA_LANGS = ['es', 'pt', 'fr', 'ar']
+LANG_NAMES = {'en': 'English', 'hi': 'हिन्दी', 'es': 'Español', 'pt': 'Português', 'fr': 'Français', 'ar': 'العربية'}
+LANG_SHORT = {'en': 'EN', 'hi': 'हि', 'es': 'ES', 'pt': 'PT', 'fr': 'FR', 'ar': 'ع'}
+TRX = {}
+for _lg in EXTRA_LANGS:
+    _f = ROOT / 'tools' / 'i18n' / f'{_lg}.tsv'
+    TRX[_lg] = {}
+    if _f.exists():
+        for _line in _f.read_text(encoding='utf-8').splitlines():
+            if '\t' in _line and not _line.startswith('#'):
+                _k, _v = _line.split('\t', 1)
+                TRX[_lg][_k.strip()] = _v.strip()
+SOURCE = {}
+
+
+def xid(en):
+    return hashlib.md5(en.encode('utf-8')).hexdigest()[:8]
+
+
+def spans(en, hi):
+    h = xid(en)
+    SOURCE[h] = en
+    have = [lg for lg in EXTRA_LANGS if h in TRX[lg]]
+    attr = f' data-tr="{" ".join(have)}"' if have else ''
+    out = f'<span class="t" lang="en"{attr}>{esc(en)}</span><span class="t" lang="hi">{esc(hi)}</span>'
+    for lg in have:
+        out += f'<span class="t" lang="{lg}">{esc(TRX[lg][h])}</span>'
+    return out
+
+
 def bi(key, **p):
     """Both languages as two spans; CSS shows the one that matches <html lang>."""
-    return ''.join(f'<span class="t" lang="{lg}">{esc(tr(lg, key, **{k: (v[lg] if isinstance(v, dict) else v) for k, v in p.items()}))}</span>' for lg in ('en', 'hi'))
+    q = lambda lg: {k: (v[lg] if isinstance(v, dict) else v) for k, v in p.items()}
+    return spans(tr('en', key, **q('en')), tr('hi', key, **q('hi')))
 
 
 def bt(en, hi):
-    return f'<span class="t" lang="en">{esc(en)}</span><span class="t" lang="hi">{esc(hi)}</span>'
+    return spans(en, hi)
 
 
 def raw2(en, hi):
@@ -459,6 +494,10 @@ def og_images():
         make_og(name, title)
 
 
+def lang_menu():
+    return ''.join(f'<button type="button" data-lang="{lg}">{name}</button>' for lg, name in LANG_NAMES.items())
+
+
 def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', scripts=True, extra_head='', ld=None):
     p = '../' * depth
     def navlink(h, k, label):
@@ -484,14 +523,14 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 <meta property="og:image" content="{ogimg}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{esc(title_en)} · Astryl"><meta name="twitter:description" content="{esc(desc_en)}"><meta name="twitter:image" content="{ogimg}">
 <link rel="icon" href="{p}assets/icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="{p}assets/style.css?v={asset_v()}">
-<script>try{{var s=localStorage,l=s.getItem("astryl-lang")||((navigator.language||"en").slice(0,2)==="hi"?"hi":"en");document.documentElement.lang=l==="hi"?"hi":"en";if(s.getItem("astryl-theme")!=="light")document.documentElement.setAttribute("data-theme","dark")}}catch(e){{document.documentElement.setAttribute("data-theme","dark")}}if(window.IntersectionObserver&&!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))document.documentElement.classList.add("js")</script>
+<script>try{{var s=localStorage,A=["en","hi","es","pt","fr","ar"],l=s.getItem("astryl-lang");if(A.indexOf(l)<0){{l=(navigator.language||"en").slice(0,2);if(A.indexOf(l)<0)l="en"}}var d=document.documentElement;d.lang=l;d.dir=l==="ar"?"rtl":"ltr";if(s.getItem("astryl-theme")!=="light")d.setAttribute("data-theme","dark")}}catch(e){{document.documentElement.setAttribute("data-theme","dark")}}if(window.IntersectionObserver&&!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))document.documentElement.classList.add("js")</script>
 {ldtag}{extra_head}</head>
 <body data-page="{page}" data-root="{p}">
 <div class="stars"></div>
 <header class="top"><div class="wrap bar">
 <a class="brand" href="{p}index.html">{logo_svg()}Astryl</a>
 <nav class="links">{nav}</nav>
-<div class="tools"><button id="langBtn" aria-label="Language">हिन्दी</button><button id="themeBtn" aria-label="Theme">☾</button><span id="acctNav" class="acctnav"><a class="btn" href="{p}account.html?mode=login">{bt("Log in", "Login")}</a><a class="btn primary" href="{p}account.html">{bt("Sign up", "खाता बनाएँ")}</a></span></div>
+<div class="tools"><details class="more langdd" id="langDd"><summary id="langBtn" aria-label="Language">🌐 <b id="langCur">EN</b></summary><div class="morepanel" id="langMenu">{lang_menu()}</div></details><button id="themeBtn" aria-label="Theme">☾</button><span id="acctNav" class="acctnav"><a class="btn" href="{p}account.html?mode=login">{bt("Log in", "Login")}</a><a class="btn primary" href="{p}account.html">{bt("Sign up", "खाता बनाएँ")}</a></span></div>
 </div></header>
 <main class="wrap">
 {body}
@@ -919,7 +958,11 @@ def not_found():
 def data_js():
     data = dict(
         bodies=[{k: v for k, v in b.items()} for b in BODIES], orbits=ORBITS, factIds=FACT_IDS, milestones=MILESTONES, meteors=METEORS,
-        spacecraft=CRAFT, L=L)
+        spacecraft=CRAFT, L=dict(L))
+    for lg in EXTRA_LANGS:
+        f = ROOT / 'tools' / 'i18n' / f'arb_{lg}.json'
+        if f.exists():
+            data['L'][lg] = json.load(open(f, encoding='utf-8'))
     for b in data['bodies']:
         b['color'] = b['color']
     return 'window.ASTRYL=' + json.dumps(data, ensure_ascii=False, separators=(',', ':')) + ';'
@@ -959,7 +1002,8 @@ def main():
     urls = ['', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'get.html', 'privacy.html', 'account.html', 'black-holes.html', 'galaxies.html'] + deep + [f'body/{b["id"]}.html' for b in BODIES]
     (OUT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}/{u}</loc></url>\n' for u in urls) + '</urlset>\n', encoding='utf-8')
     og_images()
-    print('pages:', len(list(OUT.rglob('*.html'))), 'share images:', len(_OG))
+    (ROOT / 'tools' / 'i18n' / 'source.tsv').write_text('# id<TAB>English text of every translatable text on the site (generated by build_site.py)\n' + ''.join(f'{k}\t{v}\n' for k, v in sorted(SOURCE.items(), key=lambda kv: kv[1])), encoding='utf-8')
+    print('pages:', len(list(OUT.rglob('*.html'))), 'share images:', len(_OG), 'texts:', len(SOURCE), {lg: len(TRX[lg]) for lg in EXTRA_LANGS})
 
 
 if __name__ == '__main__':

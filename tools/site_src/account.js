@@ -162,12 +162,12 @@
       merged.quizBests = mb;
       var lc = store.get('astryl-lang'), th = store.get('astryl-theme');
       if (remoteWins) {
-        if ((remote.locale === 'en' || remote.locale === 'hi') && remote.locale !== (lc || '')) { store.set('astryl-lang', remote.locale); reload = true; }
+        if ((remote.locale === 'en' || remote.locale === 'hi') && (!lc || lc === 'en' || lc === 'hi') && remote.locale !== (lc || '')) { store.set('astryl-lang', remote.locale); reload = true; }
         if (remote.theme === 'dark' || remote.theme === 'light') {
           if (remote.theme !== th) { store.set('astryl-theme', remote.theme); reload = true; }
         } else if (remote.theme === 'system' && th) { store.del('astryl-theme'); reload = true; }
       } else {
-        if (lc) merged.locale = lc;
+        if (lc === 'en' || lc === 'hi') merged.locale = lc;
         if (th) merged.theme = th;
       }
       var done = function (ms) {
@@ -220,11 +220,11 @@
     function paint() {
       $('#gateTitle').textContent = w('welcomeTitle'); $('#gateSub').textContent = w('welcomeSub');
       $('#gateSkip').textContent = w('welcomeSkip') + ' →';
-      $('#gateLang').textContent = lang() === 'hi' ? 'English' : 'हिन्दी';
+      var cur = document.documentElement.lang, names = { en: 'English', hi: 'हिन्दी', es: 'Español', pt: 'Português', fr: 'Français', ar: 'العربية' }; $('#gateLang').textContent = '🌐 ' + (names[cur] || 'English');
     }
     paint(); onLang(paint);
     $('#gateSkip').addEventListener('click', function () { closeGate(true); });
-    $('#gateLang').addEventListener('click', function () { var b = $('#langBtn'); if (b) b.click(); });
+    $('#gateLang').addEventListener('click', function () { var api = window.ASTRYL_API, L = api && api.langs, i = L ? L.indexOf(document.documentElement.lang) : -1; if (L) api.setLang(L[(i + 1) % L.length]); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && gateEl) closeGate(true); });
   }
 
