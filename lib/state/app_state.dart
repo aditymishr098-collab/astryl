@@ -188,15 +188,45 @@ class AppState extends ChangeNotifier {
     return _update(_settings.copyWith(reminders: list));
   }
 
-  /// Keeps the best quiz score of a level ('easy', 'medium' or 'hard').
-  /// Returns true when [score] is a new best.
+  /// Keeps the best quiz score of a level ('easy', 'medium', 'hard' or 'blitz')
+  /// and updates the daily quiz play streak. Returns true when [score] is a new best.
   Future<bool> recordQuizScore(String level, int score) async {
-    if (score <= _settings.bestFor(level)) {
-      return false;
+    final bests = Map<String, int>.of(_settings.quizBests);
+    final isNewBest = score > _settings.bestFor(level);
+    if (isNewBest) {
+      bests[level] = score;
     }
-    final bests = Map<String, int>.of(_settings.quizBests)..[level] = score;
+    _bumpStreakMap(bests);
     await _update(_settings.copyWith(quizBests: bests));
-    return true;
+    return isNewBest;
+  }
+
+  /// Records that a Daily 5 or Blitz session was played today for streak tracking.
+  Future<void> recordDailyStreak() async {
+    final bests = Map<String, int>.of(_settings.quizBests);
+    _bumpStreakMap(bests);
+    await _update(_settings.copyWith(quizBests: bests));
+  }
+
+  void _bumpStreakMap(Map<String, int> bests) {
+    final now = DateTime.now().toUtc();
+    final todayNum = now.year * 10000 + now.month * 100 + now.day;
+    final yest = now.subtract(const Duration(days: 1));
+    final yestNum = yest.year * 10000 + yest.month * 100 + yest.day;
+    final lastDay = bests['lastDay'] ?? 0;
+    var streak = bests['streak'] ?? 0;
+    if (lastDay == todayNum) {
+      if (streak < 1) {
+        streak = 1;
+      }
+    } else if (lastDay == yestNum) {
+      streak = streak + 1;
+    } else {
+      streak = 1;
+    }
+    bests['streak'] = streak;
+    bests['lastDay'] = todayNum;
+    bests['games'] = (bests['games'] ?? 0) + 1;
   }
 
   /// Asks GitHub for the newest release each time the app opens. Returns it

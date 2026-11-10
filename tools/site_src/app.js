@@ -317,41 +317,193 @@
   function quizPage() {
     var root = $('#quiz'); if (!root) return;
     var level = null, qs = [], i = 0, score = 0, picked = null, done = false;
+    var used5050 = false, usedHint = false, hiddenIds = {}, showHint = false, history = [];
+    var isBlitz = false, blitzLives = 3, blitzCombo = 0, blitzMaxCombo = 0, blitzSec = 60, blitzPts = 0, blitzTimer = null;
+
     function qkey(k) { return 'q' + k.charAt(0).toUpperCase() + k.slice(1); }
     function best(l) { return parseInt(store.get('astryl-best-' + l) || '0', 10); }
+    function streakCount() { return parseInt(store.get('astryl-streak') || '0', 10); }
+    function gamesPlayed() { return parseInt(store.get('astryl-games') || '0', 10); }
+    function bumpStreak() {
+      var now = new Date();
+      var today = now.getUTCFullYear() * 10000 + (now.getUTCMonth() + 1) * 100 + now.getUTCDate();
+      var yestDate = new Date(now.getTime() - 86400000);
+      var yest = yestDate.getUTCFullYear() * 10000 + (yestDate.getUTCMonth() + 1) * 100 + yestDate.getUTCDate();
+      var last = parseInt(store.get('astryl-streak-day') || '0', 10);
+      var s = streakCount();
+      if (last === today) { if (s < 1) s = 1; }
+      else if (last === yest) s = s + 1;
+      else s = 1;
+      store.set('astryl-streak', String(s));
+      store.set('astryl-streak-day', String(today));
+      store.set('astryl-games', String(gamesPlayed() + 1));
+    }
+    function stopBlitzTimer() { if (blitzTimer) { clearInterval(blitzTimer); blitzTimer = null; } }
+
     function start(l) {
-      level = l; i = 0; score = 0; picked = null; done = false;
-      qs = shuffle(KINDS[l].slice()).slice(0, 10).map(function (k) {
-        var ans = answerFor(k), others = shuffle(distractors(k).filter(function (p) { return p.id !== ans.id; })).slice(0, 3);
-        return { k: k, ans: ans, opts: shuffle([ans].concat(others)) };
-      });
+      stopBlitzTimer();
+      level = l; isBlitz = (l === 'blitz'); i = 0; score = 0; picked = null; done = false;
+      used5050 = false; usedHint = false; hiddenIds = {}; showHint = false; history = [];
+      if (isBlitz) {
+        blitzLives = 3; blitzCombo = 0; blitzMaxCombo = 0; blitzSec = 60; blitzPts = 0;
+        var allK = KINDS.easy.concat(KINDS.medium).concat(KINDS.hard);
+        qs = shuffle(allK.slice()).map(function (k) {
+          var ans = answerFor(k), others = shuffle(distractors(k).filter(function (p) { return p.id !== ans.id; })).slice(0, 3);
+          return { k: k, ans: ans, opts: shuffle([ans].concat(others)) };
+        });
+        blitzTimer = setInterval(function () {
+          if (done) { stopBlitzTimer(); return; }
+          blitzSec--;
+          if (blitzSec <= 0) { blitzSec = 0; done = true; bumpStreak(); stopBlitzTimer(); }
+          draw();
+        }, 1000);
+      } else {
+        qs = shuffle(KINDS[l].slice()).slice(0, 10).map(function (k) {
+          var ans = answerFor(k), others = shuffle(distractors(k).filter(function (p) { return p.id !== ans.id; })).slice(0, 3);
+          return { k: k, ans: ans, opts: shuffle([ans].concat(others)) };
+        });
+      }
       draw();
     }
+
+    function explainBody(b) {
+      var capId = b.id.charAt(0).toUpperCase() + b.id.slice(1);
+      var f1 = t('fact' + capId + '1');
+      if (f1 === 'fact' + capId + '1') f1 = '';
+      var stats = bname(b.id) + ' — Diameter: ' + fmt(b.diam) + ' km · Gravity: ' + fmt(b.g, 1) + ' m/s² · Temp: ' + b.temp + '°C · Moons: ' + b.moons;
+      return f1 ? (stats + '<br><span class="note">' + f1 + '</span>') : stats;
+    }
+
+    function hintBody(b) {
+      var kindDesc = b.kind === 'star' ? 'Central star of the Solar System' : (b.kind === 'moon' ? 'Natural moon orbiting a planet' : (b.kind === 'dwarf' ? 'Dwarf planet in the Kuiper Belt' : (b.order <= 4 ? 'Inner rocky planet' : 'Outer giant planet')));
+      return '💡 Clue: ' + kindDesc + ' · Diameter ' + fmt(b.diam) + ' km · Mean temp ' + b.temp + '°C';
+    }
+
     function draw() {
       var h = '';
+      var st = streakCount(), gp = gamesPlayed(), bb = best('blitz'), eb = best('easy'), mb = best('medium'), hb = best('hard');
       if (!level) {
-        h = '<p class="sub">' + t('quizIntro') + '</p><p><b>' + t('quizChoose') + '</b></p><div class="grid">';
+        h += '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px">' +
+          '<p class="sub" style="margin:0">' + t('quizIntro') + '</p>' +
+          '<span class="badge" style="font-size:14px;padding:6px 14px;background:rgba(255,138,71,0.16);border:1px solid rgba(255,138,71,0.45);border-radius:999px;color:#ff9b60;font-weight:700">🔥 ' + st + ' day streak</span></div>';
+        // 60s Blitz Survival card
+        h += '<div class="card" style="margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border:1px solid rgba(255,138,71,0.4)">' +
+          '<div><h3 style="margin:0 0 4px">⚡ 60s Blitz Survival (3 ❤️)</h3><p class="note" style="margin:0">60 seconds · 3 lives · 2x/3x Combo Multiplier' + (bb > 0 ? ' · <b>Best: ' + bb + ' pts</b>' : '') + '</p></div>' +
+          '<button class="btn primary" data-lv="blitz">Play Blitz ⚡</button></div>';
+        // Space Badges / Achievements card
+        var badges = [
+          { ic: '🚀', nm: 'First Launch', ok: gp >= 1 || eb > 0 || mb > 0 || hb > 0 },
+          { ic: '🔥', nm: '3-Day Streak', ok: st >= 3 },
+          { ic: '🪐', nm: 'Solar Master (10/10)', ok: eb >= 10 || mb >= 10 || hb >= 10 },
+          { ic: '⚡', nm: 'Blitz Ace (500+)', ok: bb >= 500 },
+          { ic: '👑', nm: 'Hard Legend (8+/10)', ok: hb >= 8 }
+        ];
+        h += '<div class="card" style="margin-bottom:18px"><b style="font-size:14px;display:block;margin-bottom:10px">🏅 Space Badges & Achievements</b><div style="display:flex;flex-wrap:wrap;gap:8px">';
+        badges.forEach(function (b) {
+          h += '<span style="padding:5px 12px;border-radius:999px;font-size:12.5px;font-weight:600;border:1px solid ' + (b.ok ? 'rgba(92,200,255,0.5)' : 'var(--border)') + ';background:' + (b.ok ? 'rgba(92,200,255,0.12)' : 'transparent') + ';opacity:' + (b.ok ? '1' : '0.45') + '">' + b.ic + ' ' + b.nm + '</span>';
+        });
+        h += '</div></div>';
+        h += '<p><b>' + t('quizChoose') + '</b></p><div class="grid">';
         ['easy', 'medium', 'hard'].forEach(function (l) {
           h += '<button class="card" data-lv="' + l + '" style="text-align:left;cursor:pointer;font:inherit;color:var(--text)"><h3>' + t('level' + l.charAt(0).toUpperCase() + l.slice(1)) + '</h3><p>' + t('level' + l.charAt(0).toUpperCase() + l.slice(1) + 'Hint') + '</p><p>' + t('quizBest', { score: best(l) + '/10' }) + '</p></button>';
         });
         root.innerHTML = h + '</div>'; return;
       }
       if (done) {
-        var nb = score > best(level); if (nb) { store.set('astryl-best-' + level, String(score)); changed(); }
-        root.innerHTML = '<div class="card" style="text-align:center"><div class="life">' + score + ' / ' + qs.length + '</div><p>' + t('quizScore', { score: score, total: qs.length }) + '</p><p>' + (nb ? '<b class="ok">' + t('quizNewBest') + '</b>' : t('quizBest', { score: best(level) + '/10' })) + '</p><button class="btn primary" id="again">' + t('quizAgain') + '</button></div>'; return;
+        stopBlitzTimer();
+        var cmpVal = isBlitz ? blitzPts : score;
+        var nb = cmpVal > best(level);
+        if (nb) { store.set('astryl-best-' + level, String(cmpVal)); changed(); }
+        var gridStr = history.map(function (ok) { return ok ? '🟩' : '🟥'; }).join(' ');
+        root.innerHTML = '<div class="card" style="text-align:center">' +
+          '<div class="life">' + (isBlitz ? (blitzPts + ' pts') : (score + ' / ' + qs.length)) + '</div>' +
+          '<p>' + (isBlitz ? (score + ' correct · Max combo ' + blitzMaxCombo + 'x') : t('quizScore', { score: score, total: qs.length })) + '</p>' +
+          '<p>' + (nb ? '<b class="ok">' + t('quizNewBest') + '</b>' : t('quizBest', { score: best(level) + (isBlitz ? ' pts' : '/10') })) + '</p>' +
+          (gridStr ? '<div style="margin:14px auto;padding:10px 16px;display:inline-block;border-radius:12px;background:rgba(255,255,255,0.04);letter-spacing:2px;font-size:18px">' + gridStr + '</div>' : '') +
+          '<div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px">' +
+          '<button class="btn" id="shareQuiz">📤 Copy / Share Score Card</button>' +
+          '<button class="btn primary" id="again">' + t('quizAgain') + '</button></div></div>';
+        return;
       }
       var q = qs[i];
-      h = '<p class="note">' + t('quizProgress', { current: i + 1, total: qs.length }) + '</p><div class="progress"><i style="width:' + ((i + (picked ? 1 : 0)) / qs.length * 100) + '%"></i></div><h2>' + t(qkey(q.k)) + '</h2>';
-      q.opts.forEach(function (o) { var cls = picked ? (o.id === q.ans.id ? ' right' : (o.id === picked ? ' wrong' : '')) : ''; h += '<button class="opt' + cls + '" data-id="' + o.id + '"' + (picked ? ' disabled' : '') + '>' + bname(o.id) + '</button>'; });
-      if (picked) h += '<p><b class="' + (picked === q.ans.id ? 'ok' : 'no') + '">' + (picked === q.ans.id ? t('quizCorrect') : t('quizWrong', { answer: bname(q.ans.id) })) + '</b></p><button class="btn primary" id="next">' + (i + 1 === qs.length ? t('quizSeeResult') : t('quizNext')) + '</button>';
+      var mult = blitzCombo >= 5 ? 3 : (blitzCombo >= 3 ? 2 : 1);
+      var hearts = '❤️'.repeat(Math.max(0, blitzLives)) + '🖤'.repeat(Math.max(0, 3 - blitzLives));
+      h = '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">' +
+        '<p class="note" style="margin:0">' + (isBlitz ? ('⚡ Question #' + (i + 1)) : t('quizProgress', { current: i + 1, total: qs.length })) + '</p>' +
+        (isBlitz ? ('<div style="font-weight:700;font-size:13.5px">' + hearts + (mult > 1 ? ' <span style="color:#ff9b60">🔥 ' + mult + 'x</span>' : '') + ' · ⏱ ' + blitzSec + 's · ' + blitzPts + ' pts</div>') : '') +
+        '</div>' +
+        '<div class="progress" style="margin:8px 0 14px"><i style="width:' + (isBlitz ? (blitzSec / 60 * 100) : ((i + (picked ? 1 : 0)) / qs.length * 100)) + '%"></i></div>';
+      // Visual Mystery World Header + Lifelines bar
+      h += '<div class="card" style="padding:10px 14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">' +
+        '<div style="display:flex;align-items:center;gap:10px">' +
+        (picked ? ('<span class="dot" style="width:28px;height:28px;border-radius:50%;display:inline-block;background:' + q.ans.c1 + '"></span><b>' + bname(q.ans.id) + '</b>') : '<span style="width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:rgba(92,200,255,0.18);border:1px solid rgba(92,200,255,0.45);font-weight:800">?</span><span class="note">Identify the Cosmic World</span>') +
+        '</div><div style="display:flex;gap:8px">' +
+        '<button class="btn" id="life50" style="padding:5px 12px;font-size:12.5px"' + (used5050 || picked ? ' disabled' : '') + '>50:50</button>' +
+        '<button class="btn" id="lifeHint" style="padding:5px 12px;font-size:12.5px"' + (usedHint || picked ? ' disabled' : '') + '>💡 Hint</button>' +
+        '</div></div>';
+      if (showHint) {
+        h += '<div class="card" style="padding:10px 14px;margin-bottom:12px;border:1px solid rgba(92,200,255,0.4);background:rgba(92,200,255,0.09);font-size:13.5px">' + hintBody(q.ans) + '</div>';
+      }
+      h += '<h2>' + t(qkey(q.k)) + '</h2>';
+      q.opts.forEach(function (o) {
+        if (hiddenIds[o.id]) return;
+        var cls = picked ? (o.id === q.ans.id ? ' right' : (o.id === picked ? ' wrong' : '')) : '';
+        h += '<button class="opt' + cls + '" data-id="' + o.id + '"' + (picked ? ' disabled' : '') + '>' + bname(o.id) + '</button>';
+      });
+      if (picked) {
+        h += '<p><b class="' + (picked === q.ans.id ? 'ok' : 'no') + '">' + (picked === q.ans.id ? t('quizCorrect') : t('quizWrong', { answer: bname(q.ans.id) })) + '</b></p>' +
+          '<div class="card" style="margin:10px 0 14px;padding:12px 14px;font-size:13.5px;border-left:3px solid var(--accent)"><b>🔬 Cosmic Insight (Why?)</b><br>' + explainBody(q.ans) + '</div>' +
+          '<button class="btn primary" id="next">' + ((i + 1 === qs.length || (isBlitz && blitzLives <= 0)) ? t('quizSeeResult') : t('quizNext')) + '</button>';
+      }
       root.innerHTML = h;
     }
+
     root.addEventListener('click', function (e) {
-      var el = e.target.closest('[data-lv],[data-id],#next,#again'); if (!el) return;
+      var el = e.target.closest('[data-lv],[data-id],#next,#again,#life50,#lifeHint,#shareQuiz'); if (!el) return;
       if (el.dataset.lv) start(el.dataset.lv);
-      else if (el.id === 'again') { level = null; draw(); }
-      else if (el.id === 'next') { if (i + 1 < qs.length) { i++; picked = null; } else done = true; draw(); }
-      else if (el.dataset.id && !picked) { picked = el.dataset.id; if (picked === qs[i].ans.id) score++; draw(); }
+      else if (el.id === 'again') { stopBlitzTimer(); level = null; draw(); }
+      else if (el.id === 'life50' && !used5050 && !picked) {
+        used5050 = true;
+        var wrong = shuffle(qs[i].opts.filter(function (o) { return o.id !== qs[i].ans.id; })).slice(0, 2);
+        wrong.forEach(function (w) { hiddenIds[w.id] = true; });
+        draw();
+      }
+      else if (el.id === 'lifeHint' && !usedHint && !picked) {
+        usedHint = true; showHint = true; draw();
+      }
+      else if (el.id === 'shareQuiz') {
+        var grid = history.map(function (ok) { return ok ? '🟩' : '🟥'; }).join('');
+        var txt = '🪐 Astryl Space Quiz (' + (isBlitz ? ('60s Blitz: ' + blitzPts + ' pts') : (level + ': ' + score + '/' + qs.length)) + ')\n' + grid + '\nPlay at https://astryl.space/quiz/';
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(txt);
+          el.textContent = '✅ Copied to Clipboard!';
+        }
+      }
+      else if (el.id === 'next') {
+        if (isBlitz && blitzLives <= 0) { done = true; bumpStreak(); stopBlitzTimer(); }
+        else if (i + 1 < qs.length) { i++; picked = null; hiddenIds = {}; showHint = false; }
+        else { done = true; bumpStreak(); stopBlitzTimer(); }
+        draw();
+      }
+      else if (el.dataset.id && !picked) {
+        picked = el.dataset.id;
+        var ok = (picked === qs[i].ans.id);
+        history.push(ok);
+        if (ok) {
+          score++;
+          if (isBlitz) {
+            blitzCombo++;
+            if (blitzCombo > blitzMaxCombo) blitzMaxCombo = blitzCombo;
+            var m = blitzCombo >= 5 ? 3 : (blitzCombo >= 3 ? 2 : 1);
+            blitzPts += 100 * m;
+          }
+        } else if (isBlitz) {
+          blitzCombo = 0;
+          blitzLives--;
+          if (blitzLives <= 0) stopBlitzTimer();
+        }
+        draw();
+      }
     });
     onRender(draw);
   }

@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
+import '../core/format.dart';
 import '../core/quiz.dart';
 import '../data/planets.dart';
 import '../l10n/names.dart';
@@ -11,7 +14,8 @@ import '../widgets/common.dart';
 import '../widgets/fact_card.dart';
 
 /// Ten questions built from the planet and moon data, in three levels, plus
-/// the shared Daily 5 challenge and live leaderboard.
+/// the shared Daily 5 challenge, 60-second Blitz Survival mode, lifelines,
+/// scientific explanations, streak counter, and achievements.
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
 
@@ -27,6 +31,22 @@ class _QuizScreenState extends State<QuizScreen> {
   Planet? _picked;
   bool _finished = false;
   bool _newBest = false;
+
+  // Lifelines, visual clues, and answer history
+  bool _used5050 = false;
+  bool _usedHint = false;
+  Set<String> _hiddenOptionIds = <String>{};
+  bool _showHintBanner = false;
+  List<bool> _history = <bool>[];
+
+  // 60s Blitz Survival mode
+  bool _isBlitz = false;
+  int _blitzLives = 3;
+  int _blitzCombo = 0;
+  int _blitzMaxCombo = 0;
+  int _blitzSecondsLeft = 60;
+  int _blitzPoints = 0;
+  Timer? _blitzTimer;
 
   // Daily 5 & Leaderboard state
   bool _isDaily = false;
@@ -49,6 +69,7 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   void dispose() {
     _dailyTimer?.cancel();
+    _blitzTimer?.cancel();
     super.dispose();
   }
 
@@ -69,8 +90,10 @@ class _QuizScreenState extends State<QuizScreen> {
 
   void _start(QuizLevel level) {
     _dailyTimer?.cancel();
+    _blitzTimer?.cancel();
     setState(() {
       _isDaily = false;
+      _isBlitz = false;
       _level = level;
       _questions = buildQuiz(level: level);
       _index = 0;
@@ -78,6 +101,72 @@ class _QuizScreenState extends State<QuizScreen> {
       _picked = null;
       _finished = false;
       _newBest = false;
+      _used5050 = false;
+      _usedHint = false;
+      _hiddenOptionIds = <String>{};
+      _showHintBanner = false;
+      _history = <bool>[];
+    });
+  }
+
+  void _startBlitz() {
+    _dailyTimer?.cancel();
+    _blitzTimer?.cancel();
+    final rng = Random();
+    final allKinds = List<QuizKind>.of(QuizKind.values)..shuffle(rng);
+    final blitzQs = <QuizQuestion>[];
+    for (final k in allKinds) {
+      final ans = answerFor(k);
+      final others = distractorsFor(k).where((p) => p.id != ans.id).toList()
+        ..shuffle(rng);
+      final opts = <Planet>[ans, ...others.take(3)]..shuffle(rng);
+      blitzQs.add(QuizQuestion(k, opts, ans));
+    }
+    setState(() {
+      _isDaily = false;
+      _isBlitz = true;
+      _questions = blitzQs;
+      _index = 0;
+      _score = 0;
+      _picked = null;
+      _finished = false;
+      _newBest = false;
+      _blitzLives = 3;
+      _blitzCombo = 0;
+      _blitzMaxCombo = 0;
+      _blitzSecondsLeft = 60;
+      _blitzPoints = 0;
+      _used5050 = false;
+      _usedHint = false;
+      _hiddenOptionIds = <String>{};
+      _showHintBanner = false;
+      _history = <bool>[];
+    });
+    _blitzTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (!mounted || _finished) {
+        return;
+      }
+      if (_blitzSecondsLeft <= 1) {
+        _blitzTimer?.cancel();
+        _finishBlitz();
+      } else {
+        setState(() {
+          _blitzSecondsLeft--;
+        });
+      }
+    });
+  }
+
+  Future<void> _finishBlitz() async {
+    _blitzTimer?.cancel();
+    final best = await AppScope.read(context).recordQuizScore('blitz', _blitzPoints);
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _blitzSecondsLeft = 0;
+      _finished = true;
+      _newBest = best;
     });
   }
 
@@ -99,9 +188,11 @@ class _QuizScreenState extends State<QuizScreen> {
       }
     }
     _dailyTimer?.cancel();
+    _blitzTimer?.cancel();
     final nowMs = DateTime.now().millisecondsSinceEpoch;
     setState(() {
       _isDaily = true;
+      _isBlitz = false;
       _questions = buildDailyFive(dayUtc);
       _index = 0;
       _score = 0;
@@ -111,6 +202,11 @@ class _QuizScreenState extends State<QuizScreen> {
       _dailyStartMs = nowMs - elapsedMs;
       _dailyElapsedSec = elapsedMs ~/ 1000;
       _dailyPoints = 0;
+      _used5050 = false;
+      _usedHint = false;
+      _hiddenOptionIds = <String>{};
+      _showHintBanner = false;
+      _history = <bool>[];
     });
     _dailyTimer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!mounted || _finished) {
@@ -123,34 +219,89 @@ class _QuizScreenState extends State<QuizScreen> {
     });
   }
 
+  void _useFiftyFifty(QuizQuestion q) {
+    if (_used5050 || _picked != null) {
+      return;
+    }
+    final wrong = q.options
+        .where((o) => o.id != q.answer.id)
+        .map((o) => o.id)
+        .toList()
+      ..shuffle();
+    setState(() {
+      _used5050 = true;
+      _hiddenOptionIds = wrong.take(2).toSet();
+    });
+  }
+
+  void _useHint() {
+    if (_usedHint || _picked != null) {
+      return;
+    }
+    setState(() {
+      _usedHint = true;
+      _showHintBanner = true;
+    });
+  }
+
   void _pick(Planet planet) {
     if (_picked != null) {
       return;
     }
     final question = _questions![_index];
+    final right = planet.id == question.answer.id;
     setState(() {
       _picked = planet;
-      if (planet.id == question.answer.id) {
+      _history.add(right);
+      if (right) {
         _score++;
+        if (_isBlitz) {
+          _blitzCombo++;
+          if (_blitzCombo > _blitzMaxCombo) {
+            _blitzMaxCombo = _blitzCombo;
+          }
+          final mult = _blitzCombo >= 5 ? 3 : (_blitzCombo >= 3 ? 2 : 1);
+          _blitzPoints += 100 * mult;
+        }
+      } else if (_isBlitz) {
+        _blitzCombo = 0;
+        _blitzLives--;
       }
     });
+    if (_isBlitz && _blitzLives <= 0) {
+      _blitzTimer?.cancel();
+    }
   }
 
   Future<void> _next() async {
     final questions = _questions!;
+    if (_isBlitz && _blitzLives <= 0) {
+      await _finishBlitz();
+      return;
+    }
     if (_index + 1 < questions.length) {
       setState(() {
         _index++;
         _picked = null;
+        _hiddenOptionIds = <String>{};
+        _showHintBanner = false;
       });
       return;
     }
     _dailyTimer?.cancel();
+    _blitzTimer?.cancel();
+    if (_isBlitz) {
+      await _finishBlitz();
+      return;
+    }
     if (_isDaily) {
       final elapsedMs =
-          (DateTime.now().millisecondsSinceEpoch - _dailyStartMs).clamp(3000, 1800000);
+          (DateTime.now().millisecondsSinceEpoch - _dailyStartMs)
+              .clamp(3000, 1800000);
       var pts = dailyFivePoints(_score, elapsedMs);
-      final acct = AppScope.read(context).account;
+      final state = AppScope.read(context);
+      await state.recordDailyStreak();
+      final acct = state.account;
       if (acct.loggedIn) {
         final sub = await acct.dailySubmit(_score);
         if (sub != null && sub['points'] is int) {
@@ -178,6 +329,64 @@ class _QuizScreenState extends State<QuizScreen> {
     });
   }
 
+  String _hintFor(BuildContext context, Planet body, bool isHi) {
+    final kindStr = body.isStar
+        ? (isHi ? 'यह सौर मंडल का तारा है' : 'It is the star at the center of our solar system')
+        : body.isMoon
+            ? (isHi ? 'यह एक प्राकृतिक उपग्रह (चंद्रमा) है' : 'It is a natural moon orbiting a planet')
+            : body.kind == BodyKind.dwarf
+                ? (isHi ? 'यह एक बौना ग्रह (Dwarf Planet) है' : 'It is a dwarf planet in the Kuiper Belt')
+                : body.order <= 4
+                    ? (isHi ? 'यह एक चट्टानी भीतरी ग्रह (Rocky Planet) है' : 'It is an inner rocky planet')
+                    : (isHi ? 'यह एक विशाल बाहरी ग्रह (Giant Planet) है' : 'It is an outer giant planet');
+    final d = formatNumber(context, body.diameterKm);
+    return isHi
+        ? '💡 संकेत: $kindStr · व्यास $d km · औसत तापमान ${body.meanTempC}°C'
+        : '💡 Clue: $kindStr · Diameter $d km · Mean temp ${body.meanTempC}°C';
+  }
+
+  String _explanationFor(BuildContext context, QuizQuestion q, bool isHi) {
+    final l = context.l10n;
+    final b = q.answer;
+    final name = planetName(l, b);
+    final facts = bodyFacts(l, b.id);
+    final fact = facts.isNotEmpty ? facts.first : '';
+    final d = formatNumber(context, b.diameterKm);
+    final statLine = isHi
+        ? '$name — व्यास: $d km · गुरुत्वाकर्षण: ${b.gravity} m/s² · तापमान: ${b.meanTempC}°C · चंद्रमा: ${b.moons}'
+        : '$name — Diameter: $d km · Gravity: ${b.gravity} m/s² · Temp: ${b.meanTempC}°C · Moons: ${b.moons}';
+    return fact.isEmpty ? statLine : '$statLine\n$fact';
+  }
+
+  Future<void> _copyShareCard(BuildContext context, int total, bool isHi) async {
+    final l = context.l10n;
+    final grid = _history.map((ok) => ok ? '🟩' : '🟥').join();
+    final modeTitle = _isDaily
+        ? 'Daily 5'
+        : _isBlitz
+            ? '60s Blitz ($_blitzPoints pts)'
+            : quizLevelName(l, _level);
+    final text = '🪐 Astryl Space Quiz · $modeTitle\n'
+        'Score: $_score / ${_history.isEmpty ? total : _history.length} '
+        '${_isDaily ? "($_dailyPoints pts)" : ""}\n'
+        '$grid\n'
+        'Play at https://astryl.space/quiz/';
+    await Clipboard.setData(ClipboardData(text: text));
+    if (!context.mounted) {
+      return;
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          isHi
+              ? '📋 स्कोर कार्ड कॉपी हो गया! अब दोस्तों को भेजें।'
+              : '📋 Score card copied! Paste to challenge your friends.',
+        ),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final questions = _questions;
@@ -196,15 +405,53 @@ class _QuizScreenState extends State<QuizScreen> {
     final state = AppScope.of(context);
     final settings = state.settings;
     final isHi = Localizations.localeOf(context).languageCode == 'hi';
+    final streak = settings.quizBests['streak'] ?? 0;
+    final blitzBest = settings.quizBests['blitz'] ?? 0;
+
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
       children: <Widget>[
-        Text(l.quizTitle,
-            style: TextStyle(
-                fontFamily: headingFont,
-                fontSize: 26,
-                fontWeight: FontWeight.w700,
-                color: p.text)),
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: Text(l.quizTitle,
+                  style: TextStyle(
+                      fontFamily: headingFont,
+                      fontSize: 26,
+                      fontWeight: FontWeight.w700,
+                      color: p.text)),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: streak > 0
+                    ? const Color(0xFFFF8A47).withValues(alpha: 0.16)
+                    : p.surfaceHigh,
+                borderRadius: BorderRadius.circular(999),
+                border: Border.all(
+                  color: streak > 0
+                      ? const Color(0xFFFF8A47).withValues(alpha: 0.5)
+                      : p.border,
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const Text('🔥', style: TextStyle(fontSize: 15)),
+                  const SizedBox(width: 6),
+                  Text(
+                    isHi ? '$streak दिन स्ट्रीक' : '$streak day streak',
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w700,
+                      color: streak > 0 ? const Color(0xFFFF8A47) : p.muted,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
         const SizedBox(height: 16),
         _DailyFiveCard(
           isHi: isHi,
@@ -216,6 +463,20 @@ class _QuizScreenState extends State<QuizScreen> {
           onToggleTab: (all) => setState(() => _boardTabAll = all),
           onPlayDaily: _startDaily,
           onRefresh: _refreshBoard,
+        ),
+        const SizedBox(height: 14),
+        _BlitzModeCard(
+          isHi: isHi,
+          bestPoints: blitzBest,
+          onStart: _startBlitz,
+        ),
+        const SizedBox(height: 16),
+        _AchievementsCard(
+          isHi: isHi,
+          bests: settings.quizBests,
+          easyBest: settings.bestFor('easy'),
+          medBest: settings.bestFor('medium'),
+          hardBest: settings.bestFor('hard'),
         ),
         const SizedBox(height: 20),
         Text(l.quizChoose,
@@ -239,9 +500,12 @@ class _QuizScreenState extends State<QuizScreen> {
   Widget _question(BuildContext context, List<QuizQuestion> questions) {
     final l = context.l10n;
     final p = Palette.of(context);
+    final isHi = Localizations.localeOf(context).languageCode == 'hi';
     final question = questions[_index];
     final picked = _picked;
-    final last = _index + 1 == questions.length;
+    final last = (_index + 1 == questions.length) ||
+        (_isBlitz && _blitzLives <= 0);
+    final mult = _blitzCombo >= 5 ? 3 : (_blitzCombo >= 3 ? 2 : 1);
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
@@ -249,8 +513,12 @@ class _QuizScreenState extends State<QuizScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(l.quizProgress(_index + 1, questions.length),
-                style: TextStyle(fontSize: 13, color: p.muted)),
+            Text(
+              _isBlitz
+                  ? (isHi ? '⚡ सवाल #${_index + 1}' : '⚡ Question #${_index + 1}')
+                  : l.quizProgress(_index + 1, questions.length),
+              style: TextStyle(fontSize: 13, color: p.muted),
+            ),
             if (_isDaily)
               Text(
                 '⏱ $_dailyElapsedSec s',
@@ -258,6 +526,42 @@ class _QuizScreenState extends State<QuizScreen> {
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
                     color: p.accentText),
+              )
+            else if (_isBlitz)
+              Row(
+                children: <Widget>[
+                  Text(
+                    '❤️' * _blitzLives.clamp(0, 3) +
+                        '🖤' * (3 - _blitzLives.clamp(0, 3)),
+                    style: const TextStyle(fontSize: 13),
+                  ),
+                  const SizedBox(width: 8),
+                  if (mult > 1)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 7, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFF8A47).withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                      child: Text(
+                        '🔥 ${mult}x',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w800,
+                          color: Color(0xFFFF8A47),
+                        ),
+                      ),
+                    ),
+                  const SizedBox(width: 8),
+                  Text(
+                    '⏱ ${_blitzSecondsLeft}s · $_blitzPoints pts',
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: _blitzSecondsLeft <= 10 ? p.bad : p.accentText),
+                  ),
+                ],
               ),
           ],
         ),
@@ -265,13 +569,109 @@ class _QuizScreenState extends State<QuizScreen> {
         ClipRRect(
           borderRadius: BorderRadius.circular(999),
           child: LinearProgressIndicator(
-            value: (_index + (picked != null ? 1 : 0)) / questions.length,
+            value: _isBlitz
+                ? (_blitzSecondsLeft / 60.0).clamp(0.0, 1.0)
+                : (_index + (picked != null ? 1 : 0)) / questions.length,
             minHeight: 6,
-            color: p.accent,
+            color: _isBlitz && _blitzSecondsLeft <= 10 ? p.bad : p.accent,
             backgroundColor: p.surface,
           ),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: 16),
+        // Visual Mystery World Header + Lifelines bar
+        SurfaceCard(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          child: Row(
+            children: <Widget>[
+              if (picked != null)
+                PlanetBall(planet: question.answer, size: 42)
+              else
+                Container(
+                  width: 42,
+                  height: 42,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: <Color>[
+                        p.accent.withValues(alpha: 0.35),
+                        p.surfaceHigh,
+                      ],
+                    ),
+                    border: Border.all(color: p.accent.withValues(alpha: 0.5)),
+                  ),
+                  child: Text(
+                    '?',
+                    style: TextStyle(
+                      fontFamily: headingFont,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                      color: p.accentText,
+                    ),
+                  ),
+                ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  picked != null
+                      ? planetName(l, question.answer)
+                      : (isHi ? 'रहस्यमय लोक पहचाने' : 'Identify the Cosmic World'),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: p.text,
+                  ),
+                ),
+              ),
+              if (!_isDaily) ...<Widget>[
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    visualDensity: VisualDensity.compact,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                  ),
+                  onPressed: (_used5050 || picked != null)
+                      ? null
+                      : () => _useFiftyFifty(question),
+                  child: const Text('50:50',
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
+                ),
+                const SizedBox(width: 6),
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    visualDensity: VisualDensity.compact,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                  ),
+                  onPressed: (_usedHint || picked != null) ? null : _useHint,
+                  child: Text(isHi ? '💡 संकेत' : '💡 Hint',
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w700)),
+                ),
+              ],
+            ],
+          ),
+        ),
+        if (_showHintBanner) ...<Widget>[
+          const SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            decoration: BoxDecoration(
+              color: p.accent.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: p.accent.withValues(alpha: 0.35)),
+            ),
+            child: Text(
+              _hintFor(context, question.answer, isHi),
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: p.accentText,
+                height: 1.35,
+              ),
+            ),
+          ),
+        ],
+        const SizedBox(height: 18),
         Text(quizQuestionText(l, question.kind),
             style: TextStyle(
                 fontFamily: headingFont,
@@ -280,23 +680,24 @@ class _QuizScreenState extends State<QuizScreen> {
                 color: p.text,
                 height: 1.3)),
         const SizedBox(height: 20),
-        for (final option in question.options) ...<Widget>[
-          _OptionButton(
-            planet: option,
-            label: planetName(l, option),
-            state: picked == null
-                ? _OptionState.open
-                : option.id == question.answer.id
-                    ? _OptionState.right
-                    : option.id == picked.id
-                        ? _OptionState.wrong
-                        : _OptionState.idle,
-            onTap: () => _pick(option),
-          ),
-          const SizedBox(height: 10),
-        ],
+        for (final option in question.options)
+          if (!_hiddenOptionIds.contains(option.id)) ...<Widget>[
+            _OptionButton(
+              planet: option,
+              label: planetName(l, option),
+              state: picked == null
+                  ? _OptionState.open
+                  : option.id == question.answer.id
+                      ? _OptionState.right
+                      : option.id == picked.id
+                          ? _OptionState.wrong
+                          : _OptionState.idle,
+              onTap: () => _pick(option),
+            ),
+            const SizedBox(height: 10),
+          ],
         if (picked != null) ...<Widget>[
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Text(
             picked.id == question.answer.id
                 ? l.quizCorrect
@@ -305,6 +706,37 @@ class _QuizScreenState extends State<QuizScreen> {
               fontSize: 15,
               fontWeight: FontWeight.w600,
               color: picked.id == question.answer.id ? p.good : p.bad,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: p.surfaceHigh,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: p.border),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  isHi ? '🔬 वैज्ञानिक तथ्य (Why?)' : '🔬 Cosmic Insight (Why?)',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: p.accentText,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  _explanationFor(context, question, isHi),
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: p.text,
+                    height: 1.4,
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 16),
@@ -322,8 +754,13 @@ class _QuizScreenState extends State<QuizScreen> {
   Widget _result(BuildContext context, int total) {
     final l = context.l10n;
     final p = Palette.of(context);
-    final best = AppScope.of(context).settings.bestFor(_level.name);
+    final settings = AppScope.of(context).settings;
+    final best = _isBlitz
+        ? (settings.quizBests['blitz'] ?? 0)
+        : settings.bestFor(_level.name);
     final isHi = Localizations.localeOf(context).languageCode == 'hi';
+    final emojiGrid = _history.map((ok) => ok ? '🟩' : '🟥').join(' ');
+
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
       children: <Widget>[
@@ -334,21 +771,31 @@ class _QuizScreenState extends State<QuizScreen> {
                 fontWeight: FontWeight.w700,
                 color: p.text)),
         const SizedBox(height: 8),
-        Text(_isDaily ? 'Daily 5' : quizLevelName(l, _level),
+        Text(
+            _isDaily
+                ? 'Daily 5'
+                : _isBlitz
+                    ? (isHi ? '⚡ 60s ब्लिट्ज़ सर्वाइवल' : '⚡ 60s Blitz Survival')
+                    : quizLevelName(l, _level),
             style: TextStyle(
                 fontSize: 14, fontWeight: FontWeight.w600, color: p.muted)),
-        const SizedBox(height: 40),
+        const SizedBox(height: 32),
         Text(
-          '$_score / $total',
+          _isBlitz ? '$_blitzPoints pts' : '$_score / $total',
           textAlign: TextAlign.center,
           style: TextStyle(
               fontFamily: headingFont,
-              fontSize: 56,
+              fontSize: 52,
               fontWeight: FontWeight.w700,
               color: p.accentText),
         ),
         const SizedBox(height: 8),
-        Text(l.quizScore(_score, total),
+        Text(
+            _isBlitz
+                ? (isHi
+                    ? '$_score सही जवाब · अधिकतम कॉम्बो ${_blitzMaxCombo}x'
+                    : '$_score correct · Max combo ${_blitzMaxCombo}x')
+                : l.quizScore(_score, total),
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 18, color: p.text)),
         const SizedBox(height: 8),
@@ -366,26 +813,238 @@ class _QuizScreenState extends State<QuizScreen> {
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 14, color: _newBest ? p.good : p.muted)),
-        const SizedBox(height: 32),
+        if (_history.isNotEmpty) ...<Widget>[
+          const SizedBox(height: 18),
+          Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              decoration: BoxDecoration(
+                color: p.surfaceHigh,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: p.border),
+              ),
+              child: Text(
+                emojiGrid,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 18, letterSpacing: 2),
+              ),
+            ),
+          ),
+        ],
+        const SizedBox(height: 24),
+        FilledButton.icon(
+          style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(50)),
+          onPressed: () => _copyShareCard(context, total, isHi),
+          icon: const Icon(Icons.share_outlined, size: 19),
+          label: Text(
+            isHi ? 'स्कोर कार्ड कॉपी / शेयर करें' : 'Copy / Share Score Card',
+            style: const TextStyle(fontWeight: FontWeight.w700),
+          ),
+        ),
+        const SizedBox(height: 10),
         if (!_isDaily) ...<Widget>[
-          FilledButton(
+          FilledButton.tonal(
             style:
-                FilledButton.styleFrom(minimumSize: const Size.fromHeight(52)),
-            onPressed: () => _start(_level),
+                FilledButton.styleFrom(minimumSize: const Size.fromHeight(50)),
+            onPressed: () => _isBlitz ? _startBlitz() : _start(_level),
             child: Text(l.quizAgain),
           ),
           const SizedBox(height: 10),
         ],
         OutlinedButton(
           style:
-              OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(52)),
+              OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(50)),
           onPressed: () => setState(() {
             _questions = null;
             _isDaily = false;
+            _isBlitz = false;
           }),
           child: Text(l.quizChoose),
         ),
       ],
+    );
+  }
+}
+
+class _BlitzModeCard extends StatelessWidget {
+  const _BlitzModeCard({
+    required this.isHi,
+    required this.bestPoints,
+    required this.onStart,
+  });
+
+  final bool isHi;
+  final int bestPoints;
+  final VoidCallback onStart;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = Palette.of(context);
+    return SurfaceCard(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: <Widget>[
+          Container(
+            width: 46,
+            height: 46,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: const Color(0xFFFF8A47).withValues(alpha: 0.16),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: const Text('⚡', style: TextStyle(fontSize: 24)),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  isHi ? '60s ब्लिट्ज़ सर्वाइवल (3 ❤️)' : '60s Blitz Survival (3 ❤️)',
+                  style: TextStyle(
+                    fontFamily: headingFont,
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w700,
+                    color: p.text,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  isHi
+                      ? '60 सेकंड · 3 लाइफ · कॉम्बो बोनस (2x/3x)'
+                      : '60 seconds · 3 lives · Combo multiplier (2x/3x)',
+                  style: TextStyle(fontSize: 12.5, color: p.muted),
+                ),
+                if (bestPoints > 0) ...<Widget>[
+                  const SizedBox(height: 3),
+                  Text(
+                    isHi ? 'सर्वश्रेष्ठ: $bestPoints pts' : 'Best: $bestPoints pts',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: p.accentText,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          FilledButton(
+            onPressed: onStart,
+            child: Text(isHi ? 'खेलें' : 'Play'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AchievementsCard extends StatelessWidget {
+  const _AchievementsCard({
+    required this.isHi,
+    required this.bests,
+    required this.easyBest,
+    required this.medBest,
+    required this.hardBest,
+  });
+
+  final bool isHi;
+  final Map<String, int> bests;
+  final int easyBest;
+  final int medBest;
+  final int hardBest;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = Palette.of(context);
+    final games = bests['games'] ?? 0;
+    final streak = bests['streak'] ?? 0;
+    final blitz = bests['blitz'] ?? 0;
+    final badges = <({String icon, String title, bool unlocked})>[
+      (
+        icon: '🚀',
+        title: isHi ? 'प्रथम उड़ान' : 'First Launch',
+        unlocked: games >= 1 || easyBest > 0 || medBest > 0 || hardBest > 0,
+      ),
+      (
+        icon: '🔥',
+        title: isHi ? '3-दिन स्ट्रीक' : '3-Day Streak',
+        unlocked: streak >= 3,
+      ),
+      (
+        icon: '🪐',
+        title: isHi ? 'सौर मास्टर (10/10)' : 'Solar Master (10/10)',
+        unlocked: easyBest >= 10 || medBest >= 10 || hardBest >= 10,
+      ),
+      (
+        icon: '⚡',
+        title: isHi ? 'ब्लिट्ज़ चैंपियन (500+)' : 'Blitz Ace (500+)',
+        unlocked: blitz >= 500,
+      ),
+      (
+        icon: '👑',
+        title: isHi ? 'कठिन विजेता (8+/10)' : 'Hard Legend (8+/10)',
+        unlocked: hardBest >= 8,
+      ),
+    ];
+
+    return SurfaceCard(
+      padding: const EdgeInsets.all(14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            isHi ? '🏅 अंतरिक्ष पदक (Achievements)' : '🏅 Space Badges & Achievements',
+            style: TextStyle(
+              fontSize: 13.5,
+              fontWeight: FontWeight.w700,
+              color: p.text,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: <Widget>[
+              for (final b in badges)
+                Opacity(
+                  opacity: b.unlocked ? 1.0 : 0.42,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: b.unlocked
+                          ? p.accent.withValues(alpha: 0.14)
+                          : p.surfaceHigh,
+                      borderRadius: BorderRadius.circular(999),
+                      border: Border.all(
+                        color: b.unlocked
+                            ? p.accent.withValues(alpha: 0.45)
+                            : p.border,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text(b.icon, style: const TextStyle(fontSize: 13)),
+                        const SizedBox(width: 5),
+                        Text(
+                          b.title,
+                          style: TextStyle(
+                            fontSize: 11.5,
+                            fontWeight: FontWeight.w600,
+                            color: b.unlocked ? p.accentText : p.muted,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
