@@ -100,9 +100,6 @@ class _QuizScreenState extends State<QuizScreen> {
   List<String> _dailyPicks = <String>[];
   List<QuizQuestion>? _dailyServerQuestions;
   Timer? _dailyTimer;
-  /// 0 = today, 1 = this week, 2 = all time.
-  int _boardTab = 0;
-  bool _loadingBoard = true;
   Map<String, dynamic>? _boardData;
 
   @override
@@ -124,16 +121,12 @@ class _QuizScreenState extends State<QuizScreen> {
     if (!mounted) {
       return;
     }
-    setState(() => _loadingBoard = true);
     final data = await AppScope.read(context).account.dailyBoard();
     if (!mounted) {
       return;
     }
-      setState(() {
-        _boardData = data;
-        _loadingBoard = false;
-      });
-    }
+    setState(() => _boardData = data);
+  }
 
   Future<void> _toggleQuizBell(BuildContext context, bool isHi) async {
     final l = context.l10n;
@@ -519,61 +512,22 @@ class _QuizScreenState extends State<QuizScreen> {
     final state = AppScope.of(context);
     final settings = state.settings;
     final isHi = Localizations.localeOf(context).languageCode == 'hi';
-    final streak = settings.quizBests['streak'] ?? 0;
     final blitzBest = settings.quizBests['blitz'] ?? 0;
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
       children: <Widget>[
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: Text(l.quizTitle,
-                  style: TextStyle(
-                      fontFamily: headingFont,
-                      fontSize: 26,
-                      fontWeight: FontWeight.w700,
-                      color: p.text)),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: streak > 0
-                    ? const Color(0xFFFF8A47).withValues(alpha: 0.16)
-                    : p.surfaceHigh,
-                borderRadius: BorderRadius.circular(999),
-                border: Border.all(
-                  color: streak > 0
-                      ? const Color(0xFFFF8A47).withValues(alpha: 0.5)
-                      : p.border,
-                ),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const Text('🔥', style: TextStyle(fontSize: 15)),
-                  const SizedBox(width: 6),
-                  Text(
-                    isHi ? '$streak दिन स्ट्रीक' : '$streak day streak',
-                    style: TextStyle(
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w700,
-                      color: streak > 0 ? const Color(0xFFFF8A47) : p.muted,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+        Text(l.quizTitle,
+            style: TextStyle(
+                fontFamily: headingFont,
+                fontSize: 26,
+                fontWeight: FontWeight.w700,
+                color: p.text)),
         const SizedBox(height: 16),
         _DailyFiveCard(
           isHi: isHi,
           loggedIn: state.account.loggedIn,
-          username: state.account.username,
-          loading: _loadingBoard,
           boardData: _boardData,
-          boardTab: _boardTab,
           quizAlertOn: state.quizAlert,
           quizAlertTime: MaterialLocalizations.of(context).formatTimeOfDay(
             TimeOfDay(
@@ -582,26 +536,30 @@ class _QuizScreenState extends State<QuizScreen> {
             ),
           ),
           onToggleBell: () => _toggleQuizBell(context, isHi),
-          onToggleTab: (tab) => setState(() => _boardTab = tab),
           onPlayDaily: _startDaily,
-          onRefresh: _refreshBoard,
+          onLeaderboard: () => Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (_) => _LeaderboardScreen(
+                initial: _boardData,
+                username: state.account.username,
+              ),
+            ),
+          ),
+          onBadges: () => Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (_) => _BadgesScreen(
+                isHi: isHi,
+                stats: DailyStats.fromJson(_boardData?['me_stats']),
+                bests: settings.quizBests,
+                easyBest: settings.bestFor('easy'),
+                medBest: settings.bestFor('medium'),
+                hardBest: settings.bestFor('hard'),
+              ),
+            ),
+          ),
         ),
-        const SizedBox(height: 14),
-        _BlitzModeCard(
-          isHi: isHi,
-          bestPoints: blitzBest,
-          onStart: _startBlitz,
-        ),
-        const SizedBox(height: 16),
-        _AchievementsCard(
-          isHi: isHi,
-          bests: settings.quizBests,
-          easyBest: settings.bestFor('easy'),
-          medBest: settings.bestFor('medium'),
-          hardBest: settings.bestFor('hard'),
-        ),
-        const SizedBox(height: 20),
-        Text(l.quizChoose,
+        const SizedBox(height: 22),
+        Text(isHi ? 'अभ्यास' : 'Practice',
             style: TextStyle(
                 fontSize: 14, fontWeight: FontWeight.w600, color: p.muted)),
         const SizedBox(height: 8),
@@ -613,6 +571,17 @@ class _QuizScreenState extends State<QuizScreen> {
           ),
           const SizedBox(height: 10),
         ],
+        _PracticeTile(
+          leading: const Text('⚡', style: TextStyle(fontSize: 22)),
+          title: isHi ? '60 सेकंड ब्लिट्ज़' : '60s Blitz',
+          subtitle: isHi
+              ? '3 ❤️ · कॉम्बो बोनस (2x/3x)'
+              : '3 ❤️ · combo bonus (2x / 3x)',
+          best: blitzBest > 0
+              ? (isHi ? 'सर्वश्रेष्ठ: $blitzBest pts' : 'Best: $blitzBest pts')
+              : null,
+          onTap: _startBlitz,
+        ),
         const SizedBox(height: 10),
         FactCard.daily(DateTime.now()),
       ],
@@ -1005,80 +974,6 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 }
 
-class _BlitzModeCard extends StatelessWidget {
-  const _BlitzModeCard({
-    required this.isHi,
-    required this.bestPoints,
-    required this.onStart,
-  });
-
-  final bool isHi;
-  final int bestPoints;
-  final VoidCallback onStart;
-
-  @override
-  Widget build(BuildContext context) {
-    final p = Palette.of(context);
-    return SurfaceCard(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: <Widget>[
-          Container(
-            width: 46,
-            height: 46,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: const Color(0xFFFF8A47).withValues(alpha: 0.16),
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: const Text('⚡', style: TextStyle(fontSize: 24)),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  isHi ? '60s ब्लिट्ज़ सर्वाइवल (3 ❤️)' : '60s Blitz Survival (3 ❤️)',
-                  style: TextStyle(
-                    fontFamily: headingFont,
-                    fontSize: 16.5,
-                    fontWeight: FontWeight.w700,
-                    color: p.text,
-                  ),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  isHi
-                      ? '60 सेकंड · 3 लाइफ · कॉम्बो बोनस (2x/3x)'
-                      : '60 seconds · 3 lives · Combo multiplier (2x/3x)',
-                  style: TextStyle(fontSize: 12.5, color: p.muted),
-                ),
-                if (bestPoints > 0) ...<Widget>[
-                  const SizedBox(height: 3),
-                  Text(
-                    isHi ? 'सर्वश्रेष्ठ: $bestPoints pts' : 'Best: $bestPoints pts',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      color: p.accentText,
-                    ),
-                  ),
-                ],
-              ],
-            ),
-          ),
-          const SizedBox(width: 8),
-          FilledButton(
-            onPressed: onStart,
-            child: Text(isHi ? 'खेलें' : 'Play'),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _AchievementsCard extends StatelessWidget {
   const _AchievementsCard({
     required this.isHi,
@@ -1134,7 +1029,7 @@ class _AchievementsCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            isHi ? '🏅 अंतरिक्ष पदक (Achievements)' : '🏅 Space Badges & Achievements',
+            isHi ? '🏅 अभ्यास बैज' : '🏅 Practice badges',
             style: TextStyle(
               fontSize: 13.5,
               fontWeight: FontWeight.w700,
@@ -1192,44 +1087,35 @@ class _DailyFiveCard extends StatelessWidget {
   const _DailyFiveCard({
     required this.isHi,
     required this.loggedIn,
-    required this.username,
-    required this.loading,
     required this.boardData,
-    required this.boardTab,
     required this.quizAlertOn,
     required this.quizAlertTime,
     required this.onToggleBell,
-    required this.onToggleTab,
     required this.onPlayDaily,
-    required this.onRefresh,
+    required this.onLeaderboard,
+    required this.onBadges,
   });
 
   final bool isHi;
   final bool loggedIn;
-  final String username;
-  final bool loading;
   final Map<String, dynamic>? boardData;
-  final int boardTab;
   final bool quizAlertOn;
   final String quizAlertTime;
   final VoidCallback onToggleBell;
-  final ValueChanged<int> onToggleTab;
   final VoidCallback onPlayDaily;
-  final VoidCallback onRefresh;
+  final VoidCallback onLeaderboard;
+  final VoidCallback onBadges;
 
   @override
   Widget build(BuildContext context) {
     final p = Palette.of(context);
     final meToday = boardData?['me_today'] as Map<String, dynamic>?;
-    final playersToday = boardData?['players_today'] is int
-        ? boardData!['players_today'] as int
-        : 0;
-    final listRaw = boardData?[const <String>['today', 'week', 'all'][boardTab]]
-            as List<Object?>? ??
-        const <Object?>[];
-    final meWeek = boardData?['me_week'] as Map<String, dynamic>?;
-    final meAll = boardData?['me_all'] as Map<String, dynamic>?;
     final stats = DailyStats.fromJson(boardData?['me_stats']);
+    final streak = stats?.streak ?? 0;
+    final rank = meToday == null ? '' : ' · ${isHi ? 'आज' : 'Today'} #${meToday['rank']}';
+    final streakLine = streak > 0
+        ? (isHi ? '🔥 $streak दिन की streak$rank' : '🔥 $streak-day streak$rank')
+        : (isHi ? 'आज खेलकर streak शुरू कीजिए$rank' : 'Play today to start a streak$rank');
 
     return SurfaceCard(
       padding: const EdgeInsets.all(16),
@@ -1242,7 +1128,7 @@ class _DailyFiveCard extends StatelessWidget {
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  'Daily 5 · Leaderboard',
+                  'Daily 5',
                   style: TextStyle(
                     fontFamily: headingFont,
                     fontSize: 18,
@@ -1267,18 +1153,13 @@ class _DailyFiveCard extends StatelessWidget {
                       : (isHi ? 'रोज़ाना रिमाइंडर सेट करें' : 'Set daily quiz reminder'),
                   onPressed: onToggleBell,
                 ),
-              IconButton(
-                icon: Icon(Icons.refresh, size: 20, color: p.muted),
-                tooltip: isHi ? 'ताज़ा करें' : 'Refresh',
-                onPressed: onRefresh,
-              ),
             ],
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 4),
           Text(
             isHi
-                ? 'हर दिन सबके लिए वही 5 सवाल (UTC)। सही जवाब और तेज़ी से आपका स्कोर और रैंक बनती है।'
-                : 'The same 5 questions for everybody every day (UTC). Right answers and speed make your score.',
+                ? 'हर दिन सबके लिए वही 5 सवाल (UTC)।'
+                : 'The same 5 questions for everybody every day (UTC).',
             style: TextStyle(fontSize: 13, color: p.muted, height: 1.35),
           ),
           const SizedBox(height: 12),
@@ -1292,8 +1173,8 @@ class _DailyFiveCard extends StatelessWidget {
               ),
               child: Text(
                 isHi
-                    ? 'आज का नतीजा: ${meToday['points']} अंक · रैंक #${meToday['rank']} / $playersToday'
-                    : 'Today\'s result: ${meToday['points']} pts · Rank #${meToday['rank']} of $playersToday',
+                    ? 'आज का नतीजा: ${meToday['points']} अंक'
+                    : 'Today\'s result: ${meToday['points']} pts',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
@@ -1313,86 +1194,241 @@ class _DailyFiveCard extends StatelessWidget {
                 style: const TextStyle(fontWeight: FontWeight.w700),
               ),
             ),
-          if (!loggedIn) ...<Widget>[
-            const SizedBox(height: 6),
-            Text(
-              isHi
-                  ? 'लीडरबोर्ड में अपना नाम जोड़ने के लिए You टैब में लॉग इन करें।'
-                  : 'Log in on the You tab to save your score on the leaderboard.',
-              style: TextStyle(fontSize: 12, color: p.muted),
+          if (loggedIn) ...<Widget>[
+            const SizedBox(height: 10),
+            Text(streakLine,
+                style: TextStyle(
+                    fontSize: 13, fontWeight: FontWeight.w600, color: p.text)),
+          ],
+          const SizedBox(height: 10),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: onLeaderboard,
+                  icon: const Icon(Icons.leaderboard_outlined, size: 18),
+                  label: Text(isHi ? 'लीडरबोर्ड' : 'Leaderboard'),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: onBadges,
+                  icon: const Icon(Icons.military_tech_outlined, size: 18),
+                  label: Text(isHi ? 'मेरे बैज' : 'My badges'),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// The Daily 5 board on its own page: Today, This week and All time.
+class _LeaderboardScreen extends StatefulWidget {
+  const _LeaderboardScreen({required this.initial, required this.username});
+
+  final Map<String, dynamic>? initial;
+  final String username;
+
+  @override
+  State<_LeaderboardScreen> createState() => _LeaderboardScreenState();
+}
+
+class _LeaderboardScreenState extends State<_LeaderboardScreen> {
+  /// 0 = today, 1 = this week, 2 = all time.
+  int _tab = 0;
+  bool _loading = false;
+  Map<String, dynamic>? _data;
+
+  @override
+  void initState() {
+    super.initState();
+    _data = widget.initial;
+    WidgetsBinding.instance.addPostFrameCallback((_) => _refresh());
+  }
+
+  Future<void> _refresh() async {
+    if (!mounted) {
+      return;
+    }
+    setState(() => _loading = true);
+    final data = await AppScope.read(context).account.dailyBoard();
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _data = data ?? _data;
+      _loading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final p = Palette.of(context);
+    final isHi = Localizations.localeOf(context).languageCode == 'hi';
+    final data = _data;
+    final meToday = data?['me_today'] as Map<String, dynamic>?;
+    final playersToday =
+        data?['players_today'] is int ? data!['players_today'] as int : 0;
+    final list = data?[const <String>['today', 'week', 'all'][_tab]]
+            as List<Object?>? ??
+        const <Object?>[];
+    final myRank = _tab == 1
+        ? data?['me_week'] as Map<String, dynamic>?
+        : (_tab == 2 ? data?['me_all'] as Map<String, dynamic>? : null);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(isHi ? 'Daily 5 लीडरबोर्ड' : 'Daily 5 leaderboard'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            tooltip: isHi ? 'ताज़ा करें' : 'Refresh',
+            onPressed: _refresh,
+          ),
+        ],
+      ),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+        children: <Widget>[
+          if (meToday != null)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              margin: const EdgeInsets.only(bottom: 12),
+              decoration: BoxDecoration(
+                color: p.accent.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                isHi
+                    ? 'आज: ${meToday['points']} अंक · रैंक #${meToday['rank']} / $playersToday'
+                    : 'Today: ${meToday['points']} pts · Rank #${meToday['rank']} of $playersToday',
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: p.accentText),
+              ),
             ),
-          ],
-          if (loggedIn && stats != null) ...<Widget>[
-            const SizedBox(height: 12),
-            _StreakPanel(stats: stats, isHi: isHi),
-          ],
-          const SizedBox(height: 14),
           Wrap(
             spacing: 8,
             children: <Widget>[
               ChoiceChip(
                 label: Text(isHi ? 'आज' : 'Today'),
-                selected: boardTab == 0,
-                onSelected: (_) => onToggleTab(0),
+                selected: _tab == 0,
+                onSelected: (_) => setState(() => _tab = 0),
               ),
               ChoiceChip(
                 label: Text(isHi ? 'इस हफ़्ते' : 'This week'),
-                selected: boardTab == 1,
-                onSelected: (_) => onToggleTab(1),
+                selected: _tab == 1,
+                onSelected: (_) => setState(() => _tab = 1),
               ),
               ChoiceChip(
                 label: Text(isHi ? 'कुल (All time)' : 'All time'),
-                selected: boardTab == 2,
-                onSelected: (_) => onToggleTab(2),
+                selected: _tab == 2,
+                onSelected: (_) => setState(() => _tab = 2),
               ),
             ],
           ),
-          const SizedBox(height: 10),
-          if (loading)
+          const SizedBox(height: 12),
+          if (_loading && data == null)
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
+              padding: const EdgeInsets.symmetric(vertical: 24),
               child: Center(
                 child: SizedBox(
-                  width: 20,
-                  height: 20,
+                  width: 22,
+                  height: 22,
                   child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: p.accent,
-                  ),
+                      strokeWidth: 2, color: p.accent),
                 ),
               ),
             )
-          else if (listRaw.isEmpty)
+          else if (list.isEmpty)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Text(
                 isHi
-                    ? 'आज अभी कोई नहीं खेला — सबसे पहले आप खेलिए!'
-                    : 'Nobody on the board yet today. Be the first!',
+                    ? 'अभी कोई नहीं खेला। सबसे पहले आप खेलिए!'
+                    : 'Nobody on the board yet. Be the first!',
                 style: TextStyle(fontSize: 13, color: p.muted),
               ),
             )
           else
-            for (var i = 0; i < listRaw.length && i < 10; i++)
-              _BoardRow(
-                rank: i + 1,
-                entry: listRaw[i] as Map<String, dynamic>,
-                isMe: username.isNotEmpty &&
-                    (listRaw[i] as Map<String, dynamic>)['u'] == username,
-                showDays: boardTab != 0,
-                isHi: isHi,
-              ),
-          if (!loading && boardTab != 0 && (boardTab == 1 ? meWeek : meAll) != null)
-            Padding(
-              padding: const EdgeInsets.only(top: 6),
-              child: Text(
-                isHi
-                    ? '${boardTab == 1 ? 'इस हफ़्ते' : 'कुल'} आपकी रैंक: #${(boardTab == 1 ? meWeek : meAll)!['rank']}'
-                    : 'Your rank ${boardTab == 1 ? 'this week' : 'all time'}: #${(boardTab == 1 ? meWeek : meAll)!['rank']}',
-                style: TextStyle(
-                    fontSize: 13, fontWeight: FontWeight.w600, color: p.accentText),
+            SurfaceCard(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              child: Column(
+                children: <Widget>[
+                  for (var i = 0; i < list.length && i < 20; i++)
+                    _BoardRow(
+                      rank: i + 1,
+                      entry: list[i] as Map<String, dynamic>,
+                      isMe: widget.username.isNotEmpty &&
+                          (list[i] as Map<String, dynamic>)['u'] ==
+                              widget.username,
+                      showDays: _tab != 0,
+                      isHi: isHi,
+                    ),
+                ],
               ),
             ),
+          if (myRank != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Text(
+                isHi
+                    ? '${_tab == 1 ? 'इस हफ़्ते' : 'कुल'} आपकी रैंक: #${myRank['rank']}'
+                    : 'Your rank ${_tab == 1 ? 'this week' : 'all time'}: #${myRank['rank']}',
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: p.accentText),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// The streak, the Daily 5 badges and the practice badges on one page.
+class _BadgesScreen extends StatelessWidget {
+  const _BadgesScreen({
+    required this.isHi,
+    required this.stats,
+    required this.bests,
+    required this.easyBest,
+    required this.medBest,
+    required this.hardBest,
+  });
+
+  final bool isHi;
+  final DailyStats? stats;
+  final Map<String, int> bests;
+  final int easyBest;
+  final int medBest;
+  final int hardBest;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = stats;
+    return Scaffold(
+      appBar: AppBar(title: Text(isHi ? 'मेरे बैज' : 'My badges')),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+        children: <Widget>[
+          if (s != null) ...<Widget>[
+            _StreakPanel(stats: s, isHi: isHi),
+            const SizedBox(height: 14),
+          ],
+          _AchievementsCard(
+            isHi: isHi,
+            bests: bests,
+            easyBest: easyBest,
+            medBest: medBest,
+            hardBest: hardBest,
+          ),
         ],
       ),
     );
@@ -1605,6 +1641,76 @@ class _OptionButton extends StatelessWidget {
   }
 }
 
+/// One row of the quiz start page: an icon, a title, a line and the best.
+class _PracticeTile extends StatelessWidget {
+  const _PracticeTile({
+    required this.leading,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+    this.best,
+  });
+
+  final Widget leading;
+  final String title;
+  final String subtitle;
+  final String? best;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = Palette.of(context);
+    return InkWell(
+      borderRadius: BorderRadius.circular(22),
+      onTap: onTap,
+      child: SurfaceCard(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        child: Row(
+          children: <Widget>[
+            Container(
+              width: 42,
+              height: 42,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: p.surfaceHigh,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: leading,
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(title,
+                      style: TextStyle(
+                          fontFamily: headingFont,
+                          fontSize: 16.5,
+                          fontWeight: FontWeight.w700,
+                          color: p.text)),
+                  const SizedBox(height: 2),
+                  Text(subtitle,
+                      style: TextStyle(fontSize: 13, color: p.muted)),
+                  if (best != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: Text(best!,
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: p.accentText)),
+                    ),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right_rounded, color: p.muted, size: 22),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 /// One of the three level buttons on the quiz start page.
 class _LevelCard extends StatelessWidget {
   const _LevelCard({
@@ -1626,52 +1732,12 @@ class _LevelCard extends StatelessWidget {
       QuizLevel.medium => Icons.looks_two_outlined,
       QuizLevel.hard => Icons.looks_3_outlined,
     };
-    return InkWell(
-      borderRadius: BorderRadius.circular(22),
+    return _PracticeTile(
+      leading: Icon(icon, color: p.accentText, size: 24),
+      title: quizLevelName(l, level),
+      subtitle: quizLevelHint(l, level),
+      best: best > 0 ? l.quizBest(best) : null,
       onTap: onTap,
-      child: SurfaceCard(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        child: Row(
-          children: <Widget>[
-            Container(
-              width: 42,
-              height: 42,
-              decoration: BoxDecoration(
-                color: p.surfaceHigh,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(icon, color: p.accentText, size: 24),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(quizLevelName(l, level),
-                      style: TextStyle(
-                          fontFamily: headingFont,
-                          fontSize: 16.5,
-                          fontWeight: FontWeight.w700,
-                          color: p.text)),
-                  const SizedBox(height: 2),
-                  Text(quizLevelHint(l, level),
-                      style: TextStyle(fontSize: 13, color: p.muted)),
-                  if (best > 0)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 2),
-                      child: Text(l.quizBest(best),
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: p.accentText)),
-                    ),
-                ],
-              ),
-            ),
-            Icon(Icons.chevron_right_rounded, color: p.muted, size: 22),
-          ],
-        ),
-      ),
     );
   }
 }
