@@ -69,9 +69,9 @@ Future<bool> askForLocation(BuildContext context) async {
 
 enum _Mode { create, login, recover }
 
-/// Make an account, log in, or reset the password. Shown once when the app
-/// is first opened (with "Skip now") and again from Settings, featuring a
-/// live animated starfield and floating orbital hero portal.
+/// Make an account, log in, or reset the password. The app opens on it until
+/// somebody is logged in (there is no "skip"), and it is shown again after
+/// log out, featuring a live animated starfield and floating orbital portal.
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key, this.firstRun = false});
 
@@ -340,35 +340,6 @@ class _AccountScreenState extends State<AccountScreen>
                           ),
                         ),
                       ),
-                      if (widget.firstRun) ...<Widget>[
-                        const SizedBox(height: 16),
-                        FadeSlideIn(
-                          delay: const Duration(milliseconds: 200),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: <Widget>[
-                              OutlinedButton.icon(
-                                style: OutlinedButton.styleFrom(
-                                  minimumSize: const Size.fromHeight(50),
-                                ),
-                                onPressed: _busy
-                                    ? null
-                                    : () => _account.markPromptDone(),
-                                icon: const Icon(Icons.explore_outlined,
-                                    size: 19),
-                                label: Text(l.acctSkip),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                l.acctSkipNote,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 12, color: p.muted, height: 1.4),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
                     ],
                   ],
                 ),
@@ -1130,6 +1101,7 @@ class _AccountHubScreenState extends State<AccountHubScreen> {
   Future<void> _delete(AccountState account) async {
     final l = context.l10n;
     final messenger = ScaffoldMessenger.of(context);
+    final nav = Navigator.of(context);
     final controller = TextEditingController();
     final password = await showDialog<String>(
       context: context,
@@ -1172,6 +1144,7 @@ class _AccountHubScreenState extends State<AccountHubScreen> {
     }
     try {
       await account.deleteAccount(password);
+      nav.popUntil((route) => route.isFirst);
       messenger.showSnackBar(SnackBar(content: Text(l.acctDeleted)));
     } on AccountException catch (e) {
       messenger.showSnackBar(SnackBar(content: Text(accountErrorText(l, e))));
@@ -1382,7 +1355,11 @@ class _AccountHubScreenState extends State<AccountHubScreen> {
                       ListTile(
                         title: Text(l.acctLogOut,
                             style: TextStyle(color: p.text)),
-                        onTap: account.logOut,
+                        onTap: () async {
+                          final nav = Navigator.of(context);
+                          await account.logOut();
+                          nav.popUntil((route) => route.isFirst);
+                        },
                       ),
                       const Divider(height: 1),
                       ListTile(
