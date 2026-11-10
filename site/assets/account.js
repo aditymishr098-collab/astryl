@@ -38,6 +38,7 @@
       boardHidden: 'You are hidden from the leaderboard. You can change this in your account.', boardBack: 'Come back tomorrow for 5 new questions.',
       boardTitleLb: 'Leaderboard', boardDays: '{d} days', boardErr: 'Could not reach the server. Try again in a moment.', boardReview: 'Your answers', boardYours: 'You',
       boardShow: 'Show me on the leaderboard', boardShowNote: 'Shows only your username and score. On by default; switch it off to hide.',
+      boardShare: 'Share as a picture', boardShareText: 'I scored {p} points on today\'s Astryl Daily 5!',
       boardWeek: 'This week', boardRankWeek: 'Your rank this week: {r}', streakNow: '{n}-day streak', streakNone: 'No streak yet. Play today to start one.', streakBest: 'Best: {n}',
       badgesTitle: 'Badges', bdFirst: 'First run', bdS3: '3-day streak', bdS7: '7-day streak', bdS30: '30-day streak', bdPerfect: 'Perfect 5 of 5', bdP10: '10 runs', bdP50: '50 runs',
       welcomeTitle: 'Welcome to Astryl', welcomeSub: 'Make a free account to keep your favourites, quiz scores and rank in step between the app and this website. Or just look around.', welcomeSkip: 'Continue without account',
@@ -57,6 +58,7 @@
       boardHidden: 'आप leaderboard से छिपे हैं। इसे अपने खाते में बदल सकते हैं।', boardBack: 'कल 5 नए सवालों के लिए आइए।',
       boardTitleLb: 'Leaderboard', boardDays: '{d} दिन', boardErr: 'Server से संपर्क नहीं हो पाया। थोड़ी देर में फिर कोशिश कीजिए।', boardReview: 'आपके जवाब', boardYours: 'आप',
       boardShow: 'मुझे leaderboard में दिखाएँ', boardShowNote: 'सिर्फ़ आपका username और score दिखता है। डिफ़ॉल्ट रूप से चालू; छिपने के लिए बंद कीजिए।',
+      boardShare: 'तस्वीर बनाकर share करें', boardShareText: 'मैंने आज Astryl के Daily 5 में {p} अंक लिए!',
       boardWeek: 'इस हफ़्ते', boardRankWeek: 'इस हफ़्ते आपकी रैंक: {r}', streakNow: '{n} दिन की streak', streakNone: 'अभी कोई streak नहीं। आज खेलकर शुरू कीजिए।', streakBest: 'सबसे लंबी: {n}',
       badgesTitle: 'Badges', bdFirst: 'पहला खेल', bdS3: '3 दिन की streak', bdS7: '7 दिन की streak', bdS30: '30 दिन की streak', bdPerfect: '5 में से 5 सही', bdP10: '10 खेल', bdP50: '50 खेल',
       welcomeTitle: 'Astryl में स्वागत है', welcomeSub: 'मुफ़्त खाता बनाइए, ताकि आपके favourites, quiz scores और rank app और इस website में एक जैसे रहें। या बस घूमकर देखिए।', welcomeSkip: 'बिना खाते के आगे बढ़ें',
@@ -475,7 +477,31 @@
     }
     function resultCard() {
       var r = d.result;
-      return '<div class="card" style="text-align:center"><h3>' + esc(w('boardDone')) + '</h3><div class="life">' + r.points + '</div><p>' + esc(fill(w('boardRight'), { c: r.correct }) + ' · ' + fill(w('boardTime'), { s: sec(r.ms) })) + '</p><p class="note">' + esc(w('boardBack')) + '</p></div>';
+      return '<div class="card" style="text-align:center"><h3>' + esc(w('boardDone')) + '</h3><div class="life">' + r.points + '</div><p>' + esc(fill(w('boardRight'), { c: r.correct }) + ' · ' + fill(w('boardTime'), { s: sec(r.ms) })) + '</p><p><button class="btn" type="button" data-dl="share">' + esc(w('boardShare')) + '</button></p><p class="note">' + esc(w('boardBack')) + '</p></div>';
+    }
+    /* A square picture of today's result, shared with the phone's share sheet or saved as a file. */
+    function sharePicture() {
+      var r = d.result; if (!r) return;
+      var c = document.createElement('canvas'); c.width = 1080; c.height = 1080;
+      var x = c.getContext('2d'), g = x.createLinearGradient(0, 0, 0, 1080);
+      g.addColorStop(0, '#06080e'); g.addColorStop(1, '#101a3a'); x.fillStyle = g; x.fillRect(0, 0, 1080, 1080);
+      var seed = 7; function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+      for (var i = 0; i < 90; i++) { x.fillStyle = 'rgba(220,230,255,' + (0.25 + rnd() * 0.6).toFixed(2) + ')'; x.beginPath(); x.arc(rnd() * 1080, rnd() * 1080, 1 + rnd() * 2, 0, 7); x.fill(); }
+      x.textAlign = 'center'; x.fillStyle = '#7aa2ff'; x.font = '700 60px "Space Grotesk",sans-serif'; x.fillText('Astryl · Daily 5', 540, 170);
+      x.fillStyle = '#f0f4ff'; x.font = '700 260px "Space Grotesk",sans-serif'; x.fillText(String(r.points), 540, 520);
+      x.fillStyle = '#a0b0d6'; x.font = '500 54px "DM Sans",sans-serif'; x.fillText(w('boardPoints').replace('{p}', '').trim() || 'points', 540, 600);
+      if (d.picked.length === 5 && d.answers) {
+        for (var k = 0; k < 5; k++) { x.fillStyle = d.picked[k] === d.answers[k] ? '#3ddc97' : '#ff6b6b'; x.beginPath(); if (x.roundRect) x.roundRect(150 + k * 156, 680, 120, 120, 22); else x.rect(150 + k * 156, 680, 120, 120); x.fill(); }
+      }
+      x.fillStyle = '#f0f4ff'; x.font = '600 58px "DM Sans",sans-serif'; x.fillText(fill(w('boardRight'), { c: r.correct }) + ' · ' + fill(w('boardTime'), { s: sec(r.ms) }), 540, 890);
+      x.fillStyle = '#a0b0d6'; x.font = '500 44px "DM Sans",sans-serif'; x.fillText('astryl.space/quiz', 540, 990);
+      var text = fill(w('boardShareText'), { p: r.points }) + ' https://astryl.space/quiz.html';
+      c.toBlob(function (blob) {
+        if (!blob) return;
+        var file; try { file = new File([blob], 'astryl-daily-5.png', { type: 'image/png' }); } catch (e) { file = null; }
+        if (file && navigator.canShare && navigator.canShare({ files: [file] })) { navigator.share({ files: [file], text: text }).catch(function () {}); return; }
+        var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'astryl-daily-5.png'; document.body.appendChild(a); a.click(); a.remove();
+      }, 'image/png');
     }
     function draw() {
       var h = '<h2>' + esc(w('boardTitle')) + '</h2><p class="sub">' + esc(w('boardIntro')) + '</p>';
@@ -516,6 +542,7 @@
       var el = e.target.closest('[data-dl]'); if (!el) return;
       var a = el.dataset.dl;
       if (a === 'play') return start();
+      if (a === 'share') return sharePicture();
       if (a.indexOf('tab:') === 0) { d.tab = a.slice(4); return draw(); }
       if (a.indexOf('pick:') === 0 && d.phase === 'play') {
         d.picked.push(a.slice(5));

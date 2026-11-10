@@ -220,6 +220,7 @@ body.gate-open{overflow:hidden}
 .badges span{padding:6px 12px;border-radius:999px;border:1px solid var(--line);font-size:.9em}
 .badges .on{border-color:var(--accent);background:var(--card)}
 .badges .off{opacity:.4;filter:grayscale(1)}
+.lb.plain li::before{content:none}
 .lb li small{color:var(--muted,inherit);opacity:.75}
 .lb li.me{border-color:var(--accent2);background:color-mix(in srgb,var(--accent2) 10%,var(--card))}
 .lb li b{font-variant-numeric:tabular-nums}
