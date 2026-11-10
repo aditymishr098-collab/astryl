@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_title">Tonight\'s Moon</string>
+    <string name="widget_desc">The Moon\'s phase tonight, and a shortcut to today\'s Daily 5.</string>
+    <string name="widget_daily">Today\'s Daily 5 is ready · tap to play</string>
+    <string name="widget_lit">%1$d%% lit</string>
+    <string-array name="moon_phases">
+        <item>New Moon</item>
+        <item>Waxing crescent</item>
+        <item>First quarter</item>
+        <item>Waxing gibbous</item>
+        <item>Full Moon</item>
+        <item>Waning gibbous</item>
+        <item>Last quarter</item>
+        <item>Waning crescent</item>
+    </string-array>
+</resources>

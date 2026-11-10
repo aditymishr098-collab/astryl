@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
+import '../core/badges.dart';
 import '../core/daily.dart';
 import '../core/format.dart';
 import '../core/quiz.dart';
@@ -14,6 +17,7 @@ import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
 import '../widgets/fact_card.dart';
+import '../widgets/share_card.dart';
 
 /// Ten questions built from the planet and moon data, in three levels, plus
 /// the shared Daily 5 challenge, 60-second Blitz Survival mode, lifelines,
@@ -37,6 +41,44 @@ class _QuizScreenState extends State<QuizScreen> {
   // Lifelines, visual clues, and answer history
   bool _used5050 = false;
   bool _usedHint = false;
+  final GlobalKey _resultKey = GlobalKey();
+  bool _sharingResult = false;
+
+  /// Shares the result as a picture with the Astryl footer; falls back to the
+  /// text score card when the picture cannot be made or shared.
+  Future<void> _shareResult(BuildContext context, int total, bool isHi) async {
+    final palette = Palette.of(context);
+    final bridge = AppScope.read(context).bridge;
+    setState(() => _sharingResult = true);
+    var shared = false;
+    try {
+      final boundary = _resultKey.currentContext?.findRenderObject();
+      if (boundary is RenderRepaintBoundary) {
+        final bytes = await renderShareCard(boundary, palette);
+        final dir = await bridge.sharedDir();
+        if (dir.isNotEmpty) {
+          final file = File('$dir${Platform.pathSeparator}Astryl-quiz.png');
+          await file.writeAsBytes(bytes, flush: true);
+          final text = _isDaily
+              ? (isHi
+                  ? 'मैंने आज Astryl के Daily 5 में $_dailyPoints अंक लिए! https://astryl.space/quiz/'
+                  : 'I scored $_dailyPoints points on today\'s Astryl Daily 5! https://astryl.space/quiz/')
+              : 'Astryl Space Quiz https://astryl.space/quiz/';
+          shared = await bridge.shareImage(file.path, text);
+        }
+      }
+    } on Exception {
+      shared = false;
+    }
+    if (!mounted) {
+      return;
+    }
+    setState(() => _sharingResult = false);
+    if (!shared && context.mounted) {
+      await _copyShareCard(context, total, isHi);
+    }
+  }
+
   Set<String> _hiddenOptionIds = <String>{};
   bool _showHintBanner = false;
   List<bool> _history = <bool>[];
@@ -58,7 +100,8 @@ class _QuizScreenState extends State<QuizScreen> {
   List<String> _dailyPicks = <String>[];
   List<QuizQuestion>? _dailyServerQuestions;
   Timer? _dailyTimer;
-  bool _boardTabAll = false;
+  /// 0 = today, 1 = this week, 2 = all time.
+  int _boardTab = 0;
   bool _loadingBoard = true;
   Map<String, dynamic>? _boardData;
 
@@ -530,7 +573,7 @@ class _QuizScreenState extends State<QuizScreen> {
           username: state.account.username,
           loading: _loadingBoard,
           boardData: _boardData,
-          boardTabAll: _boardTabAll,
+          boardTab: _boardTab,
           quizAlertOn: state.quizAlert,
           quizAlertTime: MaterialLocalizations.of(context).formatTimeOfDay(
             TimeOfDay(
@@ -539,7 +582,7 @@ class _QuizScreenState extends State<QuizScreen> {
             ),
           ),
           onToggleBell: () => _toggleQuizBell(context, isHi),
-          onToggleTab: (all) => setState(() => _boardTabAll = all),
+          onToggleTab: (tab) => setState(() => _boardTab = tab),
           onPlayDaily: _startDaily,
           onRefresh: _refreshBoard,
         ),
@@ -843,82 +886,99 @@ class _QuizScreenState extends State<QuizScreen> {
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
       children: <Widget>[
-        Text(l.quizTitle,
-            style: TextStyle(
-                fontFamily: headingFont,
-                fontSize: 26,
-                fontWeight: FontWeight.w700,
-                color: p.text)),
-        const SizedBox(height: 8),
-        Text(
-            _isDaily
-                ? 'Daily 5'
-                : _isBlitz
-                    ? (isHi ? '⚡ 60s ब्लिट्ज़ सर्वाइवल' : '⚡ 60s Blitz Survival')
-                    : quizLevelName(l, _level),
-            style: TextStyle(
-                fontSize: 14, fontWeight: FontWeight.w600, color: p.muted)),
-        const SizedBox(height: 32),
-        Text(
-          _isBlitz ? '$_blitzPoints pts' : '$_score / $total',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontFamily: headingFont,
-              fontSize: 52,
-              fontWeight: FontWeight.w700,
-              color: p.accentText),
-        ),
-        const SizedBox(height: 8),
-        Text(
-            _isBlitz
-                ? (isHi
-                    ? '$_score सही जवाब · अधिकतम कॉम्बो ${_blitzMaxCombo}x'
-                    : '$_score correct · Max combo ${_blitzMaxCombo}x')
-                : l.quizScore(_score, total),
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18, color: p.text)),
-        const SizedBox(height: 8),
-        if (_isDaily)
-          Text(
-            isHi
-                ? '$_dailyPoints अंक · $_dailyElapsedSec सेकंड'
-                : '$_dailyPoints points · $_dailyElapsedSec s',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 15, fontWeight: FontWeight.w600, color: p.good),
-          )
-        else
-          Text(_newBest ? l.quizNewBest : l.quizBest(best),
+        RepaintBoundary(
+          key: _resultKey,
+          child: Container(
+            color: p.background,
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Column(
+              children: <Widget>[
+            Text(l.quizTitle,
+                style: TextStyle(
+                    fontFamily: headingFont,
+                    fontSize: 26,
+                    fontWeight: FontWeight.w700,
+                    color: p.text)),
+            const SizedBox(height: 8),
+            Text(
+                _isDaily
+                    ? 'Daily 5'
+                    : _isBlitz
+                        ? (isHi ? '⚡ 60s ब्लिट्ज़ सर्वाइवल' : '⚡ 60s Blitz Survival')
+                        : quizLevelName(l, _level),
+                style: TextStyle(
+                    fontSize: 14, fontWeight: FontWeight.w600, color: p.muted)),
+            const SizedBox(height: 32),
+            Text(
+              _isBlitz ? '$_blitzPoints pts' : '$_score / $total',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 14, color: _newBest ? p.good : p.muted)),
-        if (_history.isNotEmpty) ...<Widget>[
-          const SizedBox(height: 18),
-          Center(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              decoration: BoxDecoration(
-                color: p.surfaceHigh,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: p.border),
-              ),
-              child: Text(
-                emojiGrid,
+                  fontFamily: headingFont,
+                  fontSize: 52,
+                  fontWeight: FontWeight.w700,
+                  color: p.accentText),
+            ),
+            const SizedBox(height: 8),
+            Text(
+                _isBlitz
+                    ? (isHi
+                        ? '$_score सही जवाब · अधिकतम कॉम्बो ${_blitzMaxCombo}x'
+                        : '$_score correct · Max combo ${_blitzMaxCombo}x')
+                    : l.quizScore(_score, total),
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 18, letterSpacing: 2),
+                style: TextStyle(fontSize: 18, color: p.text)),
+            const SizedBox(height: 8),
+            if (_isDaily)
+              Text(
+                isHi
+                    ? '$_dailyPoints अंक · $_dailyElapsedSec सेकंड'
+                    : '$_dailyPoints points · $_dailyElapsedSec s',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 15, fontWeight: FontWeight.w600, color: p.good),
+              )
+            else
+              Text(_newBest ? l.quizNewBest : l.quizBest(best),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 14, color: _newBest ? p.good : p.muted)),
+            if (_history.isNotEmpty) ...<Widget>[
+              const SizedBox(height: 18),
+              Center(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: p.surfaceHigh,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: p.border),
+                  ),
+                  child: Text(
+                    emojiGrid,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 18, letterSpacing: 2),
+                  ),
+                ),
               ),
+            ],
+              ],
             ),
           ),
-        ],
+        ),
         const SizedBox(height: 24),
         FilledButton.icon(
           style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(50)),
-          onPressed: () => _copyShareCard(context, total, isHi),
+          onPressed: _sharingResult
+              ? null
+              : () => _shareResult(context, total, isHi),
           icon: const Icon(Icons.share_outlined, size: 19),
           label: Text(
-            isHi ? 'स्कोर कार्ड कॉपी / शेयर करें' : 'Copy / Share Score Card',
+            isHi ? 'स्कोर कार्ड शेयर करें' : 'Share score card',
             style: const TextStyle(fontWeight: FontWeight.w700),
           ),
+        ),
+        TextButton(
+          onPressed: () => _copyShareCard(context, total, isHi),
+          child: Text(isHi ? 'सिर्फ़ text कॉपी करें' : 'Copy as text'),
         ),
         const SizedBox(height: 10),
         if (!_isDaily) ...<Widget>[
@@ -1135,7 +1195,7 @@ class _DailyFiveCard extends StatelessWidget {
     required this.username,
     required this.loading,
     required this.boardData,
-    required this.boardTabAll,
+    required this.boardTab,
     required this.quizAlertOn,
     required this.quizAlertTime,
     required this.onToggleBell,
@@ -1149,11 +1209,11 @@ class _DailyFiveCard extends StatelessWidget {
   final String username;
   final bool loading;
   final Map<String, dynamic>? boardData;
-  final bool boardTabAll;
+  final int boardTab;
   final bool quizAlertOn;
   final String quizAlertTime;
   final VoidCallback onToggleBell;
-  final ValueChanged<bool> onToggleTab;
+  final ValueChanged<int> onToggleTab;
   final VoidCallback onPlayDaily;
   final VoidCallback onRefresh;
 
@@ -1164,9 +1224,12 @@ class _DailyFiveCard extends StatelessWidget {
     final playersToday = boardData?['players_today'] is int
         ? boardData!['players_today'] as int
         : 0;
-    final listRaw =
-        boardData?[boardTabAll ? 'all' : 'today'] as List<Object?>? ??
-            const <Object?>[];
+    final listRaw = boardData?[const <String>['today', 'week', 'all'][boardTab]]
+            as List<Object?>? ??
+        const <Object?>[];
+    final meWeek = boardData?['me_week'] as Map<String, dynamic>?;
+    final meAll = boardData?['me_all'] as Map<String, dynamic>?;
+    final stats = DailyStats.fromJson(boardData?['me_stats']);
 
     return SurfaceCard(
       padding: const EdgeInsets.all(16),
@@ -1259,19 +1322,28 @@ class _DailyFiveCard extends StatelessWidget {
               style: TextStyle(fontSize: 12, color: p.muted),
             ),
           ],
+          if (loggedIn && stats != null) ...<Widget>[
+            const SizedBox(height: 12),
+            _StreakPanel(stats: stats, isHi: isHi),
+          ],
           const SizedBox(height: 14),
-          Row(
+          Wrap(
+            spacing: 8,
             children: <Widget>[
               ChoiceChip(
                 label: Text(isHi ? 'आज' : 'Today'),
-                selected: !boardTabAll,
-                onSelected: (_) => onToggleTab(false),
+                selected: boardTab == 0,
+                onSelected: (_) => onToggleTab(0),
               ),
-              const SizedBox(width: 8),
+              ChoiceChip(
+                label: Text(isHi ? 'इस हफ़्ते' : 'This week'),
+                selected: boardTab == 1,
+                onSelected: (_) => onToggleTab(1),
+              ),
               ChoiceChip(
                 label: Text(isHi ? 'कुल (All time)' : 'All time'),
-                selected: boardTabAll,
-                onSelected: (_) => onToggleTab(true),
+                selected: boardTab == 2,
+                onSelected: (_) => onToggleTab(2),
               ),
             ],
           ),
@@ -1307,9 +1379,84 @@ class _DailyFiveCard extends StatelessWidget {
                 entry: listRaw[i] as Map<String, dynamic>,
                 isMe: username.isNotEmpty &&
                     (listRaw[i] as Map<String, dynamic>)['u'] == username,
-                isAllTime: boardTabAll,
+                showDays: boardTab != 0,
                 isHi: isHi,
               ),
+          if (!loading && boardTab != 0 && (boardTab == 1 ? meWeek : meAll) != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Text(
+                isHi
+                    ? '${boardTab == 1 ? 'इस हफ़्ते' : 'कुल'} आपकी रैंक: #${(boardTab == 1 ? meWeek : meAll)!['rank']}'
+                    : 'Your rank ${boardTab == 1 ? 'this week' : 'all time'}: #${(boardTab == 1 ? meWeek : meAll)!['rank']}',
+                style: TextStyle(
+                    fontSize: 13, fontWeight: FontWeight.w600, color: p.accentText),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// The person's streak and badges (earned ones lit, the rest dimmed).
+class _StreakPanel extends StatelessWidget {
+  const _StreakPanel({required this.stats, required this.isHi});
+
+  final DailyStats stats;
+  final bool isHi;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = Palette.of(context);
+    final title = stats.streak > 0
+        ? (isHi
+            ? '🔥 ${stats.streak} दिन की streak'
+            : '🔥 ${stats.streak}-day streak')
+        : (isHi
+            ? 'अभी कोई streak नहीं। आज खेलकर शुरू कीजिए।'
+            : 'No streak yet. Play today to start one.');
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: p.surfaceHigh,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: p.border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(title,
+              style: TextStyle(
+                  fontSize: 15, fontWeight: FontWeight.w700, color: p.text)),
+          if (stats.best > 0)
+            Text(
+              isHi ? 'सबसे लंबी: ${stats.best}' : 'Best: ${stats.best}',
+              style: TextStyle(fontSize: 12, color: p.muted),
+            ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: <Widget>[
+              for (final b in badgesFor(stats))
+                Opacity(
+                  opacity: b.earned ? 1 : 0.35,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(999),
+                      border: Border.all(
+                          color: b.earned ? p.accent : p.border),
+                    ),
+                    child: Text('${b.emoji} ${isHi ? b.hi : b.en}',
+                        style: TextStyle(fontSize: 12, color: p.text)),
+                  ),
+                ),
+            ],
+          ),
         ],
       ),
     );
@@ -1321,14 +1468,14 @@ class _BoardRow extends StatelessWidget {
     required this.rank,
     required this.entry,
     required this.isMe,
-    required this.isAllTime,
+    required this.showDays,
     required this.isHi,
   });
 
   final int rank;
   final Map<String, dynamic> entry;
   final bool isMe;
-  final bool isAllTime;
+  final bool showDays;
   final bool isHi;
 
   @override
@@ -1336,7 +1483,7 @@ class _BoardRow extends StatelessWidget {
     final p = Palette.of(context);
     final name = '${entry['u'] ?? ''}';
     final pts = entry['p'] ?? 0;
-    final sub = isAllTime
+    final sub = showDays
         ? (isHi ? '${entry['d'] ?? 1} दिन' : '${entry['d'] ?? 1}d')
         : '${entry['c'] ?? 0}/5';
     return Padding(

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_title">आज रात का चाँद</string>
+    <string name="widget_desc">आज रात चाँद की कला, और आज के Daily 5 का shortcut।</string>
+    <string name="widget_daily">आज का Daily 5 तैयार है · खेलने के लिए टैप करें</string>
+    <string name="widget_lit">%1$d%% रोशन</string>
+    <string-array name="moon_phases">
+        <item>अमावस्या</item>
+        <item>बढ़ता हुआ पतला चाँद</item>
+        <item>पहली तिमाही</item>
+        <item>बढ़ता हुआ गोल चाँद</item>
+        <item>पूर्णिमा</item>
+        <item>घटता हुआ गोल चाँद</item>
+        <item>आख़िरी तिमाही</item>
+        <item>घटता हुआ पतला चाँद</item>
+    </string-array>
+</resources>
