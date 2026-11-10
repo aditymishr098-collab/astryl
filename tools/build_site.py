@@ -9,6 +9,7 @@ import hashlib, html, json, math, re, shutil
 from pathlib import Path
 
 import deepspace
+import galaxies
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / 'tools' / 'site_src'
@@ -340,7 +341,7 @@ def cons_svg(c):
 NAV_MAIN = [('planets.html', 'planets', bi('planetsTitle')), ('solar-system.html', 'solar', bi('solarSystemTitle')), ('sky.html', 'sky', bi('skyTitle')), ('quiz.html', 'quiz', bi('navQuiz'))]
 NAV_MORE = [('compare.html', 'compare', bi('navCompare')), ('you.html', 'you', bt('You', 'आप')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')),
             ('missions.html', 'missions', bi('missionsTitle')), ('spacecraft.html', 'spacecraft', bi('spacecraftTitle')),
-            ('black-holes.html', 'bh', bt('Black holes', 'ब्लैक होल'))]
+            ('galaxies.html', 'gx', bt('Galaxies', 'Galaxies')), ('black-holes.html', 'bh', bt('Black holes', 'ब्लैक होल'))]
 
 
 _ASSET_V = []
@@ -459,7 +460,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
     p = '../' * depth
     def navlink(h, k, label):
         return f'<a href="{p}{h}"{" class=on" if k == page else ""}>{label}</a>'
-    more_on = page in ('compare', 'you', 'cons', 'maps', 'missions', 'bh')
+    more_on = page in ('compare', 'you', 'cons', 'maps', 'missions', 'bh', 'gx')
     nav = (''.join(navlink(*x) for x in NAV_MAIN)
            + f'<details class="more"><summary{" class=on" if more_on else ""}>{bt("More", "और")} ▾</summary><div class="morepanel">'
            + ''.join(navlink(*x) for x in NAV_MORE) + '</div></details>')
@@ -621,6 +622,7 @@ def index_page():
              ('🚀', 'missionsTitle', 'Sputnik to Chandrayaan-3', 'Sputnik से Chandrayaan-3 तक', 'missions.html'),
              ('🗺️', 'surfaceMapTitle', 'Landing sites on the Moon and Mars', 'चाँद और मंगल पर उतरने की जगहें', 'maps.html'),
              ('⚫', bt('Black holes', 'ब्लैक होल'), 'How they form and what falling in would be like', 'कैसे बनते हैं और अंदर गिरना कैसा होगा', 'black-holes.html'),
+             ('🌌', bt('Galaxies', 'Galaxies'), 'The Milky Way, Andromeda and beyond', 'आकाशगंगा, Andromeda और उसके आगे', 'galaxies.html'),
              ('🛰️', 'spacecraftTitle', 'How far Voyager and JWST are now', 'Voyager और JWST अभी कितनी दूर हैं', 'spacecraft.html'),
              ('⚖️', 'weightTitle', 'Weight, jump and age on every world', 'हर दुनिया पर वज़न, कूद और उम्र', 'you.html'),
              (pic('earth'), 'navCompare', 'Any two worlds side by side', 'कोई भी दो दुनियाएँ आमने-सामने', 'compare.html')]
@@ -919,7 +921,7 @@ def data_js():
 def main():
     # Only the generated parts are rebuilt; other files in site/ (images, the
     # favicon) are left alone.
-    for sub in ('assets', 'body', 'fonts', 'black-holes'):
+    for sub in ('assets', 'body', 'fonts', 'black-holes', 'galaxies'):
         if (OUT / sub).exists():
             shutil.rmtree(OUT / sub)
     for old in OUT.glob('*.html'):
@@ -942,8 +944,9 @@ def main():
     for i, b in enumerate(BODIES):
         body_page(b, i)
     index_page(); planets_page(); simple_pages(); maps_page(); get_page(); privacy_page(); account_page(); not_found()
-    deep = deepspace.build(dict(bt=bt, bi=bi, raw2=raw2, shell=shell, write=write, esc=esc, fmt=fmt))
-    urls = ['', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'get.html', 'privacy.html', 'account.html', 'black-holes.html'] + deep + [f'body/{b["id"]}.html' for b in BODIES]
+    helpers = dict(bt=bt, bi=bi, raw2=raw2, shell=shell, write=write, esc=esc, fmt=fmt)
+    deep = deepspace.build(helpers) + galaxies.build(helpers)
+    urls = ['', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'get.html', 'privacy.html', 'account.html', 'black-holes.html', 'galaxies.html'] + deep + [f'body/{b["id"]}.html' for b in BODIES]
     (OUT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}/{u}</loc></url>\n' for u in urls) + '</urlset>\n', encoding='utf-8')
     og_images()
     print('pages:', len(list(OUT.rglob('*.html'))), 'share images:', len(_OG))
