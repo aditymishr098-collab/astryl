@@ -1276,9 +1276,14 @@ class _LeaderboardScreenState extends State<_LeaderboardScreen> {
     final list = data?[const <String>['today', 'week', 'all'][_tab]]
             as List<Object?>? ??
         const <Object?>[];
-    final myRank = _tab == 1
-        ? data?['me_week'] as Map<String, dynamic>?
-        : (_tab == 2 ? data?['me_all'] as Map<String, dynamic>? : null);
+    final Map<String, dynamic>? myRank;
+    if (_tab == 1) {
+      myRank = data?['me_week'] as Map<String, dynamic>?;
+    } else if (_tab == 2) {
+      myRank = data?['me_all'] as Map<String, dynamic>?;
+    } else {
+      myRank = null;
+    }
 
     return Scaffold(
       appBar: AppBar(
