@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /// The font for titles and big numbers. Everything else uses DM Sans. Both
 /// are bundled in the app (assets/fonts), so nothing is downloaded.
@@ -156,6 +157,19 @@ class Palette extends ThemeExtension<Palette> {
   }
 }
 
+/// The clock, the signal and the battery in the phone's status bar. On a light
+/// theme they must be dark, on a dark theme light. Without this, a transparent
+/// app bar makes Flutter think the bar is dark and the icons turn white on a
+/// white page.
+SystemUiOverlayStyle statusBarStyle(Brightness brightness) {
+  final light = brightness == Brightness.light;
+  return SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: light ? Brightness.dark : Brightness.light,
+    statusBarBrightness: light ? Brightness.light : Brightness.dark,
+  );
+}
+
 ThemeData buildTheme(Brightness brightness) {
   final isDark = brightness == Brightness.dark;
   final p = isDark ? Palette.dark : Palette.light;
@@ -185,6 +199,7 @@ ThemeData buildTheme(Brightness brightness) {
       elevation: 0,
       scrolledUnderElevation: 0,
       centerTitle: false,
+      systemOverlayStyle: statusBarStyle(brightness),
       titleTextStyle: headingStyle(22, p.text),
     ),
     cardTheme: CardThemeData(

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart' show PlatformDispatcher, kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show SystemUiOverlayStyle;
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'data/crash_reporter.dart';
@@ -92,8 +93,12 @@ class HelioraApp extends StatelessWidget {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            builder: (context, child) =>
-                _withTextSize(context, child, settings.textScalePercent),
+            // Home, Sky, Compare and Quiz have no app bar, so the status bar
+            // style is set here for the whole app (app bars use the same).
+            builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
+              value: statusBarStyle(Theme.of(context).brightness),
+              child: _withTextSize(context, child, settings.textScalePercent),
+            ),
             // The first time, the optional account page comes first ("Skip
             // now" leaves it); after that the app opens directly.
             home: UpdateGate(
