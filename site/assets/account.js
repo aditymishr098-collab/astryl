@@ -38,6 +38,8 @@
       boardHidden: 'You are hidden from the leaderboard. You can change this in your account.', boardBack: 'Come back tomorrow for 5 new questions.',
       boardTitleLb: 'Leaderboard', boardDays: '{d} days', boardErr: 'Could not reach the server. Try again in a moment.', boardReview: 'Your answers', boardYours: 'You',
       boardShow: 'Show me on the leaderboard', boardShowNote: 'Shows only your username and score. On by default; switch it off to hide.',
+      boardWeek: 'This week', boardRankWeek: 'Your rank this week: {r}', streakNow: '{n}-day streak', streakNone: 'No streak yet. Play today to start one.', streakBest: 'Best: {n}',
+      badgesTitle: 'Badges', bdFirst: 'First run', bdS3: '3-day streak', bdS7: '7-day streak', bdS30: '30-day streak', bdPerfect: 'Perfect 5 of 5', bdP10: '10 runs', bdP50: '50 runs',
       welcomeTitle: 'Welcome to Astryl', welcomeSub: 'Make a free account to keep your favourites, quiz scores and rank in step between the app and this website. Or just look around.', welcomeSkip: 'Continue without account',
       webIntro: 'Optional. A username and a password, no e-mail. Your favourites, quiz scores and settings then follow you between the Astryl app and this website.'
     },
@@ -55,6 +57,8 @@
       boardHidden: 'आप leaderboard से छिपे हैं। इसे अपने खाते में बदल सकते हैं।', boardBack: 'कल 5 नए सवालों के लिए आइए।',
       boardTitleLb: 'Leaderboard', boardDays: '{d} दिन', boardErr: 'Server से संपर्क नहीं हो पाया। थोड़ी देर में फिर कोशिश कीजिए।', boardReview: 'आपके जवाब', boardYours: 'आप',
       boardShow: 'मुझे leaderboard में दिखाएँ', boardShowNote: 'सिर्फ़ आपका username और score दिखता है। डिफ़ॉल्ट रूप से चालू; छिपने के लिए बंद कीजिए।',
+      boardWeek: 'इस हफ़्ते', boardRankWeek: 'इस हफ़्ते आपकी रैंक: {r}', streakNow: '{n} दिन की streak', streakNone: 'अभी कोई streak नहीं। आज खेलकर शुरू कीजिए।', streakBest: 'सबसे लंबी: {n}',
+      badgesTitle: 'Badges', bdFirst: 'पहला खेल', bdS3: '3 दिन की streak', bdS7: '7 दिन की streak', bdS30: '30 दिन की streak', bdPerfect: '5 में से 5 सही', bdP10: '10 खेल', bdP50: '50 खेल',
       welcomeTitle: 'Astryl में स्वागत है', welcomeSub: 'मुफ़्त खाता बनाइए, ताकि आपके favourites, quiz scores और rank app और इस website में एक जैसे रहें। या बस घूमकर देखिए।', welcomeSkip: 'बिना खाते के आगे बढ़ें',
       webIntro: 'ज़रूरी नहीं। बस एक username और password, e-mail नहीं। फिर आपके favourites, quiz scores और settings Astryl app और इस website के बीच आपके साथ चलते हैं।'
     }
@@ -434,9 +438,9 @@
       }, function () { d.board = null; draw(); });
     }
     function board() {
-      var b = d.board, h = '<h3>' + esc(w('boardTitleLb')) + '</h3><div class="tabs"><button type="button" class="' + (d.tab === 'today' ? 'on' : '') + '" data-dl="tab:today">' + esc(w('boardToday')) + '</button><button type="button" class="' + (d.tab === 'all' ? 'on' : '') + '" data-dl="tab:all">' + esc(w('boardAll')) + '</button></div>';
+      var b = d.board, h = '<h3>' + esc(w('boardTitleLb')) + '</h3><div class="tabs"><button type="button" class="' + (d.tab === 'today' ? 'on' : '') + '" data-dl="tab:today">' + esc(w('boardToday')) + '</button><button type="button" class="' + (d.tab === 'week' ? 'on' : '') + '" data-dl="tab:week">' + esc(w('boardWeek')) + '</button><button type="button" class="' + (d.tab === 'all' ? 'on' : '') + '" data-dl="tab:all">' + esc(w('boardAll')) + '</button></div>';
       if (!b) return h + '<p class="note">' + esc(w('loading')) + '</p>';
-      var rows = d.tab === 'today' ? b.today : b.all, mine = me() ? me().username : '';
+      var rows = d.tab === 'today' ? b.today : (d.tab === 'week' ? (b.week || []) : b.all), mine = me() ? me().username : '';
       if (!rows.length) h += '<p class="note">' + esc(w('boardEmpty')) + '</p>';
       else {
         h += '<ol class="lb">';
@@ -446,10 +450,20 @@
         });
         h += '</ol>';
       }
-      var m = d.tab === 'today' ? b.me_today : b.me_all;
-      if (m) h += '<p class="note"><b>' + esc(d.tab === 'today' ? fill(w('boardRank'), { r: m.rank, n: b.players_today }) : fill(w('boardRankAll'), { r: m.rank })) + '</b></p>';
+      var m = d.tab === 'today' ? b.me_today : (d.tab === 'week' ? b.me_week : b.me_all);
+      if (m) h += '<p class="note"><b>' + esc(d.tab === 'today' ? fill(w('boardRank'), { r: m.rank, n: b.players_today }) : (d.tab === 'week' ? fill(w('boardRankWeek'), { r: m.rank }) : fill(w('boardRankAll'), { r: m.rank }))) + '</b></p>';
       if (me() && !getPrefs().showOnBoard) h += '<p class="note">' + esc(w('boardHidden')) + '</p>';
       return h;
+    }
+    var BADGES = [['bdFirst', '🚀', function (x) { return x.plays >= 1; }], ['bdS3', '🔥', function (x) { return x.best >= 3; }], ['bdS7', '🔥', function (x) { return x.best >= 7; }],
+      ['bdS30', '🏆', function (x) { return x.best >= 30; }], ['bdPerfect', '⭐', function (x) { return x.perfect >= 1; }], ['bdP10', '🪐', function (x) { return x.plays >= 10; }], ['bdP50', '🌌', function (x) { return x.plays >= 50; }]];
+    function streakPanel() {
+      var x = d.board && d.board.me_stats;
+      if (!me() || !x) return '';
+      var h = '<div class="card"><h3>' + esc(x.streak > 0 ? '🔥 ' + fill(w('streakNow'), { n: x.streak }) : w('streakNone')) + '</h3>' + (x.best > 0 ? '<p class="note">' + esc(fill(w('streakBest'), { n: x.best })) + '</p>' : '');
+      h += '<h3>' + esc(w('badgesTitle')) + '</h3><div class="badges">';
+      BADGES.forEach(function (b) { h += '<span class="' + (b[2](x) ? 'on' : 'off') + '">' + b[1] + ' ' + esc(w(b[0])) + '</span>'; });
+      return h + '</div></div>';
     }
     function review() {
       var h = '<h3>' + esc(w('boardReview')) + '</h3>';
@@ -475,7 +489,7 @@
         h += '</div>';
       } else if (d.phase === 'check') h += '<div class="card"><p>' + esc(w('boardSubmitting')) + '</p></div>';
       else if (d.phase === 'done') h += resultCard() + review();
-      h += board();
+      h += streakPanel() + board();
       root.innerHTML = h;
       clock();
     }
