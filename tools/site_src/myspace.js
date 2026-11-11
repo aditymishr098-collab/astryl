@@ -31,6 +31,17 @@
         : bi('Sync is off, so this is only what this browser knows. <a href="' + root + 'account.html">Turn it on</a>.', 'Sync बंद है, इसलिए यहाँ सिर्फ़ इस browser का data है। <a href="' + root + 'account.html">चालू करें</a>।')) + '</p>';
     else h += '<p class="sub">' + bi('Everything here is kept in this browser. <a href="' + root + 'account.html">Make a free account</a> to have it on every device and in the app.', 'यहाँ सब कुछ इसी browser में रखा है। हर device और app में पाने के लिए <a href="' + root + 'account.html">मुफ़्त खाता बनाइए</a>।') + '</p>';
 
+    // your city tonight, the calendar and what you have seen
+    var SKY = window.ASTRYL_SKY, c = SKY && SKY.city();
+    if (SKY) {
+      var pk = SKY.picker(draw);
+      h += card('🌆 ' + (c ? bi('Tonight in ' + esc(c.name), 'आज रात ' + esc(c.name) + ' में') : bi('Tonight in your city', 'आज रात आपके शहर में')),
+        (c ? SKY.tonightHtml(c) + '<details class="more-city"><summary>' + bi('Change city', 'शहर बदलें') + '</summary>' + pk.html + '</details>' : '<p>' + bi('Choose your city for sunset, moonrise, the planets you can see and whether each eclipse is visible from there.', 'सूर्यास्त, चंद्रोदय, दिखने वाले ग्रह और कौन-सा ग्रहण वहाँ से दिखेगा, यह जानने के लिए अपना शहर चुनिए।') + '</p>' + pk.html));
+      var cal = SKY.calendarHtml(c, root);
+      h += '<div id="calendar"></div>' + card('📅 ' + bi('Coming up in the sky', 'आसमान में आगे क्या है'), cal.html);
+      h += card('👀 ' + bi('I\'ve seen it', 'मैंने देखा'), SKY.seenHtml());
+    }
+
     // next for you
     var next = ME.nextFor(3, 'my-space.html'), read = ME.read(), nRead = Object.keys(read).length;
     var nh = next.length ? '<div class="sc-grid">' + next.map(function (x) { return '<a class="sc" href="' + root + x[0] + '"><span class="ic">' + x[1] + '</span><span><b>' + bi(x[2], x[3]) + '</b></span><span class="go">→</span></a>'; }).join('') + '</div>'
@@ -67,6 +78,10 @@
       ['🧠', 'Planet quiz: hard 10/10', 'ग्रह quiz: कठिन 10/10', hard >= 10],
       ['⭐', 'First favourite', 'पहला favourite', favs.length >= 1]
     ];
+    if (SKY) {
+      var sn = Object.keys(SKY.seen()).length;
+      badges.push(['👀', 'Seen 5 things', '5 चीज़ें देखीं', sn >= 5], ['🔭', 'Seen 10 things', '10 चीज़ें देखीं', sn >= 10], ['🌌', 'Seen them all', 'सब देख लिया', sn >= SKY.things.length]);
+    }
     if (x) badges = badges.concat([
       ['🚀', 'First Daily 5', 'पहला Daily 5', x.plays >= 1], ['🔥', '3-day streak', '3 दिन की streak', x.best >= 3], ['🔥', '7-day streak', '7 दिन की streak', x.best >= 7],
       ['🏆', '30-day streak', '30 दिन की streak', x.best >= 30], ['🎯', 'Perfect 5 of 5', '5 में से 5 सही', x.perfect >= 1], ['🪐', '10 Daily 5 runs', '10 Daily 5', x.plays >= 10]
@@ -77,9 +92,14 @@
 
     h += '<p class="note">' + bi('Want a fresh start with the reading list? This clears which pages you have read, in this browser only.', 'Reading list नए सिरे से शुरू करनी है? इससे सिर्फ़ इस browser में पढ़े गए pages की list मिटेगी।') + ' <button class="btn" type="button" id="myReset">' + bi('Clear', 'मिटाएँ') + '</button></p>';
     box.innerHTML = h;
+    if (SKY) { pk.wire(box); cal.wire(box.querySelector('#calendar').nextElementSibling); }
+    if (location.hash === '#calendar' && !scrolled) { scrolled = true; var cEl = document.getElementById('calendar'); if (cEl) cEl.scrollIntoView(); }
   }
+  var scrolled = false;
 
   box.addEventListener('click', function (e) {
+    var sv = e.target.closest('[data-seen]');
+    if (sv && window.ASTRYL_SKY) { window.ASTRYL_SKY.toggleSeen(sv.getAttribute('data-seen')); draw(); return; }
     var u = e.target.closest('[data-unfav]');
     if (u) { ME.toggleFav(u.getAttribute('data-unfav')); draw(); return; }
     if (e.target.closest('#myReset')) {

@@ -360,3 +360,19 @@ a.sc.next{border-color:var(--accent)}
 .mycard .stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .mycard .stat{padding:10px 8px;text-align:center}
 .mycard .stat b{font-size:1.15rem}
+
+/* City tonight, calendar, seen list */
+.stats.tn{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.stats.tn .stat{padding:10px 8px;text-align:center}
+.stats.tn .stat b{font-size:1.1rem}
+.tnlist{padding-left:1.1em;margin:.4em 0}.tnlist li{margin:.3em 0}
+.citypick select{flex:1;min-width:0;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit}
+.cityline{margin:.6em 0}
+.linkbtn{background:none;border:0;color:var(--accent);cursor:pointer;font:inherit;padding:4px;text-decoration:underline}
+.evlist{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.evlist li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:var(--card2)}
+.evlist .btn{flex:none;padding:8px 10px}
+.seenlist{display:flex;flex-wrap:wrap;gap:8px}
+.seen{padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--text);font:inherit;font-size:.9rem;cursor:pointer}
+.seen.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,var(--card2))}
+.more-city summary{cursor:pointer;color:var(--accent);margin-top:8px}

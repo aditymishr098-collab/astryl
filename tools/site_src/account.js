@@ -205,7 +205,22 @@
     if (!Array.isArray(lessons)) lessons = [];
     (Array.isArray(rw.bh101) ? rw.bh101 : []).concat(lessons).forEach(function (x) { if (typeof x === 'string' && web.bh101.indexOf(x) < 0) web.bh101.push(x); });
     store.set('astryl-bh101', JSON.stringify(web.bh101));
+    // Things seen with your own eyes: joined, keeping the first date.
+    var seenL = readJson('astryl-seen', {}), seenR = rw.seen && typeof rw.seen === 'object' ? rw.seen : {}, seenM = {};
+    if (!seenL || typeof seenL !== 'object' || Array.isArray(seenL)) seenL = {};
+    Object.keys(seenR).concat(Object.keys(seenL)).forEach(function (k) {
+      var a = parseInt(seenL[k], 10) || 0, b = parseInt(seenR[k], 10) || 0, v = a && b ? Math.min(a, b) : (a || b);
+      if (v && /^[a-z]{2,20}$/.test(k)) seenM[k] = v;
+    });
+    // ...unless this browser is newer and a tick was taken away here.
+    if (!remoteWins && p0().syncedMs) { Object.keys(seenM).forEach(function (k) { if (!seenL[k]) delete seenM[k]; }); }
+    store.set('astryl-seen', JSON.stringify(seenM));
+    web.seen = seenM;
     merged.web = web;
+    // The city is shared with the app (same city list). The newer side wins.
+    var lcity = readJson('astryl-city', ''), rcity = remote && typeof remote.city === 'string' ? remote.city : '';
+    if (rcity && (remoteWins || !lcity)) store.set('astryl-city', JSON.stringify(rcity));
+    else if (lcity) merged.city = lcity;
   }
   function p0() { return getPrefs(); }
   window.ASTRYL_ACCT = { api: api, token: token, session: getSession, prefs: getPrefs, sync: sync, status: function () { return syncStatus; } };

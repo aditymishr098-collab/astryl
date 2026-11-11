@@ -25,6 +25,6 @@ def build(h):
     html = h['shell']('My space', 'My space', 'myspace', body,
                       'Your favourite planets and moons, quiz scores, streak, badges, Black holes 101 progress and what to read next on Astryl.',
                       canonical='my-space.html',
-                      extra_head=f'<meta name="robots" content="noindex"><script defer src="assets/myspace.js?v={v}"></script>')
+                      extra_head=f'<meta name="robots" content="noindex"><script defer src="assets/tonight.js?v={v}"></script><script defer src="assets/myspace.js?v={v}"></script>')
     h['write']('my-space.html', html)
     return []
