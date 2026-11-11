@@ -33,6 +33,9 @@ void main() {
     });
 
     testWidgets('telescope simulator opens and changes', (tester) async {
+      tester.view.physicalSize = const Size(800, 3000);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
       await tester.pumpWidget(const MaterialApp(home: TelescopeScreen()));
       await tester.pump();
       expect(find.text('36×'), findsOneWidget);
@@ -43,6 +46,9 @@ void main() {
     });
 
     testWidgets('black hole lab opens and takes input', (tester) async {
+      tester.view.physicalSize = const Size(800, 3000);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
       await tester.pumpWidget(const MaterialApp(home: BlackHoleLabScreen()));
       await tester.pump();
       expect(find.text('3.0 km'), findsOneWidget);
