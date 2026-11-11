@@ -1345,5 +1345,155 @@
   "spacecraftAdityal1": "India's (ISRO) first solar observatory. Placed in a halo orbit around the Sun–Earth L1 point (1.5 million km away) to watch the Sun's corona and solar storms non-stop.",
   "dailyUpdate": "This version cannot show today’s questions. Please update the app.",
   "boardShow": "Show me on the leaderboard",
-  "boardShowNote": "Shows only your username and score. On by default; switch it off to hide."
+  "boardShowNote": "Shows only your username and score. On by default; switch it off to hide.",
+  "uniTitle": "Universe map",
+  "uniCardHint": "Fly from the Sun to the farthest galaxies",
+  "uniHint": "Drag to turn · Pinch to zoom · Tap anything",
+  "uniLevelSolar": "Solar System",
+  "uniLevelStars": "Nearby stars",
+  "uniLevelMilkyWay": "Milky Way",
+  "uniLevelLocal": "Local Group",
+  "uniLevelGalaxies": "Galaxies",
+  "uniLevelUniverse": "Universe",
+  "uniGoTo": "Go to",
+  "uniSearchHint": "Search stars, galaxies, black holes",
+  "uniNothing": "Nothing found",
+  "uniSpeedReal": "Real time",
+  "uniSpeedDay": "1 day per second",
+  "uniSpeedYear": "1 year per second",
+  "uniSpeedMillion": "1 million years per second",
+  "uniSpeedFast": "25 million years per second",
+  "uniNow": "Now",
+  "uniAhead": "{value} from now",
+  "@uniAhead": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniBackToNow": "Back to now",
+  "uniSpedUp": "Sped up: in real time this motion is far too slow to see.",
+  "uniKindStar": "Star",
+  "uniKindPlanet": "Planet",
+  "uniKindBlackHole": "Black hole",
+  "uniKindGalaxyCluster": "Cluster of galaxies",
+  "uniShapeSpiral": "Spiral galaxy",
+  "uniShapeBarred": "Barred spiral galaxy",
+  "uniShapeElliptical": "Elliptical galaxy",
+  "uniShapeLenticular": "Lenticular galaxy",
+  "uniShapeIrregular": "Irregular galaxy",
+  "uniDistance": "Distance from Earth",
+  "uniDistanceNow": "Distance today",
+  "uniLightTime": "Its light travelled for",
+  "uniWidth": "Width",
+  "uniMass": "Mass",
+  "uniHorizon": "Horizon radius",
+  "uniEstimated": "Distance estimated from its redshift.",
+  "uniFlyHere": "Fly here",
+  "uniScreen": "Screen width ≈ {value}",
+  "@uniScreen": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniEdge": "Edge of the observable universe",
+  "uniLy": "{value} light-years",
+  "@uniLy": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniLyK": "{value} thousand light-years",
+  "@uniLyK": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniLyM": "{value} million light-years",
+  "@uniLyM": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniLyB": "{value} billion light-years",
+  "@uniLyB": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniDays": "{value} days",
+  "@uniDays": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniYr": "{value} years",
+  "@uniYr": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniYrK": "{value} thousand years",
+  "@uniYrK": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniYrM": "{value} million years",
+  "@uniYrM": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniYrB": "{value} billion years",
+  "@uniYrB": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniSuns": "{value} Suns",
+  "@uniSuns": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniSunsM": "{value} million Suns",
+  "@uniSunsM": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniSunsB": "{value} billion Suns",
+  "@uniSunsB": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  }
 }
