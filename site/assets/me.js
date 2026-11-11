@@ -23,6 +23,9 @@
     ['solar-system.html', '☀️', 'Solar System 3D', '3D सौरमंडल'],
     ['sky.html', '🌙', 'Moon calendar', 'चाँद का calendar'],
     ['you.html', '🎂', 'Your birthday sky', 'आपके जन्मदिन का आसमान'],
+    ['sky-events.html', '🌑', 'Eclipses and meteor showers', 'ग्रहण और उल्कापात'],
+    ['learn/moon-phases.html', '🌓', 'Phases of the Moon', 'चाँद की कलाएँ'],
+    ['learn/eclipses.html', '🎓', 'How eclipses work', 'ग्रहण कैसे होते हैं'],
     ['compare.html', '⚖️', 'Compare planets', 'ग्रहों की तुलना'],
     ['constellations.html', '✨', 'Constellations', 'तारामंडल'],
     ['black-holes/what-is-a-black-hole.html', '⚫', 'What is a black hole?', 'ब्लैक होल क्या है?'],
@@ -100,6 +103,16 @@
         var b = a.querySelector('b'); if (b) b.insertAdjacentHTML('beforebegin', '<small class="nexttag">' + bi('Next for you', 'आपके लिए अगला') + '</small>');
       }
     });
+  });
+
+  /* 4. Short quizzes on the student pages. */
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.mq .opt'); if (!b) return;
+    var box = b.closest('.mq'); if (box.classList.contains('done')) return;
+    var right = +box.getAttribute('data-right'), opts = box.querySelectorAll('.opt'), ok = +b.getAttribute('data-i') === right;
+    box.classList.add('done');
+    opts[right].classList.add('right'); if (!ok) b.classList.add('wrong');
+    var fb = box.querySelector('.mqfb'); if (fb) fb.innerHTML = ok ? '✅ ' + bi('Right!', 'सही!') : '❌ ' + bi('Not quite. The right answer is marked in green.', 'नहीं। सही जवाब हरे रंग में है।');
   });
 
   window.ASTRYL_ME = { read: read, favs: favs, setFavs: setFavs, toggleFav: toggleFav, isFav: isFav, nextFor: nextFor, path: PATH, root: root, here: here };
