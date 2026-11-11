@@ -4279,6 +4279,318 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'India\'s (ISRO) first solar observatory. Placed in a halo orbit around the Sun–Earth L1 point (1.5 million km away) to watch the Sun\'s corona and solar storms non-stop.'**
   String get spacecraftAdityal1;
+
+  /// No description provided for @uniTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Universe map'**
+  String get uniTitle;
+
+  /// No description provided for @uniCardHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Fly from the Sun to the farthest galaxies'**
+  String get uniCardHint;
+
+  /// No description provided for @uniHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to turn · Pinch to zoom · Tap anything'**
+  String get uniHint;
+
+  /// No description provided for @uniLevelSolar.
+  ///
+  /// In en, this message translates to:
+  /// **'Solar System'**
+  String get uniLevelSolar;
+
+  /// No description provided for @uniLevelStars.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby stars'**
+  String get uniLevelStars;
+
+  /// No description provided for @uniLevelMilkyWay.
+  ///
+  /// In en, this message translates to:
+  /// **'Milky Way'**
+  String get uniLevelMilkyWay;
+
+  /// No description provided for @uniLevelLocal.
+  ///
+  /// In en, this message translates to:
+  /// **'Local Group'**
+  String get uniLevelLocal;
+
+  /// No description provided for @uniLevelGalaxies.
+  ///
+  /// In en, this message translates to:
+  /// **'Galaxies'**
+  String get uniLevelGalaxies;
+
+  /// No description provided for @uniLevelUniverse.
+  ///
+  /// In en, this message translates to:
+  /// **'Universe'**
+  String get uniLevelUniverse;
+
+  /// No description provided for @uniGoTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to'**
+  String get uniGoTo;
+
+  /// No description provided for @uniSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search stars, galaxies, black holes'**
+  String get uniSearchHint;
+
+  /// No description provided for @uniNothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing found'**
+  String get uniNothing;
+
+  /// No description provided for @uniSpeedReal.
+  ///
+  /// In en, this message translates to:
+  /// **'Real time'**
+  String get uniSpeedReal;
+
+  /// No description provided for @uniSpeedDay.
+  ///
+  /// In en, this message translates to:
+  /// **'1 day per second'**
+  String get uniSpeedDay;
+
+  /// No description provided for @uniSpeedYear.
+  ///
+  /// In en, this message translates to:
+  /// **'1 year per second'**
+  String get uniSpeedYear;
+
+  /// No description provided for @uniSpeedMillion.
+  ///
+  /// In en, this message translates to:
+  /// **'1 million years per second'**
+  String get uniSpeedMillion;
+
+  /// No description provided for @uniSpeedFast.
+  ///
+  /// In en, this message translates to:
+  /// **'25 million years per second'**
+  String get uniSpeedFast;
+
+  /// No description provided for @uniNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get uniNow;
+
+  /// No description provided for @uniAhead.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} from now'**
+  String uniAhead(String value);
+
+  /// No description provided for @uniBackToNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to now'**
+  String get uniBackToNow;
+
+  /// No description provided for @uniSpedUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Sped up: in real time this motion is far too slow to see.'**
+  String get uniSpedUp;
+
+  /// No description provided for @uniKindStar.
+  ///
+  /// In en, this message translates to:
+  /// **'Star'**
+  String get uniKindStar;
+
+  /// No description provided for @uniKindPlanet.
+  ///
+  /// In en, this message translates to:
+  /// **'Planet'**
+  String get uniKindPlanet;
+
+  /// No description provided for @uniKindBlackHole.
+  ///
+  /// In en, this message translates to:
+  /// **'Black hole'**
+  String get uniKindBlackHole;
+
+  /// No description provided for @uniKindGalaxyCluster.
+  ///
+  /// In en, this message translates to:
+  /// **'Cluster of galaxies'**
+  String get uniKindGalaxyCluster;
+
+  /// No description provided for @uniShapeSpiral.
+  ///
+  /// In en, this message translates to:
+  /// **'Spiral galaxy'**
+  String get uniShapeSpiral;
+
+  /// No description provided for @uniShapeBarred.
+  ///
+  /// In en, this message translates to:
+  /// **'Barred spiral galaxy'**
+  String get uniShapeBarred;
+
+  /// No description provided for @uniShapeElliptical.
+  ///
+  /// In en, this message translates to:
+  /// **'Elliptical galaxy'**
+  String get uniShapeElliptical;
+
+  /// No description provided for @uniShapeLenticular.
+  ///
+  /// In en, this message translates to:
+  /// **'Lenticular galaxy'**
+  String get uniShapeLenticular;
+
+  /// No description provided for @uniShapeIrregular.
+  ///
+  /// In en, this message translates to:
+  /// **'Irregular galaxy'**
+  String get uniShapeIrregular;
+
+  /// No description provided for @uniDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance from Earth'**
+  String get uniDistance;
+
+  /// No description provided for @uniDistanceNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance today'**
+  String get uniDistanceNow;
+
+  /// No description provided for @uniLightTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Its light travelled for'**
+  String get uniLightTime;
+
+  /// No description provided for @uniWidth.
+  ///
+  /// In en, this message translates to:
+  /// **'Width'**
+  String get uniWidth;
+
+  /// No description provided for @uniMass.
+  ///
+  /// In en, this message translates to:
+  /// **'Mass'**
+  String get uniMass;
+
+  /// No description provided for @uniHorizon.
+  ///
+  /// In en, this message translates to:
+  /// **'Horizon radius'**
+  String get uniHorizon;
+
+  /// No description provided for @uniEstimated.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance estimated from its redshift.'**
+  String get uniEstimated;
+
+  /// No description provided for @uniFlyHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Fly here'**
+  String get uniFlyHere;
+
+  /// No description provided for @uniScreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Screen width ≈ {value}'**
+  String uniScreen(String value);
+
+  /// No description provided for @uniEdge.
+  ///
+  /// In en, this message translates to:
+  /// **'Edge of the observable universe'**
+  String get uniEdge;
+
+  /// No description provided for @uniLy.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} light-years'**
+  String uniLy(String value);
+
+  /// No description provided for @uniLyK.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} thousand light-years'**
+  String uniLyK(String value);
+
+  /// No description provided for @uniLyM.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} million light-years'**
+  String uniLyM(String value);
+
+  /// No description provided for @uniLyB.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} billion light-years'**
+  String uniLyB(String value);
+
+  /// No description provided for @uniDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} days'**
+  String uniDays(String value);
+
+  /// No description provided for @uniYr.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} years'**
+  String uniYr(String value);
+
+  /// No description provided for @uniYrK.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} thousand years'**
+  String uniYrK(String value);
+
+  /// No description provided for @uniYrM.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} million years'**
+  String uniYrM(String value);
+
+  /// No description provided for @uniYrB.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} billion years'**
+  String uniYrB(String value);
+
+  /// No description provided for @uniSuns.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} Suns'**
+  String uniSuns(String value);
+
+  /// No description provided for @uniSunsM.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} million Suns'**
+  String uniSunsM(String value);
+
+  /// No description provided for @uniSunsB.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} billion Suns'**
+  String uniSunsB(String value);
 }
 
 class _AppLocalizationsDelegate

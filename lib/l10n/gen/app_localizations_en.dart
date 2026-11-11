@@ -2445,4 +2445,188 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get spacecraftAdityal1 =>
       'India\'s (ISRO) first solar observatory. Placed in a halo orbit around the Sun–Earth L1 point (1.5 million km away) to watch the Sun\'s corona and solar storms non-stop.';
+
+  @override
+  String get uniTitle => 'Universe map';
+
+  @override
+  String get uniCardHint => 'Fly from the Sun to the farthest galaxies';
+
+  @override
+  String get uniHint => 'Drag to turn · Pinch to zoom · Tap anything';
+
+  @override
+  String get uniLevelSolar => 'Solar System';
+
+  @override
+  String get uniLevelStars => 'Nearby stars';
+
+  @override
+  String get uniLevelMilkyWay => 'Milky Way';
+
+  @override
+  String get uniLevelLocal => 'Local Group';
+
+  @override
+  String get uniLevelGalaxies => 'Galaxies';
+
+  @override
+  String get uniLevelUniverse => 'Universe';
+
+  @override
+  String get uniGoTo => 'Go to';
+
+  @override
+  String get uniSearchHint => 'Search stars, galaxies, black holes';
+
+  @override
+  String get uniNothing => 'Nothing found';
+
+  @override
+  String get uniSpeedReal => 'Real time';
+
+  @override
+  String get uniSpeedDay => '1 day per second';
+
+  @override
+  String get uniSpeedYear => '1 year per second';
+
+  @override
+  String get uniSpeedMillion => '1 million years per second';
+
+  @override
+  String get uniSpeedFast => '25 million years per second';
+
+  @override
+  String get uniNow => 'Now';
+
+  @override
+  String uniAhead(String value) {
+    return '$value from now';
+  }
+
+  @override
+  String get uniBackToNow => 'Back to now';
+
+  @override
+  String get uniSpedUp => 'Sped up: in real time this motion is far too slow to see.';
+
+  @override
+  String get uniKindStar => 'Star';
+
+  @override
+  String get uniKindPlanet => 'Planet';
+
+  @override
+  String get uniKindBlackHole => 'Black hole';
+
+  @override
+  String get uniKindGalaxyCluster => 'Cluster of galaxies';
+
+  @override
+  String get uniShapeSpiral => 'Spiral galaxy';
+
+  @override
+  String get uniShapeBarred => 'Barred spiral galaxy';
+
+  @override
+  String get uniShapeElliptical => 'Elliptical galaxy';
+
+  @override
+  String get uniShapeLenticular => 'Lenticular galaxy';
+
+  @override
+  String get uniShapeIrregular => 'Irregular galaxy';
+
+  @override
+  String get uniDistance => 'Distance from Earth';
+
+  @override
+  String get uniDistanceNow => 'Distance today';
+
+  @override
+  String get uniLightTime => 'Its light travelled for';
+
+  @override
+  String get uniWidth => 'Width';
+
+  @override
+  String get uniMass => 'Mass';
+
+  @override
+  String get uniHorizon => 'Horizon radius';
+
+  @override
+  String get uniEstimated => 'Distance estimated from its redshift.';
+
+  @override
+  String get uniFlyHere => 'Fly here';
+
+  @override
+  String uniScreen(String value) {
+    return 'Screen width ≈ $value';
+  }
+
+  @override
+  String get uniEdge => 'Edge of the observable universe';
+
+  @override
+  String uniLy(String value) {
+    return '$value light-years';
+  }
+
+  @override
+  String uniLyK(String value) {
+    return '$value thousand light-years';
+  }
+
+  @override
+  String uniLyM(String value) {
+    return '$value million light-years';
+  }
+
+  @override
+  String uniLyB(String value) {
+    return '$value billion light-years';
+  }
+
+  @override
+  String uniDays(String value) {
+    return '$value days';
+  }
+
+  @override
+  String uniYr(String value) {
+    return '$value years';
+  }
+
+  @override
+  String uniYrK(String value) {
+    return '$value thousand years';
+  }
+
+  @override
+  String uniYrM(String value) {
+    return '$value million years';
+  }
+
+  @override
+  String uniYrB(String value) {
+    return '$value billion years';
+  }
+
+  @override
+  String uniSuns(String value) {
+    return '$value Suns';
+  }
+
+  @override
+  String uniSunsM(String value) {
+    return '$value million Suns';
+  }
+
+  @override
+  String uniSunsB(String value) {
+    return '$value billion Suns';
+  }
 }

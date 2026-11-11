@@ -24,6 +24,7 @@ import 'satellites_screen.dart';
 import 'spacecraft_screen.dart';
 import 'star_map_screen.dart';
 import 'tonight_share_screen.dart';
+import 'universe_screen.dart';
 
 /// "Tonight's sky": the Moon's phase and which planets can be seen tonight
 /// from the chosen city, with rise and set times.
@@ -194,6 +195,13 @@ class _SkyScreenState extends State<SkyScreen> {
           header,
           calendarCard,
           const SizedBox(height: 12),
+          _NavCard(
+            icon: Icons.blur_circular,
+            title: l.uniTitle,
+            hint: l.uniCardHint,
+            builder: (_) => const UniverseScreen(),
+          ),
+          const SizedBox(height: 12),
           const _EventsCard(),
           const SizedBox(height: 12),
           const _NewsCard(),
@@ -335,6 +343,13 @@ class _SkyScreenState extends State<SkyScreen> {
           title: l.binocularsTitle,
           hint: l.binocularsHint,
           builder: (_) => BinocularScreen(day: day),
+        ),
+        const SizedBox(height: 12),
+        _NavCard(
+          icon: Icons.blur_circular,
+          title: l.uniTitle,
+          hint: l.uniCardHint,
+          builder: (_) => const UniverseScreen(),
         ),
         const SizedBox(height: 12),
         _SunCard(

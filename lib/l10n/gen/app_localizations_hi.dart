@@ -2446,4 +2446,188 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get spacecraftAdityal1 =>
       'भारत (ISRO) की पहली सौर वेधशाला। सूर्य और पृथ्वी के बीच L1 बिंदु (15 लाख किमी) पर रहकर हर समय सूर्य के कोरोना और सौर तूफ़ानों पर नज़र रखती है।';
+
+  @override
+  String get uniTitle => 'ब्रह्मांड का नक्शा';
+
+  @override
+  String get uniCardHint => 'सूर्य से सबसे दूर की आकाशगंगाओं तक उड़ें';
+
+  @override
+  String get uniHint => 'घुमाने के लिए खींचें · ज़ूम के लिए चुटकी · किसी भी चीज़ पर टैप करें';
+
+  @override
+  String get uniLevelSolar => 'सौर मंडल';
+
+  @override
+  String get uniLevelStars => 'पास के तारे';
+
+  @override
+  String get uniLevelMilkyWay => 'आकाशगंगा (मिल्की वे)';
+
+  @override
+  String get uniLevelLocal => 'स्थानीय समूह';
+
+  @override
+  String get uniLevelGalaxies => 'आकाशगंगाएँ';
+
+  @override
+  String get uniLevelUniverse => 'ब्रह्मांड';
+
+  @override
+  String get uniGoTo => 'यहाँ जाएँ';
+
+  @override
+  String get uniSearchHint => 'तारे, आकाशगंगाएँ, ब्लैक होल खोजें';
+
+  @override
+  String get uniNothing => 'कुछ नहीं मिला';
+
+  @override
+  String get uniSpeedReal => 'असली समय';
+
+  @override
+  String get uniSpeedDay => '1 दिन प्रति सेकंड';
+
+  @override
+  String get uniSpeedYear => '1 साल प्रति सेकंड';
+
+  @override
+  String get uniSpeedMillion => '10 लाख साल प्रति सेकंड';
+
+  @override
+  String get uniSpeedFast => '2.5 करोड़ साल प्रति सेकंड';
+
+  @override
+  String get uniNow => 'अभी';
+
+  @override
+  String uniAhead(String value) {
+    return 'अब से $value बाद';
+  }
+
+  @override
+  String get uniBackToNow => 'अभी पर लौटें';
+
+  @override
+  String get uniSpedUp => 'तेज़ किया गया: असली समय में यह चाल इतनी धीमी है कि दिखती नहीं।';
+
+  @override
+  String get uniKindStar => 'तारा';
+
+  @override
+  String get uniKindPlanet => 'ग्रह';
+
+  @override
+  String get uniKindBlackHole => 'ब्लैक होल';
+
+  @override
+  String get uniKindGalaxyCluster => 'आकाशगंगाओं का समूह';
+
+  @override
+  String get uniShapeSpiral => 'सर्पिल आकाशगंगा';
+
+  @override
+  String get uniShapeBarred => 'दंड-सर्पिल आकाशगंगा';
+
+  @override
+  String get uniShapeElliptical => 'दीर्घवृत्ताकार आकाशगंगा';
+
+  @override
+  String get uniShapeLenticular => 'लेंसाकार आकाशगंगा';
+
+  @override
+  String get uniShapeIrregular => 'अनियमित आकाशगंगा';
+
+  @override
+  String get uniDistance => 'पृथ्वी से दूरी';
+
+  @override
+  String get uniDistanceNow => 'आज की दूरी';
+
+  @override
+  String get uniLightTime => 'इसकी रोशनी ने सफ़र किया';
+
+  @override
+  String get uniWidth => 'चौड़ाई';
+
+  @override
+  String get uniMass => 'द्रव्यमान';
+
+  @override
+  String get uniHorizon => 'घटना क्षितिज की त्रिज्या';
+
+  @override
+  String get uniEstimated => 'दूरी इसके रेडशिफ़्ट से आँकी गई है।';
+
+  @override
+  String get uniFlyHere => 'यहाँ उड़ें';
+
+  @override
+  String uniScreen(String value) {
+    return 'स्क्रीन की चौड़ाई ≈ $value';
+  }
+
+  @override
+  String get uniEdge => 'दिखने वाले ब्रह्मांड का किनारा';
+
+  @override
+  String uniLy(String value) {
+    return '$value प्रकाश-वर्ष';
+  }
+
+  @override
+  String uniLyK(String value) {
+    return '$value हज़ार प्रकाश-वर्ष';
+  }
+
+  @override
+  String uniLyM(String value) {
+    return '$value मिलियन प्रकाश-वर्ष';
+  }
+
+  @override
+  String uniLyB(String value) {
+    return '$value अरब प्रकाश-वर्ष';
+  }
+
+  @override
+  String uniDays(String value) {
+    return '$value दिन';
+  }
+
+  @override
+  String uniYr(String value) {
+    return '$value साल';
+  }
+
+  @override
+  String uniYrK(String value) {
+    return '$value हज़ार साल';
+  }
+
+  @override
+  String uniYrM(String value) {
+    return '$value मिलियन साल';
+  }
+
+  @override
+  String uniYrB(String value) {
+    return '$value अरब साल';
+  }
+
+  @override
+  String uniSuns(String value) {
+    return '$value सूर्य';
+  }
+
+  @override
+  String uniSunsM(String value) {
+    return '$value मिलियन सूर्य';
+  }
+
+  @override
+  String uniSunsB(String value) {
+    return '$value अरब सूर्य';
+  }
 }
