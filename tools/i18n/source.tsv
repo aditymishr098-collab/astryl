@@ -169,6 +169,7 @@ cbc37b0c	At the centre, Einstein’s theory of gravity (general relativity) says
 9e607ded	Atmosphere
 442adc8a	Average temperature
 91e9d554	Back home
+69429851	Back to now
 3500ba09	Backup
 99a808d8	Balance
 5bf714cb	Barred spiral
@@ -328,6 +329,7 @@ d040fe30	Fishes
 01e1409b	Five random questions from the set you pick. Every answer is explained.
 479cf8cc	Five things that are not true about black holes, and the questions nobody can answer yet.
 ac51deb7	Fly
+674eba03	Fly through 3,600 real galaxies in 3D
 2148c623	Flying Fish
 59e8fab0	For Sagittarius A* the trip from the horizon to the centre takes about a minute. For a 10-Sun black hole it takes less than a thousandth of a second.
 ea91680d	For a clock that hovers at rest at that distance. The clock rate is √(1 − r_s/r). It depends only on the distance in horizon radii, so a bigger black hole gives the same effect farther out in km.
@@ -354,6 +356,7 @@ ca3622a5	Galaxies range from dwarfs with a few thousand stars to giants with tri
 8f56bfcd	Galaxies were not born big. They grew, mostly by merging.
 613a41be	Galaxies you can see
 756fb2b9	Galaxy
+944e38fd	Galaxy data: <a href="https://github.com/mattiaverga/OpenNGC" rel="noopener">OpenNGC</a> by Mattia Verga and contributors (CC BY-SA 4.0). The same map is in the Astryl app, under Sky.
 dda3edc9	Galaxy quiz
 67125d63	Ganymede
 b9ceb2fe	Ganymede is the largest moon in the solar system. It is even bigger than Mercury.
@@ -367,6 +370,7 @@ ed1fbcf8	Get the app
 427debb8	Giraffe
 31d109d1	Glossary
 81622bc3	Go dark
+e43ec38a	Go to
 ddf5ae8a	Going from the Sun to the whole observable universe is a jump of about 600 quadrillion times (6 × 10¹⁷). Light, the fastest thing there is, needs 4.6 seconds to cross the Sun.
 96dcd3f3	Goldfish
 f14942e0	Graving tool
@@ -420,6 +424,7 @@ a22cfabb	Impossible for humans
 d8904da3	In Astryl: You tab → Backup → Restore a backup, pick that file.
 a5fc063a	In between: a disk like a spiral, but with no arms and almost no new stars.
 f445b54d	In plain words: we do not sell anything about you, there are no ads, and you can use everything without an account. This page lists exactly what is kept when you do choose something, and how to remove it.
+35f799e0	In real time nothing here seems to move: the Sun needs about 230 million years for one trip around the Galaxy. The speed buttons run the clock faster so you can watch planets orbit and the Milky Way turn. The disk is turned as one piece to keep the picture simple.
 2523b17d	In the giant galaxy Messier 87. On 10 April 2019 it became the first black hole ever pictured, by the Event Horizon Telescope. It fires a jet that stretches thousands of light-years.
 d57784ab	In the old Heliora: You tab → Backup → Save a backup.
 13b6b311	InSight landed in November 2018 and recorded hundreds of marsquakes, listening to the inside of the planet.
@@ -574,6 +579,7 @@ fbee3926	On the largest scales galaxies line up in filaments around huge empty v
 cc966cd1	On this calendar the Sun does not exist until early September, dinosaurs vanish on 30 December, and the whole of human history fits into the last 12 minutes of 31 December.
 23bc9bf3	On this page
 7c2b60ae	On your phone or in your browser
+c70fb155	One 3D space with the planets where they are right now, nearby stars, 62 black holes and 3,600 real galaxies. Drag to turn, pinch or scroll to zoom, tap anything.
 e2dffa9c	One Sun orbit takes
 8aa2da36	One account, no e-mail
 7d43557f	One button deletes your account and everything stored for it.
@@ -722,6 +728,7 @@ afae9ae5	Space view
 0aafc097	Space, time and all the matter and energy we know begin as an extremely hot, dense state and start to expand.
 c618f3c7	Spacecraft now
 78f7ed03	Spaghettification
+0e3be3a0	Speeding up time
 c978545a	Spiral
 edb79002	Spiral galaxy
 d2baf950	Spiral, barred, elliptical, lenticular, irregular and dwarf.
@@ -813,6 +820,7 @@ e2ac78cc	The date you accepted this policy and its version, the date you joined,
 d6d65392	The dinosaurs end
 df682cbd	The distance light travels in one year, about 9.46 trillion km.
 df4449e6	The distance, 1.5 times the horizon radius for a non-spinning black hole, where light can orbit in a circle.
+f70b8bce	The dots of the Milky Way are a model with the real size, a bar and four arms: nobody can map single stars that far. Distances of far galaxies are estimated from their redshift, so some groups look stretched along our line of sight. The catalogue holds the brightest galaxies, most of them within 500 million light-years; the real universe has about two trillion.
 151813a3	The earliest known traces of life on Earth, simple microbes, are about 3.5 billion years old.
 8703e16c	The edge is called the event horizon. It is not a hard surface you could land on. It is a boundary in space. Outside it, a fast enough rocket can still escape. Inside it, every path leads inward.
 fa93d32e	The escape speed idea
@@ -853,6 +861,7 @@ b8ee68ee	The outer layers may be blown away in a supernova. If the core left beh
 7482a77f	The page name, the language, a size class of your screen (small, medium or large), the website that sent you here (if any), and the country.
 6fff97f1	The part of the universe whose light has had time to reach us, about 93 billion light-years across.
 52167325	The place question is optional. If you press “Share”, your browser asks for permission; the point is rounded to about 10 km and added to a count for the day. It carries no code, no account and no IP address, so it cannot be tied to you. If you say no, nothing is sent. Your answer is kept only in your browser.
+ce9cb503	The planets are where they are at this moment, from the orbit formulas of NASA JPL. Stars, black holes and galaxies sit at their real directions and distances. Sizes and shapes of galaxies come from the catalogue, and a black hole’s horizon is drawn at its real size when you zoom in on it.
 c8bce9f5	The point of no return
 2da855f7	The recovery code is shown once when you make the account. Keep it safe: it is the only way back in if you forget your password, it works 3 times, and nobody (including us) can read it back. If you lose both the password and the code, the account cannot be recovered.
 abe1f886	The same fall looks very different to you and to someone watching from far away.
@@ -910,6 +919,7 @@ dfd0aa41	Type any mass and get the size of its event horizon, r = 2GM/c², plus 
 70efcbb1	Under its icy shell, Europa probably holds about twice as much water as all of Earth's oceans.
 393eb740	Unicorn
 9c42569b	Uninstall the old Heliora.
+1e78dee4	Universe map
 2aeef800	Universe.
 49b37ba1	Until you delete the account
 b2d26a85	Until you delete the account or switch sync off and delete it
@@ -942,9 +952,11 @@ d157e654	Whale
 bcda4be5	What comes next
 4cf06f29	What is a black hole?
 35347a9a	What is a galaxy?
+bc702626	What is a model
 a43980bd	What is at the centre?
 8c0fb9e9	What is inside
 76b4db0a	What is not true about black holes, and what nobody knows yet.
+638e0288	What is real here
 b90b098f	What it is
 471324ab	What the app adds
 f0b47bd9	What the pictures show is not the black hole itself but its dark shadow and the ring of glowing gas around it. The orange colour is added to show how bright each part is.

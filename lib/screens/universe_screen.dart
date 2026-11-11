@@ -1416,7 +1416,12 @@ class _UniversePainter extends CustomPainter {
               Paint()..color = colour.withValues(alpha: close ? 1.0 : 0.55));
           tappable = close || chosen;
         case UKind.blackHole:
-          final far = b.inMilkyWay ? _dist > 400000 : near > 60;
+          // Shown at the zoom where it belongs: Milky Way ones inside the
+          // Galaxy, giants near their galaxy, far quasars on the big map.
+          final inView = b.inMilkyWay
+              ? _dist <= 400000
+              : ((b.lightYears > 0 && _dist > 1e9) || _dist < 2e7);
+          final far = near > 60 || !inView;
           if (far && !isFocus && !chosen) {
             continue;
           }
