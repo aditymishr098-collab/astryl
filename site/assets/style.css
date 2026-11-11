@@ -344,3 +344,19 @@ html[dir=rtl] .bhart,html[dir=rtl] .simwrap,html[dir=rtl] .scbar{direction:ltr}
 .uminfo .btn{width:100%;justify-content:center;margin-top:10px;padding:9px 14px}
 .umtime{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:.85rem;margin:6px 0}
 .umtime .btn{padding:7px 14px;font-size:.85rem}
+
+/* My space, favourites and reading suggestions */
+.favbtn{margin-top:10px;padding:7px 14px;font-size:.9rem}
+.favbtn.on{border-color:var(--accent);color:var(--text)}
+.mycard{margin:14px 0}
+.mycard h2{margin-top:0;font-size:1.2rem}
+.favlist{display:flex;flex-wrap:wrap;gap:8px}
+.favitem{display:inline-flex;align-items:center;gap:4px;padding:4px 4px 4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2)}
+.favitem button{width:30px;height:30px;border:0;background:none;color:var(--muted);font-size:1.1rem;cursor:pointer;border-radius:50%}
+.badges .off{opacity:.45}
+a.sc.read{opacity:.7}
+a.sc.next{border-color:var(--accent)}
+.nexttag{display:block;color:var(--accent);font-size:.75rem;font-weight:700;letter-spacing:.02em}
+.mycard .stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.mycard .stat{padding:10px 8px;text-align:center}
+.mycard .stat b{font-size:1.15rem}

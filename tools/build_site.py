@@ -12,6 +12,7 @@ import deepspace
 import galaxies
 import lab
 import umap
+import myspace
 import universe
 import learn
 
@@ -378,7 +379,7 @@ def cons_svg(c):
 # ------------------------------------------------------------------ page shell
 # The top menu keeps four main pages; the rest sit under "More". Home is the logo.
 NAV_MAIN = [('planets.html', 'planets', bi('planetsTitle')), ('solar-system.html', 'solar', bi('solarSystemTitle')), ('sky.html', 'sky', bi('skyTitle')), ('quiz.html', 'quiz', bi('navQuiz'))]
-NAV_MORE = [('compare.html', 'compare', bi('navCompare')), ('you.html', 'you', bt('You', 'आप')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')),
+NAV_MORE = [('my-space.html', 'myspace', bt('My space', 'My space')), ('compare.html', 'compare', bi('navCompare')), ('you.html', 'you', bt('You', 'आप')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')),
             ('missions.html', 'missions', bi('missionsTitle')), ('spacecraft.html', 'spacecraft', bi('spacecraftTitle')),
             ('universe-map.html', 'umap', bt('Universe map', 'ब्रह्मांड का नक्शा')), ('galaxies.html', 'gx', bt('Galaxies', 'Galaxies')), ('cosmic-scale.html', 'scale', bt('Scale of the universe', 'ब्रह्मांड का पैमाना')), ('universe-timeline.html', 'tline', bt('Timeline', 'समयरेखा')), ('glossary.html', 'gloss', bt('Glossary', 'शब्दकोश')), ('black-holes.html', 'bh', bt('Black holes', 'ब्लैक होल'))]
 
@@ -390,7 +391,7 @@ def asset_v():
     '''A short hash of the scripts and styles, so a changed file is never served from an old cache.'''
     if not _ASSET_V:
         h = hashlib.md5()
-        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js'):
+        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js'):
             h.update((SRC / name).read_bytes())
         h.update(data_js().encode('utf-8'))
         h.update(umap.CATALOG.read_bytes())
@@ -569,7 +570,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
     p = '../' * depth
     def navlink(h, k, label):
         return f'<a href="{p}{h}"{" class=on" if k == page else ""}>{label}</a>'
-    more_on = page in ('compare', 'you', 'cons', 'maps', 'missions', 'bh', 'gx', 'scale', 'tline', 'gloss', 'umap')
+    more_on = page in ('compare', 'you', 'cons', 'maps', 'missions', 'bh', 'gx', 'scale', 'tline', 'gloss', 'umap', 'myspace')
     nav = (''.join(navlink(*x) for x in NAV_MAIN)
            + f'<details class="more"><summary{" class=on" if more_on else ""}>{bt("More", "और")} ▾</summary><div class="morepanel">'
            + ''.join(navlink(*x) for x in NAV_MORE) + '</div></details>')
@@ -608,7 +609,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 <div>{bt("Free and open source", "मुफ़्त और open source")}<br><a href="{REPO}">{bt("Source code on GitHub", "GitHub पर source code")}</a><br><a href="{REPO}/blob/main/LICENSE">AGPL-3.0</a> · <a href="{p}privacy.html">{bt("Privacy Policy", "Privacy Policy")}</a><br><a href="{p}account.html">{bt("Account", "खाता")}</a></div>
 <div>{bt("Facts: NASA Planetary Fact Sheet", "तथ्य: NASA Planetary Fact Sheet")}<br><a class="btn" href="{p}get.html">⬇ {bt("Download the app", "App download करें")}</a></div>
 </div></footer>
-{"<script src=\"" + p + "assets/data.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/app.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/account.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/fx.js?v=" + asset_v() + "\"></script>" if scripts else ""}
+{"<script src=\"" + p + "assets/data.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/app.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/account.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/me.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/fx.js?v=" + asset_v() + "\"></script>" if scripts else ""}
 </body></html>
 '''
 
@@ -687,7 +688,7 @@ def body_page(b, i):
     wt = f'<h2>{bi("weightFeelsLike", weight="60")}</h2><div class="card"><div class="life">{val(lambda lg: fmt(lg, 60 * b["g"] / 9.8, 1) + " kg")}</div><p class="note">{bi("gravityTimes", factor={lg: fmt(lg, b["g"] / 9.8, 2) for lg in ("en", "hi")})} · <a href="../you.html">{bi("weightTitle")}</a></p></div>' if b['hasSurface'] or True else ''
     moon_orb = f'<section class="blk"><h2>{bt("Live moon positions", "चंद्रमाओं की लाइव स्थिति")}</h2><div class="card" id="moonOrbitSim" data-body="{idn}"></div></section>' if idn in ('jupiter', 'saturn') else ''
     body = f'''<p style="margin-top:20px"><a href="../planets.html">← {bi("planetsTitle")}</a></p>
-<div class="bodyhead">{planet_svg(b)}<div><h1 style="margin:0">{bname(idn)}</h1><p class="sub" style="margin:.2em 0 0">{sub}</p></div></div>
+<div class="bodyhead">{planet_svg(b)}<div><h1 style="margin:0">{bname(idn)}</h1><p class="sub" style="margin:.2em 0 0">{sub}</p><button class="btn favbtn" type="button" data-fav="{idn}" aria-pressed="false">☆</button></div></div>
 <div class="stats">{"".join(stats)}</div>
 <section class="blk"><h2>{bt("Inside this world · Tap a layer", "आंतरिक संरचना · किसी परत पर टैप करें")}</h2><div class="card" id="cutawaySim" data-body="{idn}"></div></section>
 <section class="blk"><h2>{bt("Telescope eyepiece simulator", "दूरबीन ज़ूम सिम्युलेटर (1x · 10x · 100x)")}</h2><div class="card" id="telescopeSim" data-body="{idn}"></div></section>
@@ -802,8 +803,8 @@ def simple_pages():
     body = f'''<section class="blk"><h1>{bi("weightTitle")}</h1>
 <div class="row"><label>{bi("weightInput")}<br><input type="number" id="kg" value="60" min="0" step="1"></label><label>{bi("jumpInput")}<br><input type="number" id="cm" value="40" min="0" step="1"></label></div>
 <p class="note">{bi("jumpNote")}</p><div id="wOut"></div></section>
-<section class="blk"><h2>{bi("setBirthDate")}</h2><div class="row"><input type="date" id="birth" aria-label="Birth date"></div><p class="note">{bt("Worked out in your browser. Nothing is sent or saved.", "आपके browser में ही निकाला जाता है। कुछ भेजा या save नहीं किया जाता।")}</p><div id="ageOut"></div><div id="bdOut"></div></section>'''
-    write('you.html', shell('Weight, age and birthday sky', 'वज़न, उम्र और जन्मदिन का आसमान', 'you', body, 'Your weight, jump height and age on every planet, and the Moon on the day you were born.', canonical='you.html'))
+<section class="blk"><h2>{bi("setBirthDate")}</h2><div class="row"><input type="date" id="birth" aria-label="Birth date"></div><p class="note">{bt("Worked out in your browser. Nothing is sent or saved.", "आपके browser में ही निकाला जाता है। कुछ भेजा या save नहीं किया जाता।")}</p><div id="ageOut"></div><div id="bdOut"></div><div id="bsOut"></div><script type="application/json" id="bsStars">{myspace.birthday_stars()}</script></section>'''
+    write('you.html', shell('Weight, age and birthday sky', 'वज़न, उम्र और जन्मदिन का आसमान', 'you', body, 'Your weight, jump height and age on every planet, the Moon and the planets on the day you were born, how far your birthday light has travelled, and a picture to share.', canonical='you.html', extra_head=f'<script defer src="assets/birthday.js?v={asset_v()}"></script>'))
     # quiz
     body = f'''<section class="blk"><h1>{bi("quizTitle")}</h1><div id="daily" class="daily"></div></section>
 <section class="blk"><h2>{bt("Practice", "अभ्यास")}</h2><div id="quiz"></div></section>'''
@@ -951,7 +952,7 @@ def privacy_page():
 {tr("Your username and a hash of your password (the password itself is never stored or visible to us)", "आपका username और password का hash (password ख़ुद कभी store नहीं होता और हमें दिखता नहीं)", "To log you in", "आपको log in कराने के लिए", "Until you delete the account", "जब तक आप खाता नहीं मिटाते")}
 {tr("A hash of your recovery code, how many times it can still be used, failed tries", "Recovery code का hash, वह कितनी बार और चल सकता है, ग़लत कोशिशें", "So you can set a new password if you forget it", "ताकि password भूलने पर आप नया लगा सकें", "Until you delete the account", "जब तक आप खाता नहीं मिटाते")}
 {tr("The date you accepted this policy and its version, the date you joined, the date you last used the account", "आपने यह policy कब मानी और उसका version, आप कब जुड़े, खाता आख़िरी बार कब इस्तेमाल हुआ", "To show your consent and run the account", "आपकी सहमति दिखाने और खाता चलाने के लिए", "Until you delete the account", "जब तक आप खाता नहीं मिटाते")}
-{tr("If sync is on: favourites, quiz scores, language, theme, text size, city (never a GPS place), birth date and the daily sky note setting", "Sync चालू हो तो: favourites, quiz scores, भाषा, theme, text size, शहर (GPS वाली जगह कभी नहीं), जन्मतिथि और रोज़ के आसमान वाले note की setting", "To keep the app and the website in step", "App और website को एक जैसा रखने के लिए", "Until you delete the account or switch sync off and delete it", "जब तक आप खाता नहीं मिटाते")}
+{tr("If sync is on: favourites, quiz scores (also the website’s black hole and galaxy quiz), which Black holes 101 lessons you have read, language, theme, text size, city (never a GPS place), birth date and the daily sky note setting. The list of website pages you have read stays in your browser and is never sent.", "Sync चालू हो तो: favourites, quiz scores (website की black hole और galaxy quiz भी), Black holes 101 के कौन-से पाठ पढ़े, भाषा, theme, text size, शहर (GPS वाली जगह कभी नहीं), जन्मतिथि और रोज़ के आसमान वाले note की setting। Website के जो pages आपने पढ़े उनकी list आपके browser में ही रहती है, कभी भेजी नहीं जाती।", "To keep the app and the website in step", "App और website को एक जैसा रखने के लिए", "Until you delete the account or switch sync off and delete it", "जब तक आप खाता नहीं मिटाते")}
 {tr("Daily 5: for each day you play, your score, how many answers were right and how long it took", "Daily 5: आप जिस दिन खेलें, उस दिन का score, कितने जवाब सही थे और कितना समय लगा", "To make the leaderboard and rank you", "Leaderboard बनाने और आपकी rank बताने के लिए", "Until you delete the account", "जब तक आप खाता नहीं मिटाते")}
 {tr("An optional profile photo (a small 256 px square picture you choose yourself)", "एक वैकल्पिक profile फ़ोटो (आपकी चुनी हुई छोटी 256 px चौकोर तस्वीर)", "To show it on your own passport and profile; it is not shown to other people and not on the leaderboard", "सिर्फ़ आपके अपने passport और profile पर दिखाने के लिए; दूसरों को या leaderboard पर नहीं दिखती", "Until you remove it or delete the account", "जब तक आप उसे हटाएँ या खाता मिटाएँ")}
 </table>
@@ -1056,6 +1057,8 @@ def main():
     shutil.copy(SRC / 'scale.js', OUT / 'assets/scale.js')
     shutil.copy(SRC / 'learn.js', OUT / 'assets/learn.js')
     shutil.copy(SRC / 'universe.js', OUT / 'assets/universe.js')
+    for name in ('me.js', 'myspace.js', 'birthday.js'):
+        shutil.copy(SRC / name, OUT / 'assets' / name)
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#fbf7ee"/><circle r="30" fill="#1b3a8a"/><ellipse rx="50" ry="15" fill="none" stroke="#6a45d6" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#1b3a8a"/></svg>', encoding='utf-8')
     (OUT / 'fonts').mkdir()
@@ -1068,7 +1071,7 @@ def main():
         body_page(b, i)
     index_page(); planets_page(); simple_pages(); maps_page(); get_page(); privacy_page(); account_page(); not_found()
     helpers = dict(bt=bt, bi=bi, raw2=raw2, shell=shell, write=write, esc=esc, fmt=fmt, asset_v=asset_v, SITE=SITE)
-    deep = deepspace.build(helpers) + galaxies.build(helpers) + lab.build(helpers) + universe.build(helpers) + learn.build(helpers) + umap.build(helpers)
+    deep = deepspace.build(helpers) + galaxies.build(helpers) + lab.build(helpers) + universe.build(helpers) + learn.build(helpers) + umap.build(helpers) + myspace.build(helpers)
     urls = ['', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'get.html', 'privacy.html', 'account.html', 'black-holes.html', 'galaxies.html'] + deep + [f'body/{b["id"]}.html' for b in BODIES]
     (OUT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}/{u}</loc></url>\n' for u in urls) + '</urlset>\n', encoding='utf-8')
     og_images()

@@ -415,7 +415,7 @@ e4ce2ac5	Hydrogen
 13fb8955	Hydrus
 c4d753e5	ISS, Tiangong and Hubble passes over your city.
 79148858	If a black hole evaporates, what happens to everything that fell in? This is the information paradox.
-bb60129b	If sync is on: favourites, quiz scores, language, theme, text size, city (never a GPS place), birth date and the daily sky note setting
+2b01dbfc	If sync is on: favourites, quiz scores (also the website’s black hole and galaxy quiz), which Black holes 101 lessons you have read, language, theme, text size, city (never a GPS place), birth date and the daily sky note setting. The list of website pages you have read stays in your browser and is never sent.
 11fd3d9b	If the app crashes, it sends one small report to the Astryl server: the error text, the technical trace of where it happened, the app version, the Android version string and the app language. It contains no name, no account, no device id, no IP address (the server keeps none in readable form) and no location.
 9157d536	If this policy changes in a way that matters, the new version is published on this page and in the app's release notes, and the app asks again before you make a new account. The full source code, including the server code in the folder
 a22cfabb	Impossible for humans
@@ -533,6 +533,8 @@ d9c5c337	Most large galaxies have a black hole in the middle with millions or ev
 f5fe3b4f	Most large galaxies have a supermassive one at the centre.
 ce7b4f7d	Most of the Milky Way’s mass is not stars. The total of about 1.5 trillion Suns is mostly dark matter, which we know only from how it pulls on stars and gas.
 f9e94027	Mount Everest
+be6f359b	My space
+13345265	My space needs JavaScript.
 5811bc98	Myths
 d138edfc	Myths and big questions
 bbfb6399	NASA Eyes-style 3D Solar System explorer: drag to rotate in 3D, scroll/pinch to zoom, and tap any planet or moon to fly the camera to it and see live telemetry below.
