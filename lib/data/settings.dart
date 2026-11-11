@@ -38,6 +38,9 @@ class HelioraSettings {
     this.textScalePercent = 100,
     this.myLat = 0,
     this.myLon = 0,
+    this.readLessons = const <String>[],
+    this.seen = const <String, int>{},
+    this.placeName = '',
   });
 
   final ThemeMode themeMode;
@@ -86,6 +89,17 @@ class HelioraSettings {
   final double myLat;
   final double myLon;
 
+  /// Ids of the Learn lessons opened long enough to count as read.
+  final List<String> readLessons;
+
+  /// Things the user has seen in the sky ("I've seen it"), with the time
+  /// they ticked them, in milliseconds.
+  final Map<String, int> seen;
+
+  /// Name of a place picked from the world city list. Used while [cityId] is
+  /// [placeCityId]; its coordinates are kept in [myLat] and [myLon].
+  final String placeName;
+
   /// The best score of a quiz level, 0 when not played yet.
   int bestFor(String level) {
     final saved = quizBests[level];
@@ -117,6 +131,9 @@ class HelioraSettings {
     int? textScalePercent,
     double? myLat,
     double? myLon,
+    List<String>? readLessons,
+    Map<String, int>? seen,
+    String? placeName,
   }) {
     return HelioraSettings(
       themeMode: themeMode ?? this.themeMode,
@@ -136,6 +153,9 @@ class HelioraSettings {
       textScalePercent: textScalePercent ?? this.textScalePercent,
       myLat: myLat ?? this.myLat,
       myLon: myLon ?? this.myLon,
+      readLessons: readLessons ?? this.readLessons,
+      seen: seen ?? this.seen,
+      placeName: placeName ?? this.placeName,
     );
   }
 
@@ -159,6 +179,9 @@ class HelioraSettings {
       'textScale': textScalePercent,
       'myLat': myLat,
       'myLon': myLon,
+      'readLessons': readLessons,
+      'seen': seen,
+      'placeName': placeName,
     };
   }
 
@@ -192,6 +215,9 @@ class HelioraSettings {
     final scale = json['textScale'];
     final myLat = json['myLat'];
     final myLon = json['myLon'];
+    final read = json['readLessons'];
+    final seen = json['seen'];
+    final place = json['placeName'];
     return HelioraSettings(
       themeMode: theme,
       // A language that was removed in an update falls back to the phone's.
@@ -227,6 +253,16 @@ class HelioraSettings {
           scale is int && textScaleChoices.contains(scale) ? scale : d.textScalePercent,
       myLat: myLat is num && myLat.abs() <= 90 ? myLat.toDouble() : d.myLat,
       myLon: myLon is num && myLon.abs() <= 180 ? myLon.toDouble() : d.myLon,
+      readLessons: read is List
+          ? <String>[for (final r in read) if (r is String) r]
+          : d.readLessons,
+      seen: seen is Map
+          ? <String, int>{
+              for (final e in seen.entries)
+                if (e.key is String && e.value is int) e.key as String: e.value as int,
+            }
+          : d.seen,
+      placeName: place is String ? place : d.placeName,
     );
   }
 }
