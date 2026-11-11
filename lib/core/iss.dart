@@ -1,3 +1,4 @@
+import 'dart:isolate';
 import 'dart:math' as math;
 
 import 'sgp4.dart';
@@ -307,4 +308,50 @@ List<({double lat, double lon})> groundTrack(
     }
   }
   return out;
+}
+
+/// [findIssPasses] on a background isolate, so the screen stays smooth.
+///
+/// This is a top-level function on purpose: a closure made inside a widget
+/// can carry the widget along, which cannot be sent to another isolate. If
+/// the isolate fails for any reason, the passes are worked out here instead.
+Future<List<IssPass>> findIssPassesInBackground(
+  Sgp4 sat,
+  DateTime from,
+  double lat,
+  double lon, {
+  String satId = 'iss',
+}) async {
+  try {
+    return await Isolate.run(
+        () => findIssPasses(sat, from, lat, lon, satId: satId));
+  } catch (_) {
+    return findIssPasses(sat, from, lat, lon, satId: satId);
+  }
+}
+
+/// True when the satellite is lit by the Sun at [t] (false when its orbit
+/// data cannot be used).
+bool satelliteSunlit(Sgp4 sat, DateTime t) {
+  final p = sat.at(t);
+  return p != null && _sunlit(p, t);
+}
+
+/// The point on Earth with the Sun straight overhead at [t].
+({double lat, double lon}) subsolarPoint(DateTime t) {
+  final sun = equatorialOf('sun', t);
+  var lon = sun.ra - siderealTime(t, 0);
+  lon = ((lon + 180) % 360 + 360) % 360 - 180;
+  return (lat: sun.dec, lon: lon);
+}
+
+/// Latitude of the day-night line at longitude [lonDeg], for the Sun
+/// straight above [sun].
+double terminatorLatitude(double lonDeg, ({double lat, double lon}) sun) {
+  var dec = sun.lat;
+  if (dec.abs() < 0.01) {
+    dec = dec < 0 ? -0.01 : 0.01;
+  }
+  final h = _rad(lonDeg - sun.lon);
+  return _deg(math.atan(-math.cos(h) / math.tan(_rad(dec))));
 }

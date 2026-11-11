@@ -4591,6 +4591,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{value} billion Suns'**
   String uniSunsB(String value);
+
+  /// No description provided for @issBelowBy.
+  ///
+  /// In en, this message translates to:
+  /// **'{direction}, {degrees}° below the horizon'**
+  String issBelowBy(String direction, String degrees);
+
+  /// No description provided for @issLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get issLight;
+
+  /// No description provided for @issInSun.
+  ///
+  /// In en, this message translates to:
+  /// **'In sunlight'**
+  String get issInSun;
+
+  /// No description provided for @issInShadow.
+  ///
+  /// In en, this message translates to:
+  /// **'In Earth\'s shadow'**
+  String get issInShadow;
+
+  /// No description provided for @issNextVisible.
+  ///
+  /// In en, this message translates to:
+  /// **'Next easy-to-see pass in {wait}, at {time}'**
+  String issNextVisible(String wait, String time);
+
+  /// No description provided for @issNextPass.
+  ///
+  /// In en, this message translates to:
+  /// **'Next pass in {wait}, at {time}'**
+  String issNextPass(String wait, String time);
+
+  /// No description provided for @issTrackPast.
+  ///
+  /// In en, this message translates to:
+  /// **'Where it was'**
+  String get issTrackPast;
+
+  /// No description provided for @issTrackNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Where it is going'**
+  String get issTrackNext;
+
+  /// No description provided for @issNight.
+  ///
+  /// In en, this message translates to:
+  /// **'Night on Earth'**
+  String get issNight;
+
+  /// No description provided for @issDataAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Orbit data from {time} ago'**
+  String issDataAge(String time);
+
+  /// No description provided for @issDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} days'**
+  String issDays(String value);
+
+  /// No description provided for @issOnlyVisible.
+  ///
+  /// In en, this message translates to:
+  /// **'Only passes that are easy to see'**
+  String get issOnlyVisible;
+
+  /// No description provided for @issNoVisible.
+  ///
+  /// In en, this message translates to:
+  /// **'No easy-to-see passes in the next 5 days.'**
+  String get issNoVisible;
 }
 
 class _AppLocalizationsDelegate

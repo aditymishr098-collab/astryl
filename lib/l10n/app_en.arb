@@ -1495,5 +1495,62 @@
         "type": "String"
       }
     }
-  }
+  },
+  "issBelowBy": "{direction}, {degrees}° below the horizon",
+  "@issBelowBy": {
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      },
+      "degrees": {
+        "type": "String"
+      }
+    }
+  },
+  "issLight": "Light",
+  "issInSun": "In sunlight",
+  "issInShadow": "In Earth's shadow",
+  "issNextVisible": "Next easy-to-see pass in {wait}, at {time}",
+  "@issNextVisible": {
+    "placeholders": {
+      "wait": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "issNextPass": "Next pass in {wait}, at {time}",
+  "@issNextPass": {
+    "placeholders": {
+      "wait": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "issTrackPast": "Where it was",
+  "issTrackNext": "Where it is going",
+  "issNight": "Night on Earth",
+  "issDataAge": "Orbit data from {time} ago",
+  "@issDataAge": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "issDays": "{value} days",
+  "@issDays": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "issOnlyVisible": "Only passes that are easy to see",
+  "issNoVisible": "No easy-to-see passes in the next 5 days."
 }
