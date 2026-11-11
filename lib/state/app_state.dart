@@ -255,6 +255,36 @@ class AppState extends ChangeNotifier {
     return isNewBest;
   }
 
+  /// Notes that the Learn lesson [key] has been read.
+  Future<void> markLessonRead(String key) {
+    if (_settings.readLessons.contains(key)) {
+      return Future<void>.value();
+    }
+    return _update(_settings.copyWith(readLessons: <String>[..._settings.readLessons, key]));
+  }
+
+  /// Keeps the best score of the deep space quiz [set] (bh, gx or all).
+  /// Returns true when it is a new best.
+  Future<bool> recordDeepQuiz(String set, int score) async {
+    final key = 'ds-$set';
+    if (score <= (_settings.quizBests[key] ?? 0)) {
+      return false;
+    }
+    await _update(_settings.copyWith(quizBests: <String, int>{..._settings.quizBests, key: score}));
+    return true;
+  }
+
+  /// Ticks or unticks something seen in the sky.
+  Future<void> toggleSeen(String id) {
+    final next = Map<String, int>.of(_settings.seen);
+    if (next.containsKey(id)) {
+      next.remove(id);
+    } else {
+      next[id] = DateTime.now().millisecondsSinceEpoch;
+    }
+    return _update(_settings.copyWith(seen: next));
+  }
+
   /// Records that a Daily 5 or Blitz session was played today for streak tracking.
   Future<void> recordDailyStreak() async {
     final bests = Map<String, int>.of(_settings.quizBests);

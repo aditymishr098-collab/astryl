@@ -15,6 +15,7 @@ import '../widgets/common.dart';
 import '../widgets/space_view.dart';
 import 'compare_screen.dart';
 import 'iss_screen.dart';
+import 'learn_hub.dart';
 import 'planet_screen.dart';
 import 'quiz_screen.dart';
 import 'search_screen.dart';
@@ -790,7 +791,7 @@ class _QuickLaunchBentoGrid extends StatelessWidget {
       (
         icon: Icons.auto_awesome_outlined,
         title: isHi ? '3D तारामंडल मैप' : 'Interactive Star Map',
-        sub: isHi ? '1,000 तारे · 89 तारामंडल' : '1,000 stars · 89 constellations',
+        sub: isHi ? '1,000 तारे · 88 तारामंडल' : '1,000 stars · 88 constellations',
         onTap: () => Navigator.of(context).push(
               MaterialPageRoute<void>(builder: (_) => const StarMapScreen()),
             ),
@@ -808,6 +809,14 @@ class _QuickLaunchBentoGrid extends StatelessWidget {
         title: isHi ? '60s क्विज़ ब्लिट्ज़' : '60s Quiz Blitz',
         sub: isHi ? '3 लाइफ · लीडरबोर्ड' : '3 lives · Daily 5',
         onTap: onOpenQuiz,
+      ),
+      (
+        icon: Icons.school_outlined,
+        title: isHi ? 'सीखिए: ब्लैक होल, galaxies' : 'Learn: black holes, galaxies',
+        sub: isHi ? 'पाठ · quiz · शब्दकोश · tools' : 'Lessons · quiz · glossary · tools',
+        onTap: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(builder: (_) => const LearnHub()),
+            ),
       ),
     ];
 
@@ -828,6 +837,8 @@ class _QuickLaunchBentoGrid extends StatelessWidget {
             Expanded(child: _BentoTile(item: tiles[3])),
           ],
         ),
+        const SizedBox(height: 10),
+        _BentoTile(item: tiles[4]),
       ],
     );
   }
