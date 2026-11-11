@@ -3,7 +3,6 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../theme.dart';
-import '../widgets/common.dart';
 import 'learn_screen.dart' show bi;
 
 const double _g = 6.674e-11;
