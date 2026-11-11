@@ -26,6 +26,9 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
+          # Pinned: Flutter 3.50 (Nov 2026) needs a newer Android Gradle Plugin and
+          # deprecates material.dart. Move up on purpose, not by surprise.
+          flutter-version: 3.47.9
           cache: true
 
       - run: flutter pub get
