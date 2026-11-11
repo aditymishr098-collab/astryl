@@ -2630,4 +2630,53 @@ class AppLocalizationsHi extends AppLocalizations {
   String uniSunsB(String value) {
     return '$value अरब सूर्य';
   }
+
+  @override
+  String issBelowBy(String direction, String degrees) {
+    return '$direction, क्षितिज से $degrees° नीचे';
+  }
+
+  @override
+  String get issLight => 'रोशनी';
+
+  @override
+  String get issInSun => 'धूप में';
+
+  @override
+  String get issInShadow => 'पृथ्वी की छाया में';
+
+  @override
+  String issNextVisible(String wait, String time) {
+    return 'अगली आसानी से दिखने वाली उड़ान $wait में, $time बजे';
+  }
+
+  @override
+  String issNextPass(String wait, String time) {
+    return 'अगली उड़ान $wait में, $time बजे';
+  }
+
+  @override
+  String get issTrackPast => 'जहाँ से आया';
+
+  @override
+  String get issTrackNext => 'जहाँ जाएगा';
+
+  @override
+  String get issNight => 'पृथ्वी पर रात';
+
+  @override
+  String issDataAge(String time) {
+    return 'ऑर्बिट डेटा $time पहले का';
+  }
+
+  @override
+  String issDays(String value) {
+    return '$value दिन';
+  }
+
+  @override
+  String get issOnlyVisible => 'सिर्फ़ आसानी से दिखने वाली उड़ानें';
+
+  @override
+  String get issNoVisible => 'अगले 5 दिनों में कोई आसानी से दिखने वाली उड़ान नहीं है।';
 }

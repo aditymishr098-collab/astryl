@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:isolate';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -98,13 +97,8 @@ class _SatellitesScreenState extends State<SatellitesScreen> {
       return;
     }
     _passKeys[id] = key;
-    List<IssPass> passes;
-    try {
-      passes = await Isolate.run(
-          () => findIssPasses(sat, today, lat, lon, satId: id));
-    } on Exception {
-      passes = findIssPasses(sat, today, lat, lon, satId: id);
-    }
+    final passes =
+        await findIssPassesInBackground(sat, today, lat, lon, satId: id);
     if (!mounted) {
       return;
     }

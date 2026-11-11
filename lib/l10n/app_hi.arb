@@ -752,5 +752,18 @@
   "uniYrB": "{value} अरब साल",
   "uniSuns": "{value} सूर्य",
   "uniSunsM": "{value} मिलियन सूर्य",
-  "uniSunsB": "{value} अरब सूर्य"
+  "uniSunsB": "{value} अरब सूर्य",
+  "issBelowBy": "{direction}, क्षितिज से {degrees}° नीचे",
+  "issLight": "रोशनी",
+  "issInSun": "धूप में",
+  "issInShadow": "पृथ्वी की छाया में",
+  "issNextVisible": "अगली आसानी से दिखने वाली उड़ान {wait} में, {time} बजे",
+  "issNextPass": "अगली उड़ान {wait} में, {time} बजे",
+  "issTrackPast": "जहाँ से आया",
+  "issTrackNext": "जहाँ जाएगा",
+  "issNight": "पृथ्वी पर रात",
+  "issDataAge": "ऑर्बिट डेटा {time} पहले का",
+  "issDays": "{value} दिन",
+  "issOnlyVisible": "सिर्फ़ आसानी से दिखने वाली उड़ानें",
+  "issNoVisible": "अगले 5 दिनों में कोई आसानी से दिखने वाली उड़ान नहीं है।"
 }

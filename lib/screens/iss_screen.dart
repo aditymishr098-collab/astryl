@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:isolate';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -37,6 +36,7 @@ class _IssScreenState extends State<IssScreen> {
   DateTime _now = DateTime.now();
 
   List<IssPass>? _passes;
+  bool _onlyVisible = false;
   String _passesKey = '';
 
   List<({double lat, double lon})> _track = const <({double lat, double lon})>[];
@@ -93,17 +93,22 @@ class _IssScreenState extends State<IssScreen> {
     _passesKey = key;
     List<IssPass> passes;
     try {
-      passes = await Isolate.run(() => findIssPasses(sat, today, lat, lon));
-    } on Exception {
-      passes = findIssPasses(sat, today, lat, lon);
+      passes = await findIssPassesInBackground(sat, today, lat, lon);
+    } catch (_) {
+      // Never leave the list loading for ever: show "no passes" and try
+      // again the next time the data changes.
+      passes = const <IssPass>[];
+      _passesKey = '';
     }
     if (!mounted) {
       return;
     }
-    await state.pruneReminders(
-        (id) => id.startsWith('iss:'), <String>{for (final p in passes) p.id});
-    if (mounted) {
-      setState(() => _passes = passes);
+    setState(() => _passes = passes);
+    try {
+      await state.pruneReminders(
+          (id) => id.startsWith('iss:'), <String>{for (final p in passes) p.id});
+    } catch (_) {
+      // Old reminders stay; they are harmless.
     }
   }
 
@@ -211,6 +216,43 @@ class _IssScreenState extends State<IssScreen> {
     );
   }
 
+  /// "Next easy-to-see pass in 3 h 10 min", or the next pass of any kind.
+  List<Widget> _nextPass(BuildContext context, AppLocalizations l, Palette p,
+      List<IssPass> passes) {
+    IssPass? next;
+    var visible = false;
+    for (final pass in passes) {
+      if (pass.rise.isAfter(_now) && pass.visible) {
+        next = pass;
+        visible = true;
+        break;
+      }
+    }
+    if (next == null) {
+      for (final pass in passes) {
+        if (pass.rise.isAfter(_now)) {
+          next = pass;
+          break;
+        }
+      }
+    }
+    if (next == null) {
+      return const <Widget>[];
+    }
+    final rise = next.rise.toLocal();
+    final time = MaterialLocalizations.of(context)
+        .formatTimeOfDay(TimeOfDay.fromDateTime(rise));
+    final wait = _wait(context, l, next.rise.difference(_now));
+    return <Widget>[
+      const SizedBox(height: 4),
+      Text(
+        visible ? l.issNextVisible(wait, time) : l.issNextPass(wait, time),
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 14, color: visible ? p.good : p.muted),
+      ),
+    ];
+  }
+
   Widget _content(BuildContext context, AppLocalizations l, Palette p, Sgp4 sat) {
     final state = AppScope.of(context);
     final city = widget.city;
@@ -231,7 +273,9 @@ class _IssScreenState extends State<IssScreen> {
     final look = lookAngle(pos.ecef, city.lat, city.lon);
     final overhead = look.elevation > 0;
     final km = greatCircleKm(pos.lat, pos.lon, city.lat, city.lon);
-    final ageDays = _now.difference(sat.epoch).inDays;
+    final age = _now.difference(sat.epoch);
+    final ageDays = age.inDays;
+    final sunlit = satelliteSunlit(sat, _now);
 
     String coord(double v, String positive, String negative) =>
         '${formatNumber(context, v.abs(), decimals: 1)}° ${v >= 0 ? positive : negative}';
@@ -250,11 +294,14 @@ class _IssScreenState extends State<IssScreen> {
               cityLon: city.lon,
               dark: Theme.of(context).brightness == Brightness.dark,
               palette: p,
+              sun: subsolarPoint(_now),
             ),
           ),
         ),
       ),
-      const SizedBox(height: 12),
+      const SizedBox(height: 8),
+      _Legend(palette: p),
+      const SizedBox(height: 8),
       Text(
         overhead
             ? l.issAboveHorizon(
@@ -269,6 +316,8 @@ class _IssScreenState extends State<IssScreen> {
           color: overhead ? p.good : p.text,
         ),
       ),
+      if (!overhead && passes != null)
+        ..._nextPass(context, l, p, passes),
       const SizedBox(height: 12),
       SurfaceCard(
         child: Column(
@@ -276,10 +325,20 @@ class _IssScreenState extends State<IssScreen> {
             _Line(
               icon: Icons.public,
               label: cityName(l, city),
-              value: l.altitudeDir(
-                directionName(l, compassIndex(look.azimuth)),
-                formatNumber(context, look.elevation.round()),
-              ),
+              value: overhead
+                  ? l.altitudeDir(
+                      directionName(l, compassIndex(look.azimuth)),
+                      formatNumber(context, look.elevation.round()),
+                    )
+                  : l.issBelowBy(
+                      directionName(l, compassIndex(look.azimuth)),
+                      formatNumber(context, (-look.elevation).round()),
+                    ),
+            ),
+            _Line(
+              icon: sunlit ? Icons.wb_sunny_outlined : Icons.dark_mode_outlined,
+              label: l.issLight,
+              value: sunlit ? l.issInSun : l.issInShadow,
             ),
             _Line(
               icon: Icons.place_outlined,
@@ -310,16 +369,29 @@ class _IssScreenState extends State<IssScreen> {
       const SizedBox(height: 20),
       Text(l.issPassesTitle(cityName(l, city)),
           style: TextStyle(fontFamily: headingFont, fontSize: 18, fontWeight: FontWeight.w700, color: p.text)),
-      const SizedBox(height: 12),
+      const SizedBox(height: 4),
+      SwitchListTile(
+        contentPadding: EdgeInsets.zero,
+        title: Text(l.issOnlyVisible,
+            style: TextStyle(fontSize: 14, color: p.text)),
+        value: _onlyVisible,
+        onChanged: (v) => setState(() => _onlyVisible = v),
+      ),
+      const SizedBox(height: 4),
     ];
 
-    if (passes == null) {
+    final shown = passes == null
+        ? null
+        : (_onlyVisible
+            ? passes.where((x) => x.visible).toList()
+            : passes);
+    if (shown == null) {
       children.add(const Center(child: CircularProgressIndicator()));
-    } else if (passes.isEmpty) {
-      children.add(Text(l.issNoPasses,
+    } else if (shown.isEmpty) {
+      children.add(Text(_onlyVisible ? l.issNoVisible : l.issNoPasses,
           style: TextStyle(fontSize: 14, color: p.muted)));
     } else {
-      for (final pass in passes) {
+      for (final pass in shown) {
         final rise = pass.rise.toLocal();
         final day = DateTime(rise.year, rise.month, rise.day);
         final days = DateTime.utc(day.year, day.month, day.day)
@@ -343,15 +415,15 @@ class _IssScreenState extends State<IssScreen> {
       }
     }
 
-    if (ageDays >= 3) {
-      children
-        ..add(const SizedBox(height: 8))
-        ..add(Text(
-          l.issStale(formatNumber(context, ageDays)),
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 13, color: p.bad),
-        ));
-    }
+    children
+      ..add(const SizedBox(height: 8))
+      ..add(Text(
+        ageDays >= 3
+            ? l.issStale(formatNumber(context, ageDays))
+            : l.issDataAge(_ago(context, l, age)),
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 13, color: ageDays >= 3 ? p.bad : p.muted),
+      ));
     children
       ..add(const SizedBox(height: 12))
       ..add(Text(l.issNote,
@@ -361,6 +433,64 @@ class _IssScreenState extends State<IssScreen> {
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
       children: children,
+    );
+  }
+}
+
+String _ago(BuildContext context, AppLocalizations l, Duration age) {
+  if (age.inMinutes < 60) {
+    return l.valueMinutes(formatNumber(context, math.max(1, age.inMinutes)));
+  }
+  if (age.inHours < 48) {
+    return l.valueHours(formatNumber(context, age.inHours));
+  }
+  return l.issDays(formatNumber(context, age.inDays));
+}
+
+String _wait(BuildContext context, AppLocalizations l, Duration d) {
+  final minutes = math.max(1, (d.inSeconds / 60).ceil());
+  if (minutes < 60) {
+    return l.valueMinutes(formatNumber(context, minutes));
+  }
+  final hours = minutes ~/ 60;
+  if (hours < 48) {
+    return l.durationHm(
+        formatNumber(context, hours), formatNumber(context, minutes % 60));
+  }
+  return l.issDays(formatNumber(context, (hours / 24).round()));
+}
+
+/// Two short lines that say what the paths on the map mean.
+class _Legend extends StatelessWidget {
+  const _Legend({required this.palette});
+
+  final Palette palette;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    Widget item(Color color, String text) => Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              width: 18,
+              height: 3,
+              decoration: BoxDecoration(
+                  color: color, borderRadius: BorderRadius.circular(2)),
+            ),
+            const SizedBox(width: 6),
+            Text(text, style: TextStyle(fontSize: 12, color: palette.muted)),
+          ],
+        );
+    return Wrap(
+      alignment: WrapAlignment.center,
+      spacing: 16,
+      runSpacing: 4,
+      children: <Widget>[
+        item(palette.accent.withValues(alpha: 0.35), l.issTrackPast),
+        item(palette.accent, l.issTrackNext),
+        item(Colors.black.withValues(alpha: 0.28), l.issNight),
+      ],
     );
   }
 }
@@ -403,8 +533,10 @@ class _MapPainter extends CustomPainter {
     required this.cityLon,
     required this.dark,
     required this.palette,
+    required this.sun,
   });
 
+  final ({double lat, double lon}) sun;
   final IssPosition pos;
   final List<({double lat, double lon})> track;
   final double cityLat;
@@ -464,6 +596,29 @@ class _MapPainter extends CustomPainter {
     for (final shape in _water) {
       canvas.drawPath(_shape(shape, size), waterPaint);
     }
+
+    // Night side of the Earth.
+    final night = Path();
+    for (var i = 0; i <= 120; i++) {
+      final lon = -180 + i * 3.0;
+      final o = _point(lon, terminatorLatitude(lon, sun), size);
+      if (i == 0) {
+        night.moveTo(o.dx, o.dy);
+      } else {
+        night.lineTo(o.dx, o.dy);
+      }
+    }
+    // With the Sun north of the equator the south pole is dark, and the
+    // other way round.
+    final poleY = sun.lat >= 0 ? size.height : 0.0;
+    night
+      ..lineTo(size.width, poleY)
+      ..lineTo(0, poleY)
+      ..close();
+    canvas.drawPath(
+        night,
+        Paint()
+          ..color = Colors.black.withValues(alpha: dark ? 0.35 : 0.18));
 
     // The area from which the station can be seen above the horizon.
     final footprint = Path();

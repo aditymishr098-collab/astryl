@@ -2629,4 +2629,53 @@ class AppLocalizationsEn extends AppLocalizations {
   String uniSunsB(String value) {
     return '$value billion Suns';
   }
+
+  @override
+  String issBelowBy(String direction, String degrees) {
+    return '$direction, $degrees° below the horizon';
+  }
+
+  @override
+  String get issLight => 'Light';
+
+  @override
+  String get issInSun => 'In sunlight';
+
+  @override
+  String get issInShadow => 'In Earth\'s shadow';
+
+  @override
+  String issNextVisible(String wait, String time) {
+    return 'Next easy-to-see pass in $wait, at $time';
+  }
+
+  @override
+  String issNextPass(String wait, String time) {
+    return 'Next pass in $wait, at $time';
+  }
+
+  @override
+  String get issTrackPast => 'Where it was';
+
+  @override
+  String get issTrackNext => 'Where it is going';
+
+  @override
+  String get issNight => 'Night on Earth';
+
+  @override
+  String issDataAge(String time) {
+    return 'Orbit data from $time ago';
+  }
+
+  @override
+  String issDays(String value) {
+    return '$value days';
+  }
+
+  @override
+  String get issOnlyVisible => 'Only passes that are easy to see';
+
+  @override
+  String get issNoVisible => 'No easy-to-see passes in the next 5 days.';
 }
