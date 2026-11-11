@@ -14,27 +14,97 @@
   function n360(a) { return ((a % 360) + 360) % 360; }
   function esc(x) { return String(x).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
 
-  /* ---------- city ---------- */
-  var byId = {};
+  /* ---------- city ----------
+     The city is kept as the app's city id (so it can sync with the app) or as a place picked from the
+     world list or from "my location": {n: name, c: country code, lat, lon}. */
+  var byId = {}, AUTO = 'astryl-city-auto';
   D.cities.forEach(function (c) { byId[c[0]] = c; });
-  function city() { var id = get(KEY, ''); return byId[id] ? { id: id, name: byId[id][1], country: byId[id][2], lat: byId[id][3], lon: byId[id][4] } : null; }
-  function setCity(id) { if (byId[id]) { set(KEY, id); changed(); } }
-  function nearest(lat, lon) {
+  function country(cc) {
+    try { return new Intl.DisplayNames([hi() ? 'hi' : 'en'], { type: 'region' }).of(cc) || cc; } catch (e) { return cc; }
+  }
+  function city() {
+    var v = get(KEY, '');
+    if (typeof v === 'string' && byId[v]) return { id: v, name: byId[v][1], country: byId[v][2], lat: byId[v][3], lon: byId[v][4] };
+    if (v && typeof v === 'object' && isFinite(v.lat) && isFinite(v.lon)) return { id: '', name: String(v.n || ''), country: v.c ? country(v.c) : '', lat: +v.lat, lon: +v.lon, mine: !!v.me };
+    return null;
+  }
+  function setCity(v) { set(KEY, v); changed(); }
+  function nearestApp(lat, lon) {
     var best = null, bd = 1e9;
-    D.cities.forEach(function (c) { var d = Math.pow(c[3] - lat, 2) + Math.pow((c[4] - lon) * Math.cos(lat * DEG), 2); if (d < bd) { bd = d; best = c[0]; } });
+    D.cities.forEach(function (c) { var d = Math.pow(c[3] - lat, 2) + Math.pow((c[4] - lon) * Math.cos(lat * DEG), 2); if (d < bd) { bd = d; best = c; } });
     return best;
   }
+  /* My location: kept only in this browser, rounded to about 1 km. */
+  function useMyLocation(done, quiet) {
+    if (!navigator.geolocation) { if (done) done(false); return; }
+    navigator.geolocation.getCurrentPosition(function (p) {
+      var lat = Math.round(p.coords.latitude * 100) / 100, lon = Math.round(p.coords.longitude * 100) / 100, n = nearestApp(lat, lon);
+      setCity({ n: n ? (hi() ? 'मेरी जगह' : 'My location') + ' (' + n[1] + ')' : (hi() ? 'मेरी जगह' : 'My location'), c: '', lat: lat, lon: lon, me: 1 });
+      if (done) done(true);
+    }, function () { set(AUTO, 'no'); if (done) done(false); }, { maximumAge: 3600000, timeout: 15000 });
+  }
+  /* Try the location once by itself, the first time a page with the sky for your city opens. */
+  function autoLocate(redraw) {
+    if (city() || get(AUTO, '') === 'no' || get(AUTO, '') === 'tried') return;
+    set(AUTO, 'tried');
+    useMyLocation(function (ok) { if (ok) redraw(); });
+  }
+
+  // world list, one file per first letter, loaded when someone searches
+  var shards = {};
+  function fold(x) { return String(x).normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase().trim(); }
+  function shardFor(q) { var f = fold(q).charAt(0); return f >= 'a' && f <= 'z' ? f : '_'; }
+  function loadShard(k) {
+    if (shards[k]) return shards[k];
+    var root = (document.body.getAttribute('data-root') || '');
+    shards[k] = fetch(root + 'assets/cities/' + k + '.json').then(function (r) { return r.json(); }).catch(function () { delete shards[k]; return []; });
+    return shards[k];
+  }
+  function search(q) {
+    var f = fold(q);
+    if (f.length < 2) return Promise.resolve([]);
+    var app = D.cities.filter(function (c) { return fold(c[1]).indexOf(f) === 0; }).map(function (c) { return { id: c[0], n: c[1], cn: c[2], lat: c[3], lon: c[4] }; });
+    return loadShard(shardFor(f)).then(function (rows) {
+      var starts = [], inside = [];
+      for (var i = 0; i < rows.length && starts.length < 40; i++) { var nf = fold(rows[i][0]); if (nf.indexOf(f) === 0) starts.push(rows[i]); else if (inside.length < 10 && nf.indexOf(' ' + f) > 0) inside.push(rows[i]); }
+      var out = app.slice(0, 5), used = {};
+      out.forEach(function (a) { used[fold(a.n)] = 1; });
+      starts.concat(inside).forEach(function (r) {
+        var dupe = app.some(function (a) { return fold(a.n) === fold(r[0]) && Math.abs(a.lat - r[2]) < 0.5 && Math.abs(a.lon - r[3]) < 0.5; });
+        if (!dupe && out.length < 15) out.push({ n: r[0], c: r[1], lat: r[2], lon: r[3] });
+      });
+      return out;
+    });
+  }
   function picker(onDone) {
-    var cur = city(), opts = D.cities.slice().sort(function (a, b) { return a[1].localeCompare(b[1]); })
-      .map(function (c) { return '<option value="' + c[0] + '"' + (cur && cur.id === c[0] ? ' selected' : '') + '>' + esc(c[1]) + ', ' + esc(c[2]) + '</option>'; }).join('');
-    var h = '<div class="row citypick"><select aria-label="City"><option value="">' + (hi() ? 'अपना शहर चुनें…' : 'Choose your city…') + '</option>' + opts + '</select>' +
-      (navigator.geolocation ? '<button class="btn" type="button" data-near>📍 ' + bi('Nearest to me', 'मेरे सबसे पास') + '</button>' : '') + '</div>' +
-      '<p class="note">' + bi('Your location is only used once, in this browser, to pick the nearest city; it is not sent anywhere.', 'आपकी जगह सिर्फ़ एक बार, इसी browser में, सबसे पास का शहर चुनने के लिए इस्तेमाल होती है; कहीं भेजी नहीं जाती।') + '</p>';
+    var cur = city();
+    var h = '<div class="citypick"><div class="row"><input type="search" class="cityq" autocomplete="off" placeholder="' + (hi() ? 'शहर खोजें: Delhi, Patna, Yerevan…' : 'Search any city: Delhi, Patna, Yerevan…') + '" aria-label="City">' +
+      (navigator.geolocation ? '<button class="btn" type="button" data-near>📍 ' + bi('Use my location', 'मेरी जगह इस्तेमाल करें') + '</button>' : '') + '</div><div class="cityres" role="listbox"></div></div>' +
+      '<p class="note">' + bi('About 1.7 lakh cities worldwide (GeoNames). Your location stays in this browser, rounded to about 1 km, and is never sent anywhere.', 'दुनिया भर के लगभग 1.7 लाख शहर (GeoNames)। आपकी जगह इसी browser में रहती है, लगभग 1 किमी तक गोल की हुई, और कहीं भेजी नहीं जाती।') + '</p>';
     return { html: h, wire: function (root) {
-      var sel = root.querySelector('.citypick select'), near = root.querySelector('[data-near]');
-      if (sel) sel.addEventListener('change', function () { if (sel.value) { setCity(sel.value); onDone(); } });
+      var box = root.querySelector('.citypick'); if (!box) return;
+      var q = box.querySelector('.cityq'), res = box.querySelector('.cityres'), near = box.querySelector('[data-near]'), last = [], seq = 0;
+      if (q) q.addEventListener('input', function () {
+        var my = ++seq;
+        search(q.value).then(function (list) {
+          if (my !== seq) return;
+          last = list;
+          res.innerHTML = list.map(function (c, i) { return '<button type="button" role="option" data-pick="' + i + '"><b>' + esc(c.n) + '</b> <small>' + esc(c.cn || country(c.c)) + '</small></button>'; }).join('') ||
+            (fold(q.value).length >= 2 ? '<p class="note">' + bi('No city found. Try another spelling.', 'कोई शहर नहीं मिला। दूसरी spelling आज़माइए।') + '</p>' : '');
+        });
+      });
+      res.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-pick]'); if (!b) return;
+        var c = last[+b.getAttribute('data-pick')];
+        setCity(c.id ? c.id : { n: c.n, c: c.c, lat: c.lat, lon: c.lon });
+        onDone();
+      });
       if (near) near.addEventListener('click', function () {
-        navigator.geolocation.getCurrentPosition(function (p) { setCity(nearest(p.coords.latitude, p.coords.longitude)); onDone(); }, function () { }, { maximumAge: 600000, timeout: 10000 });
+        near.disabled = true;
+        useMyLocation(function (ok) {
+          near.disabled = false;
+          if (ok) onDone(); else res.innerHTML = '<p class="no">' + bi('Location is blocked or not available. Please search for your city instead.', 'Location बंद है या नहीं मिल रही। कृपया अपना शहर खोजिए।') + '</p>';
+        });
       });
     } };
   }
@@ -208,6 +278,7 @@
       box.querySelector('[data-change]').onclick = function () { set(KEY, ''); draw(); };
     }
     draw(); API.onRender && API.onRender(draw);
+    autoLocate(draw);
   }
   homeCard();
 
@@ -230,6 +301,7 @@
         } else { var p = picker(draw); loc.innerHTML = h + p.html; p.wire(loc); }
       };
       draw();
+      autoLocate(draw);
     }
     if (tab) {
       var at2 = Date.parse(loc.getAttribute('data-at')), rows = JSON.parse(tab.getAttribute('data-cities')), th = '<table class="cols"><tr><th>' + bi('City', 'शहर') + '</th><th>' + bi('Local time', 'स्थानीय समय') + '</th><th>' + bi('Moon up?', 'चाँद ऊपर?') + '</th></tr>';
@@ -251,5 +323,5 @@
   }
   eventPage();
 
-  window.ASTRYL_SKY = { city: city, setCity: setCity, picker: picker, tonightHtml: tonightHtml, calendarHtml: calendarHtml, events: events, seenHtml: seenHtml, toggleSeen: toggleSeen, seen: seen, things: THINGS, altAz: altAz };
+  window.ASTRYL_SKY = { city: city, setCity: setCity, picker: picker, autoLocate: autoLocate, tonightHtml: tonightHtml, calendarHtml: calendarHtml, events: events, seenHtml: seenHtml, toggleSeen: toggleSeen, seen: seen, things: THINGS, altAz: altAz };
 })();

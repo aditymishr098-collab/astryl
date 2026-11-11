@@ -109,6 +109,7 @@
   });
 
   draw();
+  if (window.ASTRYL_SKY) window.ASTRYL_SKY.autoLocate(draw);
   if (ACCT && ACCT.session()) {
     ACCT.token().then(function (k) { return ACCT.api('board', {}, k); }).then(function (j) { stats = j; }, function () { }).then(function () { statsTried = true; draw(); });
     if (ACCT.prefs().syncOn) ACCT.sync().then(draw);
