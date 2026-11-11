@@ -10,6 +10,7 @@ import '../l10n/names.dart';
 import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
+import 'birthday_extras.dart';
 import '../widgets/moon_view.dart';
 import '../widgets/orbit_view.dart';
 
@@ -142,6 +143,7 @@ class BirthdayScreen extends StatelessWidget {
           ),
         ))
         ..add(const SizedBox(height: 16))
+        ..add(BirthdayExtras(birth: birth))
         ..add(SectionLabel(l.birthdayMilestones));
       for (final m in lifeMilestones(birth)) {
         final done = m.date.isBefore(today);
