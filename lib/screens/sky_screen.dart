@@ -6,6 +6,7 @@ import '../core/events.dart';
 import '../core/format.dart';
 import '../core/sky.dart';
 import '../data/cities.dart';
+import '../data/world_cities.dart';
 import '../data/planets.dart';
 import '../l10n/event_text.dart';
 import '../l10n/names.dart';
@@ -939,6 +940,13 @@ class _CitySheet extends StatefulWidget {
 
 class _CitySheetState extends State<_CitySheet> {
   String _query = '';
+  Future<List<WorldCity>>? _world;
+
+  Future<void> _pickPlace(WorldCity c) async {
+    final navigator = Navigator.of(context);
+    await AppScope.read(context).setPlaceCity(c.name, c.lat, c.lon);
+    navigator.pop(placeCityId);
+  }
 
   /// Asks Android for the approximate location and makes it the city.
   Future<void> _useMyLocation() async {
@@ -989,7 +997,10 @@ class _CitySheetState extends State<_CitySheet> {
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
             child: TextField(
               autofocus: false,
-              onChanged: (v) => setState(() => _query = v),
+              onChanged: (v) => setState(() {
+                _query = v;
+                _world = searchWorldCities(v);
+              }),
               decoration: InputDecoration(
                 hintText: l.searchCity,
                 prefixIcon: const Icon(Icons.search),
@@ -1003,24 +1014,53 @@ class _CitySheetState extends State<_CitySheet> {
             ),
           ),
           Expanded(
-            child: list.isEmpty
-                ? Center(
-                    child: Text(l.noCityFound,
-                        style: TextStyle(color: p.muted)))
-                : ListView.builder(
-                    controller: controller,
-                    itemCount: list.length,
-                    itemBuilder: (context, index) {
-                      final city = list[index];
-                      return ListTile(
-                        title:
-                            Text(city.name, style: TextStyle(color: p.text)),
-                        subtitle: Text(city.country,
-                            style: TextStyle(color: p.muted)),
-                        onTap: () => Navigator.of(context).pop(city.id),
+            child: ListView(
+              controller: controller,
+              children: <Widget>[
+                for (final city in list)
+                  ListTile(
+                    title: Text(city.name, style: TextStyle(color: p.text)),
+                    subtitle: Text(city.country, style: TextStyle(color: p.muted)),
+                    onTap: () => Navigator.of(context).pop(city.id),
+                  ),
+                if (q.length >= 2)
+                  FutureBuilder<List<WorldCity>>(
+                    future: _world,
+                    builder: (context, snap) {
+                      final more = (snap.data ?? const <WorldCity>[])
+                          .where((w) => !list.any((c) => c.name.toLowerCase() == w.name.toLowerCase() && (c.lat - w.lat).abs() < 0.5))
+                          .toList();
+                      if (snap.connectionState != ConnectionState.done) {
+                        return const Padding(padding: EdgeInsets.all(16), child: Center(child: CircularProgressIndicator()));
+                      }
+                      if (more.isEmpty) {
+                        return list.isEmpty
+                            ? Padding(padding: const EdgeInsets.all(24), child: Center(child: Text(l.noCityFound, style: TextStyle(color: p.muted))))
+                            : const SizedBox.shrink();
+                      }
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+                            child: Text(
+                                Localizations.localeOf(context).languageCode == 'hi' ? 'दुनिया भर के और शहर' : 'More cities worldwide',
+                                style: TextStyle(fontWeight: FontWeight.w700, color: p.muted)),
+                          ),
+                          for (final w in more)
+                            ListTile(
+                              title: Text(w.name, style: TextStyle(color: p.text)),
+                              subtitle: Text(w.countryCode, style: TextStyle(color: p.muted)),
+                              onTap: () => _pickPlace(w),
+                            ),
+                        ],
                       );
                     },
                   ),
+                if (q.length < 2 && list.isEmpty)
+                  Padding(padding: const EdgeInsets.all(24), child: Center(child: Text(l.noCityFound, style: TextStyle(color: p.muted)))),
+              ],
+            ),
           ),
         ],
       ),

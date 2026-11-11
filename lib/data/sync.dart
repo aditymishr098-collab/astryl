@@ -60,7 +60,7 @@ Map<String, Object> buildSyncPayload(HelioraSettings s) {
     'theme': s.themeMode.name,
     'locale': s.localeCode,
     'view': s.viewMode.name,
-    'city': s.cityId == gpsCityId ? '' : s.cityId,
+    'city': s.cityId == gpsCityId || s.cityId == placeCityId ? '' : s.cityId,
     'birthDateMs': s.birthDateMs,
     'tonightAlert': s.tonightAlert,
     'tonightMinutes': s.tonightMinutes,

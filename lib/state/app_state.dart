@@ -67,6 +67,11 @@ class AppState extends ChangeNotifier {
     } else {
       setMyLocation(null, null);
     }
+    if (_settings.cityId == placeCityId && _settings.placeName.isNotEmpty) {
+      setPlace(_settings.placeName, _settings.myLat, _settings.myLon);
+    } else {
+      setPlace(null, null, null);
+    }
   }
 
   Future<void> _update(HelioraSettings next) async {
@@ -92,6 +97,10 @@ class AppState extends ChangeNotifier {
   /// Makes the place the phone found the city for the sky.
   Future<void> setMyLocationCity(double lat, double lon) => _update(
       _settings.copyWith(cityId: gpsCityId, myLat: lat, myLon: lon));
+
+  /// Makes a place from the world city list the city for the sky.
+  Future<void> setPlaceCity(String name, double lat, double lon) => _update(
+      _settings.copyWith(cityId: placeCityId, placeName: name, myLat: lat, myLon: lon));
 
   Future<void> setBirthDate(DateTime date) => _update(
       _settings.copyWith(birthDateMs: date.millisecondsSinceEpoch));

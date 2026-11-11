@@ -1061,7 +1061,7 @@ def main():
     shutil.copy(SRC / 'scale.js', OUT / 'assets/scale.js')
     shutil.copy(SRC / 'learn.js', OUT / 'assets/learn.js')
     shutil.copy(SRC / 'universe.js', OUT / 'assets/universe.js')
-    shutil.copytree(ROOT / 'tools' / 'cities', OUT / 'assets' / 'cities')
+    shutil.copytree(ROOT / 'assets' / 'cities', OUT / 'assets' / 'cities')
     for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js'):
         shutil.copy(SRC / name, OUT / 'assets' / name)
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')

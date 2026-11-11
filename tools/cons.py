@@ -24,13 +24,18 @@ def load():
 
 
 def merge_serpens(cons):
-    out, seen = [], False
+    """Serpens is one constellation in two parts (head and tail), listed twice in the app's catalogue."""
+    parts = [c for c in cons if c['id'] == 'Ser']
+    lines = [seg for c in parts for seg in c['lines']]
+    if not any(abs(seg[0] - SERPENS_CAPUT[0]) < 0.01 for seg in lines):
+        lines.append(SERPENS_CAPUT)
+    out, done = [], False
     for c in cons:
         if c['id'] == 'Ser':
-            if seen:
+            if done:
                 continue
-            seen = True
-            c = dict(c, lines=c['lines'] + [SERPENS_CAPUT], ra=258.0, dec=5.0)
+            done = True
+            c = dict(c, lines=lines, ra=258.0, dec=5.0)
         out.append(c)
     return out
 
