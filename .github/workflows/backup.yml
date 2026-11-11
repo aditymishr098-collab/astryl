@@ -21,12 +21,26 @@ jobs:
   backup:
     runs-on: ubuntu-latest
     steps:
-      - name: Copy and encrypt
+      - name: Check the secrets
+        id: check
         env:
           BACKUP_TOKEN: ${{ secrets.BACKUP_TOKEN }}
           BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
         run: |
-          test -n "$BACKUP_TOKEN" && test -n "$BACKUP_PASSPHRASE" || { echo "Backup secrets are not set"; exit 1; }
+          # Until both secrets are set the backup is skipped with a warning
+          # instead of failing every night.
+          if [ -n "$BACKUP_TOKEN" ] && [ -n "$BACKUP_PASSPHRASE" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::Backup skipped: set the BACKUP_TOKEN and BACKUP_PASSPHRASE secrets (see docs/BACKUP.md)."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Copy and encrypt
+        if: steps.check.outputs.ready == 'true'
+        env:
+          BACKUP_TOKEN: ${{ secrets.BACKUP_TOKEN }}
+          BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
           curl --fail --silent --show-error --max-time 120 \
             -H "x-backup-token: $BACKUP_TOKEN" \
             -o backup.json \
@@ -36,6 +50,7 @@ jobs:
             -pass env:BACKUP_PASSPHRASE -in backup.json -out "astryl-backup-$(date -u +%F).enc"
           rm backup.json
       - uses: actions/upload-artifact@v4
+        if: steps.check.outputs.ready == 'true'
         with:
           name: astryl-backup
           path: astryl-backup-*.enc
