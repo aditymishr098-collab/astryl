@@ -32,7 +32,7 @@ def main():
         shard = first if 'a' <= first <= 'z' else '_'
         out.setdefault(shard, []).append([name, r['country'], lat, lon])
     here = os.path.dirname(os.path.abspath(__file__))
-    folder = os.path.join(here, 'cities')
+    folder = os.path.join(here, '..', 'assets', 'cities')
     os.makedirs(folder, exist_ok=True)
     total = 0
     for shard, items in out.items():

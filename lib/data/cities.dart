@@ -139,10 +139,24 @@ void setMyLocation(double? lat, double? lon) {
       : City(gpsCityId, 'My location', '', lat, lon);
 }
 
+/// The id of a place picked from the world city list.
+const String placeCityId = 'place';
+
+City? _place;
+
+/// Sets (or clears) the place picked from the world list, which is what
+/// [cityById] answers for [placeCityId].
+void setPlace(String? name, double? lat, double? lon) {
+  _place = name == null || lat == null || lon == null ? null : City(placeCityId, name, '', lat, lon);
+}
+
 /// The city with [id], or null.
 City? cityById(String id) {
   if (id == gpsCityId) {
     return _myLocation;
+  }
+  if (id == placeCityId) {
+    return _place;
   }
   for (final city in cities) {
     if (city.id == id) {

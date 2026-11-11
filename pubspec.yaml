@@ -24,6 +24,7 @@ flutter:
   generate: true
   assets:
     - assets/learn/
+    - assets/cities/
   shaders:
     - shaders/planet.frag
   fonts:
