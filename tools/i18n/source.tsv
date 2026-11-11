@@ -47,6 +47,7 @@ cdeb8f54	2.8 m
 d348481f	26,000 light-years
 630f117b	27.96× Earth's gravity
 552f7013	29.5 km
+54fd8619	2× Barlow lens
 a32af9e7	3 billion years
 dfe20a8c	3 km
 d7c80729	3. Slow down a clock
@@ -84,9 +85,12 @@ e88331c4	66 million years ago
 2886f8b8	8. Your choices and rights
 f26f578a	8.9 mm
 40b99139	88 constellations. Saptarishi points to the Pole Star, which shows north.
-9306a43e	89 constellations and their stories
-dcc9d1f1	89 constellations drawn as they appear in the sky (north is up). The app shows them live for your place and time.
 2197b672	9. Children
+e456fb97	<b>Exit pupil</b> = aperture ÷ magnification. Between about 1 and 7 mm is useful.
+8fc8d904	<b>Faintest star</b> ≈ 2.7 + 5 × log₁₀(aperture in mm), under a dark sky. <b>Finest detail</b> ≈ 116 ÷ aperture in mm, in arcseconds (Dawes limit).
+8c08e039	<b>Highest useful magnification</b> ≈ 2 × aperture in mm; above that the view only gets blurrier.
+aaf4a0b7	<b>Magnification</b> = telescope focal length ÷ eyepiece focal length (× 2 with a Barlow).
+b8165471	<b>True field of view</b> = the eyepiece’s apparent field ÷ magnification. The full Moon is about half a degree wide.
 4c8b9e27	A 10-Sun black hole
 ce4a2946	A black hole
 f1638c70	A black hole between about 100 and 100,000 Suns. Few have been found.
@@ -134,6 +138,7 @@ dc955c04	A red blood cell
 c03047ee	A region where gravity is so strong that nothing, not even light, can escape from inside its event horizon.
 1d998b66	A seven-lesson path from “what is it?” to the big open questions. Each lesson takes a few minutes. Finish them all and score well on the quiz to earn a badge.
 ed4ea15c	A simplified map, not a photo: the big seas, basins, craters and volcanoes are drawn in the right places, and every landing site is at its real latitude and longitude.
+25960ec1	A simplified picture: real views are fainter and have less colour, and many telescopes show the view upside down. Planets look tiny even at high power; detail comes with practice and steady air.
 5756688b	A small galaxy with up to a few billion stars. The most common kind.
 945cc3f5	A small notice at the bottom of the page can show a note from the Astryl team (you can close it) and, once, ask whether you want to share your approximate place. Your answer is remembered on your device. See “Visitors and places” below.
 17704a19	A small partial eclipse over the far south of South America.
@@ -168,6 +173,9 @@ e32499c3	After midnight until dawn, from anywhere on Earth.
 d5b567a2	After midnight until dawn.
 f178054b	After the Big Bang, about 13.8 billion years ago, the universe was a nearly smooth mix of gas and dark matter. Slightly denser spots pulled in more matter. Gas fell into them and the first stars lit up a few hundred million years later.
 c349e488	Air Pump
+d3cfba3e	All 88
+0d696cb4	All 88 constellations, drawn as you see them when you face them in the sky: north up and east to the left. Bigger dots are brighter stars; faint dots are the stars around them.
+9a1d59ec	All 88 constellations, true to the sky
 ce3e6d96	All eclipses and meteor showers
 23de394a	All night from about 10 pm, best around 2 am, from almost anywhere.
 cc3204a3	All planets, Pluto and the big moons
@@ -195,12 +203,15 @@ a24e4ad7	Annular solar eclipse
 f224b8ab	Any day
 aca6ec27	Any two worlds side by side
 63671189	Anywhere dark, best in summer
+3e1ec1b8	Aperture (mm)
 7e9d4612	Apollo 12 landed close to the old probe Surveyor 3, and the crew brought some of its parts back to Earth.
 581e3f4c	Apollo 14 landed in the Fra Mauro highlands. Alan Shepard hit two golf balls on the Moon.
 3deddf3c	Apollo 15 was the first mission with a Moon buggy, and explored the foot of the Apennine mountains.
 5d242205	Apollo 16 explored the Descartes highlands by rover and brought back about 95 kg of rocks.
 7b27f931	Apollo 17, in December 1972, is the most recent time people walked on the Moon. Geologist Harrison Schmitt was one of the two walkers.
+9caabd0b	Apparent field (°)
 40a68b5d	Approach
+3fcf026b	April
 e61dbb65	April 2019 (M87*)
 a0678bce	Aquarius
 55429fa0	Archer
@@ -224,6 +235,7 @@ b4706625	At about −235 °C, Triton is one of the coldest places anyone has mea
 5d6ba3c3	At the centre sits Sagittarius A*, a black hole of 4.3 million Suns. Dust hides the centre in visible light, so astronomers use infrared and radio telescopes to look through it.
 cbc37b0c	At the centre, Einstein’s theory of gravity (general relativity) says all the mass is squeezed into a single point of infinite density. Most physicists read that as a sign that the theory breaks down there. A full theory of quantum gravity is needed, and we do not have one yet. Nobody knows what is really at the centre.
 9e607ded	Atmosphere
+41ba7089	August
 442adc8a	Average temperature
 91e9d554	Back home
 69429851	Back to now
@@ -236,6 +248,7 @@ e0f87b17	Before dawn, from the northern half of the world. The peak is short: on
 55c128a9	Bend the sky, size any black hole and slow down a clock. It all runs in your browser and nothing is sent anywhere.
 b3707d46	Bent light
 8a463f09	Berenice's Hair
+9d352bd9	Best in the evening
 c3f6267d	Between Earth and Mars
 a1f767bf	Between Mars and Jupiter
 c2b60600	Between the two lie intermediate black holes, roughly 100 to 100,000 Suns. They are hard to find. One strong sign was a merger seen in 2019 that left a black hole of about 140 Suns.
@@ -260,6 +273,7 @@ e90dfb84	Black
 831e1ae5	Blue light comes from hot young stars, so blue galaxies are still making stars. Red galaxies have mostly old stars and have stopped. This is why spirals look blue-white in the arms and ellipticals look yellow-red.
 070022ef	Bode’s Galaxy (M81)
 c275dadd	Breathable for humans
+219a99af	Brightest star
 92c21511	Bull
 55d2397e	Callisto
 87cfd039	Callisto is far enough from Jupiter to get less of its harsh radiation, so scientists have suggested it for a future base.
@@ -329,6 +343,7 @@ bdda6d5e	Dec 17
 9ae7a821	Dec 30
 207f712e	Dec 31, 23:48:34
 84c257f9	Dec 31, 23:59:48
+82331503	December
 fa83e2b9	Deep images from the Hubble and James Webb telescopes show that the observable universe holds roughly two trillion galaxies. This is an estimate that is still being refined.
 6edbc1b3	Delete your account at any time: app → You tab → Account → Delete my account, or on the Account page of this website. Your account and everything stored for it online are removed straight away. The data on your phone stays.
 c4f85f81	Density is the mass divided by the volume inside the horizon. Hawking temperature and evaporation time come from Hawking’s 1974 formulas; they are predictions, never measured.
@@ -402,6 +417,8 @@ c64f5794	Every star is a sun, many of them bigger than ours, but so far away tha
 fb1837ba	Exoplanet
 9b90d4f1	Explore space
 e7c7ff6d	Explore the
+422d3f8e	Eyepiece
+a11a3089	Eyepiece focal length (mm)
 ae6e9b63	Eyes
 1d377efc	Eyes need that long to adjust. Do not look at a phone screen, or use a red light.
 c66fe301	Eyes, better with binoculars
@@ -413,6 +430,7 @@ ab160be3	Famous moments in the exploration of space, oldest first.
 329f9cf8	Far away, a black hole pulls like any object of the same mass. Only very close does its gravity become extreme.
 7b0af960	Farthest seen so far
 5c19ddd4	Favourites, scores and settings in one small file that stays on your phone.
+659e59f0	February
 34b0eec9	First atoms, first light
 44e39832	First picture of one
 d040fe30	Fishes
@@ -421,6 +439,7 @@ d040fe30	Fishes
 ac51deb7	Fly
 674eba03	Fly through 3,600 real galaxies in 3D
 2148c623	Flying Fish
+c2ec1e60	Focal length (mm)
 59e8fab0	For Sagittarius A* the trip from the horizon to the centre takes about a minute. For a 10-Sun black hole it takes less than a thousandth of a second.
 ea91680d	For a clock that hovers at rest at that distance. The clock rate is √(1 − r_s/r). It depends only on the distance in horizon radii, so a bigger black hole gives the same effect farther out in km.
 8176daeb	For a small black hole you are already being pulled apart here.
@@ -507,6 +526,7 @@ d077cbc6	How galaxies grew from the first ones, and what happens when they meet.
 474961a1	How long does sunlight take to reach the Earth?
 dcce7781	How long is one cycle of phases?
 084e2ea6	How the Earth’s spin and tilt give us days and seasons.
+bb081dc1	How the numbers work
 0afc8b8a	How they form and what falling in would be like
 b53da94f	How to find it
 2b639928	How we see the invisible
@@ -559,10 +579,13 @@ d1150d19	It is made of ice
 09bbd9b0	Jan 1
 a9cb12c6	Jan 6
 f9d6070b	Jan 8
+86f5978d	January
 e744a5a0	Japan's SLIM landed in January 2024 within about 100 metres of its target, a very precise landing.
 252ce7e8	Jet
 19d14f9b	Jets
+1b539f6f	July
 643b8c94	Jump to your birthday sky
+688937cc	June
 89c5c304	Jupiter
 c06c8c03	Jupiter has more than twice the mass of all the other planets put together.
 734e899d	Jupiter's gravity squeezes and stretches Io, and the heat from this powers its volcanoes.
@@ -606,8 +629,10 @@ e5e066b0	Little Fox
 095e9ef8	Local Group
 bffe9a3c	Log in
 f97c9996	Log out to stop syncing on a device. Uninstalling the app removes its data from the phone.
+f39cc195	Look at
 6f3303bb	Look beside it
 b89c6446	Look slightly to the side of the spot. The edge of the eye is more sensitive to faint light.
+d1802d78	Low in the south from India
 6358ba29	Luna 16 was the first robot to bring Moon soil back to Earth, about 100 grams, with no crew on board.
 140606ee	Luna 9 made the first soft landing on another world and sent back the first photos taken on the Moon's surface.
 c02377e1	Lunar eclipse
@@ -622,10 +647,12 @@ f932e424	Magellanic Clouds
 e136b3c1	Magnetic fields can launch some of the gas out in two narrow beams, along the spin axis, at nearly the speed of light. The jet of M87* is thousands of light-years long.
 c1a4f436	Magnitude
 b09a761b	Major moons
+fa3e5eda	March
 671f0281	Mars
 91039fa2	Mars Pathfinder landed in July 1997 and carried Sojourner, the first rover on Mars, about the size of a microwave oven.
 ff2864d6	Mass
 0cc0af1d	Mass in Suns
+195fbb57	May
 3b367146	Mensa
 34dae487	Mercury
 a2ac0b57	Mercury has almost no air, so its sky is black even by day, and its nights are freezing cold.
@@ -653,6 +680,7 @@ f5fe3b4f	Most large galaxies have a supermassive one at the centre.
 ce7b4f7d	Most of the Milky Way’s mass is not stars. The total of about 1.5 trillion Suns is mostly dark matter, which we know only from how it pulls on stars and gas.
 f9e94027	Mount Everest
 df5a246c	My calendar for my city
+08d8f555	My own…
 be6f359b	My space
 13345265	My space needs JavaScript.
 384c34e0	My space: add to calendar
@@ -688,19 +716,23 @@ c886bb34	No ads, nothing sold
 9fae5ce6	No cookies, no ads, no third-party analytics, scripts or fonts. Everything is calculated in your browser.
 94a5f181	No real atmosphere, it is almost a vacuum.
 053dbe4b	No term matches.
+08e5a6b8	Northern sky
 bb93b9d9	Northern sky, autumn evenings
 3fab38ad	Northern sky, near Andromeda
 65f3c793	Northern Crown
 60748c54	Not because of distance
 ea2991f6	Not breathable, a spacesuit is needed
 9e076f58	Not found
+29e2f17d	Not seen from most of India
 2ff34314	Not stored at all
 7de8d811	Notes for eclipses, meteor showers, planet views and a nightly sky note.
+7e823b37	November
 01cce8ad	Numbers are rounded from published measurements and some are still being refined.
 49703179	Object
 9f1dd4f9	Observable universe
 3d0eb038	Oct 29
 88b330a9	Octant
+eca60ae8	October
 809e0743	Olympus Mons on Mars is the tallest volcano in the solar system, about two and a half times as tall as Mount Everest.
 d68e4cd6	On 14 September 2015 LIGO felt the first gravitational waves ever detected, from two black holes merging. About three Suns of mass were turned into the energy of the waves. The 2017 Nobel Prize in Physics went to the LIGO founders.
 c46b7ec9	On a dark autumn evening in the northern sky, find the Great Square of Pegasus and follow the line of stars of Andromeda. A faint, elongated smudge appears beside the star ν Andromedae. Binoculars show it much better.
@@ -791,6 +823,7 @@ ef96a391	Perseus
 c3d48f07	Phoenix landed near the north pole in May 2008 and confirmed that there is water ice just under the soil.
 f43dd7f0	Photon sphere
 a9a13c3f	Photosynthesis raises oxygen in the atmosphere about 2.4 billion years ago.
+10dad8e7	Pick a telescope and an eyepiece to see the magnification, how much sky fits in view and roughly what the Moon, planets and deep-sky objects look like.
 fe472f18	Pick two planets to see them side by side.
 18a95264	Planet 1 from the Sun
 563f87d4	Planet 2 from the Sun
@@ -861,8 +894,10 @@ c20a530e	Seasons are not caused by the Earth being nearer or farther from the Su
 ceb6346f	Sea Serpent
 68bf2a95	Seeing different parts of its lit half
 f42fac2c	Seen from far away, a clock falling in ticks slower and slower, and its light turns redder and dimmer. The watcher never sees it cross the horizon. For the person falling, time feels normal and crossing the horizon is unremarkable. Both are true: time is not the same for everyone.
+15dcb3c6	Seen well from India
 0be7c7c2	Sep 2
 a4570e04	Sep 30
+cc5d9056	September
 7cde8b0c	Serpent
 76bb9f53	Set your birth date
 a09a3645	Seven bright stars of Ursa Major form the Saptarishi (Big Dipper). The two stars at its front point to Dhruv tara, the Pole Star, which stays almost still in the north while the whole sky turns around it. Travellers used it to find north.
@@ -899,6 +934,7 @@ d00f0f1f	Some come from dying stars. Others sit in the middle of galaxies. There
 216752a6	Some scientists also think tiny primordial black holes may have formed in the very early universe. None has been found. For now it is only an idea.
 a98df735	Source code
 a43f596a	Source code on GitHub
+776ab00e	Southern sky
 018cdb6c	Southern Crown
 7357e2d0	Southern Fish
 7b3fe082	Southern Triangle
@@ -960,6 +996,7 @@ b8834f14	Taurus the Bull has a V-shaped face, the Hyades cluster, with orange Al
 213bff9d	Teachers are welcome to share these pages with their class. Everything is free, with no sign-up and no ads.
 399bee41	Telescope
 09945465	Telescope eyepiece simulator
+f9b2785f	Telescope simulator
 5ea69b5f	Ten questions in three levels, made from the planet data.
 0a8e2a0c	The Andromeda Galaxy
 c68eafd3	The Astryl app shows the sky for your place and time, so you can find where Andromeda and the Milky Way are tonight.
@@ -1141,6 +1178,7 @@ db4bcd81	To see how many different people visit, the Astryl server makes a one-w
 964078f2	To see which pages are read, each page view adds one to a daily total on the Astryl server. This is what is counted, and nothing else:
 219e430a	To show it on your own passport and profile; it is not shown to other people and not on the leaderboard
 7906a83c	To show your consent and run the account
+5e5e3e5c	Tonight in your city
 3ccb253d	Tonight's sky
 adc38da6	Total lunar eclipse
 5cd468aa	Total lunar eclipse of 20 December 2029
@@ -1277,6 +1315,7 @@ df275f5e	Your IP address itself, a cookie, any id, the time of day, your browser
 ffe4aec8	Your weight on Earth (kg)
 a06cff9a	Your weight on other planets
 4f96c178	Yuri Gagarin became the first person in space. He circled Earth once, in about 108 minutes.
+deaccc41	Zodiac
 fd7c149f	a few to ~100 Suns
 cb7c9ad8	a proton
 2f4c1b06	about 1 trillion
@@ -1305,5 +1344,7 @@ d0b3fe96	~26,000 light-years
 0e1aefcb	~290 million years after the Big Bang
 d3db2a8d	~55 million light-years
 984b33d3	~7,000 light-years
+bcaa7d5f	“Best in the evening” is the month when it is highest at about 9 pm. “Seen from India” is worked out for Delhi; from South India a little more of the southern sky is visible. The app shows the sky live for your place and time.
 32915e33	“Use my location” in the city list asks Android for your approximate location, once, and uses it only on your phone to work out the sky. Nothing is sent for this.
 9aa7658e	⚠️ Never look at the Sun directly, not even during an eclipse. Use certified eclipse glasses (ISO 12312-2), a welder’s glass no. 14, or a pinhole projector. Sunglasses are not safe.
+50d0a111	⚠️ Never point a telescope or binoculars at the Sun without a proper solar filter over the front. It can blind you instantly.

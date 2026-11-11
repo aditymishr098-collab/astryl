@@ -376,3 +376,21 @@ a.sc.next{border-color:var(--accent)}
 .seen{padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--text);font:inherit;font-size:.9rem;cursor:pointer}
 .seen.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,var(--card2))}
 .more-city summary{cursor:pointer;color:var(--accent);margin-top:8px}
+
+/* Constellations */
+.cons .con svg{background:#05070f;border-radius:12px;width:100%;height:auto}
+.conmeta{list-style:none;padding:0;margin:.5em 0 0;font-size:.88rem;display:grid;gap:3px}
+.con .story{font-size:.9rem}
+
+/* Telescope simulator */
+.tsgrid{display:grid;gap:18px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+@media(max-width:760px){.tsgrid{grid-template-columns:1fr}}
+.ts label{display:block;font-weight:600;font-size:.9rem;margin:8px 0}
+.ts label.chk{display:flex;gap:8px;align-items:center}
+.ts select,.ts input[type=number]{display:block;width:100%;margin-top:4px;padding:9px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit}
+.ts .row label{flex:1;min-width:130px}
+#tsCv{display:block;width:100%;max-width:440px;aspect-ratio:1;margin:0 auto;border-radius:50%}
+.citypick .cityq{flex:1;min-width:0;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit}
+.cityres{display:grid;gap:6px;margin-top:8px;max-height:300px;overflow:auto}
+.cityres button{text-align:start;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card2);color:var(--text);font:inherit;cursor:pointer}
+.cityres small{color:var(--muted)}

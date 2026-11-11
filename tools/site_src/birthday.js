@@ -37,6 +37,46 @@
     return { ly: ly, passed: passed, last: passed.length ? passed[passed.length - 1] : null, next: next };
   }
 
+  /* What the universe did while you were alive. Rates are averages; the universe-wide numbers are rough estimates. */
+  var HISTORY = [
+    ['1957-10', 'Sputnik 1, the first satellite', 'स्पुतनिक 1, पहला उपग्रह'], ['1961-04', 'Yuri Gagarin, the first person in space', 'यूरी गागारिन, अंतरिक्ष में पहले इंसान'],
+    ['1969-07', 'Apollo 11: the first people on the Moon', 'अपोलो 11: चाँद पर पहले इंसान'], ['1977-09', 'Voyager 1 launched; it is now the farthest human-made object', 'Voyager 1 छोड़ा गया; अब यह इंसान की बनाई सबसे दूर की चीज़ है'],
+    ['1984-04', 'Rakesh Sharma, the first Indian in space', 'राकेश शर्मा, अंतरिक्ष में पहले भारतीय'], ['1990-04', 'The Hubble Space Telescope launched', 'Hubble space telescope छोड़ा गया'],
+    ['1995-10', 'The first planet found around another Sun-like star', 'किसी दूसरे सूरज जैसे तारे के पास पहला ग्रह मिला'], ['2000-11', 'People start living on the International Space Station', 'अंतर्राष्ट्रीय अंतरिक्ष स्टेशन पर इंसान रहने लगे'],
+    ['2006-08', 'Pluto becomes a dwarf planet', 'प्लूटो बौना ग्रह बना'], ['2008-10', 'Chandrayaan-1 launched; it found water on the Moon', 'चंद्रयान-1 छोड़ा गया; उसने चाँद पर पानी पाया'],
+    ['2012-08', 'Curiosity lands on Mars; Voyager 1 enters interstellar space', 'Curiosity मंगल पर उतरा; Voyager 1 तारों के बीच के अंतरिक्ष में पहुँचा'], ['2014-09', 'Mangalyaan reaches Mars on India\u2019s first try', 'मंगलयान भारत की पहली ही कोशिश में मंगल पहुँचा'],
+    ['2015-07', 'New Horizons flies past Pluto', 'New Horizons प्लूटो के पास से गुज़रा'], ['2015-09', 'Gravitational waves detected for the first time', 'पहली बार गुरुत्वीय तरंगें पकड़ी गईं'],
+    ['2019-04', 'The first picture of a black hole (M87*)', 'ब्लैक होल की पहली तस्वीर (M87*)'], ['2021-12', 'The James Webb Space Telescope launched', 'James Webb space telescope छोड़ा गया'],
+    ['2022-09', 'DART pushes an asteroid off course', 'DART ने एक क्षुद्रग्रह का रास्ता बदला'], ['2023-08', 'Chandrayaan-3 lands near the Moon\u2019s south pole', 'चंद्रयान-3 चाँद के दक्षिणी ध्रुव के पास उतरा']
+  ];
+  function since(ms) {
+    var yrs = (Date.now() - ms) / (365.25 * 86400000), sec = yrs * 365.25 * 86400, days = yrs * 365.25;
+    function stat(v, en, hi) { return '<div class="stat"><b>' + v + '</b><span>' + bi(en, hi) + '</span></div>'; }
+    function big(x) {
+      if (x >= 1e12) return fmt(x / 1e12, 1) + (hi() ? ' लाख करोड़' : ' trillion');
+      if (x >= 1e9) return fmt(x / 1e9, 1) + (hi() ? ' अरब' : ' billion');
+      if (x >= 1e6) return fmt(x / 1e6, 1) + (hi() ? ' मिलियन' : ' million');
+      return fmt(x, 0);
+    }
+    var h = '<h2>' + bi('What the universe did since you were born', 'आपके जन्म से अब तक ब्रह्मांड में क्या हुआ') + '</h2><div class="stats">';
+    h += stat(fmt(yrs, 2), 'trips around the Sun', 'सूरज के चक्कर');
+    h += stat(big(yrs * 940e6) + ' km', 'travelled around the Sun', 'सूरज के चारों ओर सफ़र');
+    h += stat(big(sec * 230) + ' km', 'travelled around the Milky Way with the Sun', 'सूरज के साथ आकाशगंगा के चारों ओर सफ़र');
+    h += stat(fmt(Math.floor(days / 29.53), 0), 'full Moons', 'पूर्णिमाएँ');
+    h += stat('~' + fmt(Math.round(yrs * 7), 0), 'new stars born in the Milky Way', 'आकाशगंगा में नए तारे जन्मे');
+    h += stat('~' + big(yrs * 3e11), 'new stars born in the observable universe (very rough)', 'दिखने वाले ब्रह्मांड में नए तारे जन्मे (बहुत मोटा अनुमान)');
+    h += stat('~' + fmt(yrs * 0.016 > 1 ? yrs * 0.016 : yrs * 0.016, 1), 'supernovae in the Milky Way (on average)', 'आकाशगंगा में supernova (औसतन)');
+    h += stat(fmt(9.4607e12 * 6.92e-11 * yrs, 0) + ' km', 'how much every light-year of space has stretched', 'अंतरिक्ष का हर प्रकाश-वर्ष कितना खिंचा');
+    h += '</div><p class="note">' + bi('Averages: Earth moves about 94 crore km a year around the Sun and the Sun about 230 km a second around the Galaxy. The Milky Way makes roughly 7 new stars a year and has a supernova about every 60 years (most hidden by dust). The universe-wide star count comes from the measured star-forming rate and could be off by a few times. Space stretches by the Hubble rate, about 0.007% every million years.', 'औसत: पृथ्वी सूरज के चारों ओर साल में लगभग 94 करोड़ किमी चलती है और सूरज आकाशगंगा के चारों ओर लगभग 230 किमी प्रति सेकंड। आकाशगंगा साल में लगभग 7 नए तारे बनाती है और लगभग हर 60 साल में एक supernova होता है (ज़्यादातर धूल में छिपे)। पूरे ब्रह्मांड के तारों की गिनती नापी गई तारा-निर्माण दर से है और कुछ गुना ऊपर-नीचे हो सकती है। अंतरिक्ष Hubble दर से खिंचता है, हर दस लाख साल में लगभग 0.007%।') + '</p>';
+    var events = HISTORY.filter(function (e) { var p = e[0].split('-'); return Date.UTC(+p[0], +p[1] - 1, 28) > ms; });
+    if (events.length) {
+      h += '<h3>' + bi('Space history in your lifetime', 'आपके जीवनकाल में अंतरिक्ष का इतिहास') + '</h3><ul class="tnlist">';
+      events.forEach(function (e) { h += '<li><b>' + e[0].slice(0, 4) + '</b> · ' + bi(e[1], e[2]) + '</li>'; });
+      h += '</ul>';
+    }
+    return h;
+  }
+
   var cur = null;
   function draw() {
     if (!input.value) { out.innerHTML = ''; cur = null; return; }
@@ -59,7 +99,8 @@
       h += '<p>➡️ ' + bi('Next stop: <b>' + lt.next[0] + '</b>, reached in ' + y + '.', 'अगला पड़ाव: <b>' + lt.next[0] + '</b>, ' + y + ' में पहुँचेगी।') + '</p>';
     }
     if (lt.passed.length) h += '<p class="note">' + lt.passed.map(function (s) { return s[0]; }).join(' · ') + '</p>';
-    h += '</div><p><button class="btn primary" type="button" id="bsShare">↗ ' + bi('Share my birthday sky', 'अपने जन्मदिन का आसमान share करें') + '</button></p>';
+    h += '</div>' + since(ms);
+    h += '<p><button class="btn primary" type="button" id="bsShare">↗ ' + bi('Share my birthday sky', 'अपने जन्मदिन का आसमान share करें') + '</button></p>';
     out.innerHTML = h;
     document.getElementById('bsShare').onclick = share;
   }

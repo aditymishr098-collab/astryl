@@ -218,9 +218,12 @@
     web.seen = seenM;
     merged.web = web;
     // The city is shared with the app (same city list). The newer side wins.
+    // A city chosen in this browser always stays; the app's city is only used when none is chosen here.
+    // Only cities from the app's own list are sent back, since the app knows only those.
     var lcity = readJson('astryl-city', ''), rcity = remote && typeof remote.city === 'string' ? remote.city : '';
-    if (rcity && (remoteWins || !lcity)) store.set('astryl-city', JSON.stringify(rcity));
-    else if (lcity) merged.city = lcity;
+    var appIds = (window.ASTRYL && window.ASTRYL.cities || []).map(function (c) { return c[0]; });
+    if (!lcity && rcity && appIds.indexOf(rcity) >= 0) store.set('astryl-city', JSON.stringify(rcity));
+    else if (typeof lcity === 'string' && appIds.indexOf(lcity) >= 0) merged.city = lcity;
   }
   function p0() { return getPrefs(); }
   window.ASTRYL_ACCT = { api: api, token: token, session: getSession, prefs: getPrefs, sync: sync, status: function () { return syncStatus; } };
