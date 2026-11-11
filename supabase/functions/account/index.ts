@@ -516,6 +516,15 @@ async function handle(req: Request, b: any): Promise<Response> {
       const user = await userFrom(req);
       const data = b.data;
       if (!data || typeof data !== "object" || Array.isArray(data)) throw new Fail(400, "bad_data");
+      // The app does not know the website's progress ("web"), so when its data comes without
+      // that part, the part already stored is kept.
+      if (!("web" in data)) {
+        const old = await admin.from("user_data").select("data").eq("user_id", user.id).maybeSingle();
+        const oldData = old.data ? old.data.data : null;
+        if (oldData && typeof oldData === "object" && !Array.isArray(oldData) && oldData.web) {
+          data.web = oldData.web;
+        }
+      }
       if (JSON.stringify(data).length > MAX_DATA_CHARS) throw new Fail(413, "too_big");
       const now = new Date();
       const { error } = await admin.from("user_data").upsert({

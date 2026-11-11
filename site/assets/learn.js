@@ -1,10 +1,10 @@
-/* Deep space quiz, Black holes 101 progress and the badge. All progress stays in this browser (localStorage). */
+/* Deep space quiz, Black holes 101 progress and the badge. Progress is kept in this browser and, with an account and sync on, in the account too. */
 (function () {
   var KEY = 'astryl-bh101', BEST = 'astryl-ds-best-';
   function $(id) { return document.getElementById(id); }
   function bi(en, hi) { return '<span class="t" lang="en">' + en + '</span><span class="t" lang="hi">' + hi + '</span>'; }
   function get(k, d) { try { var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }
-  function set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } }
+  function set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } try { document.dispatchEvent(new Event('astryl-change')); } catch (e) { } }
   function done() { var a = get(KEY, []); return Array.isArray(a) ? a : []; }
 
   // a lesson page counts as read once it has been open for a few seconds

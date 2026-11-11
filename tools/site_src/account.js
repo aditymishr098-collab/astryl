@@ -160,6 +160,7 @@
         if (best > local && LEVELS.indexOf(l) >= 0) store.set('astryl-best-' + l, String(best));
       });
       merged.quizBests = mb;
+      mergeWeb(merged, remote, remoteWins);
       var lc = store.get('astryl-lang'), th = store.get('astryl-theme');
       if (remoteWins) {
         if ((remote.locale === 'en' || remote.locale === 'hi') && (!lc || lc === 'en' || lc === 'hi') && remote.locale !== (lc || '')) { store.set('astryl-lang', remote.locale); reload = true; }
@@ -181,6 +182,33 @@
       done(res.updatedMs || 0); return true;
     }).catch(function () { syncStatus = 'failed'; return false; }).then(function (ok) { syncing = false; redraw(); return ok; });
   }
+  /* Favourites (shared with the app) and website progress (the "web" part, which the app keeps
+     but does not use). Best scores and lessons read are joined, so nothing is lost either way. */
+  function readJson(k, d) { try { var v = store.get(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }
+  function mergeWeb(merged, remote, remoteWins) {
+    var localFav = readJson('astryl-favs', []), remoteFav = remote && Array.isArray(remote.favorites) ? remote.favorites : [];
+    if (!Array.isArray(localFav)) localFav = [];
+    var fav = [];
+    // When the account is newer, its favourites are added to this browser's; otherwise this
+    // browser's list wins, so a star removed here stays removed.
+    (remoteWins || !p0().syncedMs ? remoteFav.concat(localFav) : localFav).forEach(function (f) { if (typeof f === 'string' && fav.indexOf(f) < 0) fav.push(f); });
+    fav = fav.slice(-60);
+    merged.favorites = fav;
+    store.set('astryl-favs', JSON.stringify(fav));
+    var rw = remote && remote.web && typeof remote.web === 'object' ? remote.web : {}, web = { ds: {}, bh101: [] };
+    ['bh', 'gx', 'all'].forEach(function (k) {
+      var local = parseInt(readJson('astryl-ds-best-' + k, 0), 10) || 0, far = parseInt(rw.ds && rw.ds[k], 10) || 0, best = Math.max(local, far);
+      if (best > 0) web.ds[k] = best;
+      if (best > local) store.set('astryl-ds-best-' + k, JSON.stringify(best));
+    });
+    var lessons = readJson('astryl-bh101', []);
+    if (!Array.isArray(lessons)) lessons = [];
+    (Array.isArray(rw.bh101) ? rw.bh101 : []).concat(lessons).forEach(function (x) { if (typeof x === 'string' && web.bh101.indexOf(x) < 0) web.bh101.push(x); });
+    store.set('astryl-bh101', JSON.stringify(web.bh101));
+    merged.web = web;
+  }
+  function p0() { return getPrefs(); }
+  window.ASTRYL_ACCT = { api: api, token: token, session: getSession, prefs: getPrefs, sync: sync, status: function () { return syncStatus; } };
   var timer = null;
   document.addEventListener('astryl-change', function () {
     if (!getSession() || !getPrefs().syncOn) return;
@@ -368,6 +396,7 @@
       h = '<div class="card whoami">' + (getAvatar() ? avatarImg('bigpic') : '<span class="bigpic ph">\uD83D\uDC64</span>') + '<div><b>' + esc(t('acctLoggedInAs', { name: s.username })) + '</b><div class="btns"><label class="btn" for="photoIn">' + esc(w(getAvatar() ? 'avatarChange' : 'avatarChoose')) + '</label>' +
         (getAvatar() ? '<button class="btn" type="button" data-act="photoDel">' + esc(w('avatarRemove')) + '</button>' : '') + '</div>' +
         '<input id="photoIn" type="file" accept="image/*" hidden><small class="note">' + esc(w('avatarNote')) + '</small>' + (ui.delMsg && !ui.del ? '<small class="note">' + esc(ui.delMsg) + '</small>' : '') + '</div></div>' +
+        '<p><a class="btn primary" href="' + ROOT + 'my-space.html">\u2B50 ' + (lang() === 'hi' ? 'My space खोलें: favourites, scores, badges' : 'Open My space: favourites, scores, badges') + '</a></p>' +
         '<div class="card">' + check('syncOn', t('acctSync'), t('acctSyncNote'), p.syncOn) +
         '<p><button class="btn" type="button" data-act="syncNow"' + (syncing || !p.syncOn ? ' disabled' : '') + '>' + esc(t('acctSyncNow')) + '</button> <span class="note">' +
         esc({ syncing: t('acctSyncing'), ok: t('acctSyncOk'), failed: t('acctSyncFailed') }[syncStatus] || '') + '</span></p></div>' +
