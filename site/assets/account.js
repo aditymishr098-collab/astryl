@@ -623,7 +623,7 @@
     function board() {
       var b = d.board, h = '<h3>' + esc(w('boardTitleLb')) + '</h3><div class="tabs"><button type="button" class="' + (d.tab === 'today' ? 'on' : '') + '" data-dl="tab:today">' + esc(w('boardToday')) + '</button><button type="button" class="' + (d.tab === 'week' ? 'on' : '') + '" data-dl="tab:week">' + esc(w('boardWeek')) + '</button><button type="button" class="' + (d.tab === 'all' ? 'on' : '') + '" data-dl="tab:all">' + esc(w('boardAll')) + '</button></div>';
       if (!b) return h + '<p class="note">' + esc(w('loading')) + '</p>';
-      var rows = d.tab === 'today' ? b.today : (d.tab === 'week' ? (b.week || []) : b.all), mine = me() ? me().username : '';
+      var rows = (d.tab === 'today' ? b.today : (d.tab === 'week' ? b.week : b.all)) || [], mine = me() ? me().username : '';
       if (!rows.length) h += '<p class="note">' + esc(w('boardEmpty')) + '</p>';
       else {
         h += '<ol class="lb">';
