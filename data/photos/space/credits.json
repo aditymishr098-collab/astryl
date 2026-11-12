@@ -139,12 +139,26 @@
   "page": "https://commons.wikimedia.org/wiki/File:Clouds_stretch_into_a_soft_blur_and_a_bright_airglow_blankets_Earth%E2%80%99s_horizon_(iss073e0818308).jpg",
   "title": "File:Clouds stretch into a soft blur and a bright airglow blankets Earth’s horizon (iss073e0818308).jpg"
  },
+ "map-earth": {
+  "artist": "Solar System Scope (from NASA data)",
+  "credit": "",
+  "licence": "CC BY 4.0",
+  "page": "https://www.solarsystemscope.com/textures/",
+  "title": "https://www.solarsystemscope.com/textures/download/8k_earth_daymap.jpg"
+ },
  "map-mars": {
   "artist": "NASA / Jet Propulsion Lab / USGS",
   "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://astrogeology.usgs.gov/search/details/Mars/Viking/MDIM21/Mars_Viking_MDIM21_ClrMosaic_global_232m/cub\">https://astrogeology.usgs.gov/search/details/Mars/Viking/MDIM21/Mars_Viking_MDIM21_ClrMosaic_global_232m/cub</a>",
   "licence": "Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Mars_Viking_MDIM21_ClrMosaic_1km.jpg",
   "title": "File:Mars Viking MDIM21 ClrMosaic 1km.jpg"
+ },
+ "map-moon": {
+  "artist": "Solar System Scope (from NASA data)",
+  "credit": "",
+  "licence": "CC BY 4.0",
+  "page": "https://www.solarsystemscope.com/textures/",
+  "title": "https://www.solarsystemscope.com/textures/download/8k_moon.jpg"
  },
  "moon-eclipse": {
   "artist": "Alfredo Garcia, Jr, <a rel=\"nofollow\" class=\"external autonumber\" href=\"https://www.facebook.com/alfredogarciajr\">[2]</a>",
