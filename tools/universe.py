@@ -183,14 +183,14 @@ def build(h):
     # ---------- glossary
     terms = sorted(GLOSSARY, key=lambda g: g[0].lower())
     cards = ''.join(f'<div class="card" id="{g[0].lower().replace(" ", "-").replace("(", "").replace(")", "")}" data-gl="{h["esc"]((g[0] + " " + g[1] + " " + g[2]).lower())}"><h3>{bt(g[0], g[1])}</h3><p>{bt(g[2], g[3])}</p></div>' for g in terms)
-    body = f'''<section class="blk"><h1>{bt("Space glossary", "अंतरिक्ष शब्दकोश")}</h1><p class="sub">{bt("{n} words you meet when reading about the universe, in plain English and Hindi.".replace("{n}", str(len(terms))), "ब्रह्मांड के बारे में पढ़ते हुए मिलने वाले {n} शब्द, सरल English और हिंदी में।".replace("{n}", str(len(terms))))}</p>
+    body = f'''<section class="blk"><h1>{bt("Space glossary", "अंतरिक्ष शब्दकोश")}</h1><p class="sub">{bt("{n} words you meet when reading about the universe, explained simply.".replace("{n}", str(len(terms))), "ब्रह्मांड के बारे में पढ़ते हुए मिलने वाले {n} शब्द, आसान भाषा में।".replace("{n}", str(len(terms))))}</p>
 <div class="row"><input type="search" id="glq" placeholder="redshift, ब्लैक होल…" aria-label="Search"></div>
 <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">{cards}</div><p class="note" id="glNone" style="display:none">{bt("No term matches.", "कोई शब्द नहीं मिला।")}</p></section>
 <script>document.getElementById('glq').addEventListener('input',function(e){{var s=e.target.value.toLowerCase().trim(),n=0;document.querySelectorAll('[data-gl]').forEach(function(c){{var hide=!!s&&c.dataset.gl.indexOf(s)<0;c.classList.toggle('hide',hide);if(!hide)n++}});document.getElementById('glNone').style.display=n?'none':'block'}})</script>'''
     ld = {'@context': 'https://schema.org', '@type': 'DefinedTermSet', 'name': 'Astryl space glossary', 'inLanguage': ['en', 'hi'],
           'hasDefinedTerm': [{'@type': 'DefinedTerm', 'name': g[0], 'description': g[2]} for g in terms]}
     out.append(('glossary.html', h['shell']('Space glossary', 'अंतरिक्ष शब्दकोश', 'gloss', body,
-                'A glossary of space words in plain English and Hindi: black hole, redshift, dark matter, light-year, event horizon, quasar and more.',
+                'A glossary of space words, explained simply: black hole, redshift, dark matter, light-year, event horizon, quasar and more.',
                 canonical='glossary.html', ld=ld)))
 
     for f, html in out:

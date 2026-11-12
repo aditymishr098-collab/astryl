@@ -811,7 +811,7 @@ def index_page():
              ('🎓', bt('Black holes 101', 'Black holes 101'), 'Seven lessons, a quiz and a badge', 'सात पाठ, एक quiz और एक badge', 'black-holes-101.html'),
              ('📏', bt('Scale of the universe', 'ब्रह्मांड का पैमाना'), 'From a proton to everything we can see', 'प्रोटॉन से लेकर वह सब जो हम देख सकते हैं', 'cosmic-scale.html'),
              ('⏳', bt('Timeline', 'समयरेखा'), '13.8 billion years in one calendar year', '13.8 अरब साल एक कैलेंडर वर्ष में', 'universe-timeline.html'),
-             ('📖', bt('Glossary', 'शब्दकोश'), 'Space words in plain English and Hindi', 'अंतरिक्ष के शब्द, सरल English और हिंदी में', 'glossary.html'),
+             ('📖', bt('Glossary', 'शब्दकोश'), 'Space words, explained simply', 'अंतरिक्ष के शब्द, आसान भाषा में', 'glossary.html'),
              ('🛰️', 'spacecraftTitle', 'How far Voyager and JWST are now', 'Voyager और JWST अभी कितनी दूर हैं', 'spacecraft.html'),
              ('⚖️', 'weightTitle', 'Weight, jump and age on every world', 'हर दुनिया पर वज़न, कूद और उम्र', 'you.html'),
              (pic('earth'), 'navCompare', 'Any two worlds side by side', 'कोई भी दो दुनियाएँ आमने-सामने', 'compare.html')]
@@ -843,10 +843,10 @@ def index_page():
     body = f'''<section class="hero2">
 <div>
 <h1 class="rise">{bt("Explore the", "खोजिए")} <span class="grad">{bt("Universe.", "ब्रह्मांड।")}</span></h1>
-<p class="lead rise">{bt("Planets, moons, stars and space missions: real positions and real numbers for any date, in English and Hindi.", "ग्रह, चाँद, तारे और अंतरिक्ष missions: किसी भी तारीख़ की असली स्थिति और असली आँकड़े, English और हिंदी में।")}</p>
+<p class="lead rise">{bt("Planets, moons, stars and space missions: real positions and real numbers for any date.", "ग्रह, चाँद, तारे और अंतरिक्ष missions: किसी भी तारीख़ की असली स्थिति और असली आँकड़े।")}</p>
 <div class="btns rise"><a class="btn primary" href="planets.html">{bt("Explore space", "अंतरिक्ष खोजिए")} →</a><a class="btn" href="quiz.html">{bt("Take the quiz", "Quiz खेलिए")}</a></div>
 <p class="acctline rise" id="acctLine">{bt("Free account: your favourites, scores and streak are kept on every device.", "मुफ़्त खाता: आपके favourites, scores और streak हर device पर साथ रहते हैं।")} <a href="account.html">{bt("Create account", "खाता बनाएँ")} →</a></p>
-<div class="chips rise"><span class="chip">{bt("Free", "मुफ़्त")}</span><span class="chip">{bt("Open source", "Open source")}</span><span class="chip">{bt("No ads", "कोई विज्ञापन नहीं")}</span><span class="chip">{bt("English + हिन्दी", "English + हिन्दी")}</span></div>
+<div class="chips rise"><span class="chip">{bt("Free", "मुफ़्त")}</span><span class="chip">{bt("Open source", "Open source")}</span><span class="chip">{bt("No ads", "कोई विज्ञापन नहीं")}</span></div>
 </div>
 <div class="herog"><canvas id="heroGlobe" aria-label="{esc("The Earth right now, with day and night and the space station")}"></canvas><p class="note herocap">{bt("The Earth right now: real day and night, and the space station where it really is.", "अभी की पृथ्वी: असली दिन और रात, और अंतरिक्ष स्टेशन ठीक वहीं जहाँ वह है।")}</p></div>
 </section>
@@ -874,7 +874,7 @@ def index_page():
 </section>
 <section class="blk"><div class="grid daily2"><div class="card apod" id="dailyPhoto"></div><div class="card" id="dailyFact"></div></div></section>
 <section class="blk"><h2>{bt("This website in numbers", "यह website आँकड़ों में")}</h2><div class="stats" id="stats"></div><p class="note" id="statsCountries"></p><p class="note" id="statsNote"></p></section>'''
-    write('index.html', shell('Explore the Universe', 'ब्रह्मांड खोजिए', 'home', body, 'Astryl: planets, moons, stars and space missions. Real positions and real numbers for any date, free and open source, in English and Hindi.', canonical='', extra_head=f'<script defer src="assets/sgp4.js?v={asset_v()}"></script><script defer src="assets/home.js?v={asset_v()}"></script><script defer src="assets/cosmos.js?v={asset_v()}"></script><script defer src="assets/tonight.js?v={asset_v()}"></script><script defer src="assets/apod.js?v={asset_v()}"></script>', ld=[{'@context': 'https://schema.org', '@type': 'WebApplication', 'name': 'Astryl', 'applicationCategory': 'EducationalApplication', 'operatingSystem': 'Any', 'description': 'Planets, moons, stars and space missions with real positions and real numbers for any date, in English and Hindi. Free.', 'url': SITE + '/', 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}, 'inLanguage': ['en', 'hi']}, {'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Astryl', 'url': SITE + '/', 'inLanguage': ['en', 'hi']}]))
+    write('index.html', shell('Explore the Universe', 'ब्रह्मांड खोजिए', 'home', body, 'Astryl: planets, moons, stars and space missions. Real positions and real numbers for any date, free and open source.', canonical='', extra_head=f'<script defer src="assets/sgp4.js?v={asset_v()}"></script><script defer src="assets/home.js?v={asset_v()}"></script><script defer src="assets/cosmos.js?v={asset_v()}"></script><script defer src="assets/tonight.js?v={asset_v()}"></script><script defer src="assets/apod.js?v={asset_v()}"></script>', ld=[{'@context': 'https://schema.org', '@type': 'WebApplication', 'name': 'Astryl', 'applicationCategory': 'EducationalApplication', 'operatingSystem': 'Any', 'description': 'Planets, moons, stars and space missions with real positions and real numbers for any date. Free.', 'url': SITE + '/', 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}, 'inLanguage': ['en', 'hi']}, {'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Astryl', 'url': SITE + '/', 'inLanguage': ['en', 'hi']}]))
 
 
 def planets_page():
@@ -1165,7 +1165,7 @@ def pwa_files():
     manifest = {
         'name': 'Astryl: Know your space', 'short_name': 'Astryl', 'id': '/', 'start_url': '/', 'scope': '/', 'display': 'standalone',
         'background_color': '#05070f', 'theme_color': '#06080e', 'lang': 'en', 'dir': 'ltr', 'categories': ['education', 'science'],
-        'description': 'Planets, moons, stars and space missions: real positions and real numbers for any date, in English and Hindi.',
+        'description': 'Planets, moons, stars and space missions: real positions and real numbers for any date.',
         'icons': [{'src': '/img/icons/icon-192.png', 'sizes': '192x192', 'type': 'image/png'},
                   {'src': '/img/icons/icon-512.png', 'sizes': '512x512', 'type': 'image/png'},
                   {'src': '/img/icons/maskable-512.png', 'sizes': '512x512', 'type': 'image/png', 'purpose': 'maskable'}],
