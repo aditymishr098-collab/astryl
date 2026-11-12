@@ -27,9 +27,9 @@
     var s = ACCT && ACCT.session(), p = ACCT ? ACCT.prefs() : {}, h = '';
     // who
     if (s) h += '<p class="sub">' + bi('Logged in as <b>' + esc(s.username) + '</b>. ', '<b>' + esc(s.username) + '</b> के रूप में login. ') +
-      (p.syncOn ? bi('Favourites, scores and Black holes 101 progress are synced with your account and the app.', 'Favourites, scores और Black holes 101 की progress आपके खाते और app के साथ sync हैं।')
+      (p.syncOn ? bi('Favourites, scores and Black holes 101 progress are synced with your account.', 'Favourites, scores और Black holes 101 की progress आपके खाते के साथ sync हैं।')
         : bi('Sync is off, so this is only what this browser knows. <a href="' + root + 'account.html">Turn it on</a>.', 'Sync बंद है, इसलिए यहाँ सिर्फ़ इस browser का data है। <a href="' + root + 'account.html">चालू करें</a>।')) + '</p>';
-    else h += '<p class="sub">' + bi('Everything here is kept in this browser. <a href="' + root + 'account.html">Make a free account</a> to have it on every device and in the app.', 'यहाँ सब कुछ इसी browser में रखा है। हर device और app में पाने के लिए <a href="' + root + 'account.html">मुफ़्त खाता बनाइए</a>।') + '</p>';
+    else h += '<p class="sub">' + bi('Everything here is kept in this browser. <a href="' + root + 'account.html">Make a free account</a> to have it on every device.', 'यहाँ सब कुछ इसी browser में रखा है। हर device पर पाने के लिए <a href="' + root + 'account.html">मुफ़्त खाता बनाइए</a>।') + '</p>';
 
     // your city tonight, the calendar and what you have seen
     var SKY = window.ASTRYL_SKY, c = SKY && SKY.city();

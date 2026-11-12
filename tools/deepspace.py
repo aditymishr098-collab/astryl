@@ -149,7 +149,7 @@ def black_hole_pages(h):
         ('Nearest known so far', 'अब तक का सबसे पास', '~1,600 light-years', '~1,600 प्रकाश-वर्ष'),
     ])}</section>
 <section class="blk"><h2>{bt("Seven short pages", "सात छोटे पन्ने")}</h2><div class="sc-grid" style="padding-top:6px">{cards}</div></section>
-<section class="blk callout"><b>{bt("Want to test yourself?", "खुद को परखना है?")}</b> {bt("Play the Daily 5 on the Quiz page, or open the app for the planets and the sky tonight.", "Quiz page पर Daily 5 खेलिए, या ग्रहों और आज रात के आसमान के लिए app खोलिए।")} <a href="quiz.html">{bt("Quiz", "Quiz")} →</a></section>'''
+<section class="blk callout"><b>{bt("Want to test yourself?", "खुद को परखना है?")}</b> {bt("Play the Daily 5 on the Quiz page, or the black hole and galaxy quiz.", "Quiz page पर Daily 5 खेलिए, या ब्लैक होल और galaxy वाली quiz।")} <a href="quiz.html">{bt("Quiz", "Quiz")} →</a></section>'''
     out.append({'file': 'black-holes.html', 'html': shell('Black holes explained', 'ब्लैक होल, आसान भाषा में', 'bh', hub,
                 'Black holes explained simply: what they are, how they form, what happens if you fall in, the famous ones and how we photographed them. Free, in English and Hindi.',
                 canonical='black-holes.html', ld=article_ld(h['SITE'], 'Black holes explained', 'Black holes explained simply: what they are, how they form, what happens if you fall in, the famous ones and how we photographed them.', 'black-holes.html', [('Astryl', ''), ('Black holes', 'black-holes.html')]))})

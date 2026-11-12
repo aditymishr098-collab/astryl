@@ -26,9 +26,9 @@
   var W = {
     en: {
       bannerLater: 'Not now', statsTitle: 'Astryl in numbers', statsRegistered: 'Accounts', statsActive: 'Active users (30 days)',
-      statsDownloads: 'APK downloads', statsCountries: 'Top countries',
-      statsNote: 'Active means people who chose to be counted. Downloads are counted by GitHub.',
-      webNote: 'On this website your language, theme, quiz scores, lessons read and the things you have seen sync. Sharing your location is only in the app.',
+      statsCountries: 'Top countries',
+      statsNote: 'Active means people who chose to be counted.',
+      webNote: 'Your language, theme, quiz scores, lessons read and the things you have seen sync with your account.',
       loading: 'Loading…', showPassword: 'Show password',
       statsViews: 'Page views (30 days)', statsVisitors: 'Visitors (30 days)',
       barLocText: 'Share your approximate place (about 10 km) so we can see where Astryl is used? Only a rounded point is added to a count; nothing else is sent and it is not tied to you.', barLocYes: 'Share', barLocNo: 'No thanks', barClose: 'Close', barNews: 'News',
@@ -42,15 +42,15 @@
       boardShare: 'Share as a picture', boardShareText: 'I scored {p} points on today\'s Astryl Daily 5!',
       boardWeek: 'This week', boardRankWeek: 'Your rank this week: {r}', streakNow: '{n}-day streak', streakNone: 'No streak yet. Play today to start one.', streakBest: 'Best: {n}',
       badgesTitle: 'Badges', bdFirst: 'First run', bdS3: '3-day streak', bdS7: '7-day streak', bdS30: '30-day streak', bdPerfect: 'Perfect 5 of 5', bdP10: '10 runs', bdP50: '50 runs',
-      welcomeTitle: 'Welcome to Astryl', welcomeSub: 'Make a free account to keep your favourites, quiz scores and rank in step between the app and this website. Or just look around.', welcomeSkip: 'Continue without account',
+      welcomeTitle: 'Welcome to Astryl', welcomeSub: 'Make a free account to keep your favourites, quiz scores and rank on every device. Or just look around.', welcomeSkip: 'Continue without account',
       avatarChoose: 'Choose a photo', avatarChange: 'Change photo', avatarRemove: 'Remove photo', avatarNote: 'Shown only on your own profile (not on the leaderboard). A small square picture, saved in your Astryl account.', avatarFail: 'The photo could not be saved. Try a different picture.',
-      webIntro: 'Optional. A username and a password, no e-mail. Your favourites, quiz scores and settings then follow you between the Astryl app and this website.'
+      webIntro: 'Optional. A username and a password, no e-mail. Your favourites, quiz scores and settings then follow you on every device.'
     },
     hi: {
       bannerLater: 'अभी नहीं', statsTitle: 'Astryl आँकड़ों में', statsRegistered: 'खाते', statsActive: 'Active users (30 दिन)',
-      statsDownloads: 'APK downloads', statsCountries: 'शीर्ष देश',
-      statsNote: 'Active यानी वे लोग जिन्होंने गिने जाना चुना है। Downloads की गिनती GitHub करता है।',
-      webNote: 'इस website पर आपकी भाषा, theme, quiz scores, पढ़े हुए पाठ और जो चीज़ें आपने देखी हैं, sync होते हैं। Location साझा करना सिर्फ़ app में है।',
+      statsCountries: 'शीर्ष देश',
+      statsNote: 'Active यानी वे लोग जिन्होंने गिने जाना चुना है।',
+      webNote: 'आपकी भाषा, theme, quiz scores, पढ़े हुए पाठ और जो चीज़ें आपने देखी हैं, आपके खाते के साथ sync होते हैं।',
       loading: 'Loading…', showPassword: 'Password दिखाएँ',
       statsViews: 'Page views (30 दिन)', statsVisitors: 'Visitors (30 दिन)',
       barLocText: 'क्या आप अपनी अनुमानित जगह (लगभग 10 km) बताएँगे, ताकि हम देख सकें कि Astryl कहाँ इस्तेमाल होता है? गिनती में सिर्फ़ एक गोल किया हुआ बिंदु जुड़ता है; और कुछ नहीं जाता और यह आपसे जुड़ा नहीं होता।', barLocYes: 'बताएँ', barLocNo: 'अभी नहीं', barClose: 'बंद करें', barNews: 'ख़बर',
@@ -64,9 +64,9 @@
       boardShare: 'तस्वीर बनाकर share करें', boardShareText: 'मैंने आज Astryl के Daily 5 में {p} अंक लिए!',
       boardWeek: 'इस हफ़्ते', boardRankWeek: 'इस हफ़्ते आपकी रैंक: {r}', streakNow: '{n} दिन की streak', streakNone: 'अभी कोई streak नहीं। आज खेलकर शुरू कीजिए।', streakBest: 'सबसे लंबी: {n}',
       badgesTitle: 'Badges', bdFirst: 'पहला खेल', bdS3: '3 दिन की streak', bdS7: '7 दिन की streak', bdS30: '30 दिन की streak', bdPerfect: '5 में से 5 सही', bdP10: '10 खेल', bdP50: '50 खेल',
-      welcomeTitle: 'Astryl में स्वागत है', welcomeSub: 'मुफ़्त खाता बनाइए, ताकि आपके favourites, quiz scores और rank app और इस website में एक जैसे रहें। या बस घूमकर देखिए।', welcomeSkip: 'बिना खाते के आगे बढ़ें',
+      welcomeTitle: 'Astryl में स्वागत है', welcomeSub: 'मुफ़्त खाता बनाइए, ताकि आपके favourites, quiz scores और rank हर device पर साथ रहें। या बस घूमकर देखिए।', welcomeSkip: 'बिना खाते के आगे बढ़ें',
       avatarChoose: 'फ़ोटो चुनें', avatarChange: 'फ़ोटो बदलें', avatarRemove: 'फ़ोटो हटाएँ', avatarNote: 'सिर्फ़ आपकी अपनी profile पर दिखती है (leaderboard पर नहीं)। एक छोटी चौकोर तस्वीर, आपके Astryl account में सेव होती है।', avatarFail: 'फ़ोटो सेव नहीं हो सकी। कोई दूसरी तस्वीर आज़माइए।',
-      webIntro: 'ज़रूरी नहीं। बस एक username और password, e-mail नहीं। फिर आपके favourites, quiz scores और settings Astryl app और इस website के बीच आपके साथ चलते हैं।'
+      webIntro: 'ज़रूरी नहीं। बस एक username और password, e-mail नहीं। फिर आपके favourites, quiz scores और settings हर device पर आपके साथ चलते हैं।'
     }
   };
   function w(key) { return (W[lang()] || W.en)[key] || W.en[key] || key; }
@@ -580,7 +580,7 @@
     var data = {};
     function paint() {
       var n = function (v) { return v === undefined ? '–' : Number(v).toLocaleString(lang() === 'hi' ? 'hi-IN' : 'en-US'); };
-      var h = '<div class="stat"><b>' + n(data.registered) + '</b><span>' + esc(w('statsRegistered')) + '</span></div><div class="stat"><b>' + n(data.active) + '</b><span>' + esc(w('statsActive')) + '</span></div><div class="stat"><b>' + n(data.visitors) + '</b><span>' + esc(w('statsVisitors')) + '</span></div><div class="stat"><b>' + n(data.views) + '</b><span>' + esc(w('statsViews')) + '</span></div><div class="stat"><b>' + n(data.downloads) + '</b><span>' + esc(w('statsDownloads')) + '</span></div>';
+      var h = '<div class="stat"><b>' + n(data.registered) + '</b><span>' + esc(w('statsRegistered')) + '</span></div><div class="stat"><b>' + n(data.active) + '</b><span>' + esc(w('statsActive')) + '</span></div><div class="stat"><b>' + n(data.visitors) + '</b><span>' + esc(w('statsVisitors')) + '</span></div><div class="stat"><b>' + n(data.views) + '</b><span>' + esc(w('statsViews')) + '</span></div>';
       box.innerHTML = h;
       var c = $('#statsCountries');
       if (c) {
@@ -593,11 +593,6 @@
     paint(); onLang(paint);
     fetch(API + '?action=stats', { headers: { apikey: KEY } }).then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (j) {
       data.registered = j.registered; data.active = j.active_30d; data.views = j.views_30d; data.visitors = j.visitors_30d; data.countries = j.countries; paint();
-    }).catch(function () {});
-    fetch('https://api.github.com/repos/' + REPO + '/releases?per_page=100').then(function (r) { return r.ok ? r.json() : Promise.reject(); }).then(function (rs) {
-      var total = 0;
-      rs.forEach(function (r) { (r.assets || []).forEach(function (a) { if (/\.apk$/i.test(a.name)) total += a.download_count || 0; }); });
-      data.downloads = total; paint();
     }).catch(function () {});
   }
 
