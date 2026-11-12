@@ -913,97 +913,11 @@
       });
     }
 
-    // 1. Interactive Interior Cutaway
-    var cutBox = $('#cutawaySim');
-    if (cutBox) {
-      var id = cutBox.dataset.body, b = byId[id] || byId.earth, pickedIdx = 0;
-      function getLayers(bid) {
-        var hi = lang === 'hi';
-        if (bid === 'sun') return [
-          { n: hi ? 'केंद्र (Core)' : 'Core', r: 0.28, c: '#fff5cc', d: hi ? '1.5 करोड़ °C — परमाणु संलयन (Nuclear fusion) यहाँ हाइड्रोजन को हीलियम में बदलता है।' : '15 million °C — nuclear fusion turns hydrogen into helium here.' },
-          { n: hi ? 'विकिरण क्षेत्र (Radiative Zone)' : 'Radiative Zone', r: 0.68, c: '#ffae34', d: hi ? 'फ़ोटॉन को इस घनी परत से बाहर निकलने में लाखों साल लग जाते हैं।' : 'Photons take over 100,000 years to bounce through this dense plasma layer.' },
-          { n: hi ? 'संवहन क्षेत्र और प्रकाशमंडल' : 'Convection Zone & Photosphere', r: 1.0, c: '#e85d1a', d: hi ? 'उबलते प्लाज़्मा की धाराएँ गर्मी को सतह (5,500 °C) तक लाती हैं।' : 'Boiling plasma currents carry heat to the 5,500 °C visible surface.' }
-        ];
-        if (bid === 'jupiter' || bid === 'saturn') return [
-          { n: hi ? 'चट्टानी और बर्फीला केंद्र' : 'Rocky & Icy Core', r: 0.22, c: '#9b7e6b', d: hi ? 'पृथ्वी से कई गुना भारी अति-उच्च दबाव वाला गर्म केंद्र।' : 'Dense, super-heated core many times heavier than Earth.' },
-          { n: hi ? 'धात्विक हाइड्रोजन (Metallic H₂)' : 'Liquid Metallic Hydrogen', r: 0.68, c: '#5c85d6', d: hi ? 'इतना दबाव कि हाइड्रोजन बिजली के सुचालक तरल धातु में बदल जाती है।' : 'Extreme pressure squeezes hydrogen into an electrically conductive liquid metal.' },
-          { n: hi ? 'गैसीय वायुमंडल और बादल' : 'Molecular Hydrogen & Clouds', r: 1.0, c: b.colors[0], d: hi ? 'अमोनिया और हाइड्रोजन के तेज़ तूफ़ानी बादलों की बाहरी परत।' : 'Swirling ammonia cloud bands and deep hydrogen-helium atmosphere.' }
-        ];
-        if (bid === 'uranus' || bid === 'neptune') return [
-          { n: hi ? 'चट्टानी केंद्र (Silicate Core)' : 'Silicate-Nickel Core', r: 0.25, c: '#7d746d', d: hi ? 'लोहे और सिलिकेट चट्टानों का छोटा ठोस केंद्र।' : 'Compact rocky core of iron, nickel and silicate rock.' },
-          { n: hi ? 'गर्म बर्फीला मेंटल (Icy Mantle)' : 'Superionic Water-Ammonia Mantle', r: 0.78, c: '#3898b8', d: hi ? 'पानी, अमोनिया और मीथेन का उच्च-दबाव वाला गर्म महासागर।' : 'Hot, dense fluid of water, ammonia and methane ices under immense pressure.' },
-          { n: hi ? 'मीथेन-हाइड्रोजन वायुमंडल' : 'Hydrogen-Methane Atmosphere', r: 1.0, c: b.colors[0], d: hi ? 'मीथेन गैस लाल रोशनी सोखकर इसे नीला/फ़िरोज़ी रंग देती है।' : 'Methane gas absorbs red light, giving the world its cyan/azure colour.' }
-        ];
-        if (['europa', 'enceladus', 'ganymede', 'callisto', 'titan', 'triton', 'pluto'].indexOf(bid) >= 0) return [
-          { n: hi ? 'चट्टानी केंद्र (Rocky Core)' : 'Rocky Silicate Core', r: 0.52, c: '#8f7968', d: hi ? 'चट्टान और धातु का भीतरी भाग जो ज्वारीय खिंचाव से गर्म रहता है।' : 'Silicate rock interior warmed by tidal flexing and radioactive decay.' },
-          { n: hi ? 'बर्फ़ के नीचे तरल महासागर' : 'Subsurface Liquid Ocean', r: 0.84, c: '#2980b9', d: hi ? 'बर्फ़ की पपड़ी के नीचे गहरा खारा समुद्र — जीवन की संभावना!' : 'Deep global ocean of liquid water beneath the frozen crust.' },
-          { n: hi ? 'बर्फीली पपड़ी (Icy Crust)' : 'Frozen Ice Shell', r: 1.0, c: b.colors[2], d: hi ? 'दरारों और गीज़र वाली ठोस बर्फ़ की बाहरी सतह।' : 'Hard water-ice shell criss-crossed by ridges, fractures and geysers.' }
-        ];
-        return [
-          { n: hi ? 'धात्विक केंद्र (Metallic Core)' : 'Iron-Nickel Core', r: bid === 'mercury' ? 0.75 : 0.38, c: '#f5b041', d: hi ? 'लोहे और निकल का भारी केंद्र जो चुंबकीय क्षेत्र बनाता है।' : 'Dense iron-nickel core at thousands of degrees Celsius.' },
-          { n: hi ? 'सिलिकेट मेंटल (Mantle)' : 'Silicate Mantle', r: 0.88, c: '#d35400', d: hi ? 'गर्म और सघन चट्टानों की मोटी परत।' : 'Thick shell of hot, dense silicate rock beneath the crust.' },
-          { n: hi ? 'बाहरी पपड़ी (Crust)' : 'Outer Crust', r: 1.0, c: b.colors[0], d: hi ? 'क्रेटर, पहाड़ों और घाटियों वाली बाहरी ठोस सतह।' : 'Solid outer surface of craters, plains, mountains and valleys.' }
-        ];
-      }
-      function drawCutaway() {
-        var layers = getLayers(id);
-        if (pickedIdx >= layers.length) pickedIdx = 0;
-        var svg = '<svg viewBox="-120 -120 240 240" width="210" height="210" style="flex-shrink:0;cursor:pointer">';
-        for (var i = layers.length - 1; i >= 0; i--) {
-          var L = layers[i], R = L.r * 100, sel = i === pickedIdx;
-          svg += '<circle class="cut-layer" data-idx="' + i + '" r="' + R + '" fill="' + L.c + '" stroke="' + (sel ? '#fff' : 'rgba(0,0,0,0.35)') + '" stroke-width="' + (sel ? 3 : 1) + '"/>';
-        }
-        svg += '<line x1="0" y1="-102" x2="0" y2="102" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3"/></svg>';
-        var btns = layers.map(function (L, idx) {
-          return '<button class="eyes-chip' + (idx === pickedIdx ? ' on' : '') + '" data-idx="' + idx + '"><i style="background:' + L.c + '"></i>' + L.n + '</button>';
-        }).join('');
-        var cur = layers[pickedIdx];
-        cutBox.innerHTML = '<div class="sim-flex">' + svg + '<div style="flex:1"><div class="eyes-chips" style="margin-bottom:10px">' + btns + '</div><h3 style="margin:4px 0;color:var(--accent)">' + cur.n + '</h3><p style="margin:0;color:var(--text)">' + cur.d + '</p></div></div>';
-      }
-      cutBox.addEventListener('click', function (e) {
-        var el = e.target.closest('[data-idx]');
-        if (el) { pickedIdx = parseInt(el.dataset.idx, 10); drawCutaway(); }
-      });
-      onRender(drawCutaway);
-    }
-
-    // 2. Telescope Eyepiece Simulator (1x / 10x / 100x)
-    var telSim = $('#telescopeSim');
-    if (telSim) {
-      var tid = telSim.dataset.body, tb = byId[tid] || byId.earth, mag = 1;
-      function drawTel() {
-        var hi = lang === 'hi';
-        var r = mag === 1 ? 3.5 : (mag === 10 ? 14 : 44);
-        if (tid === 'sun' || tid === 'moon') r = mag === 1 ? 16 : (mag === 10 ? 42 : 76);
-        var ring = tid === 'saturn' && mag >= 10 ? '<ellipse rx="' + (r * 2.1) + '" ry="' + (r * 0.6) + '" fill="none" stroke="#dcc286" stroke-width="' + (mag === 100 ? 5 : 2) + '" transform="rotate(-20)"/>' : '';
-        var jMoons = tid === 'jupiter' && mag >= 10 ? '<circle cx="' + (-r - 14) + '" cy="-6" r="2.2" fill="#ffe4a0"/><circle cx="' + (r + 12) + '" cy="5" r="2.2" fill="#d0ecff"/><circle cx="' + (r + 26) + '" cy="11" r="2.6" fill="#e0d4c0"/><circle cx="' + (-r - 30) + '" cy="-12" r="2.2" fill="#b8b0a4"/>' : '';
-        var svg = '<svg viewBox="-100 -100 200 200" width="200" height="200" style="flex-shrink:0;border-radius:50%;background:#04060e;border:3px solid rgba(130,155,220,0.4);box-shadow:inset 0 0 28px #000">' +
-          '<line x1="-95" y1="0" x2="-18" y2="0" stroke="rgba(120,170,255,0.22)"/><line x1="18" y1="0" x2="95" y2="0" stroke="rgba(120,170,255,0.22)"/>' +
-          '<line x1="0" y1="-95" x2="0" y2="-18" stroke="rgba(120,170,255,0.22)"/><line x1="0" y1="18" x2="0" y2="95" stroke="rgba(120,170,255,0.22)"/>' +
-          '<circle cx="-55" cy="-42" r="1" fill="#fff" opacity=".6"/><circle cx="48" cy="-50" r="1.2" fill="#fff" opacity=".5"/><circle cx="-40" cy="58" r="1" fill="#fff" opacity=".7"/>' +
-          ring + '<circle r="' + r + '" fill="' + tb.colors[0] + '"/>' + jMoons +
-          '<text x="0" y="84" text-anchor="middle" fill="#8fa8ff" font-size="11" font-weight="700">' + mag + 'x FOV</text></svg>';
-        var desc = mag === 1
-          ? (hi ? '1x नंगी आँख: रात के आसमान में यह एक चमकते तारे जैसा बिंदु दिखता है।' : '1x Naked eye: Appears as a steady point of light against the background stars.')
-          : (mag === 10
-            ? (hi ? '10x बाइनोक्युलर: एक छोटी डिस्क और प्रमुख चंद्रमा (जैसे बृहस्पति के 4 चंद्रमा) दिखने लगते हैं।' : '10x Binoculars: Resolves into a small disc; bright moons like Jupiter\'s Galilean moons appear as pinpoints.')
-            : (hi ? '100x टेलिस्कोप: बादलों की पट्टियाँ, ध्रुवीय बर्फ़, क्रेटर या शनि के छल्ले साफ़ दिखाई देते हैं।' : '100x Backyard telescope: Cloud bands, polar caps, craters or Saturn\'s rings stand out clearly in the eyepiece.'));
-        var btns = [1, 10, 100].map(function (m) {
-          var lbl = m === 1 ? (hi ? '1x नंगी आँख' : '1x Naked eye') : (m === 10 ? (hi ? '10x बाइनोक्युलर' : '10x Binoculars') : (hi ? '100x टेलिस्कोप' : '100x Telescope'));
-          return '<button class="eyes-chip' + (mag === m ? ' on' : '') + '" data-mag="' + m + '">' + lbl + '</button>';
-        }).join('');
-        telSim.innerHTML = '<div class="sim-flex">' + svg + '<div style="flex:1"><div class="eyes-chips" style="margin-bottom:10px">' + btns + '</div><p style="margin:6px 0 0;color:var(--text)">' + desc + '</p></div></div>';
-      }
-      telSim.addEventListener('click', function (e) {
-        var btn = e.target.closest('[data-mag]');
-        if (btn) { mag = parseInt(btn.dataset.mag, 10); drawTel(); }
-      });
-      onRender(drawTel);
-    }
+    // The interior cutaway and the telescope view are drawn by worlds.js.
   }
 
   /* ---------- small API for cosmos.js (home page animation) ---------- */
-  window.ASTRYL_API = { setLang: setLang, langs: LANGS, helio: helio, moonEcl: moonEcl, moonPhase: moonPhase, sunLon: sunLon, bname: bname, t: t, onRender: onRender, lang: function () { return lang; } };
+  window.ASTRYL_API = { distKm: distFromEarthKm, setLang: setLang, langs: LANGS, helio: helio, moonEcl: moonEcl, moonPhase: moonPhase, sunLon: sunLon, bname: bname, t: t, onRender: onRender, lang: function () { return lang; } };
 
   /* The More menu closes when you tap elsewhere or press Escape. */
   document.addEventListener('click', function (e) { document.querySelectorAll('details.more[open]').forEach(function (d) { if (!d.contains(e.target)) d.removeAttribute('open'); }); });
