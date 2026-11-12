@@ -83,7 +83,10 @@ class Apod {
 
   bool get isImage => url.isNotEmpty;
 
-  static bool isNasaUrl(String u) => u.startsWith('https://apod.nasa.gov/');
+  static bool isNasaUrl(String u) =>
+      u.startsWith('https://apod.nasa.gov/') ||
+      u.startsWith('https://science.nasa.gov/') ||
+      u.startsWith('https://assets.science.nasa.gov/');
 
   Map<String, Object> toJson() => <String, Object>{
         'date': date,
@@ -123,7 +126,7 @@ class Apod {
       url: isNasaUrl(url) ? url : '',
       hdUrl: isNasaUrl(hd) ? hd : '',
       copyright: text('copyright'),
-      page: isNasaUrl(page) ? page : 'https://apod.nasa.gov/apod/',
+      page: isNasaUrl(page) ? page : 'https://science.nasa.gov/apod/',
       fetchedAtMs: fetchedAtMs ?? (at is int ? at : 0),
     );
   }
@@ -332,6 +335,8 @@ class OnlineService {
     'api.spaceflightnewsapi.net',
     'pmfjjlfggzihbnbmqkao.supabase.co',
     'apod.nasa.gov',
+    'science.nasa.gov',
+    'assets.science.nasa.gov',
   };
 
   static const int _maxBytes = 3 * 1024 * 1024;

@@ -1108,7 +1108,7 @@ a908dc9b	The first writing, about 5,000 years ago. All of recorded history is in
 9c5c5c96	The growing half of the month is shukla paksha (waxing), the shrinking half is krishna paksha (waning). One full cycle from new Moon to new Moon takes about 29.5 days, a little longer than the Moon’s 27.3-day trip around us, because the Earth also moves around the Sun meanwhile.
 15ebc19e	The higher the pass (in degrees), the brighter it is. 90° is straight overhead; 10° is just above the horizon.
 9d7f78b7	The home page asks the Astryl server for the public counter (accounts, active users, visitors, page views) and asks GitHub for the download count.
-46c6b53f	The home page shows NASA’s Astronomy Picture of the Day. The text comes through the Astryl server; the picture loads straight from NASA’s server (apod.nasa.gov), which sees your IP address like any website. The space station page gets the station’s orbit data from the Astryl server (or, if that fails, from wheretheiss.at). Nothing about you is sent.
+b72c51a6	The home page shows NASA’s Astronomy Picture of the Day. The text comes through the Astryl server; the picture loads straight from NASA’s server (assets.science.nasa.gov), which sees your IP address like any website. The space station page gets the station’s orbit data from the Astryl server (or, if that fails, from wheretheiss.at). Nothing about you is sent.
 3b3a1a9e	The horizon
 841d5986	The horizon of Sagittarius A* would fit inside the orbit of Mercury. The horizon of M87* is about four times wider than the orbit of Neptune.
 39274853	The hot, dense beginning of the observable universe about 13.8 billion years ago, from which space has been expanding.
