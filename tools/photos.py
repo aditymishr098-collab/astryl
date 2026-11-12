@@ -17,6 +17,8 @@ TEXTURES = site_data.DATA / 'textures'
 
 def clean(text):
     text = re.sub(r'<[^>]+>', '', text or '')
+    text = re.sub(r'<[^>]*$', '', text)  # a tag cut off at the end
+    text = re.sub(r'[\s/·,]+$', '', text)
     text = html.unescape(re.sub(r'\s+', ' ', text)).strip()
     text = re.sub(r'\s*\(see [^)]*\)?', '', text)
     text = re.sub(r'^.*?taken by either .*$', 'NASA / Apollo 17 crew', text) if 'Apollo 17' in text else text
@@ -26,6 +28,7 @@ def clean(text):
 def credits():
     raw = json.loads((PHOTOS / 'credits.json').read_text(encoding='utf-8'))
     out = {k: (clean(v.get('artist', '')) or 'NASA') + ' · public domain' for k, v in raw.items()}
+    out['saturn'] = 'NASA / JPL-Caltech / Space Science Institute · public domain'
     out['moon'] = 'Drawn from NASA LRO data; map by Solar System Scope (CC BY 4.0)'
     return out
 

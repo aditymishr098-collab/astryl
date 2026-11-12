@@ -679,11 +679,11 @@ def form_html(idn):
     f = formation.FORM.get(idn)
     if not f:
         return ''
-    steps = ''.join(f'<div class="m"><div class="y">{bt(esc(te), esc(th))}</div><p>{bt(esc(en), esc(hi))}</p></div>' for te, th, en, hi in f['steps'])
-    op = f'<div class="callout">❓ <b>{bt("Still unknown", "अभी भी अनजाना")}:</b> {bt(esc(f["open"][0]), esc(f["open"][1]))}</div>' if f.get('open') else ''
-    return (f'<div class="formhead"><div class="stat"><b>{bt(esc(f["when"][0]), esc(f["when"][1]))}</b><span>{bt("Formed", "कब बना")}</span></div>'
-            f'<div class="stat"><b>{bt(esc(f["took"][0]), esc(f["took"][1]))}</b><span>{bt("How long it took", "कितना समय लगा")}</span></div></div>'
-            f'<p>{bt(esc(f["how"][0]), esc(f["how"][1]))}</p><div class="tl formtl">{steps}</div>{op}'
+    steps = ''.join(f'<div class="m"><div class="y">{bt(te, th)}</div><p>{bt(en, hi)}</p></div>' for te, th, en, hi in f['steps'])
+    op = f'<div class="callout">❓ <b>{bt("Still unknown", "अभी भी अनजाना")}:</b> {bt(f["open"][0], f["open"][1])}</div>' if f.get('open') else ''
+    return (f'<div class="formhead"><div class="stat"><b>{bt(f["when"][0], f["when"][1])}</b><span>{bt("Formed", "कब बना")}</span></div>'
+            f'<div class="stat"><b>{bt(f["took"][0], f["took"][1])}</b><span>{bt("How long it took", "कितना समय लगा")}</span></div></div>'
+            f'<p>{bt(f["how"][0], f["how"][1])}</p><div class="tl formtl">{steps}</div>{op}'
             f'<p class="note">{bt("All dates are estimates from meteorites, moon rocks, space missions and computer models.", "सभी तारीख़ें अनुमान हैं, जो उल्कापिंडों, चाँद की चट्टानों, अंतरिक्ष missions और computer models से आती हैं।")}</p>')
 
 

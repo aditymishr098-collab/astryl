@@ -61,7 +61,6 @@ cc10e69e	300,000 years ago
 b40c0cda	318 Earths
 bc71c9de	36 + 29 Suns → 62 Suns
 51f9dfd8	380,000 years after the Big Bang
-84676024	4 to 5 billion years, or later
 beca00c0	4. Switches (you can change each one in your account)
 f29b5bf4	4.24 light-years
 055f9dfd	4.3 million Suns
@@ -89,13 +88,8 @@ e88331c4	66 million years ago
 f26f578a	8.9 mm
 40b99139	88 constellations. Saptarishi points to the Pole Star, which shows north.
 2197b672	9. Children
-e456fb97	<b>Exit pupil</b> = aperture ÷ magnification. Between about 1 and 7 mm is useful.
-8fc8d904	<b>Faintest star</b> ≈ 2.7 + 5 × log₁₀(aperture in mm), under a dark sky. <b>Finest detail</b> ≈ 116 ÷ aperture in mm, in arcseconds (Dawes limit).
-8c08e039	<b>Highest useful magnification</b> ≈ 2 × aperture in mm; above that the view only gets blurrier.
-aaf4a0b7	<b>Magnification</b> = telescope focal length ÷ eyepiece focal length (× 2 with a Barlow).
-b8165471	<b>True field of view</b> = the eyepiece’s apparent field ÷ magnification. The full Moon is about half a degree wide.
 4c8b9e27	A 10-Sun black hole
-561de8e8	A Mars-sized body called Theia hit the young Earth. Molten rock was thrown into orbit and gathered into the Moon. Apollo rocks have almost the same make-up as Earth&#x27;s rocks, which supports this idea.
+c0e68c2b	A Mars-sized body called Theia hit the young Earth. Molten rock was thrown into orbit and gathered into the Moon. Apollo rocks have almost the same make-up as Earth's rocks, which supports this idea.
 ce4a2946	A black hole
 f1638c70	A black hole between about 100 and 100,000 Suns. Few have been found.
 1e916fad	A black hole gives off no light, so astronomers look for what it does to everything around it.
@@ -108,10 +102,10 @@ dda8e797	A black hole of millions to billions of Suns, found in the centre of mo
 b30ae007	A cloud of gas and dust in space, where stars may be born or where a dying star has thrown off its layers.
 ee649604	A cloud of gas collapses 4.57 billion years ago and makes the Sun and the planets, including Earth.
 f83216bf	A collision is coming
-ea938799	A collision with another body forms Charon and Pluto&#x27;s small moons.
+74fc9e2d	A collision with another body forms Charon and Pluto's small moons.
 a4baf992	A comet
 c55e669b	A constellation is a group of stars that seems to make a shape, like Orion (the hunter) or Ursa Major. Astronomers divide the whole sky into 88 constellations. The stars in one constellation are usually not close to each other at all; they only look close from Earth.
-d1f83fba	A core of rock and ice grows to about 20 times Earth&#x27;s mass.
+ab9793b5	A core of rock and ice grows to about 20 times Earth's mass.
 488336b9	A distant sun
 0e35aad0	A dwarf planet
 47ee9243	A faint glow that quantum effects should make a black hole give off. Predicted in 1974 but never observed.
@@ -160,7 +154,7 @@ c68dd479	A solar eclipse can happen only on…
 2a2fa14d	A spinning neutron star that sends out beams of radio waves, seen as regular pulses.
 4abce521	A spiral with a straight bar of stars through the middle. The Milky Way has one.
 522cae88	A star shines because fusion in its core pushes outward while gravity pulls inward. When a very massive star (roughly 20 or more times the Sun) runs out of fuel, its core collapses in a fraction of a second.
-8b27fda5	A total lunar eclipse (2014): the Moon turns red in the light that Earth&#x27;s air bends into its shadow.
+2462dae9	A total lunar eclipse (2014): the Moon turns red in the light that Earth's air bends into its shadow.
 2e4c8d52	A total solar eclipse (1999): the Moon hides the Sun and its pale outer air, the corona, shines around it.
 e449a49d	A trip in five steps
 665f2558	A unit of distance used by astronomers: about 3.26 light-years.
@@ -204,7 +198,7 @@ e32499c3	After midnight until dawn, from anywhere on Earth.
 9135d3c1	After midnight until dawn, from the northern half of the world. Warm August nights make it the favourite shower of many.
 d5b567a2	After midnight until dawn.
 f178054b	After the Big Bang, about 13.8 billion years ago, the universe was a nearly smooth mix of gas and dark matter. Slightly denser spots pulled in more matter. Gas fell into them and the first stars lit up a few hundred million years later.
-c349e488	Air Pump
+1dc5c3f9	Air Pump
 d3cfba3e	All 88
 0d696cb4	All 88 constellations, drawn as you see them when you face them in the sky: north up and east to the left. Bigger dots are brighter stars; faint dots are the stars around them.
 9a1d59ec	All 88 constellations, true to the sky
@@ -218,10 +212,10 @@ d16c3da5	All steps
 9360fd3a	Almost unchanged; Galileo found signs of a salty ocean deep inside.
 61a5f0dd	Altar
 ee79be4e	Among the fastest meteors: they hit the air at about 66 km a second.
-c934d24a	An artist&#x27;s picture of Cygnus X-1: a black hole pulling gas from a giant blue star. This is a drawing, not a photo.
+7da41090	An artist's picture of Cygnus X-1: a black hole pulling gas from a giant blue star. This is a drawing, not a photo.
 e48e2cf0	An asteroid hits Earth 66 million years ago and most dinosaurs die out.
 4f682f14	An atom
-f029116f	An ice-and-rock core grows beyond Jupiter&#x27;s orbit.
+c390d5ef	An ice-and-rock core grows beyond Jupiter's orbit.
 b023c8a0	An ice-rich core grows, probably closer to the Sun than today.
 82fa2fb0	An icy core grows and collects a thin envelope of gas.
 2545e59c	An optional profile photo (a small 256 px square picture you choose yourself)
@@ -230,7 +224,7 @@ e046abc4	Andromeda (M31)
 0c34397e	Andromeda (distance)
 097cb033	Andromeda Galaxy
 193c2966	Andromeda is a spiral galaxy in the constellation Andromeda. It is larger than the Milky Way and has more stars, though the Milky Way may hold more dark matter. It is the farthest thing most people can see with the naked eye.
-9d5eefda	Andromeda is moving toward us at about 110 km per second. The two galaxies will most likely begin to merge in roughly 4 to 5 billion years, and settle into one big elliptical galaxy that people sometimes call Milkomeda.
+814f3e07	Andromeda is moving toward us at about 110 km per second. If the two galaxies merge, they will settle into one big elliptical galaxy that people sometimes call Milkomeda.
 4ce45bf8	Andromeda, 2.5 million light-years
 e03b5063	Animals multiply
 a24e4ad7	Annular solar eclipse
@@ -283,22 +277,21 @@ e0f87b17	Before dawn, from the northern half of the world. The peak is short: on
 6fcfdce9	Before ~10 million years
 55c128a9	Bend the sky, size any black hole and slow down a clock. It all runs in your browser and nothing is sent anywhere.
 b3707d46	Bent light
-8a463f09	Berenice's Hair
+afd27e83	Berenice's Hair
 9d352bd9	Best in the evening
 c3f6267d	Between Earth and Mars
 a1f767bf	Between Mars and Jupiter
 c2b60600	Between the two lie intermediate black holes, roughly 100 to 100,000 Suns. They are hard to find. One strong sign was a merger seen in 2019 that left a black hole of about 140 Suns.
 3c295102	Beyond Neptune
-39cb4837	Beyond the &quot;snow line&quot;, where water froze into ice, a solid core grew quickly to many times Earth&#x27;s mass. Its gravity then pulled in huge amounts of hydrogen and helium gas. Jupiter was the first planet, and its gravity shaped where the others could form.
+a885dce0	Beyond the "snow line", where water froze into ice, a solid core grew quickly to many times Earth's mass. Its gravity then pulled in huge amounts of hydrogen and helium gas. Jupiter was the first planet, and its gravity shaped where the others could form.
 01dc58c9	Big Bang
 8f0b82f7	Big impacts and lava floods shape the surface; huge basins like Caloris form.
 a2890fe0	Bigger
 994b4814	Biggest: Jupiter. Closest to the Sun: Mercury. Hottest: Venus.
-4c73a2bd	Big Dipper
 bb334330	Billions of years
 a2a8ebef	Binary star
 dbd8d2a0	Binoculars, very dark sky
-e3815184	Bird of Paradise
+097f1f05	Bird of Paradise
 e90dfb84	Black
 05b3379b	Black hole
 9050e22e	Black hole and galaxy quiz
@@ -315,13 +308,13 @@ c275dadd	Breathable for humans
 219a99af	Brightest star
 92c21511	Bull
 55d2397e	Callisto
-fb82244c	Callisto formed farthest out among Jupiter&#x27;s big moons and grew slowly, so it never got hot enough to fully separate rock from ice. It is not squeezed by tides, so its surface is the oldest and most cratered in the solar system.
+a9302af1	Callisto formed farthest out among Jupiter's big moons and grew slowly, so it never got hot enough to fully separate rock from ice. It is not squeezed by tides, so its surface is the oldest and most cratered in the solar system.
 87cfd039	Callisto is far enough from Jupiter to get less of its harsh radiation, so scientists have suggested it for a future base.
 71585d1e	Callisto is one of the most heavily cratered places in the solar system, and its surface is very old.
 7493fef6	Candidates only
 0961db32	Capricorn
 a1578a9f	Carbon dioxide
-40a05a81	Cassini&#x27;s measurements suggest the rings may be only a few hundred million years old or less, but scientists still debate it.
+e2c5cb23	Cassini's measurements suggest the rings may be only a few hundred million years old or less, but scientists still debate it.
 bce882c7	Cassiopeia
 a7cb6c5a	Cassiopeia is a W or an M, depending on the hour and the season, made of five fairly bright stars. It lies on the opposite side of Polaris from the Big Dipper, so when one is low the other is high. In the old story she was a queen who boasted of her beauty.
 4766d7a5	Catalogue names
@@ -336,6 +329,7 @@ c112bb35	Changes
 64e4aca4	Children
 2698ca59	China's Chang'e 3 put the Yutu rover on the Moon in December 2013, the first soft landing there since 1976.
 f68dbf26	China's Zhurong landed in May 2021, making China the second country to drive a rover on Mars.
+9194837c	Chisel
 e81e9a7b	Cities of
 929711d8	City lights wash out faint galaxies. Move away from them and avoid the Moon.
 89f6c5d5	Class 6 to 10: Sun, Moon, eclipses, stars
@@ -348,13 +342,13 @@ b4445552	Colt
 d4c6f7e8	Coming eclipses
 7eece51c	Compare
 37efe8f1	Compare planets
-83ca2d13	Compass
+a677b5bc	Compasses
 9f490787	Constellations
 3b886cd1	Cosmic microwave background
 3a499a08	Cosmic rays with far more energy than any collider have hit Earth for billions of years, and nothing has happened.
 0a896364	Cosmic web
 391123af	Could humans live here?
-5e17735c	Could the ocean hold life? NASA&#x27;s Europa Clipper, launched in 2024, arrives in 2030 to study it.
+e2b833d1	Could the ocean hold life? NASA's Europa Clipper, launched in 2024, arrives in 2030 to study it.
 694afc01	Count me as an active user: the app sends a random number made on your phone, at most once every few hours, with no username. It is not linked to you or your account. It is kept for 90 days and is used only to show how many people use Astryl.
 26dc01e3	Counted
 e8bc5af5	Counted, not tracked
@@ -367,7 +361,7 @@ ff174d64	Crab
 e4b0f54e	Crewed landing
 e76b449b	Cross
 514d599e	Crow
-d9c94cee	Crux, the Southern Cross, is the smallest of all the constellations but one of the most famous. Four bright stars make a cross, and the two stars of its long arm point towards the south celestial pole, so it helps travellers find south. It cannot be seen from most of the northern half of the world.
+5b6781d9	Crux, the Southern Cross, is the smallest of all the constellations but one of the most famous. Four bright stars make a cross, and the two stars of its long arm point towards the south celestial pole, so it helps travellers find south. It is seen only from places south of about 30° north. From India it sits low in the southern sky on April and May evenings, and the farther south you are, the higher it climbs.
 234782fd	Cup
 b76552be	Curiosity landed in Gale crater in August 2012 and showed that the place could once have supported microbial life.
 8d05be23	Cygnus X-1 (about 21 Suns)
@@ -386,11 +380,11 @@ bdda6d5e	Dec 17
 207f712e	Dec 31, 23:48:34
 84c257f9	Dec 31, 23:59:48
 82331503	December
-fa83e2b9	Deep images from the Hubble and James Webb telescopes show that the observable universe holds roughly two trillion galaxies. This is an estimate that is still being refined.
+2e78e8a6	Deep images from the Hubble and James Webb telescopes show that the observable universe holds hundreds of billions of galaxies, perhaps up to two trillion. The number is still being refined.
 6edbc1b3	Delete your account at any time: app → You tab → Account → Delete my account, or on the Account page of this website. Your account and everything stored for it online are removed straight away. The data on your phone stays.
 c4f85f81	Density is the mass divided by the volume inside the horizon. Hawking temperature and evaporation time come from Hawking’s 1974 formulas; they are predictions, never measured.
 b5f69448	Diameter
-0cbd2b1c	Did Jupiter move inward toward the Sun and back out again early on (the &quot;Grand Tack&quot; idea)? It could explain why Mars is small, but it is not proven.
+8bbfdf3a	Did Jupiter move inward toward the Sun and back out again early on (the "Grand Tack" idea)? It could explain why Mars is small, but it is not proven.
 6302d4f5	Did Venus ever have oceans, and for how long? Missions planned for the 2030s (VERITAS, DAVINCI, EnVision) are meant to find out.
 c771fce1	Did you know?
 0aa6f421	Distance
@@ -414,9 +408,9 @@ cbf49009	Dwarf planet
 b9dba2c5	Dwarf planets, asteroids and comets
 cd704c88	Dwarf, orbits us
 59624ccf	Dying stars, giants in galaxy centres, and the middle sizes in between.
-b0e726e1	ESA&#x27;s JUICE spacecraft, launched in 2023, will orbit Ganymede from 2034 to study its hidden ocean.
+44aedd38	ESA's JUICE spacecraft, launched in 2023, will orbit Ganymede from 2034 to study its hidden ocean.
 7885830f	Eagle
-83be27ca	Earlier studies expected a sure collision in about 4 to 5 billion years. A 2025 study that also counted the Large Magellanic Cloud and other galaxies puts the chance of a merger within 10 billion years at roughly one in two. So it is likely, but not certain.
+99327cb6	Earlier studies expected a sure collision in about 4 to 5 billion years. A 2025 study that also counted the Large Magellanic Cloud and other galaxies puts the chance of a merger within 10 billion years at roughly one in two, most likely in about 8 billion years. A merger within the next 5 billion years now looks unlikely.
 bd26ebab	Early on
 50d288c5	Early on (unsure)
 e738af8b	Earn the Black hole explorer badge:
@@ -461,7 +455,7 @@ b7503050	Europa formed from rock and ice in the disk around Jupiter. Heat from t
 561338ac	Every eclipse until 2029, times for your city
 b95fe6f1	Every eclipse until the end of 2029 and the year's best meteor showers, with times for your city and a calendar file for your phone.
 8e5d31ef	Every planet in its real place today. Keep scrolling and time moves forward. Distances are squeezed so the inner planets stay visible.
-c64f5794	Every star is a sun, many of them bigger than ours, but so far away that they look like points. The nearest star after the Sun, Proxima Centauri, is about 4.2 light-years away: its light takes over four years to reach us.
+81b3d818	Every star is a sun. Some are much bigger than ours, though most are smaller, and all are so far away that they look like points. The nearest star after the Sun, Proxima Centauri, is about 4.2 light-years away: its light takes over four years to reach us.
 2cac5b27	Every world has an escape speed: how fast you must go to leave it for good. From Earth it is about 11 km per second. Squeeze the same mass into a smaller and smaller ball and the escape speed keeps growing.
 2f65c76f	Everything is here on astryl.space, in your browser. Taking you to the home page…
 c472c149	Exactly what tipped Uranus over, and why it gives off so little inner heat, is still unknown. Only Voyager 2 has visited, in 1986.
@@ -496,7 +490,7 @@ d040fe30	Fishes
 479cf8cc	Five things that are not true about black holes, and the questions nobody can answer yet.
 ac51deb7	Fly
 674eba03	Fly through 3,600 real galaxies in 3D
-2148c623	Flying Fish
+5e40be61	Flying Fish
 c2ec1e60	Focal length (mm)
 59e8fab0	For Sagittarius A* the trip from the horizon to the centre takes about a minute. For a 10-Sun black hole it takes less than a thousandth of a second.
 ea91680d	For a clock that hovers at rest at that distance. The clock rate is √(1 − r_s/r). It depends only on the distance in horizon radii, so a bigger black hole gives the same effect farther out in km.
@@ -524,8 +518,8 @@ aa77f467	Future dates are predictions from current physics and may change.
 ba3fb979	Galaxies
 812a88c4	Galaxies are the great cities of stars. Start with our own, meet our neighbour Andromeda, and see how far the rest are. Every number comes from real measurements.
 c0b388ca	Galaxies come in groups, groups in clusters, clusters in giant threads.
+fda95413	Galaxies in the visible universe
 ca3622a5	Galaxies range from dwarfs with a few thousand stars to giants with trillions. The Milky Way is about 100,000 light-years across. A light-year is the distance light travels in one year, about 9.5 trillion km.
-50d9e3c6	Galaxies we can count
 8f56bfcd	Galaxies were not born big. They grew, mostly by merging.
 613a41be	Galaxies you can see
 756fb2b9	Galaxy
@@ -540,7 +534,7 @@ b9ceb2fe	Ganymede is the largest moon in the solar system. It is even bigger tha
 1e7244c1	Gemini the Twins are marked by two bright stars, Castor and Pollux, standing side by side like the heads of two brothers. Pollux is the brighter one and has an orange tint. Castor is really a system of six stars. Look for them high in the sky on winter and spring evenings in the north.
 8cfc03ce	Geminids
 c98a3543	Geminids meteor shower
-bd886887	Get away from city lights. Every streetlight you leave behind doubles what you see.
+0d2d61ff	Get away from city lights. A dark country sky can show several times as many meteors as a city sky.
 e5e96b87	Giant volcanoes like Olympus Mons erupt from time to time; today Mars is cold and dry.
 427debb8	Giraffe
 c951b59e	Give your eyes 20 minutes to get used to the dark, and keep your phone screen off.
@@ -550,7 +544,6 @@ e43ec38a	Go to
 93194e05	Go to the home page
 ddf5ae8a	Going from the Sun to the whole observable universe is a jump of about 600 quadrillion times (6 × 10¹⁷). Light, the fastest thing there is, needs 4.6 seconds to cross the Sun.
 96dcd3f3	Goldfish
-f14942e0	Graving tool
 426d6224	Gravitational lensing
 6ff5fced	Gravitational waves
 8a88c39c	Gravity
@@ -558,7 +551,8 @@ d8a8b41d	Gravity bends light so strongly that, at 1.5 times the horizon radius, 
 89f59562	Gravity bends light, so a black hole can act like a lens and distort or magnify what is behind it. This gravitational lensing also helps find hidden masses.
 68fdd1c4	Gravity bends light, so a black hole in front of stars acts like a lens. Drag the black hole across the sky and watch the stars behind it stretch into arcs and a bright ring, called the Einstein ring. Use the slider to make it heavier.
 14c10d99	Gravity pulls harder on the part of you that is closer. Falling feet first, your feet are pulled harder than your head, and you are stretched. Scientists call it spaghettification.
-43366371	Great Dog
+ad7a2f82	Great Bear
+a06b32d6	Great Dog
 2491d247	Growing by merging
 7bf3a6cd	Half of the Moon is always lit
 f3ef5cb7	Hare
@@ -596,7 +590,7 @@ b53da94f	How to find it
 2b639928	How we see the invisible
 1d870369	Hubble constant
 0ebdbe8b	Huge black holes already existed when the universe was under a billion years old.
-ca86f603	Hunting Dogs
+513768fe	Hunting Dogs
 0952754f	Huygens, a probe carried by Cassini, parachuted down to Saturn's moon Titan. It was the first landing in the outer solar system, and it sent pictures from the surface.
 e4ce2ac5	Hydrogen
 3d6db24e	Hydrogen fusion starts in the core and the Sun becomes a steady, grown-up star.
@@ -632,7 +626,7 @@ b57ed7a0	Intermediate
 16136436	Invisible matter that gives about five times more gravity than all the normal matter. We only see its pull.
 34257c6d	Invisible matter that we detect only through its gravity. It makes up about 27% of the universe.
 42a02b42	Io
-a8f2b5cb	Io formed from a disk of gas and dust around the young Jupiter, like a small solar system. Its orbit is locked in step with Europa and Ganymede, so Jupiter&#x27;s gravity keeps squeezing it, heating its inside. That is why Io has more volcanoes than any other world.
+6962e4e2	Io formed from a disk of gas and dust around the young Jupiter, like a small solar system. Its orbit is locked in step with Europa and Ganymede, so Jupiter's gravity keeps squeezing it, heating its inside. That is why Io has more volcanoes than any other world.
 df85f632	Io is the most volcanic world we know, with hundreds of active volcanoes.
 799832a6	Io, Europa and Ganymede fall into a 1:2:4 rhythm of orbits.
 e760a274	Iron sinks to the centre and forms the core.
@@ -660,7 +654,7 @@ d1150d19	It is made of ice
 ee4cacbe	Its core in about 1 million years; the gas within a few million
 3db1a6e3	Its global magnetic field fades; the solar wind strips away much of the air.
 5fe896c6	Its light takes about 2.5 million years to reach us. When you see Andromeda tonight, you see it as it was when early humans were just appearing on Earth.
-9686045b	Its orbit slowly shrinks; Neptune&#x27;s gravity may tear it into a ring.
+161f5d07	Its orbit slowly shrinks; Neptune's gravity may tear it into a ring.
 b4aa590d	Its thick nitrogen air forms, perhaps from ammonia in its ice.
 09bbd9b0	Jan 1
 a9cb12c6	Jan 6
@@ -672,7 +666,7 @@ e744a5a0	Japan's SLIM landed in January 2024 within about 100 metres of its targ
 1b539f6f	July
 643b8c94	Jump to your birthday sky
 688937cc	June
-c15b8dec	Juno found its core is not a small solid ball but &quot;fuzzy&quot;, spread out and mixed with gas.
+17b74eac	Juno found its core is not a small solid ball but "fuzzy", spread out and mixed with gas.
 89c5c304	Jupiter
 c06c8c03	Jupiter has more than twice the mass of all the other planets put together.
 734e899d	Jupiter's gravity squeezes and stretches Io, and the heat from this powers its volcanoes.
@@ -696,13 +690,12 @@ c805503c	Last stable orbit
 974b34e4	Launched in 1977, it flew past Jupiter and Saturn and entered interstellar space in 2012. It is the farthest human-made object from Earth.
 4dbaee68	Launched in 1990, it looks at the universe from above Earth's air. Its sharp pictures helped measure the age of the universe and showed thousands of faraway galaxies.
 3ebb7186	Lava covers most of the surface, so the ground we see is fairly young.
-7a8f7ad4	Lava fills huge impact basins, making the dark &quot;seas&quot; (maria) we see.
+7140923d	Lava fills huge impact basins, making the dark "seas" (maria) we see.
 84928be0	Learn about the objects that sit in the middle of most galaxies.
 807209f6	Lenticular
 518dcf2b	Leo the Lion is one of the few constellations that really looks like its animal. A backward question mark of stars, the Sickle, forms the head and chest and ends at bright Regulus, the lion’s heart. The triangle of stars to the east is its hindquarters. Spring evenings are the best time in the north.
 eae8b08d	Leonids
 73306b3e	Leonids meteor shower
-a0db49ba	Level
 c974d140	Lie back and look at a wide patch of sky. No telescope or binoculars needed.
 44f37703	Life appears; about 2.4 billion years ago microbes fill the air with oxygen.
 70435279	Light can circle it
@@ -711,10 +704,10 @@ c974d140	Lie back and look at a wide patch of sky. No telescope or binoculars ne
 cbf6e882	Light with a longer wavelength than red that our eyes cannot see. It can pass through dust.
 fcb20461	Light-year
 60d28e7d	Lion
-6837b3e8	Little Dipper
-37a0eb18	Little Dog
-e5e066b0	Little Fox
-9afe8625	Little Lion
+89df0f73	Little Bear
+2b6e851d	Little Dog
+65fd7a00	Little Fox
+5d40985a	Little Lion
 7ab5ac46	Live features are always on. The app downloads orbit data, the rocket launch list, space news and NASA’s space photo of the day from public services (wheretheiss.at, Celestrak, Launch Library 2, Spaceflight News API, NASA through the Astryl server), which can see your IP address. Nothing about you is sent.
 061532d7	Live map and when the ISS flies over your city
 467a9428	Live moon positions
@@ -774,10 +767,10 @@ ce827da7	Moon of Jupiter
 076fc12a	Moon of Saturn
 88d66818	Moon phase, calendar, meteor showers
 d3da97e2	More
-47c0c5ae	More than 100 geysers spray from the &quot;tiger stripes&quot;; the spray feeds Saturn&#x27;s E ring.
+2c4d1773	More than 100 geysers spray from the "tiger stripes"; the spray feeds Saturn's E ring.
 d9c5c337	Most large galaxies have a black hole in the middle with millions or even billions of Suns. How they grew so big so early in the universe is still being studied. They probably started as smaller seeds, swallowed gas, and merged with other black holes.
 f5fe3b4f	Most large galaxies have a supermassive one at the centre.
-ce7b4f7d	Most of the Milky Way’s mass is not stars. The total of about 1.5 trillion Suns is mostly dark matter, which we know only from how it pulls on stars and gas.
+5a66e7eb	Most of the Milky Way’s mass is not stars. The total, roughly a trillion Suns (estimates range from about half a trillion to 1.5 trillion), is mostly dark matter, which we know only from how it pulls on stars and gas.
 1472b233	Mostly quiet; the Moon drifts away from Earth by about 3.8 cm a year.
 f9e94027	Mount Everest
 df5a246c	My calendar for my city
@@ -801,7 +794,7 @@ fdb04d22	Neil Armstrong and Buzz Aldrin landed in the Sea of Tranquility and bec
 f8d3b65d	Neptune
 f539cc8e	Neptune captures it into a backwards orbit; tides heat it.
 7cd22849	Neptune has the fastest winds of any planet, more than 2,000 km/h.
-dc5008f0	Neptune is Uranus&#x27;s twin: a big ice-and-rock core with a thinner gas layer. It most likely formed closer to the Sun and was pushed outward, scattering icy bodies and shaping the Kuiper Belt beyond it.
+8aae3514	Neptune is Uranus's twin: a big ice-and-rock core with a thinner gas layer. It most likely formed closer to the Sun and was pushed outward, scattering icy bodies and shaping the Kuiper Belt beyond it.
 8eeef5aa	Neptune moves outward and pushes Pluto into its tilted, stretched orbit.
 7890b1fb	Neptune was found with maths before anyone saw it: in 1846 astronomers worked out where it had to be.
 5012af45	Net
@@ -823,10 +816,10 @@ c886bb34	No ads, nothing sold
 9fae5ce6	No cookies, no ads, no third-party analytics, scripts or fonts. Everything is calculated in your browser.
 94a5f181	No real atmosphere, it is almost a vacuum.
 053dbe4b	No term matches.
+f151743c	Northern Crown
 08e5a6b8	Northern sky
 bb93b9d9	Northern sky, autumn evenings
 3fab38ad	Northern sky, near Andromeda
-65f3c793	Northern Crown
 60748c54	Not because of distance
 ea2991f6	Not breathable, a spacesuit is needed
 9e076f58	Not found
@@ -923,6 +916,7 @@ a93b0451	Penumbral lunar eclipse of 17 August 2027
 d6412139	Penumbral lunar eclipse of 18 July 2027
 5ce16da2	Penumbral lunar eclipse of 20 February 2027
 68d0fe60	Perhaps a few hundred million years ago
+6d488ce0	Perhaps in about 8 billion years
 7efabca1	Perseids
 5569be13	Perseids meteor shower
 ef96a391	Perseus
@@ -952,11 +946,11 @@ fa065e1b	Planets tonight
 e8658669	Planets, moons, stars and space missions: real positions and real numbers for any date, in English and Hindi.
 5d337bfd	Play the Daily 5 on the Quiz page, or the black hole and galaxy quiz.
 ea8dbc79	Pluto
-3d0a4988	Pluto formed in the cold outer disk from icy pebbles and small bodies, like many other Kuiper Belt objects. Its big moon Charon was probably made by a slow, glancing collision. Neptune&#x27;s outward move later locked Pluto into its present orbit.
+8cbb8fb2	Pluto formed in the cold outer disk from icy pebbles and small bodies, like many other Kuiper Belt objects. Its big moon Charon was probably made by a slow, glancing collision. Neptune's outward move later locked Pluto into its present orbit.
 14e224fc	Pluto has a huge heart-shaped plain of frozen nitrogen.
 8660a9ec	Pluto was called a planet until 2006; now it is a dwarf planet. Between Mars and Jupiter lies the asteroid belt, full of rocks. Comets are balls of ice and dust from far away; near the Sun they grow long glowing tails.
 da6e260a	Polaris, the North Star, sits at the tip of the Little Bear’s tail. It hardly moves because it lies almost exactly above Earth’s north pole, so the whole sky seems to turn around it. Its height above the horizon equals your latitude. It is not a very bright star, but it is the most useful one for finding north. It cannot be seen from the southern half of the world.
-f19b7de3	Poop Deck
+c3088d17	Poop Deck
 3a4edc67	Potassium
 8c004d7e	Practice
 31092a4c	Previous month
@@ -988,10 +982,10 @@ af6d5a99	Ripples in space
 e8592f75	Rock and ice gather into a huge moon.
 36e7bdae	Rock and ice gather into a moon bigger than Mercury.
 10e1c710	Rock and ice gather; a rocky core forms with water on top.
-83370a8a	Rock and ice slowly gather in the outer part of Jupiter&#x27;s disk.
+e8d1da8d	Rock and ice slowly gather in the outer part of Jupiter's disk.
 4bb48bef	Rocky and giant planets
 8775d116	Rocky grains near the hot young Sun stuck together into bigger and bigger bodies that crashed and merged. Mercury ended up with a giant iron core that fills most of the planet.
-d8574d05	Rocky planet seeds merge into Venus, close to Earth&#x27;s size.
+7248833e	Rocky planet seeds merge into Venus, close to Earth's size.
 c6669091	Rosetta's lander Philae touched down on comet 67P/Churyumov–Gerasimenko, the first landing on a comet. Rosetta itself circled the comet for two years.
 504734db	Rounds for Space Points
 dd913e43	Rover
@@ -1015,8 +1009,8 @@ e318281d	Schwarzschild radius
 5d0f5219	Scorpion
 8874d168	Scorpius looks like a scorpion with a curved tail ending in a hook. Its heart is red Antares, whose name means rival of Mars because the two look alike in colour. It is a summer constellation in the north, low in the south, and it passes high overhead for people in the southern half of the world.
 13f04ee1	Sculptor
+68ca6517	Sea Serpent
 c20a530e	Seasons are not caused by the Earth being nearer or farther from the Sun. In fact the Earth is closest to the Sun in early January, during the northern winter. When it is summer in India, it is winter in Australia.
-ceb6346f	Sea Serpent
 68bf2a95	Seeing different parts of its lit half
 f42fac2c	Seen from far away, a clock falling in ticks slower and slower, and its light turns redder and dimmer. The watcher never sees it cross the horizon. For the person falling, time feels normal and crossing the horizon is unremarkable. Both are true: time is not the same for everyone.
 15dcb3c6	Seen well from India
@@ -1024,6 +1018,7 @@ f42fac2c	Seen from far away, a clock falling in ticks slower and slower, and its
 a4570e04	Sep 30
 cc5d9056	September
 7cde8b0c	Serpent
+3190e2a1	Set Square
 76bb9f53	Set your birth date
 a09a3645	Seven bright stars of Ursa Major form the Saptarishi (Big Dipper). The two stars at its front point to Dhruv tara, the Pole Star, which stays almost still in the north while the whole sky turns around it. Travellers used it to find north.
 3fbb1dc2	Seven lessons, a quiz and a badge
@@ -1035,6 +1030,7 @@ b3531be8	Seven short pages
 c3981998	Share my country: the country from your phone's (or browser's) language and region setting, kept with that random number and shown only as a count per country. It is not worked out from your IP address or your location.
 1fe381cb	Share this page
 970da5f1	Shield
+973bbbfd	Ship Compass
 7e774a36	Show me on the leaderboard (on by default): the Daily 5 leaderboard shows your username, score, right answers and time. Switch it off in your account (website or the You tab in the app) and your name no longer appears; your own rank stays visible to you.
 e319c260	Shukla and Krishna paksha
 d9776f07	Sign up
@@ -1046,7 +1042,7 @@ cf41cfe2	Size or distance
 9cac6b50	Slowly, perhaps over a million years or more
 aee2f481	Small Magellanic Cloud
 8497d35b	Small galaxies fall into bigger ones. The Milky Way is still swallowing the Sagittarius Dwarf Galaxy, and streams of stars from earlier meals wrap around it. A bigger meal, a galaxy called Gaia-Enceladus, merged with us about 10 billion years ago.
-d8ab9bfa	Small galaxies with a few million to a few billion stars. They are by far the most common kind.
+2344588b	Small galaxies with a few thousand to a few billion stars. They are by far the most common kind.
 4b32cef5	Small telescope
 afc493b6	Smaller
 25a26483	So you can set a new password if you forget it
@@ -1059,13 +1055,13 @@ ca16e26f	Solar and lunar eclipses
 a5ce5f39	Solstices and equinoxes
 d00f0f1f	Some come from dying stars. Others sit in the middle of galaxies. There are also sizes in between.
 93e2b4c0	Some galaxies have a centre that outshines all their stars. Gas falling into the supermassive black hole heats up and lights the core. These are called active galaxies, and the brightest ones are quasars.
-8d1e8fb5	Some models say Saturn&#x27;s mid-sized moons, Enceladus among them, are only about 100 million years old. Others say they are as old as Saturn. It is not settled.
+85e180c5	Some models say Saturn's mid-sized moons, Enceladus among them, are only about 100 million years old. Others say they are as old as Saturn. It is not settled.
 216752a6	Some scientists also think tiny primordial black holes may have formed in the very early universe. None has been found. For now it is only an idea.
 96c3ed55	Soon after
+7d41cced	Southern Crown
+32eee1f4	Southern Fish
+30b54e81	Southern Triangle
 776ab00e	Southern sky
-018cdb6c	Southern Crown
-7357e2d0	Southern Fish
-7b3fe082	Southern Triangle
 5d382d03	Space events
 6e3079a0	Space glossary
 621f9f28	Space is mostly empty. The stars you see at night are not spread evenly: they come in giant islands called galaxies. Every star you can see with your eyes belongs to our own, the Milky Way.
@@ -1085,6 +1081,7 @@ d2baf950	Spiral, barred, elliptical, lenticular, irregular and dwarf.
 f0827d68	Spirit landed in Gusev crater in January 2004 and found signs that water once shaped the rocks there.
 2fa018a1	Sputnik to Chandrayaan-3
 26f93e6e	Star
+b5f9070e	Star cluster
 f9fdc9fb	Starlight passes through moving layers of Earth’s air, which bend it this way and that, so stars seem to twinkle. Planets twinkle much less because they look like tiny discs, not points.
 d37c550d	Stars
 751b1cca	Stars and constellations
@@ -1127,7 +1124,7 @@ b8834f14	Taurus the Bull has a V-shaped face, the Hyades cluster, with orange Al
 09945465	Telescope eyepiece simulator
 f9b2785f	Telescope simulator
 5ea69b5f	Ten questions in three levels, made from the planet data.
-9b21a206	The &quot;Cosmic Cliffs&quot; of the Carina Nebula (Webb, 2022), a nursery of young stars.
+ec80acf5	The "Cosmic Cliffs" of the Carina Nebula (Webb, 2022), a nursery of young stars.
 0a8e2a0c	The Andromeda Galaxy
 b942dad3	The Andromeda Galaxy, 2.5 million light years away; you can see it with your own eyes from a dark place.
 51b3e16c	The Antennae Galaxies: two galaxies in the middle of a collision, lit up by new stars (Hubble).
@@ -1149,14 +1146,13 @@ b9f8d2c2	The Hubble Ultra Deep Field: almost every dot is a galaxy, some seen as
 7d7eb1ed	The Large Magellanic Cloud, a small galaxy that goes around the Milky Way, seen from the southern half of Earth.
 e517c735	The Local Group
 034c053f	The Local Group and beyond
-87c0d77f	The Local Group sits on the edge of the Virgo Cluster, about 54 million light-years away, with over a thousand galaxies. Clusters join into superclusters. Our home supercluster, Laniakea, spans about 500 million light-years and holds roughly 100,000 galaxies.
 7db54d60	The Milky Way
 a53fc84a	The Milky Way all around the sky, joined into one picture. We see our galaxy from inside, as a band of light.
 bc0ce969	The Milky Way band
 52b9d569	The Milky Way belongs to the Local Group, about 10 million light-years across, with more than 80 known galaxies. Two giants dominate it: the Milky Way and Andromeda. Most of the rest are dwarfs that orbit one of the two.
 34e13f43	The Milky Way holds hundreds of billions of stars. The Sun sits in one of its arms, about 26,000 light-years from the centre. Scroll to travel in.
 8da32bc4	The Milky Way is a barred spiral galaxy: a flat disk with a bar of stars across the middle and spiral arms winding out of its ends. The disk is only about 1,000 light-years thick, so it is far wider than it is tall. A faint halo of old stars and dark matter surrounds it.
-d0f22a72	The Milky Way may merge with Andromeda, though the latest studies say it is not certain.
+f56e86eb	The Milky Way may merge with Andromeda. A 2025 study gives it about even odds within 10 billion years, so it is not certain.
 ad2f0764	The Milky Way, Andromeda and beyond
 cd03f279	The Moon
 601acb95	The Moon covers only part of the Sun, which looks like a cookie with a bite taken out.
@@ -1169,7 +1165,7 @@ c6d63389	The Moon is a satellite
 ec2f9fb9	The Moon passes only through Earth’s faint outer shadow. It dims a little, often too little to notice without a camera.
 10c0679c	The Moon stops
 62f2a1bb	The Moon’s path is tilted
-14c848b4	The Moon’s path is tilted by about 5° to the Earth’s path around the Sun. So most months the Moon passes a little above or below the line. Eclipses happen only when a new or full Moon falls near the points where the two paths cross: two to five times a year.
+b7fd1f20	The Moon’s path is tilted by about 5° to the Earth’s path around the Sun. So most months the Moon passes a little above or below the line. Eclipses happen only when a new or full Moon falls near the points where the two paths cross. That lines up about twice a year, so each year has two to five solar eclipses and up to three lunar eclipses somewhere on Earth.
 126ea8e7	The Perseverance rover landed in Jezero Crater to look for signs of old life and collect rock samples. Its helicopter Ingenuity made the first powered flight on another planet.
 e670b2b6	The Pillars of Creation (Webb, 2022): towers of gas and dust where new stars are being born.
 c5a34770	The Pole Star
@@ -1181,7 +1177,7 @@ ff39c45b	The Sun always lights half of the Moon, just as it lights half of the E
 c732cb3e	The Sun and planets form
 8feb1f65	The Sun hides
 ff540cf3	The Sun holds 99.8% of all the mass in the solar system.
-60c6e1fe	The Sun in ultraviolet light, from NASA&#x27;s Solar Dynamics Observatory.
+b0183d2e	The Sun in ultraviolet light, from NASA's Solar Dynamics Observatory.
 d3ca8dc2	The Sun is a huge ball of hot gas that makes its own light and heat. It is about 109 times wider than the Earth and about 15 crore (150 million) km away. Its light takes about 8 minutes and 20 seconds to reach us.
 428f5322	The Sun is a star
 98f7e9f7	The Sun is about two thirds of the way out from the centre, on a small branch between two big arms called the Orion Spur. We circle the centre at roughly 220 km per second. One lap takes about 230 million years, so the Sun has made around 20 laps since it was born.
@@ -1215,15 +1211,15 @@ fdcd95f8	The country is read by the network from the connection when the request
 201563e3	The crushed core of a massive star, about 20 km wide yet heavier than the Sun.
 02829038	The darkest objects in the universe, explained from the start. No maths needed, and every number comes from real measurements.
 e2ac78cc	The date you accepted this policy and its version, the date you joined, the date you last used the account
-49519cfa	The details of the impact are still argued: how big Theia was, how fast it hit, and why the Moon&#x27;s rocks match Earth&#x27;s so closely.
+4f400087	The details of the impact are still argued: how big Theia was, how fast it hit, and why the Moon's rocks match Earth's so closely.
 d6d65392	The dinosaurs end
 df682cbd	The distance light travels in one year, about 9.46 trillion km.
 df4449e6	The distance, 1.5 times the horizon radius for a non-spinning black hole, where light can orbit in a circle.
-f70b8bce	The dots of the Milky Way are a model with the real size, a bar and four arms: nobody can map single stars that far. Distances of far galaxies are estimated from their redshift, so some groups look stretched along our line of sight. The catalogue holds the brightest galaxies, most of them within 500 million light-years; the real universe has about two trillion.
+4f53b0bb	The dots of the Milky Way are a model with the real size, a bar and four arms: nobody can map single stars that far. Distances of far galaxies are estimated from their redshift, so some groups look stretched along our line of sight. The catalogue holds the brightest galaxies, most of them within 500 million light-years; the real universe has hundreds of billions, perhaps two trillion.
 151813a3	The earliest known traces of life on Earth, simple microbes, are about 3.5 billion years old.
 8703e16c	The edge is called the event horizon. It is not a hard surface you could land on. It is a boundary in space. Outside it, a fast enough rocket can still escape. Inside it, every path leads inward.
 fa93d32e	The escape speed idea
-96edf265	The exact path of the giant planets&#x27; move (the &quot;Nice model&quot;) is still being worked out.
+bddee903	The exact path of the giant planets' move (the "Nice model") is still being worked out.
 1553ec53	The explosion of a massive star at the end of its life, or of a white dwarf that has taken in too much matter.
 cfb52be4	The extremely bright core of a distant galaxy, powered by gas falling into a supermassive black hole.
 a93ae059	The faint glow left from when the universe was 380,000 years old. It fills the whole sky.
@@ -1272,6 +1268,7 @@ ff77a3f9	The meteors seem to fly out of one point in the sky, the radiant, in Pe
 9ad3440c	The meteors seem to fly out of one point in the sky, the radiant, in Ursa Minor, near the Pole Star. You do not need to look there: meteors appear all over the sky.
 e299884d	The middle
 eb62541d	The middle sizes
+84f6b9c8	The nearest big cluster of galaxies, the Virgo Cluster, is about 54 million light-years away and holds over a thousand galaxies. Clusters join into superclusters. Our home supercluster, Laniakea, spans about 500 million light-years and holds roughly 100,000 galaxies.
 224aa55b	The nearest big galaxy, and the one that will one day merge with ours.
 f3790839	The nearest known black hole is about 1,600 light-years away. No known black hole is anywhere near us.
 5a8cb4a4	The nearest known black hole so far, found in 2022 from the tiny wobble it causes in a Sun-like star that orbits it. It is quiet: nothing is falling in, so it gives off no X-rays.
@@ -1363,7 +1360,7 @@ aa8cacdc	Totality across Australia (the Kimberley, Northern Territory, Queenslan
 f9edc060	Turn any optional switch off at any time. This withdraws your consent for that part; the data it created is removed or stops growing.
 8f2db58f	Turn it off in the You tab → Send crash reports. Nothing is then kept or sent, and reports still waiting on the phone are not sent.
 8733c12a	Twins
-c68891c7	Two galaxies passing through each other is slow, over hundreds of millions of years. Stars rarely collide, but gas clouds do. They are squeezed and a burst of new stars forms, called a starburst. The Antennae Galaxies, 70 million light-years away, are two galaxies in the middle of this.
+c1d16f18	Two galaxies passing through each other is slow, over hundreds of millions of years. Stars rarely collide, but gas clouds do. They are squeezed and a burst of new stars forms, called a starburst. The Antennae Galaxies, roughly 45 to 70 million light-years away, are two galaxies in the middle of this.
 455c5cea	Two stars that orbit each other.
 dfd0aa41	Type any mass and get the size of its event horizon, r = 2GM/c², plus a few more things worked out from it. Tap a preset to try an example.
 6e60cbbd	Types of galaxies
@@ -1380,13 +1377,13 @@ b2d26a85	Until you delete the account or switch sync off and delete it
 da5037f5	Up to ~3 to 4 million years
 fa5cc07e	Update check: each time the app opens, it asks GitHub for the newest release and, if there is one, offers it first (you can tap Skip). GitHub sees your IP address, like in any web request.
 76b840d3	Uranus
-c52c776b	Uranus grew a large core of ice and rock, but the gas disk was fading by then, so it caught only a thin layer of hydrogen and helium. That is why it is an &quot;ice giant&quot;. It probably formed closer to the Sun and moved outward later. Something big knocked it onto its side.
+b3f4f630	Uranus grew a large core of ice and rock, but the gas disk was fading by then, so it caught only a thin layer of hydrogen and helium. That is why it is an "ice giant". It probably formed closer to the Sun and moved outward later. Something big knocked it onto its side.
 ae531639	Uranus rolls around the Sun on its side, tilted by about 98 degrees.
 5065c72a	Uranus was the first planet found with a telescope. William Herschel spotted it in 1781.
 e49ae9ea	Ursids
 e7f7def3	Ursids meteor shower
 0bdc508a	Venus
-e4aac5be	Venus grew the same way as Earth and to almost the same size. Its story split from Earth&#x27;s later: its air filled with carbon dioxide and trapped so much heat that any water boiled away.
+564d7a48	Venus grew the same way as Earth and to almost the same size. Its story split from Earth's later: its air filled with carbon dioxide and trapped so much heat that any water boiled away.
 14c416de	Venus is hotter than Mercury, even though it is farther from the Sun, because its thick air traps the heat.
 bfdffaf4	Venus spins backwards, so on Venus the Sun rises in the west.
 29882230	Very fast: perhaps hours to a few years
@@ -1407,7 +1404,7 @@ b230462a	Watch safely
 27634ff8	Water
 5d0a94f7	We always see the same side of the Moon, because it turns exactly once for each trip around Earth.
 7625cf3d	We need a theory that joins gravity and quantum physics.
-b9c1ea75	Webb&#x27;s First Deep Field (2022): thousands of galaxies in a patch of sky the size of a grain of sand held at arm&#x27;s length.
+27a43af6	Webb's First Deep Field (2022): thousands of galaxies in a patch of sky the size of a grain of sand held at arm's length.
 0ddf92df	Weight, jump and age on every world
 d157e654	Whale
 3c89e046	What a collision looks like
@@ -1443,7 +1440,7 @@ d48f3c95	When the Moon comes exactly between the Sun and the Earth, its shadow f
 b0dc582c	When two black holes merge, they shake space itself. Those gravitational waves reach Earth as a stretch smaller than a proton. Detectors like LIGO and Virgo measure it. The first was heard in 2015, and many more since.
 b3c5b21d	Where
 d10212c9	Where Apollo, Chang'e, Chandrayaan and others landed.
-112f2089	Where Titan&#x27;s methane comes from, since sunlight keeps destroying it, is still a puzzle. NASA&#x27;s Dragonfly drone is due to arrive in 2034.
+8be91e13	Where Titan's methane comes from, since sunlight keeps destroying it, is still a puzzle. NASA's Dragonfly drone is due to arrive in 2034.
 2b5d9474	Where Viking, Curiosity, Perseverance and other landers and rovers touched down.
 5a65ebc8	Where data is kept
 9b1cd88b	Where does the information go?
@@ -1502,16 +1499,17 @@ fd7c149f	a few to ~100 Suns
 cb7c9ad8	a proton
 2f4c1b06	about 1 trillion
 0e75108f	about 10 Suns
-e6d12038	about 2 trillion
 7175acc0	about 21 Suns
 b2f21232	billions of light-years
 723169f6	by Mattia Verga and contributors (CC BY-SA 4.0).
 a652def5	holes.
 543232f7	horizon radius
+6959bd96	hundreds of billions, perhaps up to 2 trillion
 de512999	millions to billions of Suns
 153a4f6a	stars.
 6748319d	tens of billions of Suns
 e4b256df	the observable universe
+00e1739c	under 300 million years after the Big Bang
 ad921d60	unknown
 1965b1a6	~1,600 light-years
 d7014b85	~1.3 billion light-years
@@ -1524,10 +1522,9 @@ c7d45869	~100,000 light-years
 27d8f1f4	~200,000 light-years
 96d92c36	~225 to 250 million years
 d0b3fe96	~26,000 light-years
-0e1aefcb	~290 million years after the Big Bang
 d3db2a8d	~55 million light-years
 984b33d3	~7,000 light-years
-06784bae	“Best in the evening” is the month when it is highest at about 9 pm. “Seen from India” is worked out for Delhi; from South India a little more of the southern sky is visible.
+0b37e5a9	“Best in the evening” is the month when it is highest at about 9 pm. “Seen well from India” means it climbs high from Delhi. “Low in the south” means at least part of it rises above the southern horizon from central India; the farther south you are in India, the higher it gets.
 32915e33	“Use my location” in the city list asks Android for your approximate location, once, and uses it only on your phone to work out the sky. Nothing is sent for this.
 9aa7658e	⚠️ Never look at the Sun directly, not even during an eclipse. Use certified eclipse glasses (ISO 12312-2), a welder’s glass no. 14, or a pinhole projector. Sunglasses are not safe.
 50d0a111	⚠️ Never point a telescope or binoculars at the Sun without a proper solar filter over the front. It can blind you instantly.

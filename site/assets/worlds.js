@@ -60,7 +60,7 @@
     mars: [
       Y(1830, ['Liquid iron core', 'तरल लोहे का केंद्र'], ['about 1,900 °C', 'लगभग 1,900 °C'], ['Measured by NASA’s InSight lander from marsquakes. It no longer makes a magnetic field.', 'NASA के InSight lander ने मंगल के भूकंपों से इसे नापा। अब यह चुंबकीय क्षेत्र नहीं बनाता।'], 'liquidMetal'),
       Y(3340, ['Rocky mantle', 'चट्टानी mantle'], null, ['Once fed giant volcanoes like Olympus Mons.', 'कभी Olympus Mons जैसे विशाल ज्वालामुखियों को ताक़त देता था।'], 'mantle'),
-      Y(3390, ['Crust', 'पपड़ी (crust)'], ['−63 °C on average', 'औसतन −63 °C'], ['Red, iron-rich dust and rock, about 50 km thick.', 'लाल, लोहे वाली धूल और चट्टान, लगभग 50 km मोटी।'], 'crust')
+      Y(3390, ['Crust', 'पपड़ी (crust)'], ['−65 °C on average', 'औसतन −63 °C'], ['Red, iron-rich dust and rock, about 50 km thick.', 'लाल, लोहे वाली धूल और चट्टान, लगभग 50 km मोटी।'], 'crust')
     ],
     moon: [
       Y(240, ['Inner core', 'भीतरी केंद्र'], ['about 1,400 °C', 'लगभग 1,400 °C'], ['A small ball of solid iron.', 'ठोस लोहे की एक छोटी गेंद।'], 'hot'),

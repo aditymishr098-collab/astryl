@@ -5,6 +5,7 @@ from dskit import Kit, article_ld
 def build(h):
     k = Kit(h)
     bt, P, H2 = k.bt, k.P, k.H2
+    raw2 = h['raw2']  # for the lines that carry <b> tags
     v = h['asset_v']()
     scopes = [('70,700', '70 mm refractor (f/10)', '70 mm refractor (f/10)'), ('80,400', '80 mm short refractor (f/5)', '80 mm छोटा refractor (f/5)'),
               ('114,900', '114 mm reflector (f/8)', '114 mm reflector (f/8)'), ('130,650', '130 mm reflector (f/5)', '130 mm reflector (f/5)'),
@@ -29,11 +30,11 @@ def build(h):
 <div id="tsStats"></div>
 <p class="note">{bt("A simplified picture: real views are fainter and have less colour, and many telescopes show the view upside down. Planets look tiny even at high power; detail comes with practice and steady air.", "यह एक सरल तस्वीर है: असली नज़ारा कम चमकीला और कम रंगीन होता है, और कई telescope उल्टा दिखाते हैं। तेज़ ज़ूम पर भी ग्रह छोटे दिखते हैं; detail अभ्यास और शांत हवा से आती है।")}</p></section>
 <section class="blk prose">{H2("How the numbers work", "ये आँकड़े कैसे निकलते हैं")}
-<ul><li>{bt("<b>Magnification</b> = telescope focal length ÷ eyepiece focal length (× 2 with a Barlow).", "<b>ज़ूम</b> = telescope की focal length ÷ eyepiece की focal length (Barlow हो तो × 2)।")}</li>
-<li>{bt("<b>True field of view</b> = the eyepiece’s apparent field ÷ magnification. The full Moon is about half a degree wide.", "<b>असली दृश्य-क्षेत्र</b> = eyepiece का apparent field ÷ ज़ूम। पूरा चाँद लगभग आधा डिग्री चौड़ा है।")}</li>
-<li>{bt("<b>Exit pupil</b> = aperture ÷ magnification. Between about 1 and 7 mm is useful.", "<b>Exit pupil</b> = aperture ÷ ज़ूम। लगभग 1 से 7 mm तक काम का है।")}</li>
-<li>{bt("<b>Highest useful magnification</b> ≈ 2 × aperture in mm; above that the view only gets blurrier.", "<b>सबसे ज़्यादा काम का ज़ूम</b> ≈ 2 × aperture (mm में); उससे ऊपर नज़ारा बस धुंधला होता है।")}</li>
-<li>{bt("<b>Faintest star</b> ≈ 2.7 + 5 × log₁₀(aperture in mm), under a dark sky. <b>Finest detail</b> ≈ 116 ÷ aperture in mm, in arcseconds (Dawes limit).", "<b>सबसे धुंधला तारा</b> ≈ 2.7 + 5 × log₁₀(aperture mm में), अँधेरे आसमान में। <b>सबसे बारीक detail</b> ≈ 116 ÷ aperture mm, arcsecond में (Dawes सीमा)।")}</li></ul>
+<ul><li>{raw2("<b>Magnification</b> = telescope focal length ÷ eyepiece focal length (× 2 with a Barlow).", "<b>ज़ूम</b> = telescope की focal length ÷ eyepiece की focal length (Barlow हो तो × 2)।")}</li>
+<li>{raw2("<b>True field of view</b> = the eyepiece’s apparent field ÷ magnification. The full Moon is about half a degree wide.", "<b>असली दृश्य-क्षेत्र</b> = eyepiece का apparent field ÷ ज़ूम। पूरा चाँद लगभग आधा डिग्री चौड़ा है।")}</li>
+<li>{raw2("<b>Exit pupil</b> = aperture ÷ magnification. Between about 1 and 7 mm is useful.", "<b>Exit pupil</b> = aperture ÷ ज़ूम। लगभग 1 से 7 mm तक काम का है।")}</li>
+<li>{raw2("<b>Highest useful magnification</b> ≈ 2 × aperture in mm; above that the view only gets blurrier.", "<b>सबसे ज़्यादा काम का ज़ूम</b> ≈ 2 × aperture (mm में); उससे ऊपर नज़ारा बस धुंधला होता है।")}</li>
+<li>{raw2("<b>Faintest star</b> ≈ 2.7 + 5 × log₁₀(aperture in mm), under a dark sky. <b>Finest detail</b> ≈ 116 ÷ aperture in mm, in arcseconds (Dawes limit).", "<b>सबसे धुंधला तारा</b> ≈ 2.7 + 5 × log₁₀(aperture mm में), अँधेरे आसमान में। <b>सबसे बारीक detail</b> ≈ 116 ÷ aperture mm, arcsecond में (Dawes सीमा)।")}</li></ul>
 {k.callout("⚠️ Never point a telescope or binoculars at the Sun without a proper solar filter over the front. It can blind you instantly.", "⚠️ सामने सही solar filter के बिना telescope या दूरबीन को कभी सूरज की ओर मत कीजिए। इससे तुरंत अंधापन हो सकता है।")}</section>
 {k.keep_exploring('', [('constellations.html', '⭐', 'Constellations', 'तारामंडल'), ('sky-events.html', '🌑', 'Eclipses and meteor showers', 'ग्रहण और उल्कापात'), ('galaxies/galaxies-you-can-see.html', '👀', 'Galaxies you can see', 'जो galaxies आप देख सकते हैं'), ('my-space.html', '🌆', 'Tonight in your city', 'आज रात आपके शहर में')])}'''
     desc = 'Free telescope and eyepiece simulator: magnification, true field of view, exit pupil, limiting magnitude and a picture of the Moon, planets and deep-sky objects in the eyepiece. English and Hindi.'

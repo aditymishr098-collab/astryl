@@ -107,7 +107,7 @@ def figure(pid, prefix, bt, esc, cls='sphoto'):
     c = CREDITS[pid]
     lic = f' · <a href="{esc(c["page"])}" rel="noopener" target="_blank">{esc(c["licence"])}</a>' if c['page'] else ''
     return (f'<figure class="{cls}"><img src="{prefix}img/space/{pid}.webp" width="{w}" height="{h}" loading="lazy" decoding="async" alt="{esc(en)}">'
-            f'<figcaption>{bt(esc(en), esc(hi))}<br><small>📷 {esc(credit)}{lic}</small></figcaption></figure>')
+            f'<figcaption>{bt(en, hi)}<br><small>📷 {esc(credit)}{lic}</small></figcaption></figure>')
 
 
 def strip(ids, prefix, bt, esc):

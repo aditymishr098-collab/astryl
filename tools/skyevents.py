@@ -161,7 +161,7 @@ def build(h):
         sec += P(f'The meteors seem to fly out of one point in the sky, the radiant, in {radiant[0]}. You do not need to look there: meteors appear all over the sky.', f'उल्काएँ आसमान के एक बिंदु से निकलती लगती हैं, जिसे radiant कहते हैं; यह {radiant[1]} में है। वहाँ देखना ज़रूरी नहीं: उल्काएँ पूरे आसमान में दिखती हैं।')
         sec += H2('When and how to watch', 'कब और कैसे देखें') + P(best[0], best[1])
         sec += '<ul>' + ''.join(f'<li>{bt(a, b)}</li>' for a, b in [
-            ('Get away from city lights. Every streetlight you leave behind doubles what you see.', 'शहर की रोशनी से दूर जाइए। जितनी कम रोशनी, उतनी ज़्यादा उल्काएँ।'),
+            ('Get away from city lights. A dark country sky can show several times as many meteors as a city sky.', 'शहर की रोशनी से दूर जाइए। जितनी कम रोशनी, उतनी ज़्यादा उल्काएँ।'),
             ('Lie back and look at a wide patch of sky. No telescope or binoculars needed.', 'लेटकर आसमान का बड़ा हिस्सा देखिए। Telescope या दूरबीन की ज़रूरत नहीं।'),
             ('Give your eyes 20 minutes to get used to the dark, and keep your phone screen off.', 'आँखों को अँधेरे की आदत होने में 20 मिनट दीजिए, और phone की screen बंद रखिए।'),
             ('A bright Moon washes out the faint meteors: check the Moon on the night.', 'तेज़ चाँद हल्की उल्काओं को छिपा देता है: उस रात चाँद देख लीजिए।')]) + '</ul>'
