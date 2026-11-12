@@ -32,13 +32,17 @@ def main():
         shard = first if 'a' <= first <= 'z' else '_'
         out.setdefault(shard, []).append([name, r['country'], lat, lon])
     here = os.path.dirname(os.path.abspath(__file__))
-    folder = os.path.join(here, '..', 'assets', 'cities')
-    os.makedirs(folder, exist_ok=True)
+    # The website's copy, and the app's while the app is in this repository.
+    folders = [os.path.join(here, '..', 'data', 'cities')]
+    if os.path.isdir(os.path.join(here, '..', 'assets')):
+        folders.append(os.path.join(here, '..', 'assets', 'cities'))
     total = 0
     for shard, items in out.items():
         items.sort(key=lambda x: (len(x[0]), x[0]))
-        with open(os.path.join(folder, shard + '.json'), 'w', encoding='utf-8') as fh:
-            json.dump(items, fh, ensure_ascii=False, separators=(',', ':'))
+        for folder in folders:
+            os.makedirs(folder, exist_ok=True)
+            with open(os.path.join(folder, shard + '.json'), 'w', encoding='utf-8') as fh:
+                json.dump(items, fh, ensure_ascii=False, separators=(',', ':'))
         total += len(items)
     print('cities', total, 'files', len(out))
 

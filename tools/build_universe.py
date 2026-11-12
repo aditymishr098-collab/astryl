@@ -348,9 +348,14 @@ def main():
     d.append('')
 
     here = os.path.dirname(os.path.abspath(__file__))
-    path = os.path.join(here, '..', 'lib', 'data', 'universe_catalog.dart')
+    path = os.path.join(here, '..', 'data', 'tables', 'universe_catalog.dart')
     with open(path, 'w', encoding='utf-8') as fh:
         fh.write('\n'.join(d))
+    # The app (while it is in this repository) uses the same catalogue.
+    app_copy = os.path.join(here, '..', 'lib', 'data', 'universe_catalog.dart')
+    if os.path.isdir(os.path.dirname(app_copy)):
+        with open(app_copy, 'w', encoding='utf-8') as fh:
+            fh.write('\n'.join(d))
     print('galaxies', len(chosen), 'stars', len(STARS), 'holes',
           len(HOLES_NEAR) + len(HOLES_HOST) + len(HOLES_FAR),
           'bytes', os.path.getsize(path))

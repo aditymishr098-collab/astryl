@@ -1,0 +1,29 @@
+# Builds the website on every pull request that changes it, so a broken build
+# is caught before it reaches main. The build only needs data/ and tools/.
+name: Site check
+
+on:
+  pull_request:
+    paths:
+      - 'data/**'
+      - 'tools/**'
+      - 'site/**'
+      - '.github/workflows/site-check.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Pillow (share pictures)
+        run: pip install pillow
+      - name: Build the site without the app's folders
+        run: |
+          rm -rf lib assets android test
+          python3 tools/build_site.py

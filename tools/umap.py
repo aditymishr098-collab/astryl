@@ -1,13 +1,14 @@
 """The Universe map page: the app's 3D map in the browser (logic in site_src/universe.js).
 
-The data file is made from lib/data/universe_catalog.dart, so the site and the app show the same sky."""
+The data file is made from data/tables/universe_catalog.dart (made by tools/build_universe.py)."""
 import json
+import site_data
 import re
 from pathlib import Path
 
 from dskit import Kit
 
-CATALOG = Path(__file__).resolve().parent.parent / 'lib' / 'data' / 'universe_catalog.dart'
+CATALOG = site_data.TABLES / 'universe_catalog.dart'
 
 
 def data_js():
@@ -23,7 +24,7 @@ def data_js():
     data = {'g': rows, 's': table('StarRow'), 'h': table('HoleRow'), 'm': table('MarkRow')}
     assert len(data['s']) > 30 and len(data['h']) > 55 and len(data['m']) > 8 and rows.count('\n') > 3000
     return ('/* Universe map data. Galaxies: OpenNGC by Mattia Verga and contributors, CC BY-SA 4.0. '
-            'Made by tools/umap.py from lib/data/universe_catalog.dart. */\nwindow.ASTRYL_UNI='
+            'Made by tools/umap.py from data/tables/universe_catalog.dart. */\nwindow.ASTRYL_UNI='
             + json.dumps(data, ensure_ascii=False, separators=(',', ':')) + ';\n')
 
 

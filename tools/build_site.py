@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Builds the Astryl website (site/) from the app's own data.
+"""Builds the Astryl website (site/) from its own data.
 
-Reads lib/data/*.dart, lib/core/*.dart and lib/l10n/app_{en,hi}.arb, so the
-website shows the same planets, texts and numbers as the app. Run it from the
+Reads the website's data in data/ (see tools/site_data.py); it does not
+need the app's code. Run it from the
 project root:  python3 tools/build_site.py
 """
 import hashlib, html, json, math, re, shutil
@@ -16,6 +16,7 @@ import myspace
 import skyevents
 import students
 import cons
+import site_data
 import telescope
 import iss
 import universe
@@ -28,7 +29,7 @@ REPO = 'https://github.com/aditymishr098-collab/astryl'
 SITE = 'https://astryl.space'
 
 # ------------------------------------------------------------------ data
-L = {lg: {k: v for k, v in json.load(open(ROOT / f'lib/l10n/app_{lg}.arb', encoding='utf-8')).items() if not k.startswith('@')} for lg in ('en', 'hi')}
+L = {lg: {k: v for k, v in json.load(open(site_data.TEXT / f'app_{lg}.arb', encoding='utf-8')).items() if not k.startswith('@')} for lg in ('en', 'hi')}
 
 
 def color(h):
@@ -41,7 +42,7 @@ L['hi'].update(cosmosHere='सूर्य यहाँ है', cosmosToday='�
 
 
 def parse_bodies():
-    text = (ROOT / 'lib/data/planets.dart').read_text(encoding='utf-8')
+    text = site_data.table('planets.dart')
     gases = {}
     for m in re.finditer(r'case Gas\.(\w+):\s*return \'([^\']+)\';', text):
         gases.setdefault(m.group(1), {})['f'] = m.group(2)
@@ -83,7 +84,7 @@ def parse_bodies():
 
 
 def parse_orbits():
-    text = (ROOT / 'lib/core/orbits.dart').read_text(encoding='utf-8')
+    text = site_data.table('orbits.dart')
     out = {}
     for m in re.finditer(r"'(\w+)': _Elements\(([^)]*)\)", text):
         out[m.group(1)] = [float(x) for x in re.findall(r'-?[\d.]+(?:e-?\d+)?', m.group(2))]
@@ -91,7 +92,7 @@ def parse_orbits():
 
 
 def parse_missions():
-    text = (ROOT / 'lib/data/missions.dart').read_text(encoding='utf-8')
+    text = site_data.table('missions.dart')
     res = []
     for m in re.finditer(r"id: '(\w+)',\s*name: '([^']+)',\s*agency: '([^']+)',\s*year: (\d+),\s*month: (\d+),\s*day: (\d+)", text):
         res.append(dict(id=m.group(1), name=m.group(2), agency=m.group(3), y=int(m.group(4)), m=int(m.group(5)), d=int(m.group(6))))
@@ -99,7 +100,7 @@ def parse_missions():
 
 
 def parse_spacecraft():
-    text = (ROOT / 'lib/core/spacecraft.dart').read_text(encoding='utf-8')
+    text = site_data.table('spacecraft.dart')
     res = []
     for m in re.finditer(r'  Spacecraft\(\n(.*?)\n  \),', text, re.S):
         b = m.group(1)
@@ -117,7 +118,7 @@ def parse_spacecraft():
 
 
 def parse_constellations():
-    text = (ROOT / 'lib/data/sky_catalog.dart').read_text(encoding='utf-8')
+    text = site_data.table('sky_catalog.dart')
     res = []
     for m in re.finditer(r"^  ConstellationData\('(\w+)', '((?:[^'\\]|\\.)*)', <String, String>\{([^}]*)\}, ([-\d.]+), ([-\d.]+), <List<double>>\[(.*)\]\),$", text, re.M):
         names = {k: v.replace("\\'", "'") for k, v in re.findall(r"'(\w+)': '((?:[^'\\]|\\.)*)'", m.group(3))}
@@ -127,12 +128,12 @@ def parse_constellations():
 
 
 def parse_meteors():
-    text = (ROOT / 'lib/core/events.dart').read_text(encoding='utf-8')
+    text = site_data.table('events.dart')
     return [[a, int(b), int(c), int(d)] for a, b, c, d in re.findall(r"\('(\w+)', (\d+), (\d+), (\d+)\),", text)]
 
 
 def parse_surface():
-    text = (ROOT / 'lib/data/surface_sites.dart').read_text(encoding='utf-8')
+    text = site_data.table('surface_sites.dart')
     sites = []
     for m in re.finditer(r"SurfaceSite\(id: '(\w+)', world: SurfaceWorld\.(\w+), name: (?:'([^']*)'|\"([^\"]*)\"), agency: '([^']+)', year: (\d+), lat: ([-\d.]+), lon: ([-\d.]+), kind: SiteKind\.(\w+)\)", text):
         sites.append(dict(id=m.group(1), world=m.group(2), name=m.group(3) or m.group(4), agency=m.group(5), year=int(m.group(6)), lat=float(m.group(7)), lon=float(m.group(8)), kind=m.group(9)))
@@ -143,12 +144,12 @@ def parse_surface():
 
 
 def parse_fact_ids():
-    text = (ROOT / 'lib/core/facts.dart').read_text(encoding='utf-8')
+    text = site_data.table('facts.dart')
     return re.findall(r"^  '(\w+)',$", text, re.M)
 
 
 def parse_milestones():
-    text = (ROOT / 'lib/core/birthday.dart').read_text(encoding='utf-8')
+    text = site_data.table('birthday.dart')
     return [int(x) for x in re.search(r'milestoneDays = <int>\[([^\]]*)\]', text).group(1).split(',')]
 
 
@@ -537,7 +538,7 @@ def make_og(name, title):
             fd.arc([cx - R * rr, cy - R * rr * 0.28, cx + R * rr, cy + R * rr * 0.28], 0, 180, fill=(223, 192, 124, a), width=w)
         front = front.rotate(14, center=(cx, cy), resample=Image.BICUBIC)
         img.paste(front, (0, 0), front)
-    fonts = ROOT / 'assets/fonts'
+    fonts = site_data.FONTS
     f_brand = ImageFont.truetype(str(fonts / 'SpaceGrotesk-Bold.ttf'), 40)
     f_title = ImageFont.truetype(str(fonts / 'SpaceGrotesk-Bold.ttf'), 82)
     f_small = ImageFont.truetype(str(fonts / 'DMSans-Medium.ttf'), 32)
@@ -1028,7 +1029,7 @@ def not_found():
 
 
 def parse_cities():
-    text = (ROOT / 'lib/data/cities.dart').read_text(encoding='utf-8')
+    text = site_data.table('cities.dart')
     return [[a, b, c, float(d), float(e)] for a, b, c, d, e in re.findall(r"City\('([\w-]+)', '([^']+)', '([^']+)', ([-\d.]+), ([-\d.]+)\)", text)]
 
 
@@ -1064,14 +1065,14 @@ def main():
     shutil.copy(SRC / 'scale.js', OUT / 'assets/scale.js')
     shutil.copy(SRC / 'learn.js', OUT / 'assets/learn.js')
     shutil.copy(SRC / 'universe.js', OUT / 'assets/universe.js')
-    shutil.copytree(ROOT / 'assets' / 'cities', OUT / 'assets' / 'cities')
+    shutil.copytree(site_data.CITIES, OUT / 'assets' / 'cities')
     for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js'):
         shutil.copy(SRC / name, OUT / 'assets' / name)
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#fbf7ee"/><circle r="30" fill="#1b3a8a"/><ellipse rx="50" ry="15" fill="none" stroke="#6a45d6" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#1b3a8a"/></svg>', encoding='utf-8')
     (OUT / 'fonts').mkdir()
     for f in ('DMSans-Regular.ttf', 'DMSans-Medium.ttf', 'DMSans-Bold.ttf', 'SpaceGrotesk-Medium.ttf', 'SpaceGrotesk-Bold.ttf', 'OFL-DMSans.txt', 'OFL-SpaceGrotesk.txt'):
-        shutil.copy(ROOT / 'assets/fonts' / f, OUT / 'fonts' / f)
+        shutil.copy(site_data.FONTS / f, OUT / 'fonts' / f)
     (OUT / 'CNAME').write_text('astryl.space\n', encoding='utf-8')
     (OUT / '.nojekyll').write_text('', encoding='utf-8')
     (OUT / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n', encoding='utf-8')
