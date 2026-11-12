@@ -610,6 +610,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://apod.nasa.gov https://science.nasa.gov https://assets.science.nasa.gov https://pmfjjlfggzihbnbmqkao.supabase.co; connect-src 'self' https://pmfjjlfggzihbnbmqkao.supabase.co https://api.github.com https://api.wheretheiss.at; font-src 'self'; media-src 'self'; worker-src 'self'; manifest-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"><meta name="referrer" content="strict-origin-when-cross-origin">
 <title>{esc(title_en)} · Astryl</title>
 <meta name="description" content="{esc(desc_en)}">
 <link rel="canonical" href="{url}">

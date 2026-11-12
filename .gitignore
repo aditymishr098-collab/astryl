@@ -51,3 +51,16 @@ app.*.map.json
 *.jks
 *.keystore
 key.properties
+
+# Secrets and keys must never be committed
+.env
+.env.*
+*.pem
+*.p12
+*.pfx
+*.key
+google-services.json
+GoogleService-Info.plist
+service-account*.json
+supabase/.temp/
+supabase/.branches/
