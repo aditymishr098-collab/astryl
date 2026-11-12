@@ -48,6 +48,20 @@
   "page": "https://commons.wikimedia.org/wiki/File:A_view_of_the_Milky_Way_supermassive_black_hole_Sagittarius_A*_in_polarised_light_(eso2406a).jpg",
   "title": "File:A view of the Milky Way supermassive black hole Sagittarius A* in polarised light (eso2406a).jpg"
  },
+ "ds-m42": {
+  "artist": "NASA, ESA, M. Robberto (Space Telescope Science Institute/ESA) and the Hubble Space Telescope Orion Treasury Project Team",
+  "credit": "<p><a rel=\"nofollow\" class=\"external free\" href=\"http://hubblesite.org/newscenter/newsdesk/archive/releases/2006/01/\">http://hubblesite.org/newscenter/newsdesk/archive/releases/2006/01/</a>\n</p>\n<a rel=\"nofollow\" class=\"external free\" href=\"https://www.spacetelescope.org/news/heic0601/\">https://www.",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Orion_Nebula_-_Hubble_2006_mosaic_18000.jpg",
+  "title": "File:Orion Nebula - Hubble 2006 mosaic 18000.jpg"
+ },
+ "ds-m45": {
+  "artist": "<p>NASA, ESA, AURA/Caltech, Palomar Observatory<br>\n</p>\n<sub>The science team consists of: D. Soderblom and E. Nelan (STScI), F. Benedict and B. Arthur (U. Texas), and B. Jones (Lick Obs.)</sub>",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://hubblesite.org/contents/media/images/2004/20/1562-Image.html?Topic=104-stars-and-nebulas&amp;keyword=pleiades\">https://hubblesite.org/contents/media/images/2004/20/1562-Image.html?Topic=104-stars-and-nebulas&amp;keyword=pleiades</a> (<a rel=\"nofo",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Pleiades_large.jpg",
+  "title": "File:Pleiades large.jpg"
+ },
  "gx-andromeda": {
   "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/8269775@N05\">Adam Evans</a>",
   "credit": "<p><a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/astroporn/4999978603/\">M31, the Andromeda Galaxy (now with h-alpha)</a>\n</p>\n<ul><li>Uploaded by <a href=\"//commons.wikimedia.org/wiki/User:NotFromUtrecht\" title=\"User:NotFromUtrecht\">NotFromUtrecht</a></li></ul>",
@@ -104,6 +118,34 @@
   "page": "https://commons.wikimedia.org/wiki/File:Messier51_sRGB.jpg",
   "title": "File:Messier51 sRGB.jpg"
  },
+ "iss-cupola": {
+  "artist": "<a href=\"https://en.wikipedia.org/wiki/NASA\" class=\"extiw\" title=\"w:NASA\">NASA</a>/<a href=\"https://en.wikipedia.org/wiki/Nichole_Ayers\" class=\"extiw\" title=\"w:Nichole Ayers\">Nichole Ayers</a>",
+  "credit": "<a href=\"//commons.wikimedia.org/wiki/File:Gigantic_jet_photographed_by_Nichole_Ayers_on_the_International_Space_Station.jpg\" title=\"File:Gigantic jet photographed by Nichole Ayers on the International Space Station.jpg\">File:Gigantic jet photographed by Nichole Ayers on the International Space Stat",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Gigantic_jet_photographed_by_Nichole_Ayers_on_the_International_Space_Station,_some_edits.jpg",
+  "title": "File:Gigantic jet photographed by Nichole Ayers on the International Space Station, some edits.jpg"
+ },
+ "iss-india-night": {
+  "artist": "NASA",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.flickr.com/photos/nasa2explore/24140256189/\">https://www.flickr.com/photos/nasa2explore/24140256189/</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:ISS-46_Northern_India_at_night.jpg",
+  "title": "File:ISS-46 Northern India at night.jpg"
+ },
+ "iss-trail": {
+  "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.nasa.gov/johnson/\">NASA Johnson Space Center</a>",
+  "credit": "This image or video was catalogued by Lyndon B. Johnson Space Center of the United States <a href=\"https://en.wikipedia.org/wiki/NASA\" class=\"extiw\" title=\"w:NASA\">National Aeronautics and Space Administration</a> (NASA) under <b>Photo ID:</b> <a rel=\"nofollow\" class=\"external text\" href=\"https://im",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Clouds_stretch_into_a_soft_blur_and_a_bright_airglow_blankets_Earth%E2%80%99s_horizon_(iss073e0818308).jpg",
+  "title": "File:Clouds stretch into a soft blur and a bright airglow blankets Earth’s horizon (iss073e0818308).jpg"
+ },
+ "map-mars": {
+  "artist": "NASA / Jet Propulsion Lab / USGS",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://astrogeology.usgs.gov/search/details/Mars/Viking/MDIM21/Mars_Viking_MDIM21_ClrMosaic_global_232m/cub\">https://astrogeology.usgs.gov/search/details/Mars/Viking/MDIM21/Mars_Viking_MDIM21_ClrMosaic_global_232m/cub</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Mars_Viking_MDIM21_ClrMosaic_1km.jpg",
+  "title": "File:Mars Viking MDIM21 ClrMosaic 1km.jpg"
+ },
  "moon-eclipse": {
   "artist": "Alfredo Garcia, Jr, <a rel=\"nofollow\" class=\"external autonumber\" href=\"https://www.facebook.com/alfredogarciajr\">[2]</a>",
   "credit": "Flickr <a rel=\"nofollow\" class=\"external autonumber\" href=\"https://www.flickr.com/photos/10151144@N04/22122694116\">[1]</a>",
@@ -124,6 +166,258 @@
   "licence": "Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Pillars_of_Creation_(NIRCam_Image).jpg",
   "title": "File:Pillars of Creation (NIRCam Image).jpg"
+ },
+ "pic-apollo11": {
+  "artist": "NASA / <a href=\"https://en.wikipedia.org/wiki/Buzz_Aldrin\" class=\"extiw\" title=\"w:Buzz Aldrin\">Buzz Aldrin</a>",
+  "credit": "This image or video was catalogued by NASA Headquarters of the United States <a href=\"https://en.wikipedia.org/wiki/NASA\" class=\"extiw\" title=\"w:NASA\">National Aeronautics and Space Administration</a> (NASA) under <b>Photo ID:</b> <a rel=\"nofollow\" class=\"external text\" href=\"https://images.nasa.gov",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Apollo_11_bootprint.jpg",
+  "title": "File:Apollo 11 bootprint.jpg"
+ },
+ "pic-cassini-earth": {
+  "artist": "NASA/JPL/Space Science Institute",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://photojournal.jpl.nasa.gov/catalog/PIA08329\" href=\"https://photojournal.jpl.nasa.gov/catalog/PIA08329\">http://photojournal.jpl.nasa.gov/catalog/PIA08329</a> (compressed version of <a rel=\"nofollow\" class=\"external free\" data-mw-ori",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Saturn_eclipse.jpg",
+  "title": "File:Saturn eclipse.jpg"
+ },
+ "pic-chandrayaan3": {
+  "artist": "Indian Space Research Organisation",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.isro.gov.in/chandrayaan2-gallery\">https://www.isro.gov.in/chandrayaan2-gallery</a>",
+  "licence": "GODL-India",
+  "page": "https://commons.wikimedia.org/wiki/File:GSLV_Mk_III_M1,_Chandrayaan-2_-_Pragyan_rover_mounted_on_the_ramp_of_Vikram_lander_01.jpg",
+  "title": "File:GSLV Mk III M1, Chandrayaan-2 - Pragyan rover mounted on the ramp of Vikram lander 01.jpg"
+ },
+ "pic-curiosity": {
+  "artist": "NASA/JPL-Caltech/MSSS",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://photojournal.jpl.nasa.gov/catalog/PIA19142\">https://photojournal.jpl.nasa.gov/catalog/PIA19142</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:PIA19142_Curiosity_Self-Portrait_at_%27Mojave%27_Site_on_Mount_Sharp.jpg",
+  "title": "File:PIA19142 Curiosity Self-Portrait at 'Mojave' Site on Mount Sharp.jpg"
+ },
+ "pic-earthrise": {
+  "artist": "<div class=\"fn value\">\nNASA/Bill Anders</div>",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://www.hq.nasa.gov/office/pao/History/alsj/a410/AS8-14-2383HR.jpg\" href=\"https://www.hq.nasa.gov/office/pao/History/alsj/a410/AS8-14-2383HR.jpg\">http://www.hq.nasa.gov/office/pao/History/alsj/a410/AS8-14-2383HR.jpg</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:NASA-Apollo8-Dec24-Earthrise.jpg",
+  "title": "File:NASA-Apollo8-Dec24-Earthrise.jpg"
+ },
+ "pic-huygens": {
+  "artist": "ESA/NASA/JPL/University of Arizona",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://photojournal.jpl.nasa.gov/catalog/PIA07232\" href=\"https://photojournal.jpl.nasa.gov/catalog/PIA07232\">http://photojournal.jpl.nasa.gov/catalog/PIA07232</a> (<a rel=\"nofollow\" class=\"external text\" data-mw-original-href=\"http://pho",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Huygens_surface_color.jpg",
+  "title": "File:Huygens surface color.jpg"
+ },
+ "pic-ingenuity": {
+  "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/semeion/\">semeion.photo</a> Credit: NASA/JPL-Caltech/ASU/Simeon Schmauß",
+  "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/semeion/53475637956\">Marsrover Perseverance Mastcam-Z Sol 768</a>",
+  "licence": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:NASA%27s_Ingenuity_helicopter_on_Mars_by_Perseverance_Mastcam-Z,_Sol_768_(53475637956).jpg",
+  "title": "File:NASA's Ingenuity helicopter on Mars by Perseverance Mastcam-Z, Sol 768 (53475637956).jpg"
+ },
+ "pic-mangalyaan": {
+  "artist": "European Space Agency",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.esa.int/spaceinimages/Images/2008/07/Phobos3\">https://www.esa.int/spaceinimages/Images/2008/07/Phobos3</a>",
+  "licence": "CC BY-SA 3.0 igo",
+  "page": "https://commons.wikimedia.org/wiki/File:Phobos_ESA229192.tiff",
+  "title": "File:Phobos ESA229192.tiff"
+ },
+ "pic-paleblue": {
+  "artist": "<div class=\"fn value\">\n<i>Voyager 1</i></div>",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://visibleearth.nasa.gov/view.php?id=52392\" href=\"https://visibleearth.nasa.gov/view.php?id=52392\">http://visibleearth.nasa.gov/view.php?id=52392</a><br><a rel=\"nofollow\" class=\"external free\" href=\"https://photojournal.jpl.nasa.gov/",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Pale_Blue_Dot.png",
+  "title": "File:Pale Blue Dot.png"
+ },
+ "pic-pluto": {
+  "artist": "NASA/Johns Hopkins University Applied Physics Laboratory/Southwest Research Institute/Alex Parker",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://pluto.jhuapl.edu/Galleries/Featured-Images/image.php?page=1&amp;gallery_id=2&amp;image_id=543\">http://pluto.jhuapl.edu/Galleries/Featured-Images/image.php?page=1&amp;gallery_id=2&amp;image_id=543</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Pluto_in_True_Color_-_High-Res.jpg",
+  "title": "File:Pluto in True Color - High-Res.jpg"
+ },
+ "pic-rosetta": {
+  "artist": "ESA/Rosetta/NAVCAM, <a rel=\"nofollow\" class=\"external text\" href=\"https://creativecommons.org/licenses/by-sa/3.0/igo/\">CC BY-SA IGO 3.0</a>",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://www.esa.int/spaceinimages/Images/2014/09/Comet_on_19_September_2014_NavCam\">http://www.esa.int/spaceinimages/Images/2014/09/Comet_on_19_September_2014_NavCam</a> (<a rel=\"nofollow\" class=\"external text\" href=\"http://www.esa.int/var/esa/storage/ima",
+  "licence": "CC BY-SA 3.0 igo",
+  "page": "https://commons.wikimedia.org/wiki/File:Comet_67P_on_19_September_2014_NavCam_mosaic.jpg",
+  "title": "File:Comet 67P on 19 September 2014 NavCam mosaic.jpg"
+ },
+ "pic-viking": {
+  "artist": "NASA/JPL",
+  "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.nasa.gov/image-article/our-first-view-of-the-surface-of-mars/\">Our First View of the Surface of Mars</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:On_the_morning_of_July_20,_1976,_roughly_40_minutes_after_mission_controllers_received_word_that_the_Viking_1_lander_had_successfully_touched_down_on_the_surface_of_Mars,_this_photo_gave_us_our_(our-first-view-of-the-surface-of-mars).jpg",
+  "title": "File:On the morning of July 20, 1976, roughly 40 minutes after mission controllers received word that the Viking 1 lander had successfully touched down on the surface of Mars, this photo gave us our (our-first-view-of-the-surface-of-mars).jpg"
+ },
+ "pic-voyager-jupiter": {
+  "artist": "NASA",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://photojournal.jpl.nasa.gov/catalog/PIA00014\" href=\"https://photojournal.jpl.nasa.gov/catalog/PIA00014\">http://photojournal.jpl.nasa.gov/catalog/PIA00014</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Great_Red_Spot_From_Voyager_1.jpg",
+  "title": "File:Great Red Spot From Voyager 1.jpg"
+ },
+ "sc-aditya": {
+  "artist": "Indian Space Research Organisation",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://twitter.com/isro/status/1696783155318108527?t=GHnC6KAsUE_-bpe1dvAeGw&amp;s=19\">https://twitter.com/isro/status/1696783155318108527?t=GHnC6KAsUE_-bpe1dvAeGw&amp;s=19</a>",
+  "licence": "GODL-India",
+  "page": "https://commons.wikimedia.org/wiki/File:Aditya-L1_spacecraft.jpg",
+  "title": "File:Aditya-L1 spacecraft.jpg"
+ },
+ "sc-apollo11": {
+  "artist": "NASA",
+  "credit": "NASA website; description,<a rel=\"nofollow\" class=\"external autonumber\" data-mw-original-href=\"http://www.nasa.gov/multimedia/imagegallery/image_feature_1161.html\" href=\"https://www.nasa.gov/multimedia/imagegallery/image_feature_1161.html\">[1]</a> high resolution image.<a rel=\"nofollow\" class=\"exter",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Apollo_11_Lunar_Module_Eagle_in_landing_configuration_in_lunar_orbit_from_the_Command_and_Service_Module_Columbia.jpg",
+  "title": "File:Apollo 11 Lunar Module Eagle in landing configuration in lunar orbit from the Command and Service Module Columbia.jpg"
+ },
+ "sc-cassini": {
+  "artist": "NASA/JPL",
+  "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"https://photojournal.jpl.nasa.gov/catalog/PIA03883\">JPL Photojournal</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Cassini_Saturn_Orbit_Insertion.jpg",
+  "title": "File:Cassini Saturn Orbit Insertion.jpg"
+ },
+ "sc-chandrayaan3": {
+  "artist": "ISRO/Simeon Schmauß",
+  "credit": "<p>Wikimedia commons:\n</p>\n<span class=\"mw-default-size\" typeof=\"mw:File\"><a href=\"//commons.wikimedia.org/wiki/File:Chandrayaan_3_Vikram_lander_stereo_(53167467822).png\" class=\"mw-file-description\"><img src=\"https://upload.wikimedia.org/wikipedia/commons/3/33/Chandrayaan_3_Vikram_lander_stereo_%285",
+  "licence": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Chandrayaan_3_Vikram_lander_stereo_(53167467822)_crop.png",
+  "title": "File:Chandrayaan 3 Vikram lander stereo (53167467822) crop.png"
+ },
+ "sc-curiosity": {
+  "artist": "<ul><li>NASA/JPL-Caltech/Malin Space Science Systems</li>\n<li>Derivative work including grading, distortion correction, minor local adjustments and rendering from tiff-file: <a href=\"//commons.wikimedia.org/wiki/User:Julian_Herzog\" title=\"User:Julian Herzog\">Julian Herzog</a></li></ul>",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://photojournal.jpl.nasa.gov/catalog/PIA16239\" href=\"https://photojournal.jpl.nasa.gov/catalog/PIA16239\">http://photojournal.jpl.nasa.gov/catalog/PIA16239</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:PIA16239_High-Resolution_Self-Portrait_by_Curiosity_Rover_Arm_Camera.jpg",
+  "title": "File:PIA16239 High-Resolution Self-Portrait by Curiosity Rover Arm Camera.jpg"
+ },
+ "sc-hubble": {
+  "artist": "Ruffnax (Crew of STS-125)",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://catalog.archives.gov/OpaAPI/media/23486741/content/stillpix/255-sts/STS125/STS125_ESC_JPG/255-STS-s125e011848.jpg\" href=\"https://catalog.archives.gov/OpaAPI/media/23486741/content/stillpix/255-sts/STS125/STS125_ESC_JPG/255-STS-s12",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:HST-SM4.jpeg",
+  "title": "File:HST-SM4.jpeg"
+ },
+ "sc-iss": {
+  "artist": "NASA/Crew of STS-132",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://images-assets.nasa.gov/image/s132e012208/s132e012208~orig.jpg\">https://images-assets.nasa.gov/image/s132e012208/s132e012208~orig.jpg</a><br>(<a rel=\"nofollow\" class=\"external free\" href=\"https://images.nasa.gov/details-s132e012208\">https://images",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:International_Space_Station_after_undocking_of_STS-132.jpg",
+  "title": "File:International Space Station after undocking of STS-132.jpg"
+ },
+ "sc-jwst": {
+  "artist": "NASA",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://science.nasa.gov/multimedia/spacecraft-icons/\">https://science.nasa.gov/multimedia/spacecraft-icons/</a> (<a rel=\"nofollow\" class=\"external text\" href=\"https://smd-prod.s3.amazonaws.com/science-pink/s3fs-public/thumbnails/image/Webb_2.png\">image ",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:JWST_spacecraft_model_2.png",
+  "title": "File:JWST spacecraft model 2.png"
+ },
+ "sc-mangalyaan": {
+  "artist": "Nesnad",
+  "credit": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+  "licence": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Mars_Orbiter_Mission_-_India_-_ArtistsConcept.jpg",
+  "title": "File:Mars Orbiter Mission - India - ArtistsConcept.jpg"
+ },
+ "sc-newhorizons": {
+  "artist": "<a href=\"https://en.wikipedia.org/wiki/NASA\" class=\"extiw\" title=\"wikipedia:NASA\">National Aeronautics and Space Administration (NASA)</a>, <a href=\"https://en.wikipedia.org/wiki/Applied_Physics_Laboratory\" class=\"extiw\" title=\"wikipedia:Applied Physics Laboratory\">Applied Physics Laboratory</a>",
+  "credit": "\"<a rel=\"nofollow\" class=\"external text\" href=\"http://pluto.jhuapl.edu/News-Center/News-Article.php?page=20150701-2\">PEPSSI Instrument Tastes Pluto's Atmosphere</a>\" from the Applied Physics Laboratory <i>New Horizons</i> website.",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:New_Horizons_spacecraft_model_1.png",
+  "title": "File:New Horizons Transparent.png"
+ },
+ "sc-perseverance": {
+  "artist": "NASA/JPL-Caltech",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://mars.nasa.gov/resources/26253/perseverances-selfie-at-rochette/\">https://mars.nasa.gov/resources/26253/perseverances-selfie-at-rochette/</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Perseverance-Selfie-at-Rochette-Horizontal-V2.gif",
+  "title": "File:Perseverance-Selfie-at-Rochette-Horizontal-V2.gif"
+ },
+ "sc-rosetta": {
+  "artist": "ESA/ATG medialab",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.flickr.com/photos/europeanspaceagency/11206647984/\">https://www.flickr.com/photos/europeanspaceagency/11206647984/</a>",
+  "licence": "CC BY-SA 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Rosetta_spacecraft_model.png",
+  "title": "File:Rosetta spacecraft model.png"
+ },
+ "sc-sputnik": {
+  "artist": "NSSDC, NASA<a rel=\"nofollow\" class=\"external autonumber\" data-mw-original-href=\"http://apod.nasa.gov/apod/ap071004.html\" href=\"https://apod.nasa.gov/apod/ap071004.html\">[1]</a>",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://nssdc.gsfc.nasa.gov/database/MasterCatalog?sc=1957-001B\" href=\"https://nssdc.gsfc.nasa.gov/database/MasterCatalog?sc=1957-001B\">http://nssdc.gsfc.nasa.gov/database/MasterCatalog?sc=1957-001B</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Sputnik_asm.jpg",
+  "title": "File:Sputnik asm.jpg"
+ },
+ "sc-viking": {
+  "artist": "NASA/JPL-Caltech/University of Arizona",
+  "credit": "<a rel=\"nofollow\" class=\"external text\" data-mw-original-href=\"http://www.nasa.gov/multimedia/imagegallery/image_feature_2055.html\" href=\"https://www.nasa.gov/multimedia/imagegallery/image_feature_2055.html\">NASA Image of the Day</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Viking_Lander_Model.jpg",
+  "title": "File:Viking Lander Model.jpg"
+ },
+ "sc-vostok": {
+  "artist": "The original uploader was <a href=\"https://en.wikipedia.org/wiki/de:User:HPH\" class=\"extiw\" title=\"w:de:User:HPH\">HPH</a> at <a href=\"https://en.wikipedia.org/wiki/de:\" class=\"extiw\" title=\"w:de:\">German Wikipedia</a>.",
+  "credit": "<bdi lang=\"en\" dir=\"ltr\">Transferred from <span class=\"plainlinks\"><a class=\"external text\" data-mw-original-href=\"//de.wikipedia.org\" href=\"https://de.wikipedia.org\">de.wikipedia</a></span> to Commons.</bdi>",
+  "licence": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Vostok_spacecraft.jpg",
+  "title": "File:Vostok spacecraft.jpg"
+ },
+ "sc-voyager": {
+  "artist": "NASA/JPL",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://solarsystem.nasa.gov/multimedia/display.cfm?IM_ID=2194\" href=\"https://solarsystem.nasa.gov/multimedia/display.cfm?IM_ID=2194\">http://solarsystem.nasa.gov/multimedia/display.cfm?IM_ID=2194</a> (<a rel=\"nofollow\" class=\"external tex",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Voyager_spacecraft.jpg",
+  "title": "File:Voyager spacecraft.jpg"
+ },
+ "site-apollo11": {
+  "artist": "NASA",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://lroc.sese.asu.edu/news/uploads/lm_westcrater.png\">https://lroc.sese.asu.edu/news/uploads/lm_westcrater.png</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Apollo_11_Landing_Site_%26_West_Crater.png",
+  "title": "File:Apollo 11 Landing Site & West Crater.png"
+ },
+ "site-apollo17": {
+  "artist": "Lunar Reconnaissance Orbiter",
+  "credit": "<ul><li>page - <a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://www.nasa.gov/mission_pages/LRO/news/apollo-sites.html\" href=\"https://www.nasa.gov/mission_pages/LRO/news/apollo-sites.html\">http://www.nasa.gov/mission_pages/LRO/news/apollo-sites.html</a>\n<ul><li>image - <a rel=\"no",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Apollo_17_landing_site,_labeled.jpg",
+  "title": "File:Apollo 17 landing site, labeled.jpg"
+ },
+ "site-chandrayaan3": {
+  "artist": "NASA/GSFC/Arizona State University",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://lroc.sese.asu.edu/posts/1314\">https://lroc.sese.asu.edu/posts/1314</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:M1447750764LR_Chandrayaan-3_Landing_Site_imaged_by_Lunar_Reconnaissance_Orbiter_Camera_(LROC)_on_27_August_2023_(annotated).png",
+  "title": "File:M1447750764LR Chandrayaan-3 Landing Site imaged by Lunar Reconnaissance Orbiter Camera (LROC) on 27 August 2023 (annotated).png"
+ },
+ "site-change4": {
+  "artist": "NASA/GSFC/Arizona State University",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.lroc.asu.edu/posts/1092\">https://www.lroc.asu.edu/posts/1092</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:LRO_Above_the_Landing_Site_of_Chang%27e_4_01.png",
+  "title": "File:LRO Above the Landing Site of Chang'e 4 01.png"
+ },
+ "site-curiosity": {
+  "artist": "NASA/JPL-Caltech/University of Arizona",
+  "credit": "This image or video was catalogued by Jet Propulsion Laboratory of the United States <a href=\"https://en.wikipedia.org/wiki/NASA\" class=\"extiw\" title=\"w:NASA\">National Aeronautics and Space Administration</a> (NASA) under <b>Photo ID:</b> <a rel=\"nofollow\" class=\"external text\" href=\"https://images.",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:HiRISE_Views_Curiosity_During_a_Drive_(PIA26553).jpg",
+  "title": "File:HiRISE Views Curiosity During a Drive (PIA26553).jpg"
+ },
+ "site-jezero": {
+  "artist": "NASA/JPL-Caltech/ASU/MSSS",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://photojournal.jpl.nasa.gov/catalog/PIA25022\">https://photojournal.jpl.nasa.gov/catalog/PIA25022</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Spanning_the_Delta_of_Jezero_Crater_on_Mars_(PIA25022).jpg",
+  "title": "File:Spanning the Delta of Jezero Crater on Mars (PIA25022).jpg"
+ },
+ "site-perseverance": {
+  "artist": "<p>Base image: NASA/JPL-Caltech/University of Arizona\n</p>\nModification: Alliterative Anchovies",
+  "credit": "NASA: <a rel=\"nofollow\" class=\"external free\" href=\"https://mars.nasa.gov/resources/25965/perseverances-first-road-trip/\">https://mars.nasa.gov/resources/25965/perseverances-first-road-trip/</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Perseverance_First_Two_Missions_Paths_Distinguished.png",
+  "title": "File:Perseverance First Two Missions Paths Distinguished.png"
  },
  "sun-eclipse": {
   "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Lviatour\" title=\"User:Lviatour\">Luc Viatour</a>",
