@@ -1,0 +1,32 @@
+{
+ "map-earth": {
+  "bytes": 169062,
+  "pixels": [
+   2400,
+   1200
+  ],
+  "url": "https://www.solarsystemscope.com/textures/download/8k_earth_daymap.jpg"
+ },
+ "map-moon": {
+  "bytes": 2066372,
+  "pixels": [
+   4000,
+   2000
+  ],
+  "url": "https://www.solarsystemscope.com/textures/download/8k_moon.jpg"
+ },
+ "pic-aditya": {
+  "error": "nothing free found",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Aditya-L1 SUIT full disk images of the Sun.jpg"
+   },
+   {
+    "licence": "Public domain",
+    "title": "File:Two Inscriptions Pertaining to the Paramára Rulers of Málava (IA jstor-592155).pdf"
+   }
+  ]
+ }
+}

@@ -76,6 +76,7 @@ SLOTS = {
     'universe-timeline.html': ['gx-udf', 'nb-pillars'],
 }
 
+AT_END = {'iss.html'}
 SIZES = {}
 CREDITS = {}
 
@@ -129,6 +130,11 @@ def place(path, html, bt, esc):
     if not block:
         return html
     m = html.index('<main')
+    if path in AT_END:
+        # after the page's own tool, just before "Keep exploring" (or the end of the page)
+        k = html.find('<section class="blk"><h2><span class="t" lang="en">Keep exploring', m)
+        k = k if k > 0 else html.rfind('</main>')
+        return html[:k] + block + html[k:]
     i = html.find('</section>', m)
     if i < 0:
         return html

@@ -17,6 +17,7 @@ import skyevents
 import students
 import cons
 import spacephotos
+import missionphotos
 import formation
 import site_data
 import photos
@@ -413,7 +414,7 @@ def asset_v():
     '''A short hash of the scripts and styles, so a changed file is never served from an old cache.'''
     if not _ASSET_V:
         h = hashlib.md5()
-        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'sw.js'):
+        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'sw.js'):
             h.update((SRC / name).read_bytes())
         h.update((ROOT / 'tools' / 'formation.py').read_bytes())
         if (OUT / 'assets/quiz-bank.js').exists():
@@ -890,10 +891,11 @@ def simple_pages():
 <section class="blk callout"><b>{bt("Want it for your city?", "अपने शहर के लिए चाहिए?")}</b> {bt("My space shows sunset, moonrise and the planets you can see tonight from your city, and the space station page shows when the ISS flies over you.", "My space में आपके शहर का सूर्यास्त, चाँद का उगना और आज रात दिखने वाले ग्रह हैं, और अंतरिक्ष स्टेशन वाला page बताता है कि ISS आपके ऊपर से कब गुज़रेगा।")} <a href="my-space.html">{bt("Open My space", "My space खोलें")}</a> · <a href="iss.html">{bt("Space station passes", "अंतरिक्ष स्टेशन कब दिखेगा")}</a></section>'''
     write('sky.html', shell('Moon and sky', 'चाँद और आसमान', 'sky', body, "Tonight's Moon phase, a Moon calendar and the next meteor showers.", canonical='sky.html'))
     # spacecraft
-    body = f'''<section class="blk"><h1>{bi("spacecraftTitle")}</h1><p class="sub">{bi("spacecraftSubtitle")}</p><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))" id="craft"></div><p class="note">{bi("spacecraftNote")}</p></section>'''
+    body = f'''<section class="blk"><h1>{bi("spacecraftTitle")}</h1><p class="sub">{bi("spacecraftSubtitle")}</p><div class="card ladder" id="craftLadder"></div><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))" id="craft"></div><p class="note">{bi("spacecraftNote")}</p></section>
+<script>window.ASTRYL_CRAFTPICS={json.dumps({k: '<div class="mphotos">' + ''.join(spacephotos.figure(p, '', bt, esc, cls='mphoto') for p in v) + '</div>' for k, v in missionphotos.CRAFT.items()}, ensure_ascii=False).replace('</', '<\\/')};</script>'''
     write('spacecraft.html', shell('Spacecraft now', 'अंतरिक्ष यान अभी', 'missions', body, 'How far Voyager 1, Voyager 2, New Horizons, JWST, the ISS, Hubble and the Mars rovers are from Earth right now.', canonical='spacecraft.html'))
     # missions
-    items = ''.join(f'<div class="m"><div class="y">{m["y"]}</div><h3>{m["name"]} <small class="note">· {m["agency"]}</small></h3><p>{bi("mission" + m["id"].capitalize())}</p></div>' for m in MISSIONS)
+    items = ''.join(f'<div class="m"><div class="y">{m["y"]}</div><h3>{m["name"]} <small class="note">· {m["agency"]}</small></h3><p>{bi("mission" + m["id"].capitalize())}</p>{mission_photos(m["id"])}</div>' for m in MISSIONS)
     body = f'''<section class="blk"><h1>{bi("missionsTitle")}</h1><p class="sub">{bi("missionsSubtitle")}</p><div class="tl">{items}</div><p><a class="btn" href="spacecraft.html">🛰️ {bi("spacecraftTitle")}</a></p></section>'''
     write('missions.html', shell('Space missions', 'अंतरिक्ष missions', 'missions', body, 'Famous moments in space exploration, from Sputnik 1 to Chandrayaan-3.', canonical='missions.html'))
     # constellations
@@ -908,8 +910,11 @@ def maps_page():
     def svg(world):
         moon = world == 'moon'
         base, shade, high = ('#9c978e', '#55524d', '#c4bfb5') if moon else ('#b5683f', '#6e3a22', '#d9915f')
-        o = f'<svg viewBox="0 0 360 180" role="img" aria-label="{esc(tr("en", "surfaceMapOf", body=tr("en", "bodyMoon" if moon else "planetMars")))}" style="width:100%;height:auto;border-radius:16px;display:block"><rect width="360" height="180" fill="{base}"/>'
-        for f in [f for f in FEATS if f['world'] == world]:
+        o = f'<svg class="surfmap" data-world="{world}" viewBox="0 0 360 180" role="img" aria-label="{esc(tr("en", "surfaceMapOf", body=tr("en", "bodyMoon" if moon else "planetMars")))}" style="width:100%;height:auto;border-radius:16px;display:block;touch-action:none"><rect width="360" height="180" fill="{base}"/>'
+        if world in MAPS:
+            # the real photo map; the drawn features are left out
+            o += f'<image href="img/space/map-{world}.webp" x="0" y="0" width="360" height="180" preserveAspectRatio="none"/>'
+        for f in [f for f in FEATS if f['world'] == world and world not in MAPS]:
             cx, cy = f['lon'] + 180, 90 - f['lat']
             for dx in (-360, 0, 360):
                 x = cx + dx
@@ -935,7 +940,7 @@ def maps_page():
             hi = L['hi']['feat' + f['id']].split(' (')[0]
             o += f'<text x="{tx:.1f}" y="{90 - f["lat"]:.1f}" font-size="5" fill="#fff" text-anchor="middle" stroke="#000" stroke-opacity=".5" stroke-width=".6" paint-order="stroke" class="t" lang="hi">{esc(hi)}</text>'
         for si in [x for x in SITES if x['world'] == world]:
-            o += f'<a href="#site-{si["id"]}"><circle cx="{si["lon"] + 180:.2f}" cy="{90 - si["lat"]:.2f}" r="2.6" fill="{colors[si["kind"]]}" stroke="#fff" stroke-width="1"><title>{esc(si["name"])}</title></circle></a>'
+            o += f'<a href="#site-{si["id"]}" data-site="{si["id"]}" data-x="{si["lon"] + 180:.2f}" data-y="{90 - si["lat"]:.2f}"><circle class="sdot" cx="{si["lon"] + 180:.2f}" cy="{90 - si["lat"]:.2f}" r="2.6" fill="{colors[si["kind"]]}" stroke="#fff" stroke-width="1"><title>{esc(si["name"])}</title></circle></a>'
         return o + '</svg>'
 
     def fmtll(lat, lon):
@@ -943,11 +948,39 @@ def maps_page():
     legend = ''.join(f'<span style="display:inline-flex;align-items:center;gap:6px;margin-right:14px"><i style="width:12px;height:12px;border-radius:50%;background:{c};border:1.5px solid #fff;display:inline-block"></i>{bi(kind_key[k])}</span>' for k, c in colors.items())
     secs = ''
     for world, title_key in (('moon', 'bodyMoon'), ('mars', 'planetMars')):
-        cards = ''.join(f'<div class="card" id="site-{x["id"]}"><div class="y" style="font:700 1rem Space Grotesk;color:var(--accent)">{x["year"]}</div><h3>{esc(x["name"])} <small class="note">· {x["agency"]} · {bi(kind_key[x["kind"]])}</small></h3><p class="note">{fmtll(x["lat"], x["lon"])}</p><p style="color:var(--text)">{bi("site" + x["id"])}</p></div>' for x in sorted([x for x in SITES if x['world'] == world], key=lambda x: (x['year'], x['name'])))
-        secs += f'<section class="blk"><h2>{bi(title_key)}</h2><p class="sub">{bi("surfaceMapMoonHint" if world == "moon" else "surfaceMapMarsHint")}</p>{svg(world)}<p style="margin-top:10px">{legend}</p><div class="grid" style="margin-top:14px">{cards}</div></section>'
+        cards = ''.join(f'<div class="card" id="site-{x["id"]}"><div class="y" style="font:700 1rem Space Grotesk;color:var(--accent)">{x["year"]}</div><h3>{esc(x["name"])} <small class="note">· {x["agency"]} · {bi(kind_key[x["kind"]])}</small></h3><p class="note">{fmtll(x["lat"], x["lon"])}</p><p style="color:var(--text)">{bi("site" + x["id"])}</p>{spacephotos.figure("site-" + x["id"], "", bt, esc)}<p><button type="button" class="btn" data-zoomto="{x["id"]}">🔍 {bt("Show on the map", "नक्शे पर दिखाएँ")}</button></p></div>' for x in sorted([x for x in SITES if x['world'] == world], key=lambda x: (x['year'], x['name'])))
+        secs += f'<section class="blk"><h2>{bi(title_key)}</h2><p class="sub">{bi("surfaceMapMoonHint" if world == "moon" else "surfaceMapMarsHint")}</p><div class="mapwrap">{svg(world)}<div class="mapctl"><button type="button" class="btn" data-mz="in" aria-label="Zoom in">+</button><button type="button" class="btn" data-mz="out" aria-label="Zoom out">−</button><button type="button" class="btn" data-mz="all">{bt("Whole map", "पूरा नक्शा")}</button></div></div><p class="note" style="margin-top:6px">{bt(*MAP_CREDIT[world]) if world in MAPS else ""} · {bt("Drag to move, pinch or use + to zoom.", "खिसकाने के लिए खींचें, ज़ूम के लिए pinch या + दबाएँ।")}</p><p style="margin-top:10px">{legend}</p><div class="grid" style="margin-top:14px">{cards}</div></section>'
     body = f'''<section class="blk"><h1>{bi("surfaceMapTitle")}</h1><p class="sub">{bi("surfaceMapNote")}</p></section>{secs}
 <style>.card:target{{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}}</style>'''
-    write('maps.html', shell('Moon and Mars surface maps', 'चाँद और मंगल के नक़्शे', 'maps', body, 'Landing sites on the Moon and Mars at their real coordinates: Apollo, Chang\'e, Chandrayaan, Viking, Curiosity, Perseverance and more.', canonical='maps.html'))
+    write('maps.html', shell('Moon and Mars surface maps', 'चाँद और मंगल के नक़्शे', 'maps', body, 'Landing sites on the Moon and Mars at their real coordinates: Apollo, Chang\'e, Chandrayaan, Viking, Curiosity, Perseverance and more.', canonical='maps.html', extra_head=f'<script defer src="assets/mapzoom.js?v={asset_v()}"></script>'))
+
+
+def mission_photos(mid):
+    figs = ''.join(spacephotos.figure(p, '', bt, esc, cls='mphoto') for p in missionphotos.MISSION.get(mid, []))
+    return f'<div class="mphotos">{figs}</div>' if figs else ''
+
+
+def surface_maps():
+    '''Real global maps: Mars (NASA/USGS Viking mosaic), the Moon and Earth (Solar System Scope, from NASA data).'''
+    from PIL import Image
+    d = OUT / 'img' / 'space'
+    d.mkdir(parents=True, exist_ok=True)
+    sp = ROOT / 'data/photos/space'
+    src = {'mars': sp / 'map-mars.webp', 'moon': sp / 'map-moon.webp' if (sp / 'map-moon.webp').exists() else ROOT / 'data/textures/moon.webp',
+           'earth': sp / 'map-earth.webp' if (sp / 'map-earth.webp').exists() else ROOT / 'data/textures/earth.webp'}
+    for k, f in src.items():
+        if f.exists():
+            im = Image.open(f).convert('RGB')
+            im.thumbnail((3000, 1500) if k == 'moon' else (2400, 1200) if k == 'mars' else (1440, 720))
+            im.save(d / f'map-{k}.webp', 'WEBP', quality=72, method=6)
+            MAPS[k] = im.size
+
+
+MAPS = {}
+MAP_CREDIT = {
+    'mars': ('Map: NASA/JPL/USGS Viking color mosaic · public domain', 'नक्शा: NASA/JPL/USGS Viking रंगीन mosaic · public domain'),
+    'moon': ('Map: Solar System Scope, made from NASA LRO data · CC BY 4.0', 'नक्शा: Solar System Scope, NASA LRO data से बना · CC BY 4.0'),
+}
 
 
 def get_page():
@@ -1134,7 +1167,7 @@ def main():
     shutil.copy(SRC / 'learn.js', OUT / 'assets/learn.js')
     shutil.copy(SRC / 'universe.js', OUT / 'assets/universe.js')
     shutil.copytree(site_data.CITIES, OUT / 'assets' / 'cities')
-    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js'):
+    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js'):
         shutil.copy(SRC / name, OUT / 'assets' / name)
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#fbf7ee"/><circle r="30" fill="#1b3a8a"/><ellipse rx="50" ry="15" fill="none" stroke="#6a45d6" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#1b3a8a"/></svg>', encoding='utf-8')
@@ -1146,6 +1179,7 @@ def main():
     (OUT / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n', encoding='utf-8')
     PHOTO.update(photos.build(OUT)); PHOTO_CREDIT.update(photos.credits())
     spacephotos.build(OUT)
+    surface_maps()
     (OUT / 'assets/sheet-data.js').write_text(sheet_js(), encoding='utf-8')
     QB_SIZES = quizbank.build(OUT, ROOT, BODIES, lambda lg, i: tr(lg, NAME_KEY[i]), CONS, PHOTO)
     for i, b in enumerate(BODIES):

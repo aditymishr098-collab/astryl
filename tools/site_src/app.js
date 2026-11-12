@@ -883,6 +883,24 @@
   /* ---------- page: spacecraft (port of lib/core/spacecraft.dart) ---------- */
   function spacecraftPage() {
     var box = $('#craft'); if (!box) return;
+    // "how far has each one gone": every spacecraft and a few landmarks on one log scale
+    function ladder(now) {
+      var lb = $('#craftLadder'); if (!lb) return;
+      var hiL = lang === 'hi', rows = [
+        ['🌙', hiL ? 'चाँद' : 'The Moon', 384400, true],
+        ['☀️', hiL ? 'सूरज' : 'The Sun', distFromEarthKm('sun', now), true],
+        ['🔵', hiL ? 'नेपच्यून' : 'Neptune', distFromEarthKm('neptune', now), true],
+        ['💡', hiL ? 'एक प्रकाश-दिन (रोशनी का एक दिन का सफ़र)' : 'One light-day (how far light goes in a day)', C_KMS * 86400, true]
+      ];
+      D.spacecraft.forEach(function (c) { rows.push(['🛰️', c.name, distKm(c, now), false]); });
+      rows.sort(function (a, b) { return a[2] - b[2]; });
+      var lo = Math.log10(200), top = Math.log10(4e10);
+      lb.innerHTML = '<h2 style="margin-top:0">' + (hiL ? 'कौन कहाँ तक पहुँचा' : 'How far each one has gone') + '</h2><p class="note">' + (hiL ? 'पृथ्वी से अभी की दूरी। हर अगला निशान दस गुना दूर है (log पैमाना)।' : 'Distance from Earth right now. Each step along the bar is ten times farther (a log scale).') + '</p>' +
+        rows.map(function (r) {
+          var f = Math.max(0.02, Math.min(1, (Math.log10(Math.max(r[2], 200)) - lo) / (top - lo)));
+          return '<div class="lrow' + (r[3] ? ' mark' : '') + '"><span class="ln">' + r[0] + ' ' + esc(r[1]) + '</span><span class="lbar"><i style="width:' + (f * 100).toFixed(1) + '%"></i></span><span class="lv">' + PT.km(r[2]) + '<small> · ' + (r[2] / C_KMS < 1 ? fmt(r[2] / C_KMS * 1000, 1) + ' ms' : PT.duration(r[2] / C_KMS)) + (hiL ? ' रोशनी' : ' of light') + '</small></span></div>';
+        }).join('');
+    }
     function distKm(s, now) {
       if (s.kind === 'probe') return s.anchorAu * KM_AU + (now - s.anchor) / 1000 * s.speed;
       if (s.kind === 'mars') return distFromEarthKm('mars', now);
@@ -892,13 +910,14 @@
       var now = Date.now(), h = '';
       D.spacecraft.forEach(function (s) {
         var km = distKm(s, now);
-        h += '<div class="card"><h3>' + s.name + '</h3><p style="color:var(--text)">' + t('spacecraft' + s.id.charAt(0).toUpperCase() + s.id.slice(1)) + '</p><div class="stats" style="margin-top:10px">' +
+        h += '<div class="card"><h3>' + s.name + '</h3><p style="color:var(--text)">' + t('spacecraft' + ({ newhorizons: 'NewHorizons', marsrovers: 'MarsRovers' }[s.id] || (s.id.charAt(0).toUpperCase() + s.id.slice(1)))) + '</p><div class="stats" style="margin-top:10px">' +
           '<div class="stat"><b>' + (s.kind === 'lowOrbit' ? PT.km(km) : PT.km(km)) + '</b><span>' + (s.kind === 'lowOrbit' ? t('spacecraftAltitude') : t('spacecraftDistance')) + '</span></div>' +
           (s.kind === 'lowOrbit' ? '' : '<div class="stat"><b>' + t('valueAu', { value: fmt(km / KM_AU, 2) }) + '</b><span>' + t('spacecraftInAu') + '</span></div>') +
           (s.kind === 'probe' ? '<div class="stat"><b>' + t('valueKmS', { value: fmt(s.speed, 1) }) + '</b><span>' + t('spacecraftSpeed') + '</span></div>' : '') +
-          '<div class="stat"><b>' + PT.duration(km / C_KMS) + '</b><span>' + t('spacecraftSignal') + '</span></div></div></div>';
+          '<div class="stat"><b>' + PT.duration(km / C_KMS) + '</b><span>' + t('spacecraftSignal') + '</span></div></div>' + ((window.ASTRYL_CRAFTPICS || {})[s.id] || '') + '</div>';
       });
       box.innerHTML = h;
+      ladder(now);
     }
     onRender(draw); setInterval(draw, 5000);
   }

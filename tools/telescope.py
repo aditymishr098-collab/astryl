@@ -28,7 +28,7 @@ def build(h):
 <label>{bt("Look at", "क्या देखें")}<select id="tsTarget">{sel_t}</select></label>
 </div><div><canvas id="tsCv" aria-label="Eyepiece view"></canvas><p class="note" id="tsFit"></p></div></div>
 <div id="tsStats"></div>
-<p class="note">{bt("A simplified picture: real views are fainter and have less colour, and many telescopes show the view upside down. Planets look tiny even at high power; detail comes with practice and steady air.", "यह एक सरल तस्वीर है: असली नज़ारा कम चमकीला और कम रंगीन होता है, और कई telescope उल्टा दिखाते हैं। तेज़ ज़ूम पर भी ग्रह छोटे दिखते हैं; detail अभ्यास और शांत हवा से आती है।")}</p></section>
+<p class="note">{bt("Real photos (NASA, Hubble, and Adam Evans for Andromeda), shown at their true size for this telescope. Real views are fainter and have less colour, and many telescopes show the view upside down. Planets look tiny even at high power; detail comes with practice and steady air.", "असली तस्वीरें (NASA, Hubble, और Andromeda के लिए Adam Evans), इस telescope में उनके असली आकार में। असली नज़ारा कम चमकीला और कम रंगीन होता है, और कई telescope उल्टा दिखाते हैं। तेज़ ज़ूम पर भी ग्रह छोटे दिखते हैं; detail अभ्यास और शांत हवा से आती है।")}</p></section>
 <section class="blk prose">{H2("How the numbers work", "ये आँकड़े कैसे निकलते हैं")}
 <ul><li>{raw2("<b>Magnification</b> = telescope focal length ÷ eyepiece focal length (× 2 with a Barlow).", "<b>ज़ूम</b> = telescope की focal length ÷ eyepiece की focal length (Barlow हो तो × 2)।")}</li>
 <li>{raw2("<b>True field of view</b> = the eyepiece’s apparent field ÷ magnification. The full Moon is about half a degree wide.", "<b>असली दृश्य-क्षेत्र</b> = eyepiece का apparent field ÷ ज़ूम। पूरा चाँद लगभग आधा डिग्री चौड़ा है।")}</li>

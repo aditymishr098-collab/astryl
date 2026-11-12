@@ -1,0 +1,819 @@
+{
+ "ds-m42": {
+  "artist": "NASA, ESA, M. Robberto (Space Telescope Science Institute/ESA) and the Hubble Space Telescope Orion Treasury Project Team",
+  "bytes": 49682,
+  "credit": "<p><a rel=\"nofollow\" class=\"external free\" href=\"http://hubblesite.org/newscenter/newsdesk/archive/releases/2006/01/\">http://hubblesite.org/newscenter/newsdesk/archive/releases/2006/01/</a>\n</p>\n<a rel=\"nofollow\" class=\"external free\" href=\"https://www.spacetelescope.org/news/heic0601/\">https://www.",
+  "desc": "In one of the most detailed astronomical images ever produced, NASA/ESA's Hubble Space Telescope captured an unprecedented look at the <a href=\"https://en.wikipedia.org/wiki/Orion_Nebula\" class=\"extiw\" title=\"w:Orion Nebula\">Orion Nebula</a>. ... This extensive study took 105 Hubble orbits to comple",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Orion_Nebula_-_Hubble_2006_mosaic_18000.jpg",
+  "pixels": [
+   1000,
+   1000
+  ],
+  "title": "File:Orion Nebula - Hubble 2006 mosaic 18000.jpg",
+  "tried": []
+ },
+ "ds-m45": {
+  "artist": "<p>NASA, ESA, AURA/Caltech, Palomar Observatory<br>\n</p>\n<sub>The science team consists of: D. Soderblom and E. Nelan (STScI), F. Benedict and B. Arthur (U. Texas), and B. Jones (Lick Obs.)</sub>",
+  "bytes": 62472,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://hubblesite.org/contents/media/images/2004/20/1562-Image.html?Topic=104-stars-and-nebulas&amp;keyword=pleiades\">https://hubblesite.org/contents/media/images/2004/20/1562-Image.html?Topic=104-stars-and-nebulas&amp;keyword=pleiades</a> (<a rel=\"nofo",
+  "desc": "The <a href=\"https://en.wikipedia.org/wiki/Pleiades\" class=\"extiw\" title=\"en:Pleiades\">Pleiades</a>, an <a href=\"https://en.wikipedia.org/wiki/Open_cluster\" class=\"extiw\" title=\"en:Open cluster\">open cluster</a> consisting of approximately 3,000 <a href=\"https://en.wikipedia.org/wiki/Star\" class=\"ex",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Pleiades_large.jpg",
+  "pixels": [
+   1000,
+   721
+  ],
+  "title": "File:Pleiades large.jpg",
+  "tried": []
+ },
+ "iss-cupola": {
+  "artist": "<a href=\"https://en.wikipedia.org/wiki/NASA\" class=\"extiw\" title=\"w:NASA\">NASA</a>/<a href=\"https://en.wikipedia.org/wiki/Nichole_Ayers\" class=\"extiw\" title=\"w:Nichole Ayers\">Nichole Ayers</a>",
+  "bytes": 24128,
+  "credit": "<a href=\"//commons.wikimedia.org/wiki/File:Gigantic_jet_photographed_by_Nichole_Ayers_on_the_International_Space_Station.jpg\" title=\"File:Gigantic jet photographed by Nichole Ayers on the International Space Station.jpg\">File:Gigantic jet photographed by Nichole Ayers on the International Space Stat",
+  "desc": "A <a href=\"https://en.wikipedia.org/wiki/gigantic_jet\" class=\"extiw\" title=\"w:gigantic jet\">gigantic jet</a> photographed from the <a href=\"https://en.wikipedia.org/wiki/International_Space_Station\" class=\"extiw\" title=\"w:International Space Station\">International Space Station</a> by astronaut <a h",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Gigantic_jet_photographed_by_Nichole_Ayers_on_the_International_Space_Station,_some_edits.jpg",
+  "pixels": [
+   900,
+   600
+  ],
+  "title": "File:Gigantic jet photographed by Nichole Ayers on the International Space Station, some edits.jpg",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:ISS-26 Cupola view.jpg"
+   }
+  ]
+ },
+ "iss-india-night": {
+  "artist": "NASA",
+  "bytes": 102860,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.flickr.com/photos/nasa2explore/24140256189/\">https://www.flickr.com/photos/nasa2explore/24140256189/</a>",
+  "desc": "This long exposure image of Northern India was taken by astronauts on the International Space Station while the Earth was shrouded in darkness. North is on the upper right, where the snowcapped Himalaya and Tibetan plateau may be seen. Major cities in view include New Delhi, on the right side of the",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:ISS-46_Northern_India_at_night.jpg",
+  "pixels": [
+   1000,
+   666
+  ],
+  "title": "File:ISS-46 Northern India at night.jpg",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:ISS-30 India at night.jpg"
+   }
+  ]
+ },
+ "iss-trail": {
+  "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.nasa.gov/johnson/\">NASA Johnson Space Center</a>",
+  "bytes": 119552,
+  "credit": "This image or video was catalogued by Lyndon B. Johnson Space Center of the United States <a href=\"https://en.wikipedia.org/wiki/NASA\" class=\"extiw\" title=\"w:NASA\">National Aeronautics and Space Administration</a> (NASA) under <b>Photo ID:</b> <a rel=\"nofollow\" class=\"external text\" href=\"https://im",
+  "desc": "iss073e0818308 (Sept. 29, 2025) --- This long-exposure photograph from the International Space Station was taken 263 miles above the Indian Ocean at approximately 11:02 p.m. local time. The image reveals clouds stretching into a soft blur beneath the orbital outpost, a bright airglow blanketing Eart",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Clouds_stretch_into_a_soft_blur_and_a_bright_airglow_blankets_Earth%E2%80%99s_horizon_(iss073e0818308).jpg",
+  "pixels": [
+   1000,
+   666
+  ],
+  "title": "File:Clouds stretch into a soft blur and a bright airglow blankets Earth’s horizon (iss073e0818308).jpg",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:ISS over Teide.jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:ISS Trail.jpg"
+   },
+   {
+    "licence": "CC BY 4.0",
+    "title": "File:The impact of satellite trails on Hubble Space Telescope observations.pdf"
+   },
+   {
+    "licence": "Public domain",
+    "title": "File:Aeronautics and Space Report of the President - 1983 Activities.pdf"
+   },
+   {
+    "licence": "CC BY 4.0",
+    "title": "File:The Case for Space Environmentalism.pdf"
+   },
+   {
+    "licence": "Public domain",
+    "title": "File:Space and Man, senior division (IA spacemanseniordi00onta).pdf"
+   }
+  ]
+ },
+ "map-mars": {
+  "artist": "NASA / Jet Propulsion Lab / USGS",
+  "bytes": 609080,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://astrogeology.usgs.gov/search/details/Mars/Viking/MDIM21/Mars_Viking_MDIM21_ClrMosaic_global_232m/cub\">https://astrogeology.usgs.gov/search/details/Mars/Viking/MDIM21/Mars_Viking_MDIM21_ClrMosaic_global_232m/cub</a>",
+  "desc": "This global image map of Mars has a resolution of approximately 1.0 km/pixel at the equator. It is a reduced version of a much larger map with 231 m/pixel resolution at the equator. The colorized mosaic was completed by NASA Ames which warped the original Viking colorized mosaic and blended over the",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Mars_Viking_MDIM21_ClrMosaic_1km.jpg",
+  "pixels": [
+   2400,
+   1200
+  ],
+  "title": "File:Mars Viking MDIM21 ClrMosaic 1km.jpg",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Mars Viking MDIM21 ClrMosaic global 1km.jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Mars Viking MDIM21 ClrMosaic 232m.jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Mars map.jpg"
+   }
+  ]
+ },
+ "map-moon": {
+  "error": "nothing free found",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Moon LRO WAC global mosaic.jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Lunar Reconnaissance Orbiter WAC global mosaic.jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Moon map mrd.jpg"
+   }
+  ]
+ },
+ "pic-aditya": {
+  "error": "nothing free found",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Aditya-L1 SUIT full disk images of the Sun.jpg"
+   },
+   {
+    "licence": "Public domain",
+    "title": "File:Two Inscriptions Pertaining to the Paramára Rulers of Málava (IA jstor-592155).pdf"
+   }
+  ]
+ },
+ "pic-apollo11": {
+  "artist": "NASA / <a href=\"https://en.wikipedia.org/wiki/Buzz_Aldrin\" class=\"extiw\" title=\"w:Buzz Aldrin\">Buzz Aldrin</a>",
+  "bytes": 211162,
+  "credit": "This image or video was catalogued by NASA Headquarters of the United States <a href=\"https://en.wikipedia.org/wiki/NASA\" class=\"extiw\" title=\"w:NASA\">National Aeronautics and Space Administration</a> (NASA) under <b>Photo ID:</b> <a rel=\"nofollow\" class=\"external text\" href=\"https://images.nasa.gov",
+  "desc": "<i><a href=\"//commons.wikimedia.org/wiki/Apollo_11\" title=\"Apollo 11\">Apollo 11</a></i> Lunar Module Pilot <a href=\"https://en.wikipedia.org/wiki/Buzz_Aldrin\" class=\"extiw\" title=\"w:Buzz Aldrin\">Buzz Aldrin</a>'s bootprint. Aldrin photographed this bootprint about an hour into their lunar extra-vehi",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Apollo_11_bootprint.jpg",
+  "pixels": [
+   893,
+   900
+  ],
+  "title": "File:Apollo 11 bootprint.jpg",
+  "tried": []
+ },
+ "pic-cassini-earth": {
+  "artist": "NASA/JPL/Space Science Institute",
+  "bytes": 9022,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://photojournal.jpl.nasa.gov/catalog/PIA08329\" href=\"https://photojournal.jpl.nasa.gov/catalog/PIA08329\">http://photojournal.jpl.nasa.gov/catalog/PIA08329</a> (compressed version of <a rel=\"nofollow\" class=\"external free\" data-mw-ori",
+  "desc": "<a href=\"//commons.wikimedia.org/wiki/Saturn_(planet)\" class=\"mw-redirect\" title=\"Saturn (planet)\">Saturn</a> eclipsing the sun, seen from behind from the <a href=\"//commons.wikimedia.org/wiki/Category:Cassini-Huygens\" title=\"Category:Cassini-Huygens\">Cassini</a> orbiter. The image is a composite as",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Saturn_eclipse.jpg",
+  "pixels": [
+   1000,
+   493
+  ],
+  "title": "File:Saturn eclipse.jpg",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:PIA17171 The Day the Earth Smiled.jpg"
+   }
+  ]
+ },
+ "pic-chandrayaan3": {
+  "artist": "Indian Space Research Organisation",
+  "bytes": 147212,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.isro.gov.in/chandrayaan2-gallery\">https://www.isro.gov.in/chandrayaan2-gallery</a>",
+  "desc": "Pragyan rover mounted on the ramp of Vikram lander (Front view)",
+  "licence": "GODL-India",
+  "page": "https://commons.wikimedia.org/wiki/File:GSLV_Mk_III_M1,_Chandrayaan-2_-_Pragyan_rover_mounted_on_the_ramp_of_Vikram_lander_01.jpg",
+  "pixels": [
+   900,
+   857
+  ],
+  "title": "File:GSLV Mk III M1, Chandrayaan-2 - Pragyan rover mounted on the ramp of Vikram lander 01.jpg",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Chandrayaan-3 Vikram lander imaged by Pragyan rover.jpg"
+   }
+  ]
+ },
+ "pic-curiosity": {
+  "artist": "NASA/JPL-Caltech/MSSS",
+  "bytes": 76174,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://photojournal.jpl.nasa.gov/catalog/PIA19142\">https://photojournal.jpl.nasa.gov/catalog/PIA19142</a>",
+  "desc": "PIA19142: Curiosity Self-Portrait at 'Mojave' Site on Mount Sharp \n<p><i>Original Caption Released with Image:</i><br>\nThis self-portrait of NASA's Curiosity Mars rover shows the vehicle at the \"Mojave\" site, where its drill collected the mission's second taste of Mount Sharp. \n</p><p>The scene comb",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:PIA19142_Curiosity_Self-Portrait_at_%27Mojave%27_Site_on_Mount_Sharp.jpg",
+  "pixels": [
+   1000,
+   513
+  ],
+  "title": "File:PIA19142 Curiosity Self-Portrait at 'Mojave' Site on Mount Sharp.jpg",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:PIA19912-MarsCuriosityRover-MountSharp-20150923.jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Mount Sharp, Mars.jpg"
+   },
+   {
+    "licence": "",
+    "title": "File:PIA19912-MarsCuriosityRover-MountSharp-20151002.jpg"
+   }
+  ]
+ },
+ "pic-earthrise": {
+  "artist": "<div class=\"fn value\">\nNASA/Bill Anders</div>",
+  "bytes": 26000,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://www.hq.nasa.gov/office/pao/History/alsj/a410/AS8-14-2383HR.jpg\" href=\"https://www.hq.nasa.gov/office/pao/History/alsj/a410/AS8-14-2383HR.jpg\">http://www.hq.nasa.gov/office/pao/History/alsj/a410/AS8-14-2383HR.jpg</a>",
+  "desc": "Taken by <a href=\"https://en.wikipedia.org/wiki/Apollo_8\" class=\"extiw\" title=\"w:Apollo 8\">Apollo 8</a> crewmember <a href=\"https://en.wikipedia.org/wiki/William_Anders\" class=\"extiw\" title=\"w:William Anders\">Bill Anders</a> on December 24, 1968, at mission time 075:49:07 <a rel=\"nofollow\" class=\"ex",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:NASA-Apollo8-Dec24-Earthrise.jpg",
+  "pixels": [
+   900,
+   900
+  ],
+  "title": "File:NASA-Apollo8-Dec24-Earthrise.jpg",
+  "tried": []
+ },
+ "pic-huygens": {
+  "artist": "ESA/NASA/JPL/University of Arizona",
+  "bytes": 6334,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://photojournal.jpl.nasa.gov/catalog/PIA07232\" href=\"https://photojournal.jpl.nasa.gov/catalog/PIA07232\">http://photojournal.jpl.nasa.gov/catalog/PIA07232</a> (<a rel=\"nofollow\" class=\"external text\" data-mw-original-href=\"http://pho",
+  "desc": "Image of <a href=\"https://en.wikipedia.org/wiki/Titan_(moon)\" class=\"extiw\" title=\"w:Titan (moon)\">Titan</a>'s surface taken by the <a href=\"https://en.wikipedia.org/wiki/Huygens_probe\" class=\"extiw\" title=\"w:Huygens probe\"><i>Huygens</i> probe</a> on 14 January 2005.",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Huygens_surface_color.jpg",
+  "pixels": [
+   314,
+   628
+  ],
+  "title": "File:Huygens surface color.jpg",
+  "tried": []
+ },
+ "pic-ingenuity": {
+  "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/semeion/\">semeion.photo</a> Credit: NASA/JPL-Caltech/ASU/Simeon Schmauß",
+  "bytes": 141158,
+  "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/semeion/53475637956\">Marsrover Perseverance Mastcam-Z Sol 768</a>",
+  "desc": "This image of NASA's <a href=\"https://en.wikipedia.org/wiki/Ingenuity_(helicopter)\" class=\"extiw\" title=\"w:Ingenuity (helicopter)\">Ingenuity Mars helicopter</a> was taken by the Mastcam-Z instrument aboard Perseverance on April 18, 2023, the 768th Martian day, or sol, of the rover's mission. The hel",
+  "licence": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:NASA%27s_Ingenuity_helicopter_on_Mars_by_Perseverance_Mastcam-Z,_Sol_768_(53475637956).jpg",
+  "pixels": [
+   900,
+   670
+  ],
+  "title": "File:NASA's Ingenuity helicopter on Mars by Perseverance Mastcam-Z, Sol 768 (53475637956).jpg",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:PIA24542-MarsPerseveranceRover-Ingenuity-20210405.jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Ingenuity helicopter on Mars.jpg"
+   }
+  ]
+ },
+ "pic-mangalyaan": {
+  "artist": "European Space Agency",
+  "bytes": 29604,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.esa.int/spaceinimages/Images/2008/07/Phobos3\">https://www.esa.int/spaceinimages/Images/2008/07/Phobos3</a>",
+  "desc": "On 23 July 2008, the High Resolution Stereo Camera on board the ESA’s Mars Express took the highest-resolution full-disc image yet of the surface of the moon Phobos.\n<p>The image data was acquired from a distance of 97 km with a spatial resolution of about 3.7 m/pixel in orbit 5851. These images hav",
+  "licence": "CC BY-SA 3.0 igo",
+  "page": "https://commons.wikimedia.org/wiki/File:Phobos_ESA229192.tiff",
+  "pixels": [
+   900,
+   636
+  ],
+  "title": "File:Phobos ESA229192.tiff",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Mars Orbiter Mission - first image of Mars.jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Mars full disc image by Mars Orbiter Mission.jpg"
+   },
+   {
+    "licence": "Public domain",
+    "title": "File:Mars03rovers.pdf"
+   },
+   {
+    "licence": "Public domain",
+    "title": "File:DEFINING NASA'S MISSION AND AMERICA'S VISION FOR THE FUTURE OF SPACE EXPLORATION (IA gov.gpo.fdsys.CHRG-105hhrg46559).pdf"
+   },
+   {
+    "licence": "Public domain",
+    "title": "File:Proposed NASA HAVOC Missions to Venus.pdf"
+   }
+  ]
+ },
+ "pic-paleblue": {
+  "artist": "<div class=\"fn value\">\n<i>Voyager 1</i></div>",
+  "bytes": 28952,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://visibleearth.nasa.gov/view.php?id=52392\" href=\"https://visibleearth.nasa.gov/view.php?id=52392\">http://visibleearth.nasa.gov/view.php?id=52392</a><br><a rel=\"nofollow\" class=\"external free\" href=\"https://photojournal.jpl.nasa.gov/",
+  "desc": "Original caption:\nThis narrow-angle color image of the Earth, dubbed ‘Pale Blue Dot’, is a part of the first ever ‘portrait’ of the solar system taken by <i>Voyager 1</i>. The spacecraft acquired a total of 60 frames for a mosaic of the solar system from a distance of more than 4 billion miles from ",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Pale_Blue_Dot.png",
+  "pixels": [
+   453,
+   614
+  ],
+  "title": "File:Pale Blue Dot.png",
+  "tried": []
+ },
+ "pic-pluto": {
+  "artist": "NASA/Johns Hopkins University Applied Physics Laboratory/Southwest Research Institute/Alex Parker",
+  "bytes": 98276,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://pluto.jhuapl.edu/Galleries/Featured-Images/image.php?page=1&amp;gallery_id=2&amp;image_id=543\">http://pluto.jhuapl.edu/Galleries/Featured-Images/image.php?page=1&amp;gallery_id=2&amp;image_id=543</a>",
+  "desc": "Pluto's image taken by New Horizons on July 14, 2015, from a range of 22,025 miles (35,445 kilometers). The striking features on Pluto are clearly visible, including the bright expanse of Pluto's icy, nitrogen-and-methane rich \"heart,\" Sputnik Planitia.\n<p>The natural-looking colors result from refi",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Pluto_in_True_Color_-_High-Res.jpg",
+  "pixels": [
+   900,
+   900
+  ],
+  "title": "File:Pluto in True Color - High-Res.jpg",
+  "tried": []
+ },
+ "pic-rosetta": {
+  "artist": "ESA/Rosetta/NAVCAM, <a rel=\"nofollow\" class=\"external text\" href=\"https://creativecommons.org/licenses/by-sa/3.0/igo/\">CC BY-SA IGO 3.0</a>",
+  "bytes": 60564,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://www.esa.int/spaceinimages/Images/2014/09/Comet_on_19_September_2014_NavCam\">http://www.esa.int/spaceinimages/Images/2014/09/Comet_on_19_September_2014_NavCam</a> (<a rel=\"nofollow\" class=\"external text\" href=\"http://www.esa.int/var/esa/storage/ima",
+  "desc": "Mosaic of four images taken by <a href=\"https://en.wikipedia.org/wiki/Rosetta_(spacecraft)\" class=\"extiw\" title=\"en:Rosetta (spacecraft)\"><i>Rosetta</i>'s</a> navigation camera (NAVCAM) on 19 September 2014 at 28.6 km (17.8 mi) from the centre of comet <a href=\"https://en.wikipedia.org/wiki/67P/Chur",
+  "licence": "CC BY-SA 3.0 igo",
+  "page": "https://commons.wikimedia.org/wiki/File:Comet_67P_on_19_September_2014_NavCam_mosaic.jpg",
+  "pixels": [
+   900,
+   716
+  ],
+  "title": "File:Comet 67P on 19 September 2014 NavCam mosaic.jpg",
+  "tried": []
+ },
+ "pic-viking": {
+  "artist": "NASA/JPL",
+  "bytes": 72004,
+  "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.nasa.gov/image-article/our-first-view-of-the-surface-of-mars/\">Our First View of the Surface of Mars</a>",
+  "desc": "On the morning of July 20, 1976, roughly 40 minutes after mission controllers received word that the Viking 1 lander had successfully touched down on the surface of Mars, this photo gave us our first view from the surface of the Red Planet. NASA/JPL “Touchdown, we have touchdown!” At 5:12 a.m. PDT, ",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:On_the_morning_of_July_20,_1976,_roughly_40_minutes_after_mission_controllers_received_word_that_the_Viking_1_lander_had_successfully_touched_down_on_the_surface_of_Mars,_this_photo_gave_us_our_(our-first-view-of-the-surface-of-mars).jpg",
+  "pixels": [
+   900,
+   321
+  ],
+  "title": "File:On the morning of July 20, 1976, roughly 40 minutes after mission controllers received word that the Viking 1 lander had successfully touched down on the surface of Mars, this photo gave us our (our-first-view-of-the-surface-of-mars).jpg",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Mars Viking 11h017.png"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Viking 1 first image.jpg"
+   }
+  ]
+ },
+ "pic-voyager-jupiter": {
+  "artist": "NASA",
+  "bytes": 31460,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://photojournal.jpl.nasa.gov/catalog/PIA00014\" href=\"https://photojournal.jpl.nasa.gov/catalog/PIA00014\">http://photojournal.jpl.nasa.gov/catalog/PIA00014</a>",
+  "desc": "The Great Red Spot as seen from Voyager 1 <i>This dramatic view of Jupiter's Great Red Spot and its surroundings was obtained by Voyager 1 on February 25, 1979, when the spacecraft was 5.7 million miles (9.2 million kilometers) from Jupiter. Cloud details as small as 100 miles (160 kilometers) acros",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Great_Red_Spot_From_Voyager_1.jpg",
+  "pixels": [
+   895,
+   848
+  ],
+  "title": "File:Great Red Spot From Voyager 1.jpg",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Jupiter from Voyager 1 PIA02855 max res.jpg"
+   }
+  ]
+ },
+ "sc-aditya": {
+  "artist": "Indian Space Research Organisation",
+  "bytes": 95080,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://twitter.com/isro/status/1696783155318108527?t=GHnC6KAsUE_-bpe1dvAeGw&amp;s=19\">https://twitter.com/isro/status/1696783155318108527?t=GHnC6KAsUE_-bpe1dvAeGw&amp;s=19</a>",
+  "desc": "Image of Aditya-L1, the spacecraft made by ISRO to study solar atmosphere.",
+  "licence": "GODL-India",
+  "page": "https://commons.wikimedia.org/wiki/File:Aditya-L1_spacecraft.jpg",
+  "pixels": [
+   601,
+   900
+  ],
+  "title": "File:Aditya-L1 spacecraft.jpg",
+  "tried": []
+ },
+ "sc-apollo11": {
+  "artist": "NASA",
+  "bytes": 44550,
+  "credit": "NASA website; description,<a rel=\"nofollow\" class=\"external autonumber\" data-mw-original-href=\"http://www.nasa.gov/multimedia/imagegallery/image_feature_1161.html\" href=\"https://www.nasa.gov/multimedia/imagegallery/image_feature_1161.html\">[1]</a> high resolution image.<a rel=\"nofollow\" class=\"exter",
+  "desc": "The Apollo 11 Lunar Module <i>Eagle</i>, in a landing configuration was photographed in lunar orbit from the Command and Service Module <i>Columbia</i>. Inside the module were Commander Neil A. Armstrong and Lunar Module Pilot Buzz Aldrin. The long rod-like protrusions under the landing pods are lun",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Apollo_11_Lunar_Module_Eagle_in_landing_configuration_in_lunar_orbit_from_the_Command_and_Service_Module_Columbia.jpg",
+  "pixels": [
+   900,
+   809
+  ],
+  "title": "File:Apollo 11 Lunar Module Eagle in landing configuration in lunar orbit from the Command and Service Module Columbia.jpg",
+  "tried": []
+ },
+ "sc-cassini": {
+  "artist": "NASA/JPL",
+  "bytes": 46204,
+  "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"https://photojournal.jpl.nasa.gov/catalog/PIA03883\">JPL Photojournal</a>",
+  "desc": "<b>Original Caption Released with Image</b>: This is an artists concept of <a href=\"https://en.wikipedia.org/wiki/Cassini_orbiter\" class=\"extiw\" title=\"en:Cassini orbiter\">Cassini</a> during the Saturn Orbit Insertion (SOI) maneuver, just after the main engine has begun firing. The spacecraft is mov",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Cassini_Saturn_Orbit_Insertion.jpg",
+  "pixels": [
+   900,
+   600
+  ],
+  "title": "File:Cassini Saturn Orbit Insertion.jpg",
+  "tried": []
+ },
+ "sc-chandrayaan3": {
+  "artist": "ISRO/Simeon Schmauß",
+  "bytes": 35284,
+  "credit": "<p>Wikimedia commons:\n</p>\n<span class=\"mw-default-size\" typeof=\"mw:File\"><a href=\"//commons.wikimedia.org/wiki/File:Chandrayaan_3_Vikram_lander_stereo_(53167467822).png\" class=\"mw-file-description\"><img src=\"https://upload.wikimedia.org/wikipedia/commons/3/33/Chandrayaan_3_Vikram_lander_stereo_%285",
+  "desc": "Crop of original stereo image",
+  "licence": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Chandrayaan_3_Vikram_lander_stereo_(53167467822)_crop.png",
+  "pixels": [
+   900,
+   633
+  ],
+  "title": "File:Chandrayaan 3 Vikram lander stereo (53167467822) crop.png",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Chandrayaan-3 Vikram Lander.jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Chandrayaan-3 Lander and Rover.jpg"
+   }
+  ]
+ },
+ "sc-curiosity": {
+  "artist": "<ul><li>NASA/JPL-Caltech/Malin Space Science Systems</li>\n<li>Derivative work including grading, distortion correction, minor local adjustments and rendering from tiff-file: <a href=\"//commons.wikimedia.org/wiki/User:Julian_Herzog\" title=\"User:Julian Herzog\">Julian Herzog</a></li></ul>",
+  "bytes": 100250,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://photojournal.jpl.nasa.gov/catalog/PIA16239\" href=\"https://photojournal.jpl.nasa.gov/catalog/PIA16239\">http://photojournal.jpl.nasa.gov/catalog/PIA16239</a>",
+  "desc": "On Sol 84 (Oct. 31, 2012), <a href=\"https://en.wikipedia.org/wiki/NASA\" class=\"extiw\" title=\"en:NASA\">NASA</a>'s Curiosity rover used the Mars Hand Lens Imager (MAHLI) to capture this set of 55 high-resolution images, which were stitched together to create this full-color self-portrait.\n<p>The mosai",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:PIA16239_High-Resolution_Self-Portrait_by_Curiosity_Rover_Arm_Camera.jpg",
+  "pixels": [
+   647,
+   900
+  ],
+  "title": "File:PIA16239 High-Resolution Self-Portrait by Curiosity Rover Arm Camera.jpg",
+  "tried": []
+ },
+ "sc-hubble": {
+  "artist": "Ruffnax (Crew of STS-125)",
+  "bytes": 47126,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://catalog.archives.gov/OpaAPI/media/23486741/content/stillpix/255-sts/STS125/STS125_ESC_JPG/255-STS-s125e011848.jpg\" href=\"https://catalog.archives.gov/OpaAPI/media/23486741/content/stillpix/255-sts/STS125/STS125_ESC_JPG/255-STS-s12",
+  "desc": "The <a href=\"//commons.wikimedia.org/wiki/Hubble_Space_Telescope\" title=\"Hubble Space Telescope\">Hubble Space Telescope</a> as seen from the departing Space Shuttle <i>Atlantis</i>, flying <a href=\"//commons.wikimedia.org/wiki/STS-125\" title=\"STS-125\">STS-125</a>, HST Servicing Mission 4.",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:HST-SM4.jpeg",
+  "pixels": [
+   900,
+   676
+  ],
+  "title": "File:HST-SM4.jpeg",
+  "tried": []
+ },
+ "sc-iss": {
+  "artist": "NASA/Crew of STS-132",
+  "bytes": 138988,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://images-assets.nasa.gov/image/s132e012208/s132e012208~orig.jpg\">https://images-assets.nasa.gov/image/s132e012208/s132e012208~orig.jpg</a><br>(<a rel=\"nofollow\" class=\"external free\" href=\"https://images.nasa.gov/details-s132e012208\">https://images",
+  "desc": "The <a href=\"//commons.wikimedia.org/wiki/International_Space_Station\" title=\"International Space Station\">International Space Station</a> is featured in this image photographed by an STS-132 crew member on board the Space Shuttle <i>Atlantis</i> after the station and shuttle began their post-undock",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:International_Space_Station_after_undocking_of_STS-132.jpg",
+  "pixels": [
+   1000,
+   638
+  ],
+  "title": "File:International Space Station after undocking of STS-132.jpg",
+  "tried": []
+ },
+ "sc-jwst": {
+  "artist": "NASA",
+  "bytes": 63468,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://science.nasa.gov/multimedia/spacecraft-icons/\">https://science.nasa.gov/multimedia/spacecraft-icons/</a> (<a rel=\"nofollow\" class=\"external text\" href=\"https://smd-prod.s3.amazonaws.com/science-pink/s3fs-public/thumbnails/image/Webb_2.png\">image ",
+  "desc": "Illustration of the James Webb Space Telescope on a transparent background.",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:JWST_spacecraft_model_2.png",
+  "pixels": [
+   858,
+   900
+  ],
+  "title": "File:JWST spacecraft model 2.png",
+  "tried": []
+ },
+ "sc-mangalyaan": {
+  "artist": "Nesnad",
+  "bytes": 41778,
+  "credit": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+  "desc": "The Mars Orbiter Mission (MOM), informally called Mangalyaan (Sanskrit: मङ्गलयान, English: Mars-craft) is a Mars orbiter that was successfully launched on 5th November 2013 by the Indian Space Research Organisation (ISRO). This is a less than perfect artist's concept of the orbiter in orbit. I'm awa",
+  "licence": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Mars_Orbiter_Mission_-_India_-_ArtistsConcept.jpg",
+  "pixels": [
+   900,
+   599
+  ],
+  "title": "File:Mars Orbiter Mission - India - ArtistsConcept.jpg",
+  "tried": []
+ },
+ "sc-newhorizons": {
+  "artist": "<a href=\"https://en.wikipedia.org/wiki/NASA\" class=\"extiw\" title=\"wikipedia:NASA\">National Aeronautics and Space Administration (NASA)</a>, <a href=\"https://en.wikipedia.org/wiki/Applied_Physics_Laboratory\" class=\"extiw\" title=\"wikipedia:Applied Physics Laboratory\">Applied Physics Laboratory</a>",
+  "bytes": 71322,
+  "credit": "\"<a rel=\"nofollow\" class=\"external text\" href=\"http://pluto.jhuapl.edu/News-Center/News-Article.php?page=20150701-2\">PEPSSI Instrument Tastes Pluto's Atmosphere</a>\" from the Applied Physics Laboratory <i>New Horizons</i> website.",
+  "desc": "A transparent image of the <i>New Horizons</i> spacecraft.",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:New_Horizons_spacecraft_model_1.png",
+  "pixels": [
+   800,
+   746
+  ],
+  "title": "File:New Horizons Transparent.png",
+  "tried": []
+ },
+ "sc-perseverance": {
+  "artist": "NASA/JPL-Caltech",
+  "bytes": 51778,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://mars.nasa.gov/resources/26253/perseverances-selfie-at-rochette/\">https://mars.nasa.gov/resources/26253/perseverances-selfie-at-rochette/</a>",
+  "desc": "NASA’s Perseverance Mars rover took these 2 selfie versions over a rock nicknamed “Rochette,” on September 10, 2021, the 198th Martian day, or sol of the mission. Two holes are visible where the rover used its robotic arm to drill rock core samples. There are two versions of the selfie: Figure 1 sho",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Perseverance-Selfie-at-Rochette-Horizontal-V2.gif",
+  "pixels": [
+   900,
+   506
+  ],
+  "title": "File:Perseverance-Selfie-at-Rochette-Horizontal-V2.gif",
+  "tried": []
+ },
+ "sc-rosetta": {
+  "artist": "ESA/ATG medialab",
+  "bytes": 33694,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.flickr.com/photos/europeanspaceagency/11206647984/\">https://www.flickr.com/photos/europeanspaceagency/11206647984/</a>",
+  "desc": "Artist's rendering, from <a href=\"https://en.wikipedia.org/wiki/NASA\" class=\"extiw\" title=\"w:NASA\">NASA</a>, of the <a href=\"https://en.wikipedia.org/wiki/European_Space_Agency\" class=\"extiw\" title=\"w:European Space Agency\">European Space Agency</a>'s <i><a href=\"https://en.wikipedia.org/wiki/Rosett",
+  "licence": "CC BY-SA 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Rosetta_spacecraft_model.png",
+  "pixels": [
+   900,
+   419
+  ],
+  "title": "File:Rosetta spacecraft model.png",
+  "tried": []
+ },
+ "sc-sputnik": {
+  "artist": "NSSDC, NASA<a rel=\"nofollow\" class=\"external autonumber\" data-mw-original-href=\"http://apod.nasa.gov/apod/ap071004.html\" href=\"https://apod.nasa.gov/apod/ap071004.html\">[1]</a>",
+  "bytes": 17934,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://nssdc.gsfc.nasa.gov/database/MasterCatalog?sc=1957-001B\" href=\"https://nssdc.gsfc.nasa.gov/database/MasterCatalog?sc=1957-001B\">http://nssdc.gsfc.nasa.gov/database/MasterCatalog?sc=1957-001B</a>",
+  "desc": "A replica of <a href=\"https://en.wikipedia.org/wiki/Sputnik_1\" class=\"extiw\" title=\"en:Sputnik 1\">Sputnik 1</a>, the first artificial satellite in the world to be put into outer space: the replica is stored in the National Air and Space Museum.",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Sputnik_asm.jpg",
+  "pixels": [
+   900,
+   737
+  ],
+  "title": "File:Sputnik asm.jpg",
+  "tried": []
+ },
+ "sc-viking": {
+  "artist": "NASA/JPL-Caltech/University of Arizona",
+  "bytes": 133950,
+  "credit": "<a rel=\"nofollow\" class=\"external text\" data-mw-original-href=\"http://www.nasa.gov/multimedia/imagegallery/image_feature_2055.html\" href=\"https://www.nasa.gov/multimedia/imagegallery/image_feature_2055.html\">NASA Image of the Day</a>",
+  "desc": "This artist's concept depicts a Viking lander on the surface of <a href=\"//commons.wikimedia.org/wiki/Mars\" title=\"Mars\">Mars</a>.",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Viking_Lander_Model.jpg",
+  "pixels": [
+   900,
+   726
+  ],
+  "title": "File:Viking Lander Model.jpg",
+  "tried": []
+ },
+ "sc-vostok": {
+  "artist": "The original uploader was <a href=\"https://en.wikipedia.org/wiki/de:User:HPH\" class=\"extiw\" title=\"w:de:User:HPH\">HPH</a> at <a href=\"https://en.wikipedia.org/wiki/de:\" class=\"extiw\" title=\"w:de:\">German Wikipedia</a>.",
+  "bytes": 62986,
+  "credit": "<bdi lang=\"en\" dir=\"ltr\">Transferred from <span class=\"plainlinks\"><a class=\"external text\" data-mw-original-href=\"//de.wikipedia.org\" href=\"https://de.wikipedia.org\">de.wikipedia</a></span> to Commons.</bdi>",
+  "desc": "<b>Model of Vostok spacecraft</b>, photo taken and edited by <a href=\"https://de.wikipedia.org/wiki/Benutzer:HPH\" class=\"extiw\" title=\"de:Benutzer:HPH\">de:Benutzer:HPH</a> on \"Russia in Space\" exhibition (Airport of Frankfurt, Germany, 2002)",
+  "licence": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Vostok_spacecraft.jpg",
+  "pixels": [
+   900,
+   650
+  ],
+  "title": "File:Vostok spacecraft.jpg",
+  "tried": []
+ },
+ "sc-voyager": {
+  "artist": "NASA/JPL",
+  "bytes": 34660,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://solarsystem.nasa.gov/multimedia/display.cfm?IM_ID=2194\" href=\"https://solarsystem.nasa.gov/multimedia/display.cfm?IM_ID=2194\">http://solarsystem.nasa.gov/multimedia/display.cfm?IM_ID=2194</a> (<a rel=\"nofollow\" class=\"external tex",
+  "desc": "Artist's concept of Voyager in flight",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Voyager_spacecraft.jpg",
+  "pixels": [
+   900,
+   744
+  ],
+  "title": "File:Voyager spacecraft.jpg",
+  "tried": []
+ },
+ "site-apollo11": {
+  "artist": "NASA",
+  "bytes": 66340,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://lroc.sese.asu.edu/news/uploads/lm_westcrater.png\">https://lroc.sese.asu.edu/news/uploads/lm_westcrater.png</a>",
+  "desc": "West Crater with boulders which Neil Armstrong had to overfly before the first manned lunar landing. LROC took this picture from orbit in autumn of 2009. The descent stage of the Eagle is to the upper left.",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Apollo_11_Landing_Site_%26_West_Crater.png",
+  "pixels": [
+   900,
+   900
+  ],
+  "title": "File:Apollo 11 Landing Site & West Crater.png",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Apollo 11 landing site LRO 2012.jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Apollo 11 landing site, LRO.jpg"
+   }
+  ]
+ },
+ "site-apollo17": {
+  "artist": "Lunar Reconnaissance Orbiter",
+  "bytes": 118018,
+  "credit": "<ul><li>page - <a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://www.nasa.gov/mission_pages/LRO/news/apollo-sites.html\" href=\"https://www.nasa.gov/mission_pages/LRO/news/apollo-sites.html\">http://www.nasa.gov/mission_pages/LRO/news/apollo-sites.html</a>\n<ul><li>image - <a rel=\"no",
+  "desc": "Labeled version of image taken by the LRO of the area around the Apollo 17 landing site",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Apollo_17_landing_site,_labeled.jpg",
+  "pixels": [
+   900,
+   675
+  ],
+  "title": "File:Apollo 17 landing site, labeled.jpg",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Apollo 17 landing site LRO 2011.jpg"
+   }
+  ]
+ },
+ "site-chandrayaan3": {
+  "artist": "NASA/GSFC/Arizona State University",
+  "bytes": 116164,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://lroc.sese.asu.edu/posts/1314\">https://lroc.sese.asu.edu/posts/1314</a>",
+  "desc": "The Chandrayaan-3 landing site (69.3741°S, 32.32°E, 532 m elevation) with Vikram lander in the center of the image, its dark shadow is visible against the bright halo surrounding the vehicle. The image is 1738 meters wide. The white box is 338 meters wide, M1447750764LR",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:M1447750764LR_Chandrayaan-3_Landing_Site_imaged_by_Lunar_Reconnaissance_Orbiter_Camera_(LROC)_on_27_August_2023_(annotated).png",
+  "pixels": [
+   900,
+   900
+  ],
+  "title": "File:M1447750764LR Chandrayaan-3 Landing Site imaged by Lunar Reconnaissance Orbiter Camera (LROC) on 27 August 2023 (annotated).png",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Chandrayaan-3 landing site LRO.png"
+   }
+  ]
+ },
+ "site-change4": {
+  "artist": "NASA/GSFC/Arizona State University",
+  "bytes": 73744,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.lroc.asu.edu/posts/1092\">https://www.lroc.asu.edu/posts/1092</a>",
+  "desc": "Chang'e 3 (left, M147290066LR) and Chang'e 4 (right, M1303619844LR) are very similar in size and instrumentation. The Chang'e 3 image looks a bit fuzzier because the landing site is at 44° north latitude where the LRO orbit is about twice as far from the Moon relative to the Chang'e 4 site at 45° so",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:LRO_Above_the_Landing_Site_of_Chang%27e_4_01.png",
+  "pixels": [
+   900,
+   900
+  ],
+  "title": "File:LRO Above the Landing Site of Chang'e 4 01.png",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Chang'e 4 landing site LRO.png"
+   }
+  ]
+ },
+ "site-curiosity": {
+  "artist": "NASA/JPL-Caltech/University of Arizona",
+  "bytes": 66920,
+  "credit": "This image or video was catalogued by Jet Propulsion Laboratory of the United States <a href=\"https://en.wikipedia.org/wiki/NASA\" class=\"extiw\" title=\"w:NASA\">National Aeronautics and Space Administration</a> (NASA) under <b>Photo ID:</b> <a rel=\"nofollow\" class=\"external text\" href=\"https://images.",
+  "desc": "NASA's Curiosity Mars rover appears as a dark speck in this view captured on Feb. 28, 2025, by the High-Resolution Imaging Science Experiment (HiRISE) camera aboard NASA's Mars Reconnaissance Orbiter. At the time this image was taken, Curiosity was driving. It's likely the first time HiRISE has capt",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:HiRISE_Views_Curiosity_During_a_Drive_(PIA26553).jpg",
+  "pixels": [
+   900,
+   522
+  ],
+  "title": "File:HiRISE Views Curiosity During a Drive (PIA26553).jpg",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Curiosity's landing site imaged by HiRISE.jpg"
+   },
+   {
+    "licence": "",
+    "title": "File:Curiosity Rover (Exaggerated Color) - HiRISE - 20120814.jpg"
+   }
+  ]
+ },
+ "site-jezero": {
+  "artist": "NASA/JPL-Caltech/ASU/MSSS",
+  "bytes": 15110,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://photojournal.jpl.nasa.gov/catalog/PIA25022\">https://photojournal.jpl.nasa.gov/catalog/PIA25022</a>",
+  "desc": "Sixteen images compose the mosaic that provides the base image for this video (included as an additional figure); they were acquired on Nov. 28, 2021 (the 275th sol, or Martian day, of Perseverance’s mission) as the rover sat at the highest vantage point in the “South Séítah” geological unit, allowi",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Spanning_the_Delta_of_Jezero_Crater_on_Mars_(PIA25022).jpg",
+  "pixels": [
+   900,
+   98
+  ],
+  "title": "File:Spanning the Delta of Jezero Crater on Mars (PIA25022).jpg",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Jezero Crater, Mars - Perseverance landing site.jpg"
+   }
+  ]
+ },
+ "site-perseverance": {
+  "artist": "<p>Base image: NASA/JPL-Caltech/University of Arizona\n</p>\nModification: Alliterative Anchovies",
+  "bytes": 83876,
+  "credit": "NASA: <a rel=\"nofollow\" class=\"external free\" href=\"https://mars.nasa.gov/resources/25965/perseverances-first-road-trip/\">https://mars.nasa.gov/resources/25965/perseverances-first-road-trip/</a>",
+  "desc": "A version of the NASA-provided map of the Perseverance rover's first two science missions, with a modification to help distinguish the two missions for the colorblind.  The first science mission is in yellow, the second is in blue.",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Perseverance_First_Two_Missions_Paths_Distinguished.png",
+  "pixels": [
+   900,
+   595
+  ],
+  "title": "File:Perseverance First Two Missions Paths Distinguished.png",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:PIA24487-MarsPerseveranceRover-LandingSite-20210223.jpg"
+   }
+  ]
+ }
+}
