@@ -193,6 +193,60 @@
     ctx.restore();
   }
 
+  /* ---------- real surface maps (Solar System Scope, CC BY 4.0, from NASA data) ---------- */
+  var TEXTURED = { sun: 1, mercury: 1, venus: 1, earth: 1, moon: 1, mars: 1, jupiter: 1, saturn: 1, uranus: 1, neptune: 1 };
+  var TEX = {}, ROOT = document.body.getAttribute('data-root') || '';
+  function texture(id) {
+    if (!TEXTURED[id]) return null;
+    var t = TEX[id];
+    if (!t) {
+      t = TEX[id] = { ready: false };
+      var img = new Image();
+      img.onload = function () {
+        var c = document.createElement('canvas'); c.width = 512; c.height = 256;
+        var x = c.getContext('2d'); x.drawImage(img, 0, 0, 512, 256);
+        try { t.data = x.getImageData(0, 0, 512, 256).data; t.ready = true; } catch (e) { t.failed = true; }
+      };
+      img.onerror = function () { t.failed = true; };
+      img.src = ROOT + 'img/textures/' + id + '.webp';
+    }
+    return t.ready ? t : null;
+  }
+  var SPHERES = {};
+  /* Draws a globe from its surface map: each screen pixel looks up its latitude and longitude. */
+  function texGlobe(ctx, b, x, y, R, rot) {
+    var t = texture(b.id);
+    if (!t) return false;
+    var dpr = Math.min(1.5, ctx.getTransform ? ctx.getTransform().a : 1), S = Math.max(4, Math.ceil(2 * R * dpr)), key = S + (b.style === 'sun' ? 's' : '');
+    var sp = SPHERES[key];
+    if (!sp) {
+      var cv = document.createElement('canvas'); cv.width = S; cv.height = S;
+      var n = S * S, lat = new Int32Array(n), lon = new Float32Array(n), lit = new Float32Array(n), inside = new Uint8Array(n);
+      for (var py = 0; py < S; py++) for (var px = 0; px < S; px++) {
+        var i = py * S + px, nx = (px + 0.5) / S * 2 - 1, ny = (py + 0.5) / S * 2 - 1, r2 = nx * nx + ny * ny;
+        if (r2 >= 1) continue;
+        var nz = Math.sqrt(1 - r2);
+        inside[i] = 1;
+        lat[i] = Math.min(255, Math.max(0, Math.floor((0.5 + Math.asin(ny) / Math.PI) * 256)));
+        lon[i] = (Math.atan2(nx, nz) / (2 * Math.PI) + 0.5) * 512;
+        lit[i] = b.style === 'sun' ? 0.55 + 0.45 * nz : Math.max(0.12, 0.25 + 0.85 * (-0.42 * nx - 0.38 * ny + 0.82 * nz));
+      }
+      sp = SPHERES[key] = { cv: cv, ctx: cv.getContext('2d'), img: cv.getContext('2d').createImageData(S, S), lat: lat, lon: lon, lit: lit, inside: inside, S: S };
+    }
+    var d = sp.img.data, src = t.data, shift = (((b.id === 'venus' ? rot : -rot) % 360) + 360) % 360 / 360 * 512, n2 = S * S;
+    for (var k = 0; k < n2; k++) {
+      var o = k * 4;
+      if (!sp.inside[k]) { d[o + 3] = 0; continue; }
+      var u = (sp.lon[k] + shift) | 0; if (u >= 512) u -= 512;
+      var si = (sp.lat[k] * 512 + u) * 4, l = sp.lit[k];
+      d[o] = src[si] * l; d[o + 1] = src[si + 1] * l; d[o + 2] = src[si + 2] * l; d[o + 3] = 255;
+    }
+    sp.ctx.putImageData(sp.img, 0, 0);
+    ctx.drawImage(sp.cv, x - R, y - R, 2 * R, 2 * R);
+    return true;
+  }
+  function globe(ctx, b, x, y, R, rot) { if (!texGlobe(ctx, b, x, y, R, rot)) surface(ctx, b, x, y, R, rot); }
+
   /* ---------- 1. Inside this world ---------- */
   function cutaway(box) {
     var id = box.dataset.body, b = byId[id], layers = LAYERS[id];
@@ -221,7 +275,7 @@
       var rot = REDUCE ? 30 : t * (b.style === 'sun' ? 6 : 9);
       // glow behind the Sun
       if (b.style === 'sun') { var gl = ctx.createRadialGradient(cx, cy, R * 0.9, cx, cy, R * 1.18); gl.addColorStop(0, 'rgba(255,170,60,.45)'); gl.addColorStop(1, 'rgba(255,170,60,0)'); ctx.fillStyle = gl; ctx.fillRect(0, 0, size, size); }
-      surface(ctx, b, cx, cy, R, rot);
+      globe(ctx, b, cx, cy, R, rot);
       // the cut-out quarter, layer by layer from the outside in
       for (var i = layers.length - 1; i >= 0; i--) {
         var Lr = layers[i], r1 = drawn[i] * R, r0 = i > 0 ? drawn[i - 1] * R : 0, col = KIND[Lr.k] || (Lr.k === 'crust' ? [b.colors[2], b.colors[1]] : [b.colors[2], b.colors[0]]);
@@ -267,7 +321,7 @@
           : (hi() ? km(depthTop) + ' से ' + km(depthBottom) + ' गहराई तक' : km(depthTop) + ' to ' + km(depthBottom) + ' deep'));
       return '<div class="eyes-chips" style="margin-bottom:10px">' + chips + '</div><h3 style="margin:4px 0;color:var(--accent)">' + esc(L(Lr.n)) + '</h3>' +
         '<p class="note" style="margin:0 0 6px">📏 ' + esc(depth) + (Lr.t ? ' · 🌡️ ' + esc(L(Lr.t)) : '') + '</p><p style="margin:0;color:var(--text)">' + esc(L(Lr.d)) + '</p>' +
-        '<p class="note" style="margin-top:10px">' + (hi() ? 'परतों के आकार असली अनुपात में हैं; बहुत पतली परतें दिखने लायक़ मोटी बनाई गई हैं। गहराई की परतें भूकंप की तरंगों, गुरुत्व और अंतरिक्ष यानों के माप से पता चली हैं।' : 'Layer sizes are to scale; very thin layers are drawn thicker so you can see them. The insides are known from quake waves, gravity and spacecraft measurements.') + '</p>';
+        '<p class="note" style="margin-top:10px">' + (hi() ? 'परतों के आकार असली अनुपात में हैं; बहुत पतली परतें दिखने लायक़ मोटी बनाई गई हैं। गहराई की परतें भूकंप की तरंगों, गुरुत्व और अंतरिक्ष यानों के माप से पता चली हैं।' + (TEXTURED[id] ? ' सतह का नक्शा: Solar System Scope (CC BY 4.0), NASA के data से।' : '') : 'Layer sizes are to scale; very thin layers are drawn thicker so you can see them. The insides are known from quake waves, gravity and spacecraft measurements.' + (TEXTURED[id] ? ' Surface map: Solar System Scope (CC BY 4.0), from NASA data.' : '')) + '</p>';
     }
     function pick(i) { picked = i; info.innerHTML = infoHtml(); an.redraw(); }
     info.addEventListener('click', function (e) { var c = e.target.closest('[data-layer]'); if (c) pick(+c.dataset.layer); });
@@ -365,7 +419,7 @@
         glow.addColorStop(0, 'rgba(255,255,255,1)'); glow.addColorStop(0.25, main.colors[2]); glow.addColorStop(1, 'rgba(255,255,255,0)');
         ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(x, y, 6, 0, 7); ctx.fill();
       } else {
-        surface(ctx, main, x, y, R, REDUCE ? 20 : t * 4);
+        globe(ctx, main, x, y, R, REDUCE ? 20 : t * 4);
         shade(ctx, x, y, R, st.ph);
       }
       if (main.id === 'saturn' && R > 1.5) rings(ctx, x, y, R, st.tilt, true);
@@ -389,7 +443,7 @@
         var ix = size - 52, iy = size - 52, IR = 46, big = IR * (main.id === 'saturn' ? 0.36 : 0.72);
         ctx.save(); ctx.beginPath(); ctx.arc(ix, iy, IR, 0, 7); ctx.fillStyle = '#02030a'; ctx.fill(); ctx.clip();
         if (main.id === 'saturn') rings(ctx, ix, iy, big, st.tilt, false);
-        surface(ctx, main, ix, iy, big, REDUCE ? 20 : t * 4); shade(ctx, ix, iy, big, st.ph);
+        globe(ctx, main, ix, iy, big, REDUCE ? 20 : t * 4); shade(ctx, ix, iy, big, st.ph);
         if (main.id === 'saturn') rings(ctx, ix, iy, big, st.tilt, true);
         ctx.restore();
         ctx.strokeStyle = 'rgba(255,209,102,.7)'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(ix, iy, IR, 0, 7); ctx.stroke();

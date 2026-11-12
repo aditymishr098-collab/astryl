@@ -17,6 +17,7 @@ import skyevents
 import students
 import cons
 import site_data
+import photos
 import telescope
 import iss
 import universe
@@ -317,6 +318,18 @@ def life_verdict(score):
 
 
 # ------------------------------------------------------------------ SVG
+PHOTO = set()
+PHOTO_CREDIT = {}
+
+
+def planet_pic(b, prefix='', small=True, uid=''):
+    """The body's real photo when there is one, else the drawn globe."""
+    if b['id'] in PHOTO:
+        name = tr('en', NAME_KEY[b['id']])
+        return f'<img class="pimg" src="{prefix}img/planets/{b["id"]}{"-s" if small else ""}.webp" alt="{esc(name)}" width="{160 if small else 600}" height="{160 if small else 600}" loading="{"lazy" if small else "eager"}" decoding="async">'
+    return planet_svg(b, uid=uid)
+
+
 def planet_svg(b, size=100, uid=''):
     c0, c1, c2 = b['colors']
     gid = f'g{b["id"]}{uid}'
@@ -682,7 +695,7 @@ def body_page(b, i):
     mo = [m for m in BODIES if m['parent'] == idn]
     moons = ''
     if mo:
-        moons = f'<h2>{bi("majorMoons")}</h2><div class="grid sm">' + ''.join(f'<a class="card pcard" href="{m["id"]}.html">{planet_svg(m, uid="m")}<div><b>{bname(m["id"])}</b><br><small>{val(v_diam(m))}</small></div></a>' for m in mo) + '</div>'
+        moons = f'<h2>{bi("majorMoons")}</h2><div class="grid sm">' + ''.join(f'<a class="card pcard" href="{m["id"]}.html">{planet_pic(m, "../", uid="m")}<div><b>{bname(m["id"])}</b><br><small>{val(v_diam(m))}</small></div></a>' for m in mo) + '</div>'
     dyn = ''
     if b['kind'] in ('planet', 'dwarf') or b['id'] == 'pluto':
         if b['id'] != 'earth':
@@ -694,7 +707,7 @@ def body_page(b, i):
     wt = f'<h2>{bi("weightFeelsLike", weight="60")}</h2><div class="card"><div class="life">{val(lambda lg: fmt(lg, 60 * b["g"] / 9.8, 1) + " kg")}</div><p class="note">{bi("gravityTimes", factor={lg: fmt(lg, b["g"] / 9.8, 2) for lg in ("en", "hi")})} · <a href="../you.html">{bi("weightTitle")}</a></p></div>' if b['hasSurface'] or True else ''
     moon_orb = f'<section class="blk"><h2>{bt("Live moon positions", "चंद्रमाओं की लाइव स्थिति")}</h2><div class="card" id="moonOrbitSim" data-body="{idn}"></div></section>' if idn in ('jupiter', 'saturn') else ''
     body = f'''<p style="margin-top:20px"><a href="../planets.html">← {bi("planetsTitle")}</a></p>
-<div class="bodyhead">{planet_svg(b)}<div><h1 style="margin:0">{bname(idn)}</h1><p class="sub" style="margin:.2em 0 0">{sub}</p><button class="btn favbtn" type="button" data-fav="{idn}" aria-pressed="false">☆</button></div></div>
+<div class="bodyhead"><figure class="bodyphoto">{planet_pic(b, "../", small=False)}{f'<figcaption>📷 {esc(PHOTO_CREDIT[idn])}</figcaption>' if idn in PHOTO_CREDIT else ''}</figure><div><h1 style="margin:0">{bname(idn)}</h1><p class="sub" style="margin:.2em 0 0">{sub}</p><button class="btn favbtn" type="button" data-fav="{idn}" aria-pressed="false">☆</button></div></div>
 <div class="stats">{"".join(stats)}</div>
 <section class="blk"><h2>{bt("Inside this world · Tap a layer", "आंतरिक संरचना · किसी परत पर टैप करें")}</h2><div class="card" id="cutawaySim" data-body="{idn}"></div></section>
 <section class="blk"><h2>{bt("Telescope eyepiece simulator", "दूरबीन ज़ूम सिम्युलेटर (1x · 10x · 100x)")}</h2><div class="card" id="telescopeSim" data-body="{idn}"></div></section>
@@ -786,7 +799,7 @@ def index_page():
 
 def planets_page():
     def card(b):
-        return f'<a class="card pcard" data-id="{b["id"]}" data-search="{b["id"]}" href="body/{b["id"]}.html">{planet_svg(b, uid="p")}<div><b>{bname(b["id"])}</b><br><small>{val(v_diam(b))}</small></div></a>'
+        return f'<a class="card pcard" data-id="{b["id"]}" data-search="{b["id"]}" href="body/{b["id"]}.html">{planet_pic(b, uid="p")}<div><b>{bname(b["id"])}</b><br><small>{val(v_diam(b))}</small></div></a>'
     groups = [('star', bt('Star', 'तारा'), [b for b in BODIES if b['kind'] == 'star']), ('planet', bt('Planets', 'ग्रह'), [b for b in BODIES if b['kind'] == 'planet']),
               ('dwarf', bt('Dwarf planet', 'बौना ग्रह'), [b for b in BODIES if b['id'] == 'pluto']), ('moon', bi('majorMoons'), [b for b in BODIES if b['kind'] == 'moon'])]
     secs = ''.join(f'<section class="blk"><h2>{t}</h2><div class="grid">{"".join(card(b) for b in bs)}</div></section>' for _, t, bs in groups)
@@ -1079,6 +1092,7 @@ def main():
     (OUT / 'CNAME').write_text('astryl.space\n', encoding='utf-8')
     (OUT / '.nojekyll').write_text('', encoding='utf-8')
     (OUT / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n', encoding='utf-8')
+    PHOTO.update(photos.build(OUT)); PHOTO_CREDIT.update(photos.credits())
     for i, b in enumerate(BODIES):
         body_page(b, i)
     index_page(); planets_page(); simple_pages(); maps_page(); get_page(); privacy_page(); account_page(); not_found(); pwa_files()
