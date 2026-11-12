@@ -134,13 +134,13 @@ def build(h):
         nxt = TOPICS[(i + 1) % len(TOPICS)]
         body += k.keep_exploring('../', [(f'learn/{nxt[0]}.html', nxt[1], nxt[2][0], nxt[2][1]), ('learn.html', '🎓', 'All student topics', 'सारे विषय'), ('sky-events.html', '🌑', 'Coming eclipses', 'आने वाले ग्रहण'), ('quiz.html', '❓', 'Planet quiz', 'ग्रहों की quiz')])
         path = f'learn/{slug}.html'
-        desc = f'{ten}: explained simply for school students (class 6 to 10), in English and Hindi, with a short quiz.'
+        desc = f'{ten}: explained simply for school students (class 6 to 10), with a short quiz.'
         h['write'](path, k.shell(ten, thi, 'school', body, desc, depth=1, canonical=path, ld=article_ld(k.site, ten, desc, path, crumbs + [(ten, path)])))
         pages.append(path)
     cards = ''.join(f'<a class="sc" href="learn/{s}.html"><span class="ic">{ic}</span><span><b>{bt(t[0], t[1])}</b><small>{bt(l[0], l[1])}</small></span><span class="go">→</span></a>' for s, ic, t, l, *_ in TOPICS)
-    body = f'''<section class="blk"><h1>🎓 {bt("For students", "छात्रों के लिए")}</h1><p class="sub">{bt("The Sun, the Moon, eclipses, planets, stars and seasons, explained simply for classes 6 to 10, in English and Hindi. Each topic ends with a short quiz.", "सूर्य, चाँद, ग्रहण, ग्रह, तारे और ऋतुएँ, कक्षा 6 से 10 के लिए आसान भाषा में, English और हिंदी में। हर विषय के अंत में एक छोटी quiz है।")}</p></section>
+    body = f'''<section class="blk"><h1>🎓 {bt("For students", "छात्रों के लिए")}</h1><p class="sub">{bt("The Sun, the Moon, eclipses, planets, stars and seasons, explained simply for classes 6 to 10. Each topic ends with a short quiz.", "सूर्य, चाँद, ग्रहण, ग्रह, तारे और ऋतुएँ, कक्षा 6 से 10 के लिए आसान भाषा में। हर विषय के अंत में एक छोटी quiz है।")}</p></section>
 <section class="blk"><div class="sc-grid">{cards}</div></section>
 <section class="blk prose">{k.note("Teachers are welcome to share these pages with their class. Everything is free, with no sign-up and no ads.", "शिक्षक ये पन्ने अपनी कक्षा के साथ खुलकर बाँट सकते हैं। सब मुफ़्त है, बिना sign-up और बिना विज्ञापन के।")}</section>'''
-    desc = 'Astronomy for school students (class 6 to 10) in English and Hindi: the Sun, Earth and Moon, Moon phases, eclipses, the Solar System, stars and seasons, with quizzes.'
+    desc = 'Astronomy for school students (class 6 to 10): the Sun, Earth and Moon, Moon phases, eclipses, the Solar System, stars and seasons, with quizzes.'
     h['write']('learn.html', k.shell('For students', 'छात्रों के लिए', 'school', body, desc, canonical='learn.html', ld=article_ld(k.site, 'For students', desc, 'learn.html', crumbs)))
     return ['learn.html'] + pages

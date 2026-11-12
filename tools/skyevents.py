@@ -139,7 +139,7 @@ def build(h):
         body += k.sec(sec)
         body += k.keep_exploring('../', [('sky-events.html', '📅', 'All eclipses and meteor showers', 'सारे ग्रहण और उल्कापात'), ('my-space.html', '⭐', 'My space: add to calendar', 'My space: calendar में जोड़ें'), ('sky.html', '🌙', 'Moon calendar', 'चाँद का calendar'), ('learn/eclipses.html', '🎓', 'How eclipses work', 'ग्रहण कैसे होते हैं')])
         path = f'sky-events/{eid}.html'
-        desc = f'{title_en}: date, time ({ut} UT), type and where it can be seen, with local times for your city. In English and Hindi.'
+        desc = f'{title_en}: date, time ({ut} UT), type and where it can be seen, with local times for your city.'
         html = k.shell(title_en, title_hi, 'events', body, desc, depth=1, canonical=path, extra_head=head(1),
                        ld=article_ld(k.site, title_en, desc, path, crumbs_hub + [(title_en, path)]) + [{'@context': 'https://schema.org', '@type': 'Event', 'name': title_en, 'startDate': f'{iso}T{ut}:00Z', 'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode', 'eventStatus': 'https://schema.org/EventScheduled', 'location': {'@type': 'Place', 'name': 'Sky', 'address': 'Earth'}, 'description': what[0], 'url': f'{k.site}/{path}'}])
         h['write'](path, html)
@@ -169,7 +169,7 @@ def build(h):
         body += k.sec(sec)
         body += k.keep_exploring('../', [('sky-events.html', '📅', 'All eclipses and meteor showers', 'सारे ग्रहण और उल्कापात'), ('my-space.html', '👀', 'Tick it off in My space', 'My space में tick कीजिए'), ('sky.html', '🌙', 'Moon calendar', 'चाँद का calendar'), ('glossary.html', '📖', 'Space glossary', 'अंतरिक्ष शब्दकोश')])
         path = f'sky-events/{slug}.html'
-        desc = f'{title_en}: when it peaks ({dy} {months_en[mo - 1]}), how many meteors to expect, where it comes from and how to watch it. In English and Hindi.'
+        desc = f'{title_en}: when it peaks ({dy} {months_en[mo - 1]}), how many meteors to expect, where it comes from and how to watch it.'
         html = k.shell(title_en, title_hi, 'events', body, desc, depth=1, canonical=path, extra_head=head(1), ld=article_ld(k.site, title_en, desc, path, crumbs_hub + [(title_en, path)]))
         h['write'](path, html)
         pages.append(path)
@@ -188,6 +188,6 @@ def build(h):
 <p><a class="btn primary" href="my-space.html#calendar">📅 {bt("My calendar for my city", "मेरे शहर के लिए मेरा calendar")}</a></p></section>
 <section class="blk"><h2>{bt("Eclipses", "ग्रहण")}</h2><div class="sc-grid">{"".join(ecl_card(e) for e in ECLIPSES)}</div></section>
 <section class="blk"><h2>{bt("Meteor showers every year", "हर साल के उल्कापात")}</h2><div class="sc-grid">{"".join(sh_card(s) for s in SHOWERS)}</div></section>'''
-    desc = 'Every solar and lunar eclipse until 2029 and the main meteor showers: dates, times for your city, where to see them and how to watch safely. In English and Hindi.'
+    desc = 'Every solar and lunar eclipse until 2029 and the main meteor showers: dates, times for your city, where to see them and how to watch safely.'
     h['write']('sky-events.html', k.shell('Eclipses and meteor showers', 'ग्रहण और उल्कापात', 'events', body, desc, canonical='sky-events.html', ld=article_ld(k.site, 'Eclipses and meteor showers', desc, 'sky-events.html', crumbs_hub)))
     return ['sky-events.html'] + pages

@@ -48,7 +48,7 @@ def build(h):
 <section class="blk callout">{bt("Earn the Black hole explorer badge:", "Black hole explorer badge पाइए:")} <a href="black-holes-101.html">{bt("Black holes 101", "Black holes 101")} →</a></section>
 <script type="application/json" id="dsqData">{data}</script>'''
     out.append(('deep-space-quiz.html', h['shell']('Black hole and galaxy quiz', 'ब्लैक होल और galaxy quiz', 'quiz', body,
-                'A free quiz on black holes and galaxies, with 20 questions in English and Hindi and an explanation for every answer.',
+                'A free quiz on black holes and galaxies, with 20 questions and an explanation for every answer.',
                 canonical='deep-space-quiz.html', extra_head=f'<script defer src="assets/learn.js?v={asset_v()}"></script>')))
 
     # ---------- learning path
@@ -74,7 +74,7 @@ def build(h):
 <section class="blk"><h2>{bt("Your badge", "आपका badge")}</h2><div class="card badgebox"><div id="badge" data-total="{len(lessons)}" data-slugs="{slugs}">{medal}</div><div><h3>{bt("Black hole explorer", "Black hole explorer")}</h3><p id="badgeState"></p></div></div>
 {note("A lesson counts as read after it has been open for a few seconds. Progress is saved in this browser only and is not sent anywhere.", "पाठ कुछ सेकंड खुला रहने के बाद पढ़ा हुआ गिना जाता है। Progress सिर्फ़ इसी browser में सेव होती है और कहीं भेजी नहीं जाती।")}</section>'''
     out.append(('black-holes-101.html', h['shell']('Black holes 101', 'Black holes 101', 'bh', body,
-                'A free seven-lesson path to understand black holes, from what they are to the big open questions, with a quiz and a badge. English and Hindi.',
+                'A free seven-lesson path to understand black holes, from what they are to the big open questions, with a quiz and a badge.',
                 canonical='black-holes-101.html', extra_head=f'<script defer src="assets/learn.js?v={asset_v()}"></script>')))
     for f, html in out:
         h['write'](f, html)

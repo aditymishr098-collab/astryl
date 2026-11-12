@@ -297,5 +297,5 @@ def build(h):
 
 def shell_hub(h, body):
     return h['shell']('Galaxies explained', 'Galaxies, आसान भाषा में', 'gx', body,
-                      'Galaxies explained simply: the Milky Way, Andromeda, galaxy types, the Local Group, how galaxies form and collide, and which ones you can see. Free, in English and Hindi.',
+                      'Galaxies explained simply: the Milky Way, Andromeda, galaxy types, the Local Group, how galaxies form and collide, and which ones you can see. Free.',
                       canonical='galaxies.html', ld=article_ld(h['SITE'], 'Galaxies explained', 'Galaxies explained simply: the Milky Way, Andromeda, galaxy types, the Local Group, how galaxies form and collide, and which ones you can see.', 'galaxies.html', [('Astryl', ''), ('Galaxies', 'galaxies.html')]))
