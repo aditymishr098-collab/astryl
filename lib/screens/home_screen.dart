@@ -12,6 +12,7 @@ import '../l10n/names.dart';
 import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
+import '../widgets/moved_banner.dart';
 import '../widgets/space_view.dart';
 import 'apod_screen.dart';
 import 'compare_screen.dart';
@@ -674,6 +675,11 @@ class _ExploreTabState extends State<ExploreTab>
     return ListView(
       padding: const EdgeInsets.only(bottom: 28, top: 4),
       children: <Widget>[
+        // Astryl carries on as a website; the app gets no new versions.
+        const Padding(
+          padding: EdgeInsets.fromLTRB(16, 4, 16, 10),
+          child: MovedBanner(),
+        ),
         // Planet & Moon selector chips right above the 3D NASA Eyes viewport.
         _PlanetChips(
           bodies: allBodies,

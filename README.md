@@ -21,6 +21,8 @@ a daily space quiz, and an honest answer to "could humans live here?"
 
 [Website](https://astryl.space) · [Releases](https://github.com/aditymishr098-collab/astryl/releases) · [Changelog](CHANGELOG.md) · [Privacy](https://astryl.space/privacy.html) · [Report a problem](https://github.com/aditymishr098-collab/astryl/issues)
 
+> **Astryl now lives on the website, [astryl.space](https://astryl.space).** Version 1.40.0 is the last version of the Android app: it keeps working, but it gets no new features. The website has everything new and uses the same account.
+
 </div>
 
 ---
