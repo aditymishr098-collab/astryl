@@ -1,35 +1,4 @@
 {
-  "sky": [
-    ["iss", "🛰️", "The space station", "अंतरिक्ष स्टेशन"],
-    ["moon", "🌙", "The Moon", "चाँद"],
-    ["planet:venus", "✨", "Venus", "शुक्र"],
-    ["planet:mars", "🔴", "Mars", "मंगल"],
-    ["planet:jupiter", "🟠", "Jupiter", "बृहस्पति"],
-    ["planet:saturn", "🪐", "Saturn", "शनि"],
-    ["milkyway", "🌌", "The Milky Way", "आकाशगंगा"],
-    ["meteor", "☄️", "A shooting star", "टूटता तारा"],
-    ["orion", "⭐", "Orion", "मृग (Orion)"],
-    ["saptarishi", "🐻", "The Saptarishi (Big Dipper)", "सप्तर्षि"]
-  ],
-  "challenges": [
-    ["sky", "saturn", "Spot Saturn: a steady, creamy-yellow dot that does not twinkle. The Tonight's sky page shows where.", "शनि को खोजिए: एक स्थिर, हल्का पीला बिंदु जो टिमटिमाता नहीं। आज रात का आसमान page बताता है कि कहाँ।"],
-    ["quiz", "photo", "Get 10 out of 10 in the photo round on the Quiz page.", "Quiz page पर फ़ोटो वाले round में 10 में से 10 लाइए।"],
-    ["sky", "iss", "Watch the space station fly over your city. The space station page tells you when.", "अपने शहर के ऊपर से अंतरिक्ष स्टेशन को गुज़रते देखिए। अंतरिक्ष स्टेशन वाला page बताता है कि कब।"],
-    ["quiz", "cons", "Get 10 out of 10 in the constellation round.", "नक्षत्र वाले round में 10 में से 10 लाइए।"],
-    ["sky", "polaris", "Find the Pole Star using the two pointer stars of the Saptarishi.", "सप्तर्षि के दो इशारा करने वाले तारों से ध्रुव तारा खोजिए।"],
-    ["quiz", "missions", "Get 10 out of 10 in the missions and history round.", "Missions और इतिहास वाले round में 10 में से 10 लाइए।"],
-    ["sky", "moon", "Look at the Moon with binoculars or a phone zoom and find a big crater.", "दूरबीन या फ़ोन के ज़ूम से चाँद देखिए और एक बड़ा गड्ढा खोजिए।"],
-    ["quiz", "est", "Score 30 or more in the best-guess round.", "अंदाज़े वाले round में 30 या ज़्यादा points लाइए।"],
-    ["sky", "orion", "Find the three stars of Orion's belt.", "Orion (मृग) की कमर के तीन तारे खोजिए।"],
-    ["quiz", "hl", "Get 10 out of 10 in bigger or smaller.", "बड़ा या छोटा round में 10 में से 10 लाइए।"],
-    ["sky", "venus", "Spot Venus, the brightest point in the sky after the Moon, near sunrise or sunset.", "शुक्र को खोजिए, चाँद के बाद आसमान का सबसे चमकीला बिंदु, सूर्योदय या सूर्यास्त के पास।"],
-    ["quiz", "hard", "Get 10 out of 10 in the hard planet round.", "कठिन ग्रह round में 10 में से 10 लाइए।"]
-  ],
-  "polls": [
-    ["planet", "Which is your favourite world?", "आपकी पसंदीदा दुनिया कौन-सी है?", [["Mars", "मंगल"], ["Jupiter", "बृहस्पति"], ["Saturn", "शनि"], ["Earth", "पृथ्वी"], ["Pluto", "प्लूटो"], ["The Moon", "चाँद"]]],
-    ["nextpage", "What should Astryl add next?", "Astryl में आगे क्या जोड़ा जाए?", [["Comets and asteroids", "धूमकेतु और क्षुद्रग्रह"], ["Planets around other stars", "दूसरे तारों के ग्रह"], ["Rockets and how they work", "Rockets और वे कैसे काम करते हैं"], ["Life in space", "अंतरिक्ष में जीवन"]]],
-    ["milkyway", "Have you seen the Milky Way with your own eyes?", "क्या आपने अपनी आँखों से आकाशगंगा देखी है?", [["Yes!", "हाँ!"], ["Not yet", "अभी नहीं"], ["I live in a city, so I can't", "मैं शहर में रहता/रहती हूँ, इसलिए नहीं दिखती"]]]
-  ],
   "photoKinds": [["moon", "🌙", "The Moon", "चाँद"], ["sun", "☀️", "The Sun (with a proper filter)", "सूरज (सही filter के साथ)"], ["planet", "🪐", "A planet", "ग्रह"], ["stars", "⭐", "Stars and constellations", "तारे और नक्षत्र"], ["eclipse", "🌑", "An eclipse", "ग्रहण"], ["iss", "🛰️", "The space station", "अंतरिक्ष स्टेशन"], ["other", "🌌", "Something else in the sky", "आसमान में कुछ और"]],
   "postKinds": [["question", "❓", "A question", "सवाल"], ["sky", "🔭", "What I saw", "मैंने क्या देखा"], ["idea", "💡", "An idea for Astryl", "Astryl के लिए सुझाव"]]
 }

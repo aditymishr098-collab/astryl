@@ -132,7 +132,6 @@ b1dc9d18	A huge region of space with very few galaxies, tens to hundreds of mill
 7aa5aef6	A lunar eclipse can be seen from every place where the Moon is above the horizon at the time. The table shows the middle of the eclipse in local time.
 f6bed9af	A lunar eclipse is completely safe to watch with your eyes, binoculars or a telescope.
 bf4d2615	A narrow beam of gas shot out at nearly the speed of light along the spin axis of a black hole or young star.
-13c7acce	A new sky task and quiz task every Monday. Sky tasks are on your honour; quiz tasks are checked against the rounds you played.
 2aec98cb	A partial eclipse over Antarctica and the far south of South America.
 f230e968	A partial eclipse over North America and Central America.
 03f84fbc	A partial eclipse over the Arctic: northern Canada, Greenland, Scandinavia and northern Russia.
@@ -265,7 +264,7 @@ f40fe2e6	As the gas fades
 adf6a2bf	Ask anything about space, tell others what you saw, or suggest something for Astryl.
 8d4f3ef4	Astronomical unit (AU)
 0de69044	Astryl Community
-8fab0a0a	Astryl Community (only what you choose to add): sky photos you upload (made smaller, with camera and location data removed in your browser), your title and the place and date you type, your posts and replies, stars you give, challenges you finish. They are shown with your username only after the moderator approves them. You can delete any of them yourself
+2684b345	Astryl Community (only what you choose to add): sky photos you upload (made smaller, with camera and location data removed in your browser), your title and the place and date you type, your posts and replies, stars you give. They are shown with your username right away; anything reported is checked by the moderator and may be removed. You can delete any of them yourself
 1f9ccda6	Astryl account
 fba240b7	Astryl is a website
 17a24589	Astryl is for everyone who likes space. If you are under 16, please ask a parent or guardian before making an account. The app is fully usable without one.
@@ -335,7 +334,6 @@ a7cb6c5a	Cassiopeia is a W or an M, depending on the hour and the season, made o
 4613847c	Centaur
 8c07a74a	Centre it
 ae5c9893	Cepheus
-b5f5623b	Challenge
 ccfe7ef0	Chamaeleon
 9af05df9	Chandrayaan-3 on the Moon, photographed from orbit by NASA’s Lunar Reconnaissance Orbiter four days after landing (in the box).
 8dd79791	Chandrayaan-3’s lander Vikram on the Moon, photographed by the Pragyan rover (processed in 3D).
@@ -406,7 +404,7 @@ bdda6d5e	Dec 17
 2e78e8a6	Deep images from the Hubble and James Webb telescopes show that the observable universe holds hundreds of billions of galaxies, perhaps up to two trillion. The number is still being refined.
 2a94bf02	Deep space
 6edbc1b3	Delete your account at any time: app → You tab → Account → Delete my account, or on the Account page of this website. Your account and everything stored for it online are removed straight away. The data on your phone stays.
-f40e853e	Deleting your account deletes all your photos, posts and votes.
+0acb3633	Deleting your account deletes all your photos and posts.
 c4f85f81	Density is the mass divided by the volume inside the horizon. Hawking temperature and evaporation time come from Hawking’s 1974 formulas; they are predictions, never measured.
 b5f69448	Diameter
 8bbfdf3a	Did Jupiter move inward toward the Sun and back out again early on (the "Grand Tack" idea)? It could explain why Mars is small, but it is not proven.
@@ -484,7 +482,6 @@ b95fe6f1	Every eclipse until the end of 2029 and the year's best meteor showers,
 8e5d31ef	Every planet in its real place today. Keep scrolling and time moves forward. Distances are squeezed so the inner planets stay visible.
 81b3d818	Every star is a sun. Some are much bigger than ours, though most are smaller, and all are so far away that they look like points. The nearest star after the Sun, Proxima Centauri, is about 4.2 light-years away: its light takes over four years to reach us.
 2cac5b27	Every world has an escape speed: how fast you must go to leave it for good. From Earth it is about 11 km per second. Squeeze the same mass into a smaller and smaller ball and the escape speed keeps growing.
-2216aa99	Everything is checked by the moderator before it appears; anything can be reported.
 2f65c76f	Everything is here on astryl.space, in your browser. Taking you to the home page…
 c472c149	Exactly what tipped Uranus over, and why it gives off so little inner heat, is still unknown. Only Voyager 2 has visited, in 1986.
 0a527305	Example
@@ -625,8 +622,6 @@ b53da94f	How to find it
 e4ce2ac5	Hydrogen
 3d6db24e	Hydrogen fusion starts in the core and the Sun becomes a steady, grown-up star.
 13fb8955	Hydrus
-059df017	I saw it
-1e785600	I saw it!
 c9f03409	Ice and rock gather into a small moon.
 3eaf9d83	Icy pebbles in the far disk gather into small worlds.
 79148858	If a black hole evaporates, what happens to everything that fell in? This is the information paradox.
@@ -724,7 +719,6 @@ c805503c	Last stable orbit
 4dbaee68	Launched in 1990, it looks at the universe from above Earth's air. Its sharp pictures helped measure the age of the universe and showed thousands of faraway galaxies.
 3ebb7186	Lava covers most of the surface, so the ground we see is fairly young.
 7140923d	Lava fills huge impact basins, making the dark "seas" (maria) we see.
-5adf8cfd	Leaderboards
 84928be0	Learn about the objects that sit in the middle of most galaxies.
 807209f6	Lenticular
 518dcf2b	Leo the Lion is one of the few constellations that really looks like its animal. A backward question mark of stars, the Sickle, forms the head and chest and ends at bright Regulus, the lion’s heart. The triangle of stars to the east is its hindquarters. Spring evenings are the best time in the north.
@@ -878,7 +872,7 @@ d9bfc4d6	Old dark areas and younger grooved bright areas form on the surface.
 809e0743	Olympus Mons on Mars is the tallest volcano in the solar system, about two and a half times as tall as Mount Everest.
 d68e4cd6	On 14 September 2015 LIGO felt the first gravitational waves ever detected, from two black holes merging. About three Suns of mass were turned into the energy of the waves. The 2017 Nobel Prize in Physics went to the LIGO founders.
 c46b7ec9	On a dark autumn evening in the northern sky, find the Great Square of Pegasus and follow the line of stars of Andromeda. A faint, elongated smudge appears beside the star ν Andromedae. Binoculars show it much better.
-f57ab945	On the community page, “I saw it” taps and poll votes need no account. To count each person once, the browser keeps a random id; the server stores only a scrambled form of it (a hash) with the tap or vote, and the country from your browser’s language setting. Reports of photos or posts are stored the same way.
+96fee13c	On the community page, reporting a photo or post needs no account. To count each person once, the browser keeps a random id; the server stores only a scrambled form of it (a hash) with the report.
 fbee3926	On the largest scales galaxies line up in filaments around huge empty voids, like the walls of soap bubbles. This pattern is called the cosmic web.
 cc966cd1	On this calendar the Sun does not exist until early September, dinosaurs vanish on 30 December, and the whole of human history fits into the last 12 minutes of 31 December.
 23bc9bf3	On this page
@@ -998,7 +992,6 @@ ea8dbc79	Pluto
 3e8c5c8a	Pluto in true colour, photographed by New Horizons in 2015, with its heart-shaped plain.
 8660a9ec	Pluto was called a planet until 2006; now it is a dwarf planet. Between Mars and Jupiter lies the asteroid belt, full of rocks. Comets are balls of ice and dust from far away; near the Sun they grow long glowing tails.
 da6e260a	Polaris, the North Star, sits at the tip of the Little Bear’s tail. It hardly moves because it lies almost exactly above Earth’s north pole, so the whole sky seems to turn around it. Its height above the horizon equals your latitude. It is not a very bright star, but it is the most useful one for finding north. It cannot be seen from the southern half of the world.
-79d6f84d	Polls
 c3088d17	Poop Deck
 3a4edc67	Potassium
 8c004d7e	Practice
@@ -1011,7 +1004,7 @@ b3a907bf	Pulsar
 823f4311	Quadrantids
 3059889b	Quadrantids meteor shower
 d19ab717	Quasar
-ec9ce2f8	Questions and talk
+9ea54b1d	Questions and answers
 03c7fbb1	Questions still open
 f8ea0b5b	Quick quiz
 ab458f4b	Quiz
@@ -1083,6 +1076,7 @@ b3531be8	Seven short pages
 9e98019a	Share my approximate location (app only, needs an account): when you make an account, the app asks Android for the location permission. If you allow it, this switch is on and the app sends Android's approximate location (a few kilometres) when you open it, at most once a day. The server rounds it to about 10 km and keeps only the latest place with its date, tied to your account. There is no location in the background. Switch it off in your account and the place is deleted from the server. If you say no to the permission, nothing is sent.
 c3981998	Share my country: the country from your phone's (or browser's) language and region setting, kept with that random number and shown only as a count per country. It is not worked out from your IP address or your location.
 1fe381cb	Share this page
+5e31e511	Share your own sky photos, and ask and answer questions about space. Photos and posts appear right away; anything reported is checked by the moderator.
 970da5f1	Shield
 973bbbfd	Ship Compass
 7e774a36	Show me on the leaderboard (on by default): the Daily 5 leaderboard shows your username, score, right answers and time. Switch it off in your account (website or the You tab in the app) and your name no longer appears; your own rank stays visible to you.
@@ -1097,7 +1091,7 @@ f9d6aa20	Six black holes that changed what we know, from our own Galaxy to the f
 cf41cfe2	Size or distance
 49f71166	Sky photos
 a2309348	Sky photos by the community
-ca153386	Sky photos, challenges, polls and questions
+77d1207b	Sky photos, and questions and answers
 9cac6b50	Slowly, perhaps over a million years or more
 aee2f481	Small Magellanic Cloud
 8497d35b	Small galaxies fall into bigger ones. The Milky Way is still swallowing the Sagittarius Dwarf Galaxy, and streams of stars from earlier meals wrap around it. A bigger meal, a galaxy called Gaia-Enceladus, merged with us about 10 billion years ago.
@@ -1124,7 +1118,6 @@ d00f0f1f	Some come from dying stars. Others sit in the middle of galaxies. There
 5d382d03	Space events
 6e3079a0	Space glossary
 621f9f28	Space is mostly empty. The stars you see at night are not spread evenly: they come in giant islands called galaxies. Every star you can see with your eyes belongs to our own, the Milky Way.
-e7c17947	Space lovers sharing what they saw: tap what you spotted in the sky, take the weekly challenge, vote, share your own sky photos and ask questions. Photos and posts appear after the moderator has checked them.
 ad6231e1	Space missions
 1455d2d5	Space station passes
 348b2b67	Space words in plain English and Hindi
@@ -1179,7 +1172,6 @@ b7ce7c10	Take the Black hole quiz
 9a8b2152	Take the tour
 1c515596	Tap a row to jump to it. Sizes are rounded; the Solar System step means Neptune’s orbit.
 23b67f51	Tap a world for its size, gravity, temperature, atmosphere and facts.
-f3b7c554	Tap what you have seen in the sky today. Counts are for this week, from everyone.
 b8834f14	Taurus the Bull has a V-shaped face, the Hyades cluster, with orange Aldebaran as its eye. Aldebaran looks as if it belongs to the cluster, but it is much closer to us. Higher up, the Pleiades, or Seven Sisters, is a tiny group of blue stars that most people see as six or seven. The Pleiades are known all over the world and appear in the stories of many cultures.
 213bff9d	Teachers are welcome to share these pages with their class. Everything is free, with no sign-up and no ads.
 399bee41	Telescope
@@ -1387,7 +1379,6 @@ ff55ddc1	This page drifted off into space.
 591a9736	This page has not been opened on this device yet, so it is not saved. Pages you have opened before still work, and everything else comes back when you are online again.
 4e70c28a	This website
 6ce385f5	This website in numbers
-13efb003	This week's challenge
 f638b238	Three neighbours that shape our days, months and years.
 002513b1	Tick it off in My space
 efd04762	Tidal heating melts a global ocean under the ice shell.
@@ -1458,6 +1449,7 @@ ae531639	Uranus rolls around the Sun on its side, tilted by about 98 degrees.
 5065c72a	Uranus was the first planet found with a telescope. William Herschel spotted it in 1781.
 e49ae9ea	Ursids
 e7f7def3	Ursids meteor shower
+5bf6f587	Use “Report” for anything that breaks these rules. The moderator checks every report, and anything reported by three people is hidden at once.
 0bdc508a	Venus
 564d7a48	Venus grew the same way as Earth and to almost the same size. Its story split from Earth's later: its air filled with carbon dioxide and trapped so much heat that any water boiled away.
 14c416de	Venus is hotter than Mercury, even though it is farther from the Sun, because its thick air traps the heat.
