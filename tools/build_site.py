@@ -397,7 +397,7 @@ def asset_v():
     '''A short hash of the scripts and styles, so a changed file is never served from an old cache.'''
     if not _ASSET_V:
         h = hashlib.md5()
-        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js'):
+        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'sw.js'):
             h.update((SRC / name).read_bytes())
         h.update(data_js().encode('utf-8'))
         h.update(umap.CATALOG.read_bytes())
@@ -596,7 +596,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 <meta property="og:title" content="{esc(title_en)} · Astryl"><meta property="og:description" content="{esc(desc_en)}"><meta property="og:type" content="website"><meta property="og:url" content="{url}"><meta name="theme-color" content="#06080e">
 <meta property="og:site_name" content="Astryl"><meta name="robots" content="max-image-preview:large"><meta property="og:image:alt" content="{esc(title_en)} · Astryl">
 <meta property="og:image" content="{ogimg}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{esc(title_en)} · Astryl"><meta name="twitter:description" content="{esc(desc_en)}"><meta name="twitter:image" content="{ogimg}">
-<link rel="icon" href="{p}assets/icon.svg" type="image/svg+xml">
+<link rel="icon" href="{p}assets/icon.svg" type="image/svg+xml"><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Astryl"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="stylesheet" href="{p}assets/style.css?v={asset_v()}">
 <script>try{{var s=localStorage,A=["en","hi","es","pt","fr","ar"],l=s.getItem("astryl-lang");if(A.indexOf(l)<0){{l=(navigator.language||"en").slice(0,2);if(A.indexOf(l)<0)l="en"}}var d=document.documentElement;d.lang=l;d.dir=l==="ar"?"rtl":"ltr";if(s.getItem("astryl-theme")!=="light")d.setAttribute("data-theme","dark")}}catch(e){{document.documentElement.setAttribute("data-theme","dark")}}if(window.IntersectionObserver&&!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))document.documentElement.classList.add("js")</script>
 {ldtag}{extra_head}</head>
@@ -613,9 +613,9 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 <footer><div class="wrap cols">
 <div><b>Astryl</b><br>{bt("Know your space.", "अपने अंतरिक्ष को जानिए।")}<br>© 2026 Astryl · <a href="{SITE}">astryl.space</a></div>
 <div><a href="{p}privacy.html">{bt("Privacy Policy", "Privacy Policy")}</a><br><a href="{p}account.html">{bt("Account", "खाता")}</a><br><a href="{p}my-space.html">{bt("My space", "My space")}</a></div>
-<div>{bt("Facts: NASA Planetary Fact Sheet", "तथ्य: NASA Planetary Fact Sheet")}</div>
+<div>{bt("Facts: NASA Planetary Fact Sheet", "तथ्य: NASA Planetary Fact Sheet")}<div id="installBox" class="installbox"></div></div>
 </div></footer>
-{"<script src=\"" + p + "assets/data.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/app.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/account.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/me.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/fx.js?v=" + asset_v() + "\"></script>" if scripts else ""}
+{"<script src=\"" + p + "assets/data.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/app.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/account.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/me.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/fx.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/pwa.js?v=" + asset_v() + "\"></script>" if scripts else ""}
 </body></html>
 '''
 
@@ -963,6 +963,7 @@ def privacy_page():
 {li("The first time you open the site, a welcome window offers to create an account or log in. “Continue without account” closes it and the site remembers that choice on your device.", "Site पहली बार खोलने पर एक welcome window खाता बनाने या log in करने का विकल्प देती है। “बिना खाते के आगे बढ़ें” उसे बंद कर देता है और site आपके device पर वह चुनाव याद रखती है।")}
 {li("A small notice at the bottom of the page can show a note from the Astryl team (you can close it) and, once, ask whether you want to share your approximate place. Your answer is remembered on your device. See “Visitors and places” below.", "Page के नीचे एक छोटी सूचना Astryl टीम का कोई संदेश दिखा सकती है (आप उसे बंद कर सकते हैं) और एक बार पूछ सकती है कि क्या आप अपनी अनुमानित जगह बताना चाहते हैं। आपका जवाब आपके device पर याद रखा जाता है। नीचे “Visitors और जगहें” देखें।")}
 {li("The home page asks the Astryl server for the public counter (accounts, active users, visitors, page views).", "Home page Astryl server से public counter (खाते, active users, visitors, page views) माँगता है।")}
+{li("To work offline and open fast, the website keeps copies of its own pages, scripts and pictures in your browser (a service worker cache). It stores nothing about you and sends nothing. Clearing the site data in your browser removes it; installing the website only adds an icon.", "Offline चलने और जल्दी खुलने के लिए website अपने pages, scripts और तस्वीरों की copies आपके browser में रखती है (service worker cache)। इसमें आपके बारे में कुछ नहीं रखा या भेजा जाता। Browser में site का data साफ़ करने से यह हट जाता है; website install करने से बस एक icon जुड़ता है।")}
 {li("The home page shows NASA’s Astronomy Picture of the Day. The text comes through the Astryl server; the picture loads straight from NASA’s server (assets.science.nasa.gov), which sees your IP address like any website. The space station page gets the station’s orbit data from the Astryl server (or, if that fails, from wheretheiss.at). Nothing about you is sent.", "Home page पर NASA की Astronomy Picture of the Day दिखती है। उसका text Astryl server से आता है; तस्वीर सीधे NASA के server (assets.science.nasa.gov) से load होती है, जो किसी भी website की तरह आपका IP address देखता है। अंतरिक्ष स्टेशन वाला page station की कक्षा का data Astryl server से (या वह न चले तो wheretheiss.at से) लेता है। आपके बारे में कुछ नहीं भेजा जाता।")}
 </ul>
 <h3>{bt("Counting page views", "Page views की गिनती")}</h3>
@@ -1005,6 +1006,31 @@ def not_found():
     write('404.html', shell('Page not found', 'Page नहीं मिला', 'home', body, 'Page not found.', scripts=False, extra_head='<meta name="robots" content="noindex">').replace('href="index.html"', 'href="/index.html"').replace('href="assets/', 'href="/assets/'))
 
 
+def pwa_files():
+    """The installable website: offline page, web app manifest, icons and the service worker."""
+    body = f'''<section class="blk" style="text-align:center;padding:60px 0"><h1>📡 {bt("You are offline", "आप offline हैं")}</h1><p class="sub" style="margin:auto">{bt("This page has not been opened on this device yet, so it is not saved. Pages you have opened before still work, and everything else comes back when you are online again.", "यह page इस device पर पहले नहीं खुला, इसलिए save नहीं है। पहले खोले हुए pages अब भी चलते हैं, और बाक़ी सब internet आते ही वापस आ जाएगा।")}</p><p><a class="btn primary" href="/index.html">{bt("Home", "होम")}</a> <a class="btn" href="/planets.html">{bt("Planets", "ग्रह")}</a></p></section>'''
+    write('offline.html', shell('Offline', 'Offline', 'home', body, 'You are offline.', extra_head='<meta name="robots" content="noindex">').replace('href="index.html"', 'href="/index.html"').replace('href="assets/', 'href="/assets/').replace('src="assets/', 'src="/assets/'))
+    (OUT / 'img' / 'icons').mkdir(parents=True, exist_ok=True)
+    for f in ('icon-192.png', 'icon-512.png', 'maskable-512.png', 'apple-touch-icon.png'):
+        shutil.copy(site_data.DATA / 'icons' / f, OUT / 'img' / 'icons' / f)
+    manifest = {
+        'name': 'Astryl: Know your space', 'short_name': 'Astryl', 'id': '/', 'start_url': '/', 'scope': '/', 'display': 'standalone',
+        'background_color': '#05070f', 'theme_color': '#06080e', 'lang': 'en', 'dir': 'ltr', 'categories': ['education', 'science'],
+        'description': 'Planets, moons, stars and space missions: real positions and real numbers for any date, in English and Hindi.',
+        'icons': [{'src': '/img/icons/icon-192.png', 'sizes': '192x192', 'type': 'image/png'},
+                  {'src': '/img/icons/icon-512.png', 'sizes': '512x512', 'type': 'image/png'},
+                  {'src': '/img/icons/maskable-512.png', 'sizes': '512x512', 'type': 'image/png', 'purpose': 'maskable'}],
+        'shortcuts': [{'name': 'Tonight in your city', 'url': '/my-space.html'}, {'name': 'Space station passes', 'url': '/iss.html'}, {'name': 'Quiz', 'url': '/quiz.html'}],
+    }
+    (OUT / 'manifest.webmanifest').write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding='utf-8')
+    v = asset_v()
+    core = ['/', '/index.html', '/offline.html', '/planets.html', '/assets/icon.svg', '/img/icons/icon-192.png']
+    core += [f'/assets/{n}?v={v}' for n in ('style.css', 'data.js', 'app.js', 'account.js', 'me.js', 'fx.js', 'pwa.js', 'cosmos.js', 'tonight.js', 'apod.js')]
+    core += [f'/fonts/{f}' for f in ('DMSans-Regular.ttf', 'DMSans-Medium.ttf', 'DMSans-Bold.ttf', 'SpaceGrotesk-Medium.ttf', 'SpaceGrotesk-Bold.ttf')]
+    sw = (SRC / 'sw.js').read_text(encoding='utf-8').replace("'__VERSION__'", json.dumps(v)).replace('__CORE__', json.dumps(core))
+    (OUT / 'sw.js').write_text(sw, encoding='utf-8')
+
+
 def parse_cities():
     text = site_data.table('cities.dart')
     return [[a, b, c, float(d), float(e)] for a, b, c, d, e in re.findall(r"City\('([\w-]+)', '([^']+)', '([^']+)', ([-\d.]+), ([-\d.]+)\)", text)]
@@ -1043,7 +1069,7 @@ def main():
     shutil.copy(SRC / 'learn.js', OUT / 'assets/learn.js')
     shutil.copy(SRC / 'universe.js', OUT / 'assets/universe.js')
     shutil.copytree(site_data.CITIES, OUT / 'assets' / 'cities')
-    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js'):
+    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js'):
         shutil.copy(SRC / name, OUT / 'assets' / name)
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#fbf7ee"/><circle r="30" fill="#1b3a8a"/><ellipse rx="50" ry="15" fill="none" stroke="#6a45d6" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#1b3a8a"/></svg>', encoding='utf-8')
@@ -1055,7 +1081,7 @@ def main():
     (OUT / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n', encoding='utf-8')
     for i, b in enumerate(BODIES):
         body_page(b, i)
-    index_page(); planets_page(); simple_pages(); maps_page(); get_page(); privacy_page(); account_page(); not_found()
+    index_page(); planets_page(); simple_pages(); maps_page(); get_page(); privacy_page(); account_page(); not_found(); pwa_files()
     helpers = dict(bt=bt, bi=bi, raw2=raw2, shell=shell, write=write, esc=esc, fmt=fmt, asset_v=asset_v, SITE=SITE, ROOT=ROOT)
     deep = deepspace.build(helpers) + galaxies.build(helpers) + lab.build(helpers) + universe.build(helpers) + learn.build(helpers) + umap.build(helpers) + myspace.build(helpers) + skyevents.build(helpers) + students.build(helpers) + telescope.build(helpers) + iss.build(helpers)
     urls = ['', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'privacy.html', 'account.html', 'black-holes.html', 'galaxies.html'] + deep + [f'body/{b["id"]}.html' for b in BODIES]

@@ -311,6 +311,22 @@
       taken.push(box); ctx.fillStyle = L[5] ? '#e8edf7' : 'rgba(232,237,247,0.82)'; ctx.fillText(L[0], lx, ly, 220);
     }
     ctx.shadowBlur = 0;
+    scaleBar(D);
+  }
+
+  /* A scale bar in the corner: a round length that fits about a fifth of the screen. */
+  function plainText(html) { var m = html.match(lang() === 'hi' ? /lang="hi">([^<]*)/ : /lang="en">([^<]*)/); return m ? m[1] : html.replace(/<[^>]+>/g, ''); }
+  function scaleBar(D) {
+    // a round number in the unit the label will use (km, AU, light-years, thousand, million or billion light-years)
+    var perPx = D / cam.focal, want = perPx * Math.min(W * 0.22, 160);
+    var unit = want < 0.01 ? (want * AU_LY < 0.01 ? 1 / (AU_LY * KM_AU) : 1 / AU_LY) : want < 1000 ? 1 : want < 1e6 ? 1e3 : want < 1e9 ? 1e6 : 1e9;
+    if (unit === 1 / (AU_LY * KM_AU) && want * AU_LY * KM_AU >= 1e6) unit = 1e6 / (AU_LY * KM_AU);
+    var inUnit = want / unit, p10 = Math.pow(10, Math.floor(Math.log10(inUnit))), len = ([5, 2, 1].map(function (k) { return k * p10; }).filter(function (v) { return v <= inUnit; })[0] || p10) * unit;
+    var px = len / perPx, x = 14, y = H - 16;
+    ctx.strokeStyle = 'rgba(232,237,247,.8)'; ctx.lineWidth = 2; ctx.beginPath();
+    ctx.moveTo(x, y - 5); ctx.lineTo(x, y); ctx.lineTo(x + px, y); ctx.lineTo(x + px, y - 5); ctx.stroke();
+    ctx.fillStyle = 'rgba(232,237,247,.9)'; ctx.font = '600 11px "DM Sans",system-ui,sans-serif'; ctx.textBaseline = 'bottom';
+    ctx.fillText(plainText(lenText(len)), x, y - 7);
   }
 
   /* ---------- page parts ---------- */
@@ -371,6 +387,49 @@
     cv.scrollIntoView({ block: 'nearest' });
   });
 
+  /* ---------- full screen ---------- */
+  var sect = cv.closest('.umap'), fullBtn = $('umFull');
+  function setFull(on) {
+    sect.classList.toggle('umfull', on); document.documentElement.classList.toggle('umlock', on);
+    fullBtn.textContent = on ? '✕' : '⛶'; fullBtn.setAttribute('aria-label', on ? 'Exit full screen' : 'Full screen');
+    if (on && sect.requestFullscreen && !document.fullscreenElement) sect.requestFullscreen().catch(function () {});
+    if (!on && document.fullscreenElement) document.exitFullscreen().catch(function () {});
+    dirty = true; setTimeout(function () { dirty = true; }, 250);
+  }
+  fullBtn.addEventListener('click', function () { setFull(!sect.classList.contains('umfull')); });
+  document.addEventListener('fullscreenchange', function () { if (!document.fullscreenElement && sect.classList.contains('umfull')) setFull(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && sect.classList.contains('umfull')) setFull(false); });
+
+  /* ---------- guided tour ---------- */
+  function find(word) { for (var i = 0; i < bodies.length; i++) if (bodies[i].find.indexOf(word) >= 0) return bodies[i]; return null; }
+  var TOUR = [
+    [SUN, LEVELS[0][1], 'Home: the Sun and the eight planets, where they are right now. Light from the Sun takes about 4 hours to reach Neptune.', 'घर: सूरज और आठों ग्रह, अभी जहाँ हैं वहीं। सूरज की रोशनी को नेपच्यून तक पहुँचने में लगभग 4 घंटे लगते हैं।'],
+    [find('proxima centauri'), 6, 'Proxima Centauri, the nearest star: 4.2 light-years away. Its light left it more than four years ago.', 'प्रॉक्सिमा सेंटॉरी, सबसे पास का तारा: 4.2 प्रकाश-वर्ष दूर। इसकी रोशनी चार साल से ज़्यादा पहले चली थी।'],
+    [SUN, LEVELS[1][1], 'Our neighbourhood: every star here is within about 50 light-years. In the night sky most bright stars are this close.', 'हमारा मोहल्ला: यहाँ हर तारा लगभग 50 प्रकाश-वर्ष के अंदर है। रात के आसमान के ज़्यादातर चमकीले तारे इतने ही पास हैं।'],
+    [MW, LEVELS[2][1], 'The Milky Way: about 100,000 light-years across, with a few hundred billion stars. The Sun is 26,700 light-years from its centre.', 'आकाशगंगा (Milky Way): लगभग 1 लाख प्रकाश-वर्ष चौड़ी, कुछ सौ अरब तारों वाली। सूरज इसके केंद्र से 26,700 प्रकाश-वर्ष दूर है।'],
+    [find('andromeda galaxy'), null, 'Andromeda, 2.5 million light-years away: the farthest thing you can see with your own eyes. It will meet the Milky Way in about 4.5 billion years.', 'एंड्रोमेडा, 25 लाख प्रकाश-वर्ष दूर: सबसे दूर की चीज़ जो आप अपनी आँखों से देख सकते हैं। लगभग 4.5 अरब साल में यह हमारी आकाशगंगा से मिलेगी।'],
+    [MW, LEVELS[3][1], 'The Local Group: the Milky Way, Andromeda and about 80 smaller galaxies, held together by gravity.', 'स्थानीय समूह: आकाशगंगा, एंड्रोमेडा और लगभग 80 छोटी आकाशगंगाएँ, गुरुत्व से बँधी हुई।'],
+    [find('virgo cluster'), null, 'The Virgo Cluster: over a thousand galaxies, about 54 million light-years away. Its giant galaxy M87 holds the first black hole ever photographed.', 'कन्या (Virgo) समूह: हज़ार से ज़्यादा आकाशगंगाएँ, लगभग 5.4 करोड़ प्रकाश-वर्ष दूर। इसकी विशाल आकाशगंगा M87 में वह ब्लैक होल है जिसकी पहली तस्वीर ली गई।'],
+    [SUN, LEVELS[5][1], 'The edge of what we can see: 46.5 billion light-years in every direction. Beyond it, light has not had time to reach us yet.', 'जितना हम देख सकते हैं उसका किनारा: हर दिशा में 46.5 अरब प्रकाश-वर्ष। उसके आगे की रोशनी अभी तक हम तक नहीं पहुँची।']
+  ].filter(function (st) { return st[0]; });
+  var tour = { on: false, i: 0, timer: 0 }, tourBox = $('umTour'), tourBtn = $('umTourBtn');
+  function tourShow() {
+    var st = TOUR[tour.i];
+    tourBox.innerHTML = '<div class="umtourtxt"><b>' + (tour.i + 1) + '/' + TOUR.length + '</b> ' + bi(st[2], st[3]) + '</div><div class="umtourbtns"><button type="button" class="btn" id="umTourPrev"' + (tour.i ? '' : ' disabled') + '>‹</button><button type="button" class="btn" id="umTourNext">' + (tour.i < TOUR.length - 1 ? '›' : '✓') + '</button><button type="button" class="btn" id="umTourStop" aria-label="Stop the tour">✕</button></div>';
+    tourBox.hidden = false;
+    $('umTourPrev').onclick = function () { tourGo(tour.i - 1); };
+    $('umTourNext').onclick = function () { if (tour.i < TOUR.length - 1) tourGo(tour.i + 1); else tourStop(); };
+    $('umTourStop').onclick = tourStop;
+  }
+  function tourGo(i) {
+    clearTimeout(tour.timer); tour.i = Math.max(0, Math.min(TOUR.length - 1, i)); var st = TOUR[tour.i];
+    S.sel = null; info(); flyTo(st[0], st[1] || undefined); tourShow();
+    if (!still) tour.timer = setTimeout(function () { if (tour.on && tour.i < TOUR.length - 1) tourGo(tour.i + 1); }, 9000);
+  }
+  function tourStop() { tour.on = false; clearTimeout(tour.timer); tourBox.hidden = true; tourBtn.classList.remove('on'); }
+  tourBtn.addEventListener('click', function () { if (tour.on) { tourStop(); return; } tour.on = true; tourBtn.classList.add('on'); tourGo(0); });
+  API.onRender && API.onRender(function () { if (tour.on) tourShow(); });
+
   /* ---------- touch, mouse, keys ---------- */
   var ptrs = {}, moved = 0, pinch0 = 0, log0 = 0;
   function count() { return Object.keys(ptrs).length; }
@@ -380,7 +439,7 @@
     cv.setPointerCapture(e.pointerId); ptrs[e.pointerId] = { x: e.clientX, y: e.clientY };
     if (count() === 1) moved = 0;
     if (count() === 2) { pinch0 = gap(); log0 = S.logD; }
-    S.fly = null;
+    S.fly = null; clearTimeout(tour.timer);
   });
   cv.addEventListener('pointermove', function (e) {
     var p = ptrs[e.pointerId]; if (!p) return;

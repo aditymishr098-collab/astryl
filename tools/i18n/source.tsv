@@ -460,7 +460,7 @@ ca3622a5	Galaxies range from dwarfs with a few thousand stars to giants with tri
 8f56bfcd	Galaxies were not born big. They grew, mostly by merging.
 613a41be	Galaxies you can see
 756fb2b9	Galaxy
-71620f9e	Galaxy data: <a href="https://github.com/mattiaverga/OpenNGC" rel="noopener">OpenNGC</a> by Mattia Verga and contributors (CC BY-SA 4.0).
+46f29d62	Galaxy data:
 dda3edc9	Galaxy quiz
 67125d63	Ganymede
 b9ceb2fe	Ganymede is the largest moon in the solar system. It is even bigger than Mercury.
@@ -496,6 +496,7 @@ c86c0991	Hawking radiation
 baa8b7cb	Helium
 c7e440f7	Hercules
 d18810ca	Herdsman
+8cf04a97	Home
 706b858b	Homo sapiens
 d3eea256	Horizon radius
 51ceaa38	Hot gas
@@ -973,6 +974,7 @@ edc99319	Surveyor 1 was the first American soft landing on the Moon. It sent bac
 b8707884	Swan
 b7ce7c10	Take the Black hole quiz
 3ad136d3	Take the quiz
+9a8b2152	Take the tour
 1c515596	Tap a row to jump to it. Sizes are rounded; the Solar System step means Neptune’s orbit.
 23b67f51	Tap a world for its size, gravity, temperature, atmosphere and facts.
 b8834f14	Taurus the Bull has a V-shaped face, the Hyades cluster, with orange Aldebaran as its eye. Aldebaran looks as if it belongs to the cluster, but it is much closer to us. Higher up, the Pleiades, or Seven Sisters, is a tiny group of blue stars that most people see as six or seven. The Pleiades are known all over the world and appear in the stories of many cultures.
@@ -1143,6 +1145,7 @@ a4fce679	They look like tiny discs
 cb09f658	This car-sized rover landed in Gale Crater using a rocket-powered sky crane. It found that Mars once had the right conditions for life.
 946db898	This is what the equations of general relativity say. Nobody has ever gone near a black hole, and what really happens at the very centre is an open question.
 ff55ddc1	This page drifted off into space.
+591a9736	This page has not been opened on this device yet, so it is not saved. Pages you have opened before still work, and everything else comes back when you are online again.
 4e70c28a	This website
 6ce385f5	This website in numbers
 f638b238	Three neighbours that shape our days, months and years.
@@ -1163,6 +1166,7 @@ db4bcd81	To see how many different people visit, the Astryl server makes a one-w
 964078f2	To see which pages are read, each page view adds one to a daily total on the Astryl server. This is what is counted, and nothing else:
 219e430a	To show it on your own passport and profile; it is not shown to other people and not on the leaderboard
 7906a83c	To show your consent and run the account
+e6e0fee2	To work offline and open fast, the website keeps copies of its own pages, scripts and pictures in your browser (a service worker cache). It stores nothing about you and sends nothing. Clearing the site data in your browser removes it; installing the website only adds an icon.
 5e5e3e5c	Tonight in your city
 3ccb253d	Tonight's sky
 adc38da6	Total lunar eclipse
@@ -1283,6 +1287,7 @@ dc21e8e8	Wormhole
 af96ab41	Writing
 537c66b2	Year
 cae8d14e	You
+348ba4d0	You are offline
 ffb1b808	You can delete it all
 d727e408	You cross. No bump, no wall. But there is no way back, and no message can reach the outside.
 65700e4c	You need no telescope for the first three.
@@ -1306,6 +1311,7 @@ cb7c9ad8	a proton
 e6d12038	about 2 trillion
 7175acc0	about 21 Suns
 b2f21232	billions of light-years
+723169f6	by Mattia Verga and contributors (CC BY-SA 4.0).
 a652def5	holes.
 543232f7	horizon radius
 de512999	millions to billions of Suns
