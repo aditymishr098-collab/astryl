@@ -1,0 +1,49 @@
+{
+ "name": "Astryl: Know your space",
+ "short_name": "Astryl",
+ "id": "/",
+ "start_url": "/",
+ "scope": "/",
+ "display": "standalone",
+ "background_color": "#05070f",
+ "theme_color": "#06080e",
+ "lang": "en",
+ "dir": "ltr",
+ "categories": [
+  "education",
+  "science"
+ ],
+ "description": "Planets, moons, stars and space missions: real positions and real numbers for any date, in English and Hindi.",
+ "icons": [
+  {
+   "src": "/img/icons/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "/img/icons/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  },
+  {
+   "src": "/img/icons/maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ],
+ "shortcuts": [
+  {
+   "name": "Tonight in your city",
+   "url": "/my-space.html"
+  },
+  {
+   "name": "Space station passes",
+   "url": "/iss.html"
+  },
+  {
+   "name": "Quiz",
+   "url": "/quiz.html"
+  }
+ ]
+}

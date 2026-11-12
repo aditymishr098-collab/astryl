@@ -39,10 +39,11 @@ def build(h):
 <label class="umfind">{bt("Go to", "यहाँ जाएँ")} <input type="search" id="umFind" autocomplete="off" placeholder="Andromeda, M87, Sirius…" aria-label="Search stars, galaxies, black holes"></label>
 <div class="umfound" id="umFound" hidden></div>
 <div class="umwrap"><canvas id="umCv" tabindex="0" aria-label="Universe map. Arrow keys turn, plus and minus zoom."></canvas>
-<div class="umzoom"><button type="button" id="umIn" aria-label="Zoom in">+</button><button type="button" id="umOut" aria-label="Zoom out">−</button></div>
+<div class="umzoom"><button type="button" id="umFull" aria-label="Full screen" title="Full screen">⛶</button><button type="button" id="umIn" aria-label="Zoom in">+</button><button type="button" id="umOut" aria-label="Zoom out">−</button></div>
+<div class="umtour" id="umTour" hidden></div>
 <div class="uminfo" id="umInfo" hidden></div></div>
 <p class="note" id="umScale"></p>
-<div class="umtime"><span id="umTime"></span><button class="btn" type="button" id="umNow">{bt("Back to now", "अभी पर लौटें")}</button></div>
+<div class="umtime"><button class="btn primary" type="button" id="umTourBtn">🚀 {bt("Take the tour", "सैर कीजिए")}</button><span id="umTime"></span><button class="btn" type="button" id="umNow">{bt("Back to now", "अभी पर लौटें")}</button></div>
 <div class="umchips" id="umSpeeds"></div>
 </section>
 <section class="blk prose">{H2("What is real here", "यहाँ क्या असली है")}
@@ -51,7 +52,7 @@ def build(h):
 {P("The dots of the Milky Way are a model with the real size, a bar and four arms: nobody can map single stars that far. Distances of far galaxies are estimated from their redshift, so some groups look stretched along our line of sight. The catalogue holds the brightest galaxies, most of them within 500 million light-years; the real universe has about two trillion.", "आकाशगंगा (मिल्की वे) के बिंदु एक model हैं, असली आकार, bar और चार भुजाओं के साथ: इतनी दूर के एक-एक तारे का नक्शा किसी के पास नहीं है। दूर की आकाशगंगाओं की दूरी उनके redshift से आँकी गई है, इसलिए कुछ समूह हमारी नज़र की दिशा में खिंचे दिखते हैं। catalogue में सबसे चमकीली आकाशगंगाएँ हैं, ज़्यादातर 50 करोड़ प्रकाश-वर्ष के भीतर; असली ब्रह्मांड में लगभग 2 ट्रिलियन हैं।")}
 {H2("Speeding up time", "समय को तेज़ करना")}
 {P("In real time nothing here seems to move: the Sun needs about 230 million years for one trip around the Galaxy. The speed buttons run the clock faster so you can watch planets orbit and the Milky Way turn. The disk is turned as one piece to keep the picture simple.", "असली समय में यहाँ कुछ हिलता नहीं दिखता: सूर्य को आकाशगंगा का एक चक्कर लगाने में लगभग 23 करोड़ साल लगते हैं। speed के बटन घड़ी तेज़ कर देते हैं, ताकि आप ग्रहों को घूमते और मिल्की वे को घूमते देख सकें। तस्वीर सरल रखने के लिए पूरी disk एक साथ घुमाई गई है।")}
-{k.note('Galaxy data: <a href="https://github.com/mattiaverga/OpenNGC" rel="noopener">OpenNGC</a> by Mattia Verga and contributors (CC BY-SA 4.0).', 'आकाशगंगाओं का data: <a href="https://github.com/mattiaverga/OpenNGC" rel="noopener">OpenNGC</a>, Mattia Verga और साथी (CC BY-SA 4.0)।')}
+<p class="note">{bt("Galaxy data:", "आकाशगंगाओं का data:")} <a href="https://github.com/mattiaverga/OpenNGC" rel="noopener">OpenNGC</a> {bt("by Mattia Verga and contributors (CC BY-SA 4.0).", "Mattia Verga और साथी (CC BY-SA 4.0)।")}</p>
 </section>
 {k.keep_exploring('', [('black-holes.html', '⚫', 'Black holes', 'ब्लैक होल'), ('galaxies.html', '🌌', 'Galaxies', 'Galaxies'), ('cosmic-scale.html', '📏', 'Scale of the universe', 'ब्रह्मांड का पैमाना'), ('black-hole-lab.html', '🧪', 'Black hole lab', 'ब्लैक होल lab')])}'''
     html = h['shell']('Universe map', 'ब्रह्मांड का नक्शा', 'umap', body,

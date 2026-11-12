@@ -426,3 +426,22 @@ button.card{display:flex;flex-direction:column;justify-content:flex-start;align-
 @media(pointer:coarse){.tabs button,nav.links a,.passes .btn{min-height:44px}nav.links a{display:inline-flex;align-items:center}.linkbtn{padding:8px 6px}}
 /* space station page: map and passes side by side on wide screens */
 @media(min-width:960px){.issgrid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:24px;align-items:start}.issgrid .issR h2{margin-top:0}.issgrid .passes{max-height:520px;overflow:auto;padding-right:4px}}
+.installbox{margin-top:10px}.installbox .btn{padding:9px 14px;font-size:.9rem}
+/* universe map: bigger, full screen and the tour */
+@media(min-width:900px){.umap .umwrap{width:min(1400px,calc(100vw - 48px));left:50%;transform:translateX(-50%)}}
+.umwrap canvas{height:clamp(420px,calc(100vh - 170px),860px)}
+@media(max-width:700px){.umwrap canvas{height:max(420px,72vh);border-radius:12px}}
+.umzoom button#umFull{font-size:1.05rem}
+.umtour{position:absolute;left:10px;right:60px;top:10px;max-width:520px;display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;border:1px solid #263042;background:rgba(16,22,34,.92);color:#e8edf7;font-size:.92rem;line-height:1.45}
+.umtour .umtourtxt{flex:1}.umtour .umtourtxt b{color:#8fb4ff;margin-right:4px}
+.umtourbtns{display:flex;gap:4px;flex:none}.umtourbtns .btn{padding:6px 10px;min-width:34px;justify-content:center;background:rgba(30,40,60,.9);color:#e8edf7;border-color:#2c3850}
+.umtourbtns .btn:disabled{opacity:.4}
+#umTourBtn{padding:8px 14px;font-size:.88rem}#umTourBtn.on{opacity:.75}
+html.umlock,html.umlock body{overflow:hidden}
+.umap.umfull{position:fixed;inset:0;z-index:3000;margin:0;padding:8px max(8px,env(safe-area-inset-left)) max(8px,env(safe-area-inset-bottom));background:#03050a;display:flex;flex-direction:column;gap:2px;max-width:none;width:auto}
+.umap.umfull .umwrap{flex:1;min-height:0;width:auto;left:auto;transform:none}
+.umap.umfull .umwrap canvas{height:100%;min-height:0;border-radius:12px}
+.umap.umfull .umfind{margin:0 0 4px}.umap.umfull .note,.umap.umfull #umScale{display:none}
+.umap.umfull .umchips{padding:2px 0 4px}
+.umtour[hidden]{display:none}
+@media(max-height:520px){.umap.umfull .umfind,.umap.umfull #umSpeeds,.umap.umfull .umtime{display:none}}
