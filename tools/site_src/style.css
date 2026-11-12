@@ -453,3 +453,19 @@ html.umlock,html.umlock body{overflow:hidden}
 .bodyphoto svg{width:150px;height:150px}
 .bodyphoto figcaption{font-size:.72rem;color:var(--muted);max-width:230px;text-align:center;line-height:1.35}
 @media(max-width:520px){.bodyphoto .pimg{width:150px;height:150px}}
+/* quiz rounds and Space Points */
+.ptscard{margin-bottom:14px}.ptshead{display:flex;gap:12px;align-items:center}.ptslv{font-size:2.2rem;line-height:1}
+.ptscard .progress{margin:10px 0 0}
+.grid.rounds{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.roundcard{display:flex;flex-direction:column;gap:4px;text-align:left;font:inherit;color:var(--text);cursor:pointer;border:1px solid var(--line)}
+.roundcard:hover:not([disabled]){border-color:var(--accent2)}.roundcard[disabled]{opacity:.55;cursor:default}
+.roundcard .ric{font-size:1.8rem}.roundcard small{color:var(--muted)}.roundcard .rn{margin-top:auto;font-weight:700;color:var(--accent)}
+.rbadges{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.rbadges span{padding:6px 10px;border-radius:99px;border:1px solid var(--line);font-size:.88rem;opacity:.5;filter:grayscale(1)}
+.rbadges span.on{opacity:1;filter:none;border-color:var(--accent2);background:color-mix(in srgb,var(--accent2) 12%,var(--card))}
+.rhead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.rq{font-size:1.25rem;margin:4px 0 12px}
+.rimg{display:flex;justify-content:center;margin:6px 0 10px}.rimg img{width:min(260px,70vw);height:auto;aspect-ratio:1}
+.rsvg{display:flex;justify-content:center;margin:6px 0 10px}.rsvg svg{width:min(320px,86vw);height:auto;max-height:320px;background:#0b1430;border-radius:14px}
+.est{display:flex;flex-direction:column;gap:10px;align-items:stretch;margin:10px 0}.est input[type=range]{width:100%;accent-color:var(--accent);min-height:36px}
+.estv{text-align:center;font:700 1.6rem "Space Grotesk"}.estv b{font:inherit}
+.rex{margin:10px 0 12px;line-height:1.5}
