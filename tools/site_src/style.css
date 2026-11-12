@@ -28,7 +28,7 @@ nav.links a:hover,nav.links a.on{color:var(--text);background:var(--card);text-d
 .tools{display:flex;gap:6px}
 .tools button{background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:6px 10px;font:500 .85rem "DM Sans";cursor:pointer}
 .tools button:hover{border-color:var(--accent2)}
-@media(max-width:820px){.bar{flex-wrap:wrap;height:auto;padding:8px 0}nav.links{order:3;width:100%;margin-left:0;flex-wrap:wrap}.tools{margin-left:auto}}
+@media(max-width:820px){.bar{flex-wrap:wrap;height:auto;padding-top:8px;padding-bottom:8px}nav.links{order:3;width:100%;margin-left:0;flex-wrap:wrap}.tools{margin-left:auto}}
 .stars{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(1200px 600px at 80% -10%,color-mix(in srgb,var(--accent2) 12%,transparent),transparent 60%),radial-gradient(900px 500px at 0 10%,color-mix(in srgb,var(--accent) 6%,transparent),transparent 60%)}
 .hero{padding:56px 0 36px;display:grid;grid-template-columns:1.15fr .85fr;gap:32px;align-items:center}
 @media(max-width:820px){.hero{grid-template-columns:1fr;padding-top:32px}}
@@ -418,3 +418,11 @@ a.sc.next{border-color:var(--accent)}
 .daily2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));align-items:start}
 .apod .apodimg img{width:100%;max-height:420px;object-fit:cover;border-radius:14px;display:block;margin:6px 0}
 .apodtxt{font-size:.92rem}
+
+/* tablets: more room at the sides, wider search, even cards, bigger touch targets */
+@media(min-width:600px) and (max-width:1100px){.wrap{padding-left:28px;padding-right:28px}}
+@media(min-width:600px){.row input[type=search]{width:100%;max-width:560px}}
+button.card{display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch}
+@media(pointer:coarse){.tabs button,nav.links a,.passes .btn{min-height:44px}nav.links a{display:inline-flex;align-items:center}.linkbtn{padding:8px 6px}}
+/* space station page: map and passes side by side on wide screens */
+@media(min-width:960px){.issgrid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:24px;align-items:start}.issgrid .issR h2{margin-top:0}.issgrid .passes{max-height:520px;overflow:auto;padding-right:4px}}

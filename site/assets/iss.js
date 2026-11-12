@@ -176,13 +176,13 @@
     }
     var key = c ? c.lat.toFixed(3) + ',' + c.lon.toFixed(3) + ',' + tle.line1 : '';
     if (c && key !== listFor) { list = passes(sat, now, c, 10); listFor = key; }
-    var h = '<div id="issMap">' + mapSvg(now, c) + '</div><p class="note">🛰 ' + bi('the station', 'station') + ' · <span class="dot me"></span> ' + bi('you', 'आप') + ' · ☀️ ' + bi('Sun overhead', 'सूरज सिर के ऊपर') + ' · ' + bi('shaded part: night', 'छायादार हिस्सा: रात') + '</p><div id="issLive">' + liveHtml(now, c) + '</div>';
+    var h = '<div class="issL"><div id="issMap">' + mapSvg(now, c) + '</div><p class="note">🛰 ' + bi('the station', 'station') + ' · <span class="dot me"></span> ' + bi('you', 'आप') + ' · ☀️ ' + bi('Sun overhead', 'सूरज सिर के ऊपर') + ' · ' + bi('shaded part: night', 'छायादार हिस्सा: रात') + '</p><div id="issLive">' + liveHtml(now, c) + '</div></div>';
     if (!c) { var p = SKY.picker(draw); box.innerHTML = h + '<h2>' + bi('When can I see it?', 'मैं इसे कब देख सकता हूँ?') + '</h2><p>' + bi('Choose your city to see when the station flies over you.', 'Station आपके ऊपर से कब गुज़रेगा, यह देखने के लिए अपना शहर चुनिए।') + '</p>' + p.html; p.wire(box); return; }
-    h += '<h2>' + bi('Passes over ', 'ऊपर से उड़ानें: ') + esc(c.name) + '</h2><p class="cityline">📍 <b>' + esc(c.name) + '</b> <button class="linkbtn" type="button" data-change>' + bi('change', 'बदलें') + '</button></p><div id="issPasses">' + passHtml(c, now) + '</div>';
+    h += '<div class="issR"><h2>' + bi('Passes over ', 'ऊपर से उड़ानें: ') + esc(c.name) + '</h2><p class="cityline">📍 <b>' + esc(c.name) + '</b> <button class="linkbtn" type="button" data-change>' + bi('change', 'बदलें') + '</button></p><div id="issPasses">' + passHtml(c, now) + '</div>';
     var age = Math.round((now - (tle.fetchedMs || now)) / 3600000), seen = SKY.seen().iss;
     h += '<p class="note">' + bi('Times are in this device’s time zone. Orbit data ' + (age < 1 ? 'fresh' : age + ' h old') + '; the station sometimes changes its orbit, so check again on the day.', 'समय इस device के time zone में हैं। कक्षा का data ' + (age < 1 ? 'ताज़ा' : age + ' घंटे पुराना') + '; station कभी-कभी अपनी कक्षा बदलता है, इसलिए उसी दिन फिर देख लीजिए।') + '</p>' +
       '<p><button class="btn" type="button" data-seen>' + (seen ? '✅ ' + bi('You have seen the ISS', 'आपने ISS देख लिया है') : '👀 ' + bi('I saw it!', 'मैंने देख लिया!')) + '</button></p>';
-    box.innerHTML = h;
+    box.innerHTML = '<div class="issgrid">' + h + '</div></div>';
     box.querySelector('[data-change]').onclick = function () { SKY.setCity(''); listFor = ''; draw(); };
     box.querySelector('[data-seen]').onclick = function () { SKY.toggleSeen('iss'); draw(); };
     wire(c);
