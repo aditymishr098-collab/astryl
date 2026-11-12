@@ -414,7 +414,7 @@ def asset_v():
     '''A short hash of the scripts and styles, so a changed file is never served from an old cache.'''
     if not _ASSET_V:
         h = hashlib.md5()
-        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'sw.js'):
+        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'sw.js'):
             h.update((SRC / name).read_bytes())
         h.update((ROOT / 'tools' / 'formation.py').read_bytes())
         if (OUT / 'assets/quiz-bank.js').exists():
@@ -815,19 +815,48 @@ def index_page():
              ('🛰️', 'spacecraftTitle', 'How far Voyager and JWST are now', 'Voyager और JWST अभी कितनी दूर हैं', 'spacecraft.html'),
              ('⚖️', 'weightTitle', 'Weight, jump and age on every world', 'हर दुनिया पर वज़न, कूद और उम्र', 'you.html'),
              (pic('earth'), 'navCompare', 'Any two worlds side by side', 'कोई भी दो दुनियाएँ आमने-सामने', 'compare.html')]
-    cards = ''.join(f'<a class="sc" href="{h}"><span class="ic">{ic}</span><span><b>{k if k.startswith('<') else bi(k)}</b><small>{bt(en, hi)}</small></span><span class="go">→</span></a>' for ic, k, en, hi, h in tiles)
-    quiz = ''.join(f'<a class="opt" href="quiz.html">{bi(k)}</a>' for k in ('planetJupiter', 'planetSaturn', 'planetMars', 'planetNeptune'))
+    by = {t[4]: t for t in tiles}
+    by['telescope.html'] = ('🔭', bt('Telescope simulator', 'Telescope simulator'), 'What a telescope really shows, in real photos', 'Telescope में असल में क्या दिखता है, असली तस्वीरों में', 'telescope.html')
+    by['quiz.html'] = ('🏆', bt('Quiz and Space Points', 'Quiz और Space Points'), 'Photo, constellation and mission rounds', 'फ़ोटो, नक्षत्र और mission वाले rounds', 'quiz.html')
+
+    def card(h):
+        ic, k, en, hi_, _ = by[h]
+        return f'<a class="sc" href="{h}"><span class="ic">{ic}</span><span><b>{k if k.startswith("<") else bi(k)}</b><small>{bt(en, hi_)}</small></span><span class="go">→</span></a>'
+    groups = [('img/planets/saturn.webp', bt('The Solar System', 'सौरमंडल'), bt('Planets, moons and where they are today', 'ग्रह, चाँद और वे आज कहाँ हैं'), ['planets.html', 'solar-system.html', 'compare.html', 'you.html', 'maps.html']),
+              ('img/space/gx-whirlpool.webp', bt('Deep space', 'गहरा अंतरिक्ष'), bt('Black holes, galaxies and the whole universe', 'ब्लैक होल, आकाशगंगाएँ और पूरा ब्रह्मांड'), ['black-holes.html', 'black-holes-101.html', 'galaxies.html', 'universe-map.html', 'cosmic-scale.html', 'universe-timeline.html']),
+              ('img/space/sun-eclipse.webp', bt('Watch the sky', 'आसमान देखिए'), bt('What to look for tonight, from your city', 'आज रात क्या देखें, आपके शहर से'), ['sky.html', 'constellations.html', 'sky-events.html', 'iss.html', 'telescope.html']),
+              ('img/space/pic-earthrise.webp', bt('Explore and learn', 'खोजिए और सीखिए'), bt('Missions, spacecraft, lessons and quizzes', 'Missions, अंतरिक्ष यान, पाठ और quiz'), ['missions.html', 'spacecraft.html', 'learn.html', 'quiz.html', 'glossary.html'])]
+    cards = ''.join(f'<section class="grp"><div class="grph" style="background-image:url({img})"><h2>{t}</h2><p>{sub}</p></div><div class="sc-grid">{"".join(card(h) for h in hs)}</div></section>' for img, t, sub, hs in groups)
+    quiz = ''.join(f'<button type="button" class="opt"{" data-ok=1" if k == "planetJupiter" else ""}>{bi(k)}</button>' for k in ('planetSaturn', 'planetJupiter', 'planetMars', 'planetNeptune'))
+    surprise = []
+    for b in BODIES:
+        cap = b['id'].capitalize()
+        for n in (1, 2):
+            if f'fact{cap}{n}' in L['en']:
+                surprise.append({'u': f'body/{b["id"]}.html', 'img': f'img/planets/{b["id"]}-s.webp' if b['id'] in PHOTO else 'assets/icon.svg', 't': [tr('en', NAME_KEY[b['id']]), tr('hi', NAME_KEY[b['id']])], 'd': [L['en'][f'fact{cap}{n}'], L['hi'][f'fact{cap}{n}']]})
+    for pid, u in (('bh-m87', 'black-holes/famous-black-holes.html'), ('pic-paleblue', 'missions.html'), ('gx-webb', 'galaxies/what-is-a-galaxy.html'), ('pic-pluto', 'body/pluto.html'), ('nb-pillars', 'learn/stars-and-constellations.html'),
+                   ('pic-huygens', 'body/titan.html'), ('gx-andromeda', 'galaxies/andromeda-galaxy.html'), ('pic-apollo11', 'missions.html'), ('sc-chandrayaan3', 'maps.html'), ('iss-india-night', 'iss.html'), ('pic-rosetta', 'missions.html'), ('gx-antennae', 'galaxies/galaxy-formation-and-collisions.html')):
+        if pid in spacephotos.SIZES:
+            _, en, hi_ = spacephotos.INFO[pid]
+            surprise.append({'u': u, 'img': f'img/space/{pid}.webp', 't': [en.split(':')[0].split('(')[0].split(',')[0].strip()[:60], hi_.split(':')[0].split('(')[0].split(',')[0].strip()[:60]], 'd': [en, hi_]})
     body = f'''<section class="hero2">
 <div>
 <h1 class="rise">{bt("Explore the", "खोजिए")} <span class="grad">{bt("Universe.", "ब्रह्मांड।")}</span></h1>
 <p class="lead rise">{bt("Planets, moons, stars and space missions: real positions and real numbers for any date, in English and Hindi.", "ग्रह, चाँद, तारे और अंतरिक्ष missions: किसी भी तारीख़ की असली स्थिति और असली आँकड़े, English और हिंदी में।")}</p>
 <div class="btns rise"><a class="btn primary" href="planets.html">{bt("Explore space", "अंतरिक्ष खोजिए")} →</a><a class="btn" href="quiz.html">{bt("Take the quiz", "Quiz खेलिए")}</a></div>
-<p class="acctline rise">{bt("Free account: your favourites, scores and streak are kept on every device.", "मुफ़्त खाता: आपके favourites, scores और streak हर device पर साथ रहते हैं।")} <a href="account.html">{bt("Create account", "खाता बनाएँ")} →</a></p>
+<p class="acctline rise" id="acctLine">{bt("Free account: your favourites, scores and streak are kept on every device.", "मुफ़्त खाता: आपके favourites, scores और streak हर device पर साथ रहते हैं।")} <a href="account.html">{bt("Create account", "खाता बनाएँ")} →</a></p>
 <div class="chips rise"><span class="chip">{bt("Free", "मुफ़्त")}</span><span class="chip">{bt("Open source", "Open source")}</span><span class="chip">{bt("No ads", "कोई विज्ञापन नहीं")}</span><span class="chip">{bt("English + हिन्दी", "English + हिन्दी")}</span></div>
 </div>
-{orrery_svg()}
+<div class="herog"><canvas id="heroGlobe" aria-label="{esc("The Earth right now, with day and night and the space station")}"></canvas><p class="note herocap">{bt("The Earth right now: real day and night, and the space station where it really is.", "अभी की पृथ्वी: असली दिन और रात, और अंतरिक्ष स्टेशन ठीक वहीं जहाँ वह है।")}</p></div>
 </section>
-<section class="sc-grid">{cards}</section>
+<div class="livebar" id="liveBar"></div>
+<section class="blk"><h2>{bt("Today in space", "आज अंतरिक्ष में")}</h2><div class="today" id="today"></div></section>
+<section class="duo">
+<div class="card" id="homeQuiz"><h2>{bt("Quick quiz", "झटपट quiz")}</h2><div class="q">{bt("Which planet is known for its Great Red Spot?", "किस ग्रह का Great Red Spot मशहूर है?")}</div><div class="opts">{quiz}</div><p class="qres"></p></div>
+<div class="card" id="surprise"><h2>{bt("Surprise me", "कुछ नया दिखाओ")}</h2><p>{bt("A real photo or a fact from somewhere in space, picked at random.", "अंतरिक्ष में कहीं से एक असली तस्वीर या तथ्य, बिना क्रम के चुना हुआ।")}</p><button type="button" class="btn primary">🎲 {bt("Show me something", "कुछ दिखाओ")}</button><div class="sres"></div></div>
+</section>
+{cards}
+<script>window.ASTRYL_SURPRISE={json.dumps(surprise, ensure_ascii=False).replace('</', '<\\/')};</script>
 <section class="journey" id="journey"><div class="stick">
 <canvas id="cosmos" aria-label="{esc("Scroll to travel from the Milky Way to the Solar System, Earth and the Moon")}"></canvas>
 <div class="caps">
@@ -839,13 +868,12 @@ def index_page():
 <div class="jphase" id="jPhase"><canvas width="64" height="64"></canvas><span></span></div>
 <div class="jdots"><i class="on"></i><i></i><i></i></div>
 </div></section>
-<section class="duo">
+<section class="blk">
 <div class="card"><h2>{bt("Tonight's sky", "आज रात का आसमान")}</h2><div class="moonrow" id="homeMoon"></div><div id="homeTonight"></div><a class="btn" href="sky.html">{bt("Open the Moon calendar", "चाँद का calendar खोलें")} →</a></div>
-<div class="card"><h2>{bt("Planet quiz", "ग्रहों की quiz")}</h2><p>{bt("Ten questions in three levels, made from the planet data.", "तीन levels में दस सवाल, ग्रहों के data से बने।")}</p><div class="q">{bt("Which planet is known for its Great Red Spot?", "किस ग्रह का Great Red Spot मशहूर है?")}</div><div class="opts">{quiz}</div></div>
 </section>
 <section class="blk"><div class="grid daily2"><div class="card apod" id="dailyPhoto"></div><div class="card" id="dailyFact"></div></div></section>
 <section class="blk"><h2>{bt("This website in numbers", "यह website आँकड़ों में")}</h2><div class="stats" id="stats"></div><p class="note" id="statsCountries"></p><p class="note" id="statsNote"></p></section>'''
-    write('index.html', shell('Explore the Universe', 'ब्रह्मांड खोजिए', 'home', body, 'Astryl: planets, moons, stars and space missions. Real positions and real numbers for any date, free and open source, in English and Hindi.', canonical='', extra_head=f'<script defer src="assets/cosmos.js?v={asset_v()}"></script><script defer src="assets/tonight.js?v={asset_v()}"></script><script defer src="assets/apod.js?v={asset_v()}"></script>', ld=[{'@context': 'https://schema.org', '@type': 'WebApplication', 'name': 'Astryl', 'applicationCategory': 'EducationalApplication', 'operatingSystem': 'Any', 'description': 'Planets, moons, stars and space missions with real positions and real numbers for any date, in English and Hindi. Free.', 'url': SITE + '/', 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}, 'inLanguage': ['en', 'hi']}, {'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Astryl', 'url': SITE + '/', 'inLanguage': ['en', 'hi']}]))
+    write('index.html', shell('Explore the Universe', 'ब्रह्मांड खोजिए', 'home', body, 'Astryl: planets, moons, stars and space missions. Real positions and real numbers for any date, free and open source, in English and Hindi.', canonical='', extra_head=f'<script defer src="assets/sgp4.js?v={asset_v()}"></script><script defer src="assets/home.js?v={asset_v()}"></script><script defer src="assets/cosmos.js?v={asset_v()}"></script><script defer src="assets/tonight.js?v={asset_v()}"></script><script defer src="assets/apod.js?v={asset_v()}"></script>', ld=[{'@context': 'https://schema.org', '@type': 'WebApplication', 'name': 'Astryl', 'applicationCategory': 'EducationalApplication', 'operatingSystem': 'Any', 'description': 'Planets, moons, stars and space missions with real positions and real numbers for any date, in English and Hindi. Free.', 'url': SITE + '/', 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}, 'inLanguage': ['en', 'hi']}, {'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Astryl', 'url': SITE + '/', 'inLanguage': ['en', 'hi']}]))
 
 
 def planets_page():
@@ -1167,7 +1195,7 @@ def main():
     shutil.copy(SRC / 'learn.js', OUT / 'assets/learn.js')
     shutil.copy(SRC / 'universe.js', OUT / 'assets/universe.js')
     shutil.copytree(site_data.CITIES, OUT / 'assets' / 'cities')
-    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js'):
+    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js'):
         shutil.copy(SRC / name, OUT / 'assets' / name)
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#fbf7ee"/><circle r="30" fill="#1b3a8a"/><ellipse rx="50" ry="15" fill="none" stroke="#6a45d6" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#1b3a8a"/></svg>', encoding='utf-8')

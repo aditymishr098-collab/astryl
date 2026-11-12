@@ -142,3 +142,35 @@
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
 })();
+
+/* First visit only: a short trip at warp speed (about a second), then the page. Skippable, and
+   never shown when the visitor has asked for less motion. */
+(function () {
+  var K = 'astryl-intro-seen';
+  try { if (localStorage.getItem(K)) return; localStorage.setItem(K, '1'); } catch (e) { return; }
+  if ((window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) || /bot|crawl|spider|lighthouse|headless/i.test(navigator.userAgent)) return;
+  var box = document.createElement('div'); box.className = 'intro'; box.setAttribute('aria-hidden', 'true');
+  box.innerHTML = '<canvas></canvas><div class="ilogo">✦ Astryl</div><button type="button" class="iskip">Skip ›</button>';
+  document.body.appendChild(box);
+  var cv = box.querySelector('canvas'), g = cv.getContext('2d'), dpr = Math.min(2, window.devicePixelRatio || 1), W, H, stars = [], t0 = performance.now(), done = false;
+  function size() { W = cv.width = innerWidth * dpr; H = cv.height = innerHeight * dpr; }
+  size();
+  for (var i = 0; i < 420; i++) stars.push({ x: (Math.random() - 0.5) * 2, y: (Math.random() - 0.5) * 2, z: Math.random() });
+  function end() { if (done) return; done = true; box.classList.add('out'); setTimeout(function () { box.remove(); }, 500); }
+  box.querySelector('.iskip').onclick = end;
+  (function frame(now) {
+    if (done) return;
+    var t = (now - t0) / 1000, speed = t < 0.9 ? 0.4 + t * 2.2 : Math.max(0.2, 2.4 - (t - 0.9) * 3);
+    g.fillStyle = 'rgba(2,3,10,.35)'; g.fillRect(0, 0, W, H);
+    var cx = W / 2, cy = H / 2, f = Math.min(W, H) * 0.6;
+    stars.forEach(function (s) {
+      var z0 = s.z; s.z -= speed * 0.016; if (s.z <= 0.02) { s.z = 1; s.x = (Math.random() - 0.5) * 2; s.y = (Math.random() - 0.5) * 2; return; }
+      var x1 = cx + s.x / z0 * f, y1 = cy + s.y / z0 * f, x2 = cx + s.x / s.z * f, y2 = cy + s.y / s.z * f, b = 1 - s.z;
+      g.strokeStyle = 'rgba(' + (180 + 75 * b | 0) + ',' + (200 + 55 * b | 0) + ',255,' + (0.3 + 0.7 * b).toFixed(2) + ')'; g.lineWidth = (0.6 + 1.8 * b) * dpr;
+      g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke();
+    });
+    if (t > 0.7) box.classList.add('show');
+    if (t > 1.7) end();
+    requestAnimationFrame(frame);
+  })(t0);
+})();
