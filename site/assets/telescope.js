@@ -16,6 +16,23 @@
     andromeda: { size: 190, en: 'Andromeda Galaxy (M31)', hi: 'एंड्रोमेडा galaxy (M31)' }
   };
 
+  var root = document.body.getAttribute('data-root') || '';
+  // across = how many arcminutes the whole picture spans; deep = faint objects that look grey in a small telescope
+  var PICS = {
+    moon: { src: 'img/planets/moon.webp', across: 31 },
+    jupiter: { src: 'img/planets/jupiter.webp', across: 44 / 60 * 600 / 566 },
+    saturn: { src: 'img/planets/saturn.webp', across: 42 / 60 * 600 / 511 },
+    mars: { src: 'img/planets/mars.webp', across: 20 / 60 },
+    orion: { src: 'img/space/ds-m42.webp', across: 40, deep: true },
+    pleiades: { src: 'img/space/ds-m45.webp', across: 120, deep: true },
+    andromeda: { src: 'img/space/gx-andromeda.webp', across: 260, deep: true }
+  };
+  var cache = {};
+  function img(src) {
+    if (!cache[src]) { var i = new Image(); i.decoding = 'async'; i.onload = function () { draw(); }; i.src = root + src; cache[src] = i; }
+    return cache[src];
+  }
+
   function vals() {
     var D = Math.max(20, +$('tsAp').value || 0), F = Math.max(100, +$('tsFl').value || 0), e = Math.max(2, +$('tsEp').value || 0), a = Math.max(30, Math.min(110, +$('tsAf').value || 52)), bar = $('tsBar').checked ? 2 : 1;
     var mag = F * bar / e, tfov = a / mag * 60, exit = D / mag, maxMag = 2 * D, lim = 2.7 + 5 * Math.log10(D), res = 116 / D;
@@ -51,6 +68,17 @@
     var blur = v.mag > v.maxMag ? Math.min(8, (v.mag / v.maxMag - 1) * 6) : 0;
     ctx.filter = blur ? 'blur(' + blur.toFixed(1) + 'px)' : 'none';
     var s = T.size * k / 2; // radius in px
+    // real photos, drawn at their true size for this field of view (arcminutes across the picture)
+    var P = PICS[t], im = P && img(P.src);
+    if (im && im.complete && im.naturalWidth) {
+      var wpx = P.across * k, hpx = wpx * im.naturalHeight / im.naturalWidth;
+      if (P.deep) ctx.filter = (blur ? 'blur(' + blur.toFixed(1) + 'px) ' : '') + 'grayscale(0.55) brightness(0.8) contrast(1.15)';
+      ctx.drawImage(im, cx - wpx / 2, cy - hpx / 2, wpx, hpx);
+      ctx.filter = blur ? 'blur(' + blur.toFixed(1) + 'px)' : 'none';
+      if (t === 'moon') { ctx.fillStyle = 'rgba(4,6,12,0.88)'; ctx.beginPath(); ctx.arc(cx, cy, s + 1, Math.PI / 2, Math.PI * 1.5); ctx.ellipse(cx, cy, s * 0.35, s + 1, 0, Math.PI * 1.5, Math.PI / 2, true); ctx.fill(); }
+      if (t === 'jupiter') { var jr2 = (44 / 60) * k / 2; [[-7.5, 0], [-4.4, 0.05], [3.0, -0.05], [12.5, 0.1]].forEach(function (m) { ctx.fillStyle = '#f4f0e0'; ctx.beginPath(); ctx.arc(cx + m[0] * k, cy + m[1] * k, Math.max(1, jr2 * 0.07), 0, 7); ctx.fill(); }); }
+      if (t === 'saturn') { var sr2 = (18 / 60) * k / 2; ctx.fillStyle = '#f4f0e0'; ctx.beginPath(); ctx.arc(cx + 3.2 * k, cy - 0.3 * k, Math.max(1, sr2 * 0.12), 0, 7); ctx.fill(); }
+    } else {
     if (t === 'moon') {
       ctx.fillStyle = '#d9d3bf'; ctx.beginPath(); ctx.arc(cx, cy, s, 0, 7); ctx.fill();
       var rc = rnd(3); for (var c = 0; c < 70; c++) { var a = rc() * 6.283, d = Math.sqrt(rc()) * s * 0.95, cr = s * (0.02 + rc() * 0.07); ctx.fillStyle = 'rgba(120,112,95,' + (0.25 + rc() * 0.35).toFixed(2) + ')'; ctx.beginPath(); ctx.arc(cx + Math.cos(a) * d, cy + Math.sin(a) * d, cr, 0, 7); ctx.fill(); }
@@ -81,6 +109,7 @@
     } else if (t === 'andromeda') {
       var ga = ctx.createRadialGradient(cx, cy, 0, cx, cy, s); ga.addColorStop(0, 'rgba(255,240,215,.85)'); ga.addColorStop(0.15, 'rgba(230,220,200,.45)'); ga.addColorStop(1, 'rgba(120,120,150,0)');
       ctx.save(); ctx.translate(cx, cy); ctx.rotate(-0.6); ctx.scale(1, 0.32); ctx.fillStyle = ga; ctx.beginPath(); ctx.arc(0, 0, s, 0, 7); ctx.fill(); ctx.restore();
+    }
     }
     ctx.filter = 'none'; ctx.restore();
     ctx.strokeStyle = '#3a4560'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.stroke();

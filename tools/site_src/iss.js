@@ -93,10 +93,13 @@
 
   /* ---------- drawing ---------- */
   var list = [], listFor = '', timer = null;
+  var MAPIMG = (document.body.getAttribute('data-root') || '') + 'img/space/map-earth.webp';
   function mapSvg(ms, c) {
     var W = 720, H = 360, X = function (lon) { return (lon + 180) / 360 * W; }, Y = function (lat) { return (90 - lat) / 180 * H; };
     var s = '<svg class="issmap" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Map of the space station’s path"><rect width="' + W + '" height="' + H + '" class="sea"/>';
-    LAND.forEach(function (shape) {
+    // a real picture of Earth (Solar System Scope, from NASA data); the drawn outline only if it is missing
+    if (MAPIMG) s += '<image href="' + MAPIMG + '" x="0" y="0" width="' + W + '" height="' + H + '" preserveAspectRatio="none"/>';
+    else LAND.forEach(function (shape) {
       s += '<polygon class="land" points="' + shape.split(' ').map(function (pt) { var q = pt.split(','); return X(+q[0]).toFixed(1) + ',' + Y(+q[1]).toFixed(1); }).join(' ') + '"/>';
     });
     // night side: for each longitude the latitude of the day-night line, then the dark part
@@ -176,7 +179,7 @@
     }
     var key = c ? c.lat.toFixed(3) + ',' + c.lon.toFixed(3) + ',' + tle.line1 : '';
     if (c && key !== listFor) { list = passes(sat, now, c, 10); listFor = key; }
-    var h = '<div class="issL"><div id="issMap">' + mapSvg(now, c) + '</div><p class="note">🛰 ' + bi('the station', 'station') + ' · <span class="dot me"></span> ' + bi('you', 'आप') + ' · ☀️ ' + bi('Sun overhead', 'सूरज सिर के ऊपर') + ' · ' + bi('shaded part: night', 'छायादार हिस्सा: रात') + '</p><div id="issLive">' + liveHtml(now, c) + '</div></div>';
+    var h = '<div class="issL"><div id="issMap">' + mapSvg(now, c) + '</div><p class="note">🛰 ' + bi('the station', 'station') + ' · <span class="dot me"></span> ' + bi('you', 'आप') + ' · ☀️ ' + bi('Sun overhead', 'सूरज सिर के ऊपर') + ' · ' + bi('shaded part: night', 'छायादार हिस्सा: रात') + '<br><small>' + bi('Earth picture: Solar System Scope, from NASA data (CC BY 4.0)', 'पृथ्वी की तस्वीर: Solar System Scope, NASA data से (CC BY 4.0)') + '</small></p><div id="issLive">' + liveHtml(now, c) + '</div></div>';
     if (!c) { var p = SKY.picker(draw); box.innerHTML = h + '<h2>' + bi('When can I see it?', 'मैं इसे कब देख सकता हूँ?') + '</h2><p>' + bi('Choose your city to see when the station flies over you.', 'Station आपके ऊपर से कब गुज़रेगा, यह देखने के लिए अपना शहर चुनिए।') + '</p>' + p.html; p.wire(box); return; }
     h += '<div class="issR"><h2>' + bi('Passes over ', 'ऊपर से उड़ानें: ') + esc(c.name) + '</h2><p class="cityline">📍 <b>' + esc(c.name) + '</b> <button class="linkbtn" type="button" data-change>' + bi('change', 'बदलें') + '</button></p><div id="issPasses">' + passHtml(c, now) + '</div>';
     var age = Math.round((now - (tle.fetchedMs || now)) / 3600000), seen = SKY.seen().iss;

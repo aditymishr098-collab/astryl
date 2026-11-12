@@ -71,6 +71,9 @@ WANT = {
 }
 
 
+DONE = {'pic-chandrayaan3', 'pic-mangalyaan', 'site-jezero', 'site-apollo11', 'site-apollo17', 'site-chandrayaan3', 'site-change4', 'site-curiosity', 'site-perseverance'}  # already checked by eye
+
+
 def info(title, width):
     q = fs.API + urllib.parse.urlencode({'action': 'query', 'titles': title, 'prop': 'imageinfo',
                                          'iiprop': 'url|extmetadata|size|mime', 'iiurlwidth': width, 'format': 'json'})
@@ -84,12 +87,35 @@ def info(title, width):
             'desc': v('ImageDescription')[:300], 'page': ii.get('descriptionurl', ''), 'thumb': ii.get('thumburl') or ii.get('url'), 'w': ii.get('width'), 'mime': ii.get('mime')}
 
 
+# global maps straight from Solar System Scope (CC BY 4.0, made from NASA data)
+DIRECT = {'map-moon': ('https://www.solarsystemscope.com/textures/download/8k_moon.jpg', 4000),
+          'map-earth': ('https://www.solarsystemscope.com/textures/download/8k_earth_daymap.jpg', 2400)}
+
+
+def direct(report, credits):
+    for key, (url, width) in DIRECT.items():
+        if os.path.exists(os.path.join(fs.OUT, key + '.webp')):
+            continue
+        try:
+            img = Image.open(io.BytesIO(fs.get(url))).convert('RGB')
+            img.thumbnail((width, width))
+            path = os.path.join(fs.OUT, key + '.webp')
+            img.save(path, 'WEBP', quality=82, method=6)
+            report[key] = {'url': url, 'pixels': img.size, 'bytes': os.path.getsize(path)}
+            credits[key] = {'title': url, 'licence': 'CC BY 4.0', 'artist': 'Solar System Scope (from NASA data)', 'credit': '', 'page': 'https://www.solarsystemscope.com/textures/'}
+        except Exception as e:  # noqa: BLE001
+            report[key] = {'error': str(e)[:300]}
+
+
 def main():
     os.makedirs(fs.OUT, exist_ok=True)
     report = {}
     cp = os.path.join(fs.OUT, 'credits.json')
     credits = json.load(open(cp)) if os.path.exists(cp) else {}
+    direct(report, credits)
     for key, (titles, query, width) in WANT.items():
+        if os.path.exists(os.path.join(fs.OUT, key + '.webp')) or key in DONE:
+            continue
         tried, pick = [], None
         try:
             for t in titles:
@@ -121,7 +147,7 @@ def main():
             report[key] = {'error': str(e)[:300], 'tried': tried}
         time.sleep(1)
     json.dump(credits, open(cp, 'w'), indent=1, ensure_ascii=False, sort_keys=True)
-    json.dump(report, open(os.path.join(fs.OUT, 'report-missions.json'), 'w'), indent=1, ensure_ascii=False, sort_keys=True)
+    json.dump(report, open(os.path.join(fs.OUT, 'report-missions2.json'), 'w'), indent=1, ensure_ascii=False, sort_keys=True)
 
 
 if __name__ == '__main__':

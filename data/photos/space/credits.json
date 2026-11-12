@@ -181,13 +181,6 @@
   "page": "https://commons.wikimedia.org/wiki/File:Saturn_eclipse.jpg",
   "title": "File:Saturn eclipse.jpg"
  },
- "pic-chandrayaan3": {
-  "artist": "Indian Space Research Organisation",
-  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.isro.gov.in/chandrayaan2-gallery\">https://www.isro.gov.in/chandrayaan2-gallery</a>",
-  "licence": "GODL-India",
-  "page": "https://commons.wikimedia.org/wiki/File:GSLV_Mk_III_M1,_Chandrayaan-2_-_Pragyan_rover_mounted_on_the_ramp_of_Vikram_lander_01.jpg",
-  "title": "File:GSLV Mk III M1, Chandrayaan-2 - Pragyan rover mounted on the ramp of Vikram lander 01.jpg"
- },
  "pic-curiosity": {
   "artist": "NASA/JPL-Caltech/MSSS",
   "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://photojournal.jpl.nasa.gov/catalog/PIA19142\">https://photojournal.jpl.nasa.gov/catalog/PIA19142</a>",
@@ -215,13 +208,6 @@
   "licence": "CC BY 2.0",
   "page": "https://commons.wikimedia.org/wiki/File:NASA%27s_Ingenuity_helicopter_on_Mars_by_Perseverance_Mastcam-Z,_Sol_768_(53475637956).jpg",
   "title": "File:NASA's Ingenuity helicopter on Mars by Perseverance Mastcam-Z, Sol 768 (53475637956).jpg"
- },
- "pic-mangalyaan": {
-  "artist": "European Space Agency",
-  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.esa.int/spaceinimages/Images/2008/07/Phobos3\">https://www.esa.int/spaceinimages/Images/2008/07/Phobos3</a>",
-  "licence": "CC BY-SA 3.0 igo",
-  "page": "https://commons.wikimedia.org/wiki/File:Phobos_ESA229192.tiff",
-  "title": "File:Phobos ESA229192.tiff"
  },
  "pic-paleblue": {
   "artist": "<div class=\"fn value\">\n<i>Voyager 1</i></div>",
@@ -370,49 +356,42 @@
   "page": "https://commons.wikimedia.org/wiki/File:Voyager_spacecraft.jpg",
   "title": "File:Voyager spacecraft.jpg"
  },
- "site-apollo11": {
+ "site-Apollo11": {
   "artist": "NASA",
   "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://lroc.sese.asu.edu/news/uploads/lm_westcrater.png\">https://lroc.sese.asu.edu/news/uploads/lm_westcrater.png</a>",
   "licence": "Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Apollo_11_Landing_Site_%26_West_Crater.png",
   "title": "File:Apollo 11 Landing Site & West Crater.png"
  },
- "site-apollo17": {
+ "site-Apollo17": {
   "artist": "Lunar Reconnaissance Orbiter",
   "credit": "<ul><li>page - <a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://www.nasa.gov/mission_pages/LRO/news/apollo-sites.html\" href=\"https://www.nasa.gov/mission_pages/LRO/news/apollo-sites.html\">http://www.nasa.gov/mission_pages/LRO/news/apollo-sites.html</a>\n<ul><li>image - <a rel=\"no",
   "licence": "Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Apollo_17_landing_site,_labeled.jpg",
   "title": "File:Apollo 17 landing site, labeled.jpg"
  },
- "site-chandrayaan3": {
+ "site-Chandrayaan3": {
   "artist": "NASA/GSFC/Arizona State University",
   "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://lroc.sese.asu.edu/posts/1314\">https://lroc.sese.asu.edu/posts/1314</a>",
   "licence": "Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:M1447750764LR_Chandrayaan-3_Landing_Site_imaged_by_Lunar_Reconnaissance_Orbiter_Camera_(LROC)_on_27_August_2023_(annotated).png",
   "title": "File:M1447750764LR Chandrayaan-3 Landing Site imaged by Lunar Reconnaissance Orbiter Camera (LROC) on 27 August 2023 (annotated).png"
  },
- "site-change4": {
+ "site-Change4": {
   "artist": "NASA/GSFC/Arizona State University",
   "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.lroc.asu.edu/posts/1092\">https://www.lroc.asu.edu/posts/1092</a>",
   "licence": "Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:LRO_Above_the_Landing_Site_of_Chang%27e_4_01.png",
   "title": "File:LRO Above the Landing Site of Chang'e 4 01.png"
  },
- "site-curiosity": {
+ "site-Curiosity": {
   "artist": "NASA/JPL-Caltech/University of Arizona",
   "credit": "This image or video was catalogued by Jet Propulsion Laboratory of the United States <a href=\"https://en.wikipedia.org/wiki/NASA\" class=\"extiw\" title=\"w:NASA\">National Aeronautics and Space Administration</a> (NASA) under <b>Photo ID:</b> <a rel=\"nofollow\" class=\"external text\" href=\"https://images.",
   "licence": "Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:HiRISE_Views_Curiosity_During_a_Drive_(PIA26553).jpg",
   "title": "File:HiRISE Views Curiosity During a Drive (PIA26553).jpg"
  },
- "site-jezero": {
-  "artist": "NASA/JPL-Caltech/ASU/MSSS",
-  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://photojournal.jpl.nasa.gov/catalog/PIA25022\">https://photojournal.jpl.nasa.gov/catalog/PIA25022</a>",
-  "licence": "Public domain",
-  "page": "https://commons.wikimedia.org/wiki/File:Spanning_the_Delta_of_Jezero_Crater_on_Mars_(PIA25022).jpg",
-  "title": "File:Spanning the Delta of Jezero Crater on Mars (PIA25022).jpg"
- },
- "site-perseverance": {
+ "site-Perseverance": {
   "artist": "<p>Base image: NASA/JPL-Caltech/University of Arizona\n</p>\nModification: Alliterative Anchovies",
   "credit": "NASA: <a rel=\"nofollow\" class=\"external free\" href=\"https://mars.nasa.gov/resources/25965/perseverances-first-road-trip/\">https://mars.nasa.gov/resources/25965/perseverances-first-road-trip/</a>",
   "licence": "Public domain",

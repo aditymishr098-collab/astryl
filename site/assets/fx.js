@@ -128,3 +128,17 @@
   }
   requestAnimationFrame(drawSky);
 })();
+
+/* Tap a real photo (in a caption box) to see it big; tap again or press Esc to close. */
+(function () {
+  var box = null;
+  function close() { if (box) { box.remove(); box = null; } }
+  document.addEventListener('click', function (e) {
+    var im = e.target.closest('.sphoto img, .mphoto img');
+    if (!im || box) return;
+    box = document.createElement('div'); box.className = 'lightbox'; box.setAttribute('role', 'dialog');
+    var big = new Image(); big.src = im.currentSrc || im.src; big.alt = im.alt;
+    box.appendChild(big); box.onclick = close; document.body.appendChild(box);
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
