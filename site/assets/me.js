@@ -24,6 +24,7 @@
     ['sky.html', '🌙', 'Moon calendar', 'चाँद का calendar'],
     ['you.html', '🎂', 'Your birthday sky', 'आपके जन्मदिन का आसमान'],
     ['sky-events.html', '🌑', 'Eclipses and meteor showers', 'ग्रहण और उल्कापात'],
+    ['iss.html', '🛰️', 'When to see the space station', 'अंतरिक्ष स्टेशन कब दिखेगा'],
     ['learn/moon-phases.html', '🌓', 'Phases of the Moon', 'चाँद की कलाएँ'],
     ['learn/eclipses.html', '🎓', 'How eclipses work', 'ग्रहण कैसे होते हैं'],
     ['compare.html', '⚖️', 'Compare planets', 'ग्रहों की तुलना'],

@@ -17,6 +17,7 @@ import skyevents
 import students
 import cons
 import telescope
+import iss
 import universe
 import learn
 
@@ -383,7 +384,7 @@ def cons_svg(c):
 # ------------------------------------------------------------------ page shell
 # The top menu keeps four main pages; the rest sit under "More". Home is the logo.
 NAV_MAIN = [('planets.html', 'planets', bi('planetsTitle')), ('solar-system.html', 'solar', bi('solarSystemTitle')), ('sky.html', 'sky', bi('skyTitle')), ('quiz.html', 'quiz', bi('navQuiz'))]
-NAV_MORE = [('my-space.html', 'myspace', bt('My space', 'My space')), ('sky-events.html', 'events', bt('Eclipses and meteor showers', 'ग्रहण और उल्कापात')), ('learn.html', 'school', bt('For students', 'छात्रों के लिए')), ('telescope.html', 'scope', bt('Telescope simulator', 'Telescope simulator')), ('compare.html', 'compare', bi('navCompare')), ('you.html', 'you', bt('You', 'आप')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')),
+NAV_MORE = [('my-space.html', 'myspace', bt('My space', 'My space')), ('sky-events.html', 'events', bt('Eclipses and meteor showers', 'ग्रहण और उल्कापात')), ('learn.html', 'school', bt('For students', 'छात्रों के लिए')), ('telescope.html', 'scope', bt('Telescope simulator', 'Telescope simulator')), ('iss.html', 'iss', bt('Space station passes', 'अंतरिक्ष स्टेशन कब दिखेगा')), ('compare.html', 'compare', bi('navCompare')), ('you.html', 'you', bt('You', 'आप')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')),
             ('missions.html', 'missions', bi('missionsTitle')), ('spacecraft.html', 'spacecraft', bi('spacecraftTitle')),
             ('universe-map.html', 'umap', bt('Universe map', 'ब्रह्मांड का नक्शा')), ('galaxies.html', 'gx', bt('Galaxies', 'Galaxies')), ('cosmic-scale.html', 'scale', bt('Scale of the universe', 'ब्रह्मांड का पैमाना')), ('universe-timeline.html', 'tline', bt('Timeline', 'समयरेखा')), ('glossary.html', 'gloss', bt('Glossary', 'शब्दकोश')), ('black-holes.html', 'bh', bt('Black holes', 'ब्लैक होल'))]
 
@@ -395,7 +396,7 @@ def asset_v():
     '''A short hash of the scripts and styles, so a changed file is never served from an old cache.'''
     if not _ASSET_V:
         h = hashlib.md5()
-        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js'):
+        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js'):
             h.update((SRC / name).read_bytes())
         h.update(data_js().encode('utf-8'))
         h.update(umap.CATALOG.read_bytes())
@@ -574,7 +575,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
     p = '../' * depth
     def navlink(h, k, label):
         return f'<a href="{p}{h}"{" class=on" if k == page else ""}>{label}</a>'
-    more_on = page in ('compare', 'you', 'cons', 'maps', 'missions', 'bh', 'gx', 'scale', 'tline', 'gloss', 'umap', 'myspace', 'events', 'school', 'scope')
+    more_on = page in ('compare', 'you', 'cons', 'maps', 'missions', 'bh', 'gx', 'scale', 'tline', 'gloss', 'umap', 'myspace', 'events', 'school', 'scope', 'iss')
     nav = (''.join(navlink(*x) for x in NAV_MAIN)
            + f'<details class="more"><summary{" class=on" if more_on else ""}>{bt("More", "और")} ▾</summary><div class="morepanel">'
            + ''.join(navlink(*x) for x in NAV_MORE) + '</div></details>')
@@ -738,6 +739,7 @@ def index_page():
              ('🗺️', 'surfaceMapTitle', 'Landing sites on the Moon and Mars', 'चाँद और मंगल पर उतरने की जगहें', 'maps.html'),
              ('🎓', bt('For students', 'छात्रों के लिए'), 'Class 6 to 10: Sun, Moon, eclipses, stars', 'कक्षा 6 से 10: सूर्य, चाँद, ग्रहण, तारे', 'learn.html'),
              ('🌑', bt('Eclipses and meteor showers', 'ग्रहण और उल्कापात'), 'Every eclipse until 2029, times for your city', '2029 तक हर ग्रहण, आपके शहर के समय', 'sky-events.html'),
+             ('🛰️', bt('Space station passes', 'अंतरिक्ष स्टेशन कब दिखेगा'), 'Live map and when the ISS flies over your city', 'Live नक्शा और ISS आपके शहर के ऊपर से कब गुज़रेगा', 'iss.html'),
              ('🪐', bt('Universe map', 'ब्रह्मांड का नक्शा'), 'Fly through 3,600 real galaxies in 3D', '3,600 असली आकाशगंगाओं के बीच 3D में उड़िए', 'universe-map.html'),
              ('⚫', bt('Black holes', 'ब्लैक होल'), 'How they form and what falling in would be like', 'कैसे बनते हैं और अंदर गिरना कैसा होगा', 'black-holes.html'),
              ('🌌', bt('Galaxies', 'Galaxies'), 'The Milky Way, Andromeda and beyond', 'आकाशगंगा, Andromeda और उसके आगे', 'galaxies.html'),
@@ -776,9 +778,9 @@ def index_page():
 <div class="card"><h2>{bt("Tonight's sky", "आज रात का आसमान")}</h2><div class="moonrow" id="homeMoon"></div><div id="homeTonight"></div><a class="btn" href="sky.html">{bt("Open the Moon calendar", "चाँद का calendar खोलें")} →</a></div>
 <div class="card"><h2>{bt("Planet quiz", "ग्रहों की quiz")}</h2><p>{bt("Ten questions in three levels, made from the planet data.", "तीन levels में दस सवाल, ग्रहों के data से बने।")}</p><div class="q">{bt("Which planet is known for its Great Red Spot?", "किस ग्रह का Great Red Spot मशहूर है?")}</div><div class="opts">{quiz}</div></div>
 </section>
-<section class="blk"><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))"><div class="card" id="dailyFact"></div></div></section>
+<section class="blk"><div class="grid daily2"><div class="card apod" id="dailyPhoto"></div><div class="card" id="dailyFact"></div></div></section>
 <section class="blk"><h2>{bt("This website in numbers", "यह website आँकड़ों में")}</h2><div class="stats" id="stats"></div><p class="note" id="statsCountries"></p><p class="note" id="statsNote"></p></section>'''
-    write('index.html', shell('Explore the Universe', 'ब्रह्मांड खोजिए', 'home', body, 'Astryl: planets, moons, stars and space missions. Real positions and real numbers for any date, free and open source, in English and Hindi.', canonical='', extra_head=f'<script defer src="assets/cosmos.js?v={asset_v()}"></script><script defer src="assets/tonight.js?v={asset_v()}"></script>', ld=[{'@context': 'https://schema.org', '@type': 'SoftwareApplication', 'name': 'Astryl', 'applicationCategory': 'EducationalApplication', 'operatingSystem': 'Android', 'description': 'Planets, moons, stars and space missions with real positions and real numbers for any date, in English and Hindi. Free and open source.', 'url': SITE + '/', 'downloadUrl': SITE + '/get.html', 'license': 'https://www.gnu.org/licenses/agpl-3.0.html', 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}, 'inLanguage': ['en', 'hi']}, {'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Astryl', 'url': SITE + '/', 'inLanguage': ['en', 'hi']}]))
+    write('index.html', shell('Explore the Universe', 'ब्रह्मांड खोजिए', 'home', body, 'Astryl: planets, moons, stars and space missions. Real positions and real numbers for any date, free and open source, in English and Hindi.', canonical='', extra_head=f'<script defer src="assets/cosmos.js?v={asset_v()}"></script><script defer src="assets/tonight.js?v={asset_v()}"></script><script defer src="assets/apod.js?v={asset_v()}"></script>', ld=[{'@context': 'https://schema.org', '@type': 'SoftwareApplication', 'name': 'Astryl', 'applicationCategory': 'EducationalApplication', 'operatingSystem': 'Android', 'description': 'Planets, moons, stars and space missions with real positions and real numbers for any date, in English and Hindi. Free and open source.', 'url': SITE + '/', 'downloadUrl': SITE + '/get.html', 'license': 'https://www.gnu.org/licenses/agpl-3.0.html', 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}, 'inLanguage': ['en', 'hi']}, {'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Astryl', 'url': SITE + '/', 'inLanguage': ['en', 'hi']}]))
 
 
 def planets_page():
@@ -941,7 +943,7 @@ def privacy_page():
 {li("Your city, birth date, favourites, quiz scores and settings are saved on your phone. The Backup file is made by you and goes only where you send it.", "आपका शहर, जन्मतिथि, favourites, quiz scores और settings आपके फ़ोन में save होते हैं। Backup file आप बनाते हैं और वह वहीं जाती है जहाँ आप भेजें।")}
 {li("Update check: each time the app opens, it asks GitHub for the newest release and, if there is one, offers it first (you can tap Skip). GitHub sees your IP address, like in any web request.", "Update check: app हर बार खुलने पर GitHub से सबसे नया release पूछता है और नया हो तो सबसे पहले वही दिखाता है (आप Skip दबा सकते हैं)। जैसे हर web request में होता है, GitHub आपका IP address देख सकता है।")}
 {li("Astryl news (on by default, switch it off in Settings): about every six hours the app asks the Astryl server \"anything new?\" and shows a notification when the team has published a note. Only that question is sent, with nothing about you, and nothing is stored about the check.", "Astryl की ख़बरें (डिफ़ॉल्ट रूप से चालू, Settings में बंद करें): लगभग हर छह घंटे में app Astryl server से पूछता है \"कुछ नया है?\" और टीम ने कोई सूचना डाली हो तो notification दिखाता है। सिर्फ़ यही सवाल जाता है, आपके बारे में कुछ नहीं, और इस जाँच के बारे में कुछ संग्रहित नहीं होता।")}
-{li("Live features are always on. The app downloads orbit data, the rocket launch list and space news from public services (wheretheiss.at, Celestrak, Launch Library 2, Spaceflight News API), which can see your IP address. Nothing about you is sent.", "Live features हमेशा चालू रहते हैं। App public services (wheretheiss.at, Celestrak, Launch Library 2, Spaceflight News API) से orbit data, rocket launch की list और space news लेता है, जो आपका IP address देख सकती हैं। आपके बारे में कुछ नहीं भेजा जाता।")}
+{li("Live features are always on. The app downloads orbit data, the rocket launch list, space news and NASA’s space photo of the day from public services (wheretheiss.at, Celestrak, Launch Library 2, Spaceflight News API, NASA through the Astryl server), which can see your IP address. Nothing about you is sent.", "Live features हमेशा चालू रहते हैं। App public services (wheretheiss.at, Celestrak, Launch Library 2, Spaceflight News API, Astryl server के ज़रिए NASA) से orbit data, rocket launch की list, space news और NASA की आज की अंतरिक्ष तस्वीर लेता है, जो आपका IP address देख सकती हैं। आपके बारे में कुछ नहीं भेजा जाता।")}
 {li("“Use my location” in the city list asks Android for your approximate location, once, and uses it only on your phone to work out the sky. Nothing is sent for this.", "शहर की list में “मेरी location इस्तेमाल करें” Android से आपकी अनुमानित location एक बार माँगता है और उसे सिर्फ़ आपके फ़ोन पर आसमान निकालने में इस्तेमाल करता है। इसके लिए कुछ नहीं भेजा जाता।")}
 </ul>
 
@@ -951,7 +953,7 @@ def privacy_page():
 {tr("Your username and a hash of your password (the password itself is never stored or visible to us)", "आपका username और password का hash (password ख़ुद कभी store नहीं होता और हमें दिखता नहीं)", "To log you in", "आपको log in कराने के लिए", "Until you delete the account", "जब तक आप खाता नहीं मिटाते")}
 {tr("A hash of your recovery code, how many times it can still be used, failed tries", "Recovery code का hash, वह कितनी बार और चल सकता है, ग़लत कोशिशें", "So you can set a new password if you forget it", "ताकि password भूलने पर आप नया लगा सकें", "Until you delete the account", "जब तक आप खाता नहीं मिटाते")}
 {tr("The date you accepted this policy and its version, the date you joined, the date you last used the account", "आपने यह policy कब मानी और उसका version, आप कब जुड़े, खाता आख़िरी बार कब इस्तेमाल हुआ", "To show your consent and run the account", "आपकी सहमति दिखाने और खाता चलाने के लिए", "Until you delete the account", "जब तक आप खाता नहीं मिटाते")}
-{tr("If sync is on: favourites, quiz scores (also the website’s black hole and galaxy quiz), which Black holes 101 lessons you have read, the “I’ve seen it” list, language, theme, text size, city (never a GPS place), birth date and the daily sky note setting. The list of website pages you have read stays in your browser and is never sent.", "Sync चालू हो तो: favourites, quiz scores (website की black hole और galaxy quiz भी), Black holes 101 के कौन-से पाठ पढ़े, “मैंने देखा” वाली list, भाषा, theme, text size, शहर (GPS वाली जगह कभी नहीं), जन्मतिथि और रोज़ के आसमान वाले note की setting। Website के जो pages आपने पढ़े उनकी list आपके browser में ही रहती है, कभी भेजी नहीं जाती।", "To keep the app and the website in step", "App और website को एक जैसा रखने के लिए", "Until you delete the account or switch sync off and delete it", "जब तक आप खाता नहीं मिटाते")}
+{tr("If sync is on: favourites, quiz scores (also the website’s black hole and galaxy quiz), which lessons you have read (Black holes, Galaxies and For students, in the app or on this website), the “I’ve seen it” list, language, theme, text size, city (never a GPS place), birth date and the daily sky note setting. Other website pages you have read stay in your browser and are never sent.", "Sync चालू हो तो: favourites, quiz scores (website की black hole और galaxy quiz भी), कौन-से पाठ पढ़े (Black holes, Galaxies और छात्रों के लिए, app में या इस website पर), “मैंने देखा” वाली list, भाषा, theme, text size, शहर (GPS वाली जगह कभी नहीं), जन्मतिथि और रोज़ के आसमान वाले note की setting। Website के बाक़ी pages जो आपने पढ़े वे आपके browser में ही रहते हैं, कभी भेजे नहीं जाते।", "To keep the app and the website in step", "App और website को एक जैसा रखने के लिए", "Until you delete the account or switch sync off and delete it", "जब तक आप खाता नहीं मिटाते")}
 {tr("Daily 5: for each day you play, your score, how many answers were right and how long it took", "Daily 5: आप जिस दिन खेलें, उस दिन का score, कितने जवाब सही थे और कितना समय लगा", "To make the leaderboard and rank you", "Leaderboard बनाने और आपकी rank बताने के लिए", "Until you delete the account", "जब तक आप खाता नहीं मिटाते")}
 {tr("An optional profile photo (a small 256 px square picture you choose yourself)", "एक वैकल्पिक profile फ़ोटो (आपकी चुनी हुई छोटी 256 px चौकोर तस्वीर)", "To show it on your own passport and profile; it is not shown to other people and not on the leaderboard", "सिर्फ़ आपके अपने passport और profile पर दिखाने के लिए; दूसरों को या leaderboard पर नहीं दिखती", "Until you remove it or delete the account", "जब तक आप उसे हटाएँ या खाता मिटाएँ")}
 </table>
@@ -983,6 +985,7 @@ def privacy_page():
 {li("The first time you open the site, a welcome window offers to create an account or log in. “Continue without account” closes it and the site remembers that choice on your device.", "Site पहली बार खोलने पर एक welcome window खाता बनाने या log in करने का विकल्प देती है। “बिना खाते के आगे बढ़ें” उसे बंद कर देता है और site आपके device पर वह चुनाव याद रखती है।")}
 {li("A small notice at the bottom of the page can show a note from the Astryl team (you can close it) and, once, ask whether you want to share your approximate place. Your answer is remembered on your device. See “Visitors and places” below.", "Page के नीचे एक छोटी सूचना Astryl टीम का कोई संदेश दिखा सकती है (आप उसे बंद कर सकते हैं) और एक बार पूछ सकती है कि क्या आप अपनी अनुमानित जगह बताना चाहते हैं। आपका जवाब आपके device पर याद रखा जाता है। नीचे “Visitors और जगहें” देखें।")}
 {li("The home page asks the Astryl server for the public counter (accounts, active users, visitors, page views) and asks GitHub for the download count.", "Home page Astryl server से public counter (खाते, active users, visitors, page views) और GitHub से download की गिनती माँगता है।")}
+{li("The home page shows NASA’s Astronomy Picture of the Day. The text comes through the Astryl server; the picture loads straight from NASA’s server (apod.nasa.gov), which sees your IP address like any website. The space station page gets the station’s orbit data from the Astryl server (or, if that fails, from wheretheiss.at). Nothing about you is sent.", "Home page पर NASA की Astronomy Picture of the Day दिखती है। उसका text Astryl server से आता है; तस्वीर सीधे NASA के server (apod.nasa.gov) से load होती है, जो किसी भी website की तरह आपका IP address देखता है। अंतरिक्ष स्टेशन वाला page station की कक्षा का data Astryl server से (या वह न चले तो wheretheiss.at से) लेता है। आपके बारे में कुछ नहीं भेजा जाता।")}
 </ul>
 <h3>{bt("Counting page views", "Page views की गिनती")}</h3>
 <p>{bt("To see which pages are read, each page view adds one to a daily total on the Astryl server. This is what is counted, and nothing else:", "यह देखने के लिए कि कौन से pages पढ़े जाते हैं, हर page view Astryl server पर एक दिन के कुल में एक जोड़ता है। बस यही गिना जाता है, और कुछ नहीं:")}</p>
@@ -1062,7 +1065,7 @@ def main():
     shutil.copy(SRC / 'learn.js', OUT / 'assets/learn.js')
     shutil.copy(SRC / 'universe.js', OUT / 'assets/universe.js')
     shutil.copytree(ROOT / 'assets' / 'cities', OUT / 'assets' / 'cities')
-    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js'):
+    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js'):
         shutil.copy(SRC / name, OUT / 'assets' / name)
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#fbf7ee"/><circle r="30" fill="#1b3a8a"/><ellipse rx="50" ry="15" fill="none" stroke="#6a45d6" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#1b3a8a"/></svg>', encoding='utf-8')
@@ -1075,8 +1078,8 @@ def main():
     for i, b in enumerate(BODIES):
         body_page(b, i)
     index_page(); planets_page(); simple_pages(); maps_page(); get_page(); privacy_page(); account_page(); not_found()
-    helpers = dict(bt=bt, bi=bi, raw2=raw2, shell=shell, write=write, esc=esc, fmt=fmt, asset_v=asset_v, SITE=SITE)
-    deep = deepspace.build(helpers) + galaxies.build(helpers) + lab.build(helpers) + universe.build(helpers) + learn.build(helpers) + umap.build(helpers) + myspace.build(helpers) + skyevents.build(helpers) + students.build(helpers) + telescope.build(helpers)
+    helpers = dict(bt=bt, bi=bi, raw2=raw2, shell=shell, write=write, esc=esc, fmt=fmt, asset_v=asset_v, SITE=SITE, ROOT=ROOT)
+    deep = deepspace.build(helpers) + galaxies.build(helpers) + lab.build(helpers) + universe.build(helpers) + learn.build(helpers) + umap.build(helpers) + myspace.build(helpers) + skyevents.build(helpers) + students.build(helpers) + telescope.build(helpers) + iss.build(helpers)
     urls = ['', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'get.html', 'privacy.html', 'account.html', 'black-holes.html', 'galaxies.html'] + deep + [f'body/{b["id"]}.html' for b in BODIES]
     (OUT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}/{u}</loc></url>\n' for u in urls) + '</urlset>\n', encoding='utf-8')
     og_images()

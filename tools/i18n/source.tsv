@@ -127,6 +127,7 @@ bf4d2615	A narrow beam of gas shot out at nearly the speed of light along the sp
 2aec98cb	A partial eclipse over Antarctica and the far south of South America.
 f230e968	A partial eclipse over North America and Central America.
 03f84fbc	A partial eclipse over the Arctic: northern Canada, Greenland, Scandinavia and northern Russia.
+3a7fa82a	A pass lasts a few minutes. Be outside a couple of minutes early and face the direction it comes from.
 5e22081f	A person
 5b74ad27	A place where gravity is so strong that nothing can get back out, not even light.
 58b393a7	A planet
@@ -529,6 +530,7 @@ dcce7781	How long is one cycle of phases?
 bb081dc1	How the numbers work
 0afc8b8a	How they form and what falling in would be like
 b53da94f	How to find it
+850d8f4d	How to see it
 2b639928	How we see the invisible
 1d870369	Hubble constant
 0ebdbe8b	Huge black holes already existed when the universe was under a billion years old.
@@ -538,7 +540,7 @@ e4ce2ac5	Hydrogen
 13fb8955	Hydrus
 c4d753e5	ISS, Tiangong and Hubble passes over your city.
 79148858	If a black hole evaporates, what happens to everything that fell in? This is the information paradox.
-f835167e	If sync is on: favourites, quiz scores (also the website’s black hole and galaxy quiz), which Black holes 101 lessons you have read, the “I’ve seen it” list, language, theme, text size, city (never a GPS place), birth date and the daily sky note setting. The list of website pages you have read stays in your browser and is never sent.
+1d681552	If sync is on: favourites, quiz scores (also the website’s black hole and galaxy quiz), which lessons you have read (Black holes, Galaxies and For students, in the app or on this website), the “I’ve seen it” list, language, theme, text size, city (never a GPS place), birth date and the daily sky note setting. Other website pages you have read stay in your browser and are never sent.
 11fd3d9b	If the app crashes, it sends one small report to the Astryl server: the error text, the technical trace of where it happened, the app version, the Android version string and the app language. It contains no name, no account, no device id, no IP address (the server keeps none in readable form) and no location.
 9157d536	If this policy changes in a way that matters, the new version is published on this page and in the app's release notes, and the app asks again before you make a new account. The full source code, including the server code in the folder
 a22cfabb	Impossible for humans
@@ -569,12 +571,14 @@ df85f632	Io is the most volcanic world we know, with hundreds of active volcanoe
 c6b4bec5	Irregular
 fffcae75	Irregular dwarf, orbits us
 c96561d8	It burns like a fire
+1ce715b0	It circles Earth about every 92 minutes, about 16 times a day, at around 27,600 km/h.
 79769353	It gives off no light of its own, and light that falls in does not return. What we can see is the glow of hot gas around it and how it pulls on nearby stars.
 29ffbfed	It is an object with a great deal of mass, and a region around it, not an empty hole.
 d1150d19	It is made of ice
 37c4d76e	It is named after Quadrans Muralis, a constellation that no longer exists.
 411b0252	It is used only to find and fix bugs, and is kept for 90 days. If the phone is offline, the report waits on the phone and is sent later.
 0fb6c456	It landed on Mars and worked there for more than six years, sending the first long series of photos and weather reports from the surface of another planet.
+37444349	It often fades out suddenly in the middle of the sky. That is the moment it flies into Earth’s shadow.
 5fe896c6	Its light takes about 2.5 million years to reach us. When you see Andromeda tonight, you see it as it was when early humans were just appearing on Earth.
 09bbd9b0	Jan 1
 a9cb12c6	Jan 6
@@ -622,15 +626,18 @@ fcb20461	Light-year
 37a0eb18	Little Dog
 e5e066b0	Little Fox
 9afe8625	Little Lion
-8148b578	Live features are always on. The app downloads orbit data, the rocket launch list and space news from public services (wheretheiss.at, Celestrak, Launch Library 2, Spaceflight News API), which can see your IP address. Nothing about you is sent.
+7ab5ac46	Live features are always on. The app downloads orbit data, the rocket launch list, space news and NASA’s space photo of the day from public services (wheretheiss.at, Celestrak, Launch Library 2, Spaceflight News API, NASA through the Astryl server), which can see your IP address. Nothing about you is sent.
+061532d7	Live map and when the ISS flies over your city
 467a9428	Live moon positions
 2f7569e0	Lizard
 1f5b0eee	Loading the latest version…
+5f02f05c	Loading…
 095e9ef8	Local Group
 bffe9a3c	Log in
 f97c9996	Log out to stop syncing on a device. Uninstalling the app removes its data from the phone.
 f39cc195	Look at
 6f3303bb	Look beside it
+9fc58713	Look for a steady, bright white “star” moving smoothly across the sky. It does not blink; aeroplanes do.
 b89c6446	Look slightly to the side of the spot. The edge of the eye is more sensitive to faint light.
 d1802d78	Low in the south from India
 6358ba29	Luna 16 was the first robot to bring Moon soil back to Earth, about 100 grams, with no crew on board.
@@ -760,6 +767,7 @@ c1155394	Open the Moon calendar
 f0525aaf	Ophiuchus
 8a584259	Opportunity landed in January 2004 and worked for almost 15 years, though it was built for 90 days.
 2c984498	Optional switches
+05aba7ba	Orbit data: wheretheiss.at and CelesTrak, kept by Astryl’s server for a few hours. Positions use SGP4, the standard model for satellite orbits. The Astryl app also shows Tiangong and Hubble and can remind you before a pass.
 7e1ad070	Orion
 645a0221	Orion the Hunter is easy to find: three stars in a short straight line make his belt. Above the belt, orange Betelgeuse marks one shoulder; below it, blue-white Rigel marks one foot. Under the belt hangs a faint fuzzy patch, the Orion Nebula, a cloud where new stars are being born. Orion is an evening sight in winter in the north and in summer in the south.
 1bcd6837	Orionids
@@ -943,9 +951,11 @@ a43f596a	Source code on GitHub
 621f9f28	Space is mostly empty. The stars you see at night are not spread evenly: they come in giant islands called galaxies. Every star you can see with your eyes belongs to our own, the Milky Way.
 ad6231e1	Space missions
 000708f3	Space station
+1455d2d5	Space station passes
 afae9ae5	Space view
 348b2b67	Space words in plain English and Hindi
 0aafc097	Space, time and all the matter and energy we know begin as an extremely hot, dense state and start to expand.
+0978cd0d	Spacecraft
 c618f3c7	Spacecraft now
 78f7ed03	Spaghettification
 44877c6a	Speed
@@ -1009,6 +1019,7 @@ a199faa3	The Earth spinning
 023c92c9	The Earth’s axis is tilted by about 23.5°. As the Earth goes around the Sun, for part of the year the northern half leans towards the Sun (summer there: long days, high Sun) and for part of the year it leans away (winter: short days, low Sun).
 36ca1d00	The Event Horizon Telescope links radio telescopes around the world so they work like one telescope as big as Earth. It pictured M87* in 2019 and Sagittarius A* in 2022.
 fdcab4c9	The Great Red Spot is a storm bigger than Earth, and people have watched it for more than 150 years.
+6575d145	The International Space Station (ISS) is the brightest thing in the night sky after the Moon and Venus. Here is where it is right now and when it flies over your city, worked out in your browser from its real orbit.
 768dcabb	The James Webb Space Telescope has found galaxies that existed only about 300 million years after the Big Bang. Some are brighter and more developed than expected, and astronomers are still working out why.
 65183dd0	The James Webb Space Telescope sees galaxies from this time.
 e517c735	The Local Group
@@ -1095,7 +1106,9 @@ a908dc9b	The first writing, about 5,000 years ago. All of recorded history is in
 5c83745d	The glowing core left by a Sun-like star after it ends its life. About the size of Earth.
 06225816	The group of more than 80 galaxies that includes the Milky Way and Andromeda.
 9c5c5c96	The growing half of the month is shukla paksha (waxing), the shrinking half is krishna paksha (waning). One full cycle from new Moon to new Moon takes about 29.5 days, a little longer than the Moon’s 27.3-day trip around us, because the Earth also moves around the Sun meanwhile.
+15ebc19e	The higher the pass (in degrees), the brighter it is. 90° is straight overhead; 10° is just above the horizon.
 9d7f78b7	The home page asks the Astryl server for the public counter (accounts, active users, visitors, page views) and asks GitHub for the download count.
+46c6b53f	The home page shows NASA’s Astronomy Picture of the Day. The text comes through the Astryl server; the picture loads straight from NASA’s server (apod.nasa.gov), which sees your IP address like any website. The space station page gets the station’s orbit data from the Astryl server (or, if that fails, from wheretheiss.at). Nothing about you is sent.
 3b3a1a9e	The horizon
 841d5986	The horizon of Sagittarius A* would fit inside the orbit of Mercury. The horizon of M87* is about four times wider than the orbit of Neptune.
 39274853	The hot, dense beginning of the observable universe about 13.8 billion years ago, from which space has been expanding.
@@ -1138,6 +1151,7 @@ a433c4bc	The shape
 bfc95068	The size of the event horizon grows in a simple way with mass: about 3 km for every Sun of mass. Physicists write it r = 2GM/c², the Schwarzschild radius. The table shows what size each object would have if it were squeezed into a black hole.
 615ee238	The size of the event horizon of a non-spinning black hole: r = 2GM/c², about 3 km per Sun of mass.
 b1e12137	The start
+fb4797cd	The station has no lights you could see from the ground; it shines because sunlight reflects off it. So you can only see it when your sky is dark (after sunset or before sunrise) but the station, 400 km up, is still in sunlight. In the middle of the night it is usually in Earth’s shadow, and in the day the sky is too bright.
 41870d5b	The stretching of an object into a long thin shape by the difference in gravity across it near a black hole.
 834344e6	The stretching of light to longer, redder wavelengths, caused by motion away from us, the expansion of space or strong gravity.
 ae7aa6bf	The team’s notes come from the Astryl server and are the same for everyone; asking for them sends nothing about you.
@@ -1260,6 +1274,7 @@ f0b47bd9	What the pictures show is not the black hole itself but its dark shadow
 237ac087	What your eyes, binoculars and a small telescope can reach.
 c7d3bf87	When and how to watch
 ead47674	When and where it can be seen
+4293cbb6	When can I see the space station?
 cfe306d5	When galaxies merge, their central black holes sink to the middle and can merge too. The size of a galaxy’s central black hole is closely linked to the size of its central bulge of stars, so the two seem to grow together.
 65158e5c	When is the longest day in India?
 43762722	When the Earth comes exactly between the Sun and the Moon, Earth’s shadow falls on the Moon. This can only happen on a full Moon night. In a total lunar eclipse the Moon turns red, because a little sunlight bends through Earth’s air and reaches it.
@@ -1286,6 +1301,7 @@ eec5b26f	Which star helps to find north?
 9f9a284a	Why do planets twinkle less than stars?
 777fc9e6	Why is there no eclipse every month?
 78c455a1	Why not every month?
+74a51902	Why only some passes are visible
 0209486b	Why stars twinkle
 b5382500	Why the Moon seems to grow and shrink over a month.
 c463489f	Why we see a band
