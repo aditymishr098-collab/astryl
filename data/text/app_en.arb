@@ -1,0 +1,1556 @@
+{
+  "@@locale": "en",
+  "appTitle": "Astryl",
+  "tagline": "Know your space",
+  "navExplore": "Explore",
+  "navCompare": "Compare",
+  "navWeight": "Weight",
+  "navQuiz": "Quiz",
+  "viewMode": "View mode",
+  "settings": "Settings",
+  "notToScale": "Not to scale · Tap a planet to open it",
+  "dragToRotate": "Drag to rotate · Pinch to zoom",
+  "planetsTitle": "Planets",
+  "planetMercury": "Mercury",
+  "planetVenus": "Venus",
+  "planetEarth": "Earth",
+  "planetMars": "Mars",
+  "planetJupiter": "Jupiter",
+  "planetSaturn": "Saturn",
+  "planetUranus": "Uranus",
+  "planetNeptune": "Neptune",
+  "planetOrder": "Planet {n} from the Sun",
+  "@planetOrder": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "openDetails": "Open details",
+  "diameter": "Diameter",
+  "gravity": "Gravity",
+  "avgTemp": "Average temperature",
+  "avgTempShort": "Avg temp",
+  "dayLength": "Day",
+  "yearLength": "Year",
+  "moons": "Known moons",
+  "moonsShort": "Moons",
+  "distance": "Distance from the Sun",
+  "pressure": "Surface pressure",
+  "noSurface": "No solid surface",
+  "valueKm": "{value} km",
+  "@valueKm": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "valueMillionKm": "{value} million km",
+  "@valueMillionKm": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "valueHours": "{value} h",
+  "@valueHours": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "valueDays": "{value} days",
+  "@valueDays": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "valueYears": "{value} years",
+  "@valueYears": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "atmosphere": "Atmosphere",
+  "thinAtmosphere": "Almost no atmosphere. These gases form a very thin layer called an exosphere.",
+  "oxygen": "Oxygen",
+  "oxygenVsEarth": "Oxygen vs Earth",
+  "breathable": "Breathable for humans",
+  "notBreathable": "Not breathable, a spacesuit is needed",
+  "weightFeelsLike": "{weight} kg on Earth feels like",
+  "@weightFeelsLike": {
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      }
+    }
+  },
+  "gasCo2": "Carbon dioxide",
+  "gasN2": "Nitrogen",
+  "gasO2": "Oxygen",
+  "gasAr": "Argon",
+  "gasH2": "Hydrogen",
+  "gasHe": "Helium",
+  "gasCh4": "Methane",
+  "gasNa": "Sodium",
+  "gasK": "Potassium",
+  "compareTitle": "Compare planets",
+  "compareHint": "Pick two planets to see them side by side.",
+  "weightTitle": "Your weight on other planets",
+  "weightInput": "Your weight on Earth (kg)",
+  "gravityTimes": "{factor}× Earth's gravity",
+  "@gravityTimes": {
+    "placeholders": {
+      "factor": {
+        "type": "String"
+      }
+    }
+  },
+  "quizTitle": "Planet quiz",
+  "quizIntro": "10 questions about the planets and moons. How many can you get right?",
+  "quizStart": "Start quiz",
+  "quizProgress": "Question {current} of {total}",
+  "@quizProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "quizNext": "Next",
+  "quizSeeResult": "See result",
+  "quizCorrect": "Correct!",
+  "quizWrong": "Not quite. The answer is {answer}.",
+  "@quizWrong": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "quizScore": "You got {score} of {total}",
+  "@quizScore": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "quizBest": "Best score: {score}",
+  "@quizBest": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "quizNewBest": "New best score!",
+  "quizAgain": "Play again",
+  "qLargest": "Which planet is the largest?",
+  "qSmallest": "Which planet is the smallest?",
+  "qHottest": "Which planet is the hottest?",
+  "qColdest": "Which planet is the coldest?",
+  "qMostMoons": "Which planet has the most known moons?",
+  "qBreathable": "On which planet can humans breathe the air?",
+  "qClosest": "Which planet is closest to the Sun?",
+  "qFarthest": "Which planet is farthest from the Sun?",
+  "qStrongestGravity": "Which planet has the strongest gravity?",
+  "qShortestDay": "Which planet has the shortest day?",
+  "qLongestDay": "Which planet has the longest day?",
+  "appearance": "Appearance",
+  "theme": "Theme",
+  "themeSystem": "System",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "language": "Language",
+  "appLanguage": "App language",
+  "languageNote": "20 languages · planet names too",
+  "phoneLanguage": "Phone language",
+  "updates": "Updates",
+  "version": "Version",
+  "checkForUpdates": "Check for updates",
+  "checking": "Checking…",
+  "autoUpdateCheck": "Check automatically once a day",
+  "updateNote": "Each time Astryl opens, it asks GitHub for a newer version and offers it first (you can skip). Nothing about you is sent. Your settings stay on your phone.",
+  "upToDate": "You have the latest version.",
+  "updateFailed": "Could not reach GitHub. Check your internet and try again.",
+  "updateAvailable": "Update available",
+  "updateReady": "Version {version} is ready to download.",
+  "@updateReady": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "download": "Download",
+  "later": "Later",
+  "reportBug": "Report a bug",
+  "updateSkip": "Skip",
+  "crashReportsTitle": "Send crash reports",
+  "crashReportsNote": "If the app crashes, a small report (the error text, the app version and the Android version) is sent to the Astryl server so the bug can be fixed. It has no name, account or location. Turn this off any time.",
+  "about": "About",
+  "sourceCode": "Source code on GitHub",
+  "websiteLink": "Website: astryl.space",
+  "privacyLine": "Free · Open source · No ads · Only a username and a password",
+  "dataSource": "Facts: NASA Planetary Fact Sheet",
+  "openFailed": "Could not open the link.",
+  "bodySun": "Sun",
+  "bodyMoon": "Moon",
+  "bodyPluto": "Pluto",
+  "moonIo": "Io",
+  "moonEuropa": "Europa",
+  "moonGanymede": "Ganymede",
+  "moonCallisto": "Callisto",
+  "moonTitan": "Titan",
+  "moonEnceladus": "Enceladus",
+  "moonTriton": "Triton",
+  "kindStar": "Our star, the centre of the Solar System",
+  "kindDwarf": "Dwarf planet",
+  "moonOf": "Moon of {planet}",
+  "orbitPeriod": "One orbit",
+  "distanceFrom": "Distance from {body}",
+  "composition": "What it is made of",
+  "noAtmosphere": "No real atmosphere, it is almost a vacuum.",
+  "majorMoons": "Major moons",
+  "lifeTitle": "Could humans live here?",
+  "lifeScoreShort": "Life score",
+  "lifeNote": "Scored from temperature, air pressure, oxygen, water, surface and gravity. Earth scores 10.",
+  "water": "Water",
+  "waterLiquid": "Liquid water",
+  "waterIce": "Ice",
+  "waterOcean": "Ocean under the ice",
+  "waterNone": "No water",
+  "surface": "Surface",
+  "solidSurface": "Solid surface",
+  "lifeHome": "Just like home",
+  "lifeHard": "Very hard, people would need a closed base and spacesuits",
+  "lifeNo": "Impossible for humans",
+  "@moonOf": {
+    "placeholders": {
+      "planet": {
+        "type": "String"
+      }
+    }
+  },
+  "@distanceFrom": {
+    "placeholders": {
+      "body": {
+        "type": "String"
+      }
+    }
+  },
+  "downloadInstall": "Download and install",
+  "downloadingPercent": "Downloading… {percent}%",
+  "installNow": "Install",
+  "allowInstalls": "Allow Astryl to install apps on the screen that opened, then come back and tap Install.",
+  "downloadFailed": "The download did not finish. Check your internet and try again.",
+  "tryAgain": "Try again",
+  "@downloadingPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "today": "Today",
+  "play": "Play",
+  "pause": "Pause",
+  "monthBack": "30 days earlier",
+  "monthForward": "30 days later",
+  "positionsNote": "Real positions on this date · Sizes and distances not to scale · Tap a planet",
+  "navYou": "You",
+  "ageTitle": "Your age on other planets",
+  "setBirthDate": "Set your birth date",
+  "changeBirthDate": "Change",
+  "nextBirthday": "Next birthday in {days} days",
+  "ageNote": "Your birth date is saved only on this phone.",
+  "@nextBirthday": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "share": "Share",
+  "shareText": "{planet} in Astryl, the free Solar System app: https://github.com/aditymishr098-collab/astryl",
+  "shareFailed": "Could not share the picture.",
+  "travelTitle": "How far is it?",
+  "distanceFromEarth": "Distance from Earth today",
+  "lightTime": "Light takes",
+  "bySpacecraft": "By spacecraft at 60,000 km/h",
+  "byCar": "By car at 100 km/h",
+  "valueSeconds": "{value} s",
+  "valueMinutes": "{value} min",
+  "sizeTitle": "Size",
+  "sizeTimes": "{big} is {times}× as wide as {small}.",
+  "sizeSimilar": "{a} and {b} are about the same size.",
+  "@shareText": {
+    "placeholders": {
+      "planet": {
+        "type": "String"
+      }
+    }
+  },
+  "@valueSeconds": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "@valueMinutes": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "@sizeTimes": {
+    "placeholders": {
+      "big": {
+        "type": "String"
+      },
+      "times": {
+        "type": "String"
+      },
+      "small": {
+        "type": "String"
+      }
+    }
+  },
+  "@sizeSimilar": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
+    }
+  },
+  "navSky": "Sky",
+  "skyTitle": "Tonight's sky",
+  "chooseCity": "Choose your city",
+  "chooseCityHint": "Pick the city nearest to you to see the Moon and which planets you can spot tonight. No location permission is needed, and it stays on your phone.",
+  "searchCity": "Search city",
+  "noCityFound": "No city found",
+  "cityNote": "Times are in your phone's time zone. A planet counts as visible when it is at least 5° above the horizon in a dark sky.",
+  "illuminated": "{percent}% lit",
+  "moonrise": "Moonrise",
+  "moonset": "Moonset",
+  "sunset": "Sunset",
+  "sunrise": "Sunrise",
+  "nextFull": "Next full moon",
+  "nextNew": "Next new moon",
+  "phaseNew": "New moon",
+  "phaseWaxingCrescent": "Waxing crescent",
+  "phaseFirstQuarter": "First quarter",
+  "phaseWaxingGibbous": "Waxing gibbous",
+  "phaseFull": "Full moon",
+  "phaseWaningGibbous": "Waning gibbous",
+  "phaseLastQuarter": "Last quarter",
+  "phaseWaningCrescent": "Waning crescent",
+  "planetsTonight": "Planets tonight",
+  "statusVisible": "Visible tonight",
+  "statusEvening": "In the evening, after sunset",
+  "statusMorning": "In the morning, before sunrise",
+  "statusNotVisible": "Not visible tonight",
+  "bestAt": "Best at {time}",
+  "altitudeDir": "{direction}, {degrees}° high",
+  "riseSet": "Rises {rise} · Sets {set}",
+  "needsTelescope": "Needs binoculars or a telescope",
+  "dirN": "North",
+  "dirNE": "North-east",
+  "dirE": "East",
+  "dirSE": "South-east",
+  "dirS": "South",
+  "dirSW": "South-west",
+  "dirW": "West",
+  "dirNW": "North-west",
+  "@illuminated": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "@bestAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@altitudeDir": {
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      },
+      "degrees": {
+        "type": "String"
+      }
+    }
+  },
+  "@riseSet": {
+    "placeholders": {
+      "rise": {
+        "type": "String"
+      },
+      "set": {
+        "type": "String"
+      }
+    }
+  },
+  "findPlanet": "Find in the sky",
+  "finderTitle": "Find {name}",
+  "pointPhone": "Hold your phone up and move it slowly around.",
+  "turnRight": "Turn right {degrees}°",
+  "turnLeft": "Turn left {degrees}°",
+  "tiltUp": "Tilt up {degrees}°",
+  "tiltDown": "Tilt down {degrees}°",
+  "onTarget": "{name} is right there!",
+  "belowHorizon": "{name} is below the horizon right now.",
+  "risesAt": "It rises at {time}.",
+  "noSensor": "This phone has no compass sensor, so the finder cannot work.",
+  "calibrate": "The compass needs calibrating: move your phone in a figure 8 a few times.",
+  "phoneNow": "Your phone points to",
+  "finderNote": "Hold the phone with its back towards the sky and keep it away from magnets and metal. Never look at the Sun.",
+  "@finderTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@turnRight": {
+    "placeholders": {
+      "degrees": {
+        "type": "String"
+      }
+    }
+  },
+  "@turnLeft": {
+    "placeholders": {
+      "degrees": {
+        "type": "String"
+      }
+    }
+  },
+  "@tiltUp": {
+    "placeholders": {
+      "degrees": {
+        "type": "String"
+      }
+    }
+  },
+  "@tiltDown": {
+    "placeholders": {
+      "degrees": {
+        "type": "String"
+      }
+    }
+  },
+  "@onTarget": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@belowHorizon": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@risesAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "eventsTitle": "Space events",
+  "eventsSubtitle": "What to look for in the sky over the next 12 months.",
+  "eventsNext": "Next: {event} · {when}",
+  "eventFullMoon": "Full Moon",
+  "eventNewMoon": "New Moon",
+  "eventOpposition": "{planet} at opposition",
+  "eventEveningElongation": "{planet}: best evening view",
+  "eventMorningElongation": "{planet}: best morning view",
+  "eventConjunction": "{a} and {b} meet",
+  "eventMarchEquinox": "March equinox",
+  "eventJuneSolstice": "June solstice",
+  "eventSeptemberEquinox": "September equinox",
+  "eventDecemberSolstice": "December solstice",
+  "eventFullMoonDesc": "The Moon's whole face is lit. It rises around sunset.",
+  "eventNewMoonDesc": "The Moon is hidden. The darkest skies of the month for stars and planets.",
+  "eventOppositionDesc": "{planet} is opposite the Sun. It is at its brightest this year and up all night.",
+  "eventEveningDesc": "{planet} is {degrees}° from the Sun, as far as it gets. Look low in the west after sunset.",
+  "eventMorningDesc": "{planet} is {degrees}° from the Sun, as far as it gets. Look low in the east before sunrise.",
+  "eventConjunctionDesc": "They pass only {degrees}° apart in the sky.",
+  "eventEquinoxDesc": "Day and night are almost equal everywhere on Earth.",
+  "eventJuneSolsticeDesc": "Longest day in the north, shortest day in the south.",
+  "eventDecemberSolsticeDesc": "Shortest day in the north, longest day in the south.",
+  "eventMeteorShower": "{shower} meteor shower",
+  "eventMeteorDesc": "Up to about {rate} meteors an hour under a dark sky. The Moon will be {percent}% lit.",
+  "showerQuadrantids": "Quadrantids",
+  "showerLyrids": "Lyrids",
+  "showerEtaAquariids": "Eta Aquariids",
+  "showerPerseids": "Perseids",
+  "showerOrionids": "Orionids",
+  "showerLeonids": "Leonids",
+  "showerGeminids": "Geminids",
+  "showerUrsids": "Ursids",
+  "eventToday": "Today",
+  "eventTomorrow": "Tomorrow",
+  "eventInDays": "In {days} days",
+  "eventsNote": "Dates are worked out on your phone and shown in its time zone. Meteor shower peaks are typical yearly dates and can shift by a day. Reminders stay on your phone.",
+  "remindMe": "Remind me",
+  "reminderSet": "Okay, I will remind you on {date}.",
+  "reminderOff": "Reminder removed.",
+  "reminderTooLate": "This event is too close to set a reminder.",
+  "notificationsOff": "Notifications are off for Astryl. Turn them on in Android settings.",
+  "reminderTomorrow": "Coming up tomorrow",
+  "reminderToday": "Happening today",
+  "@eventsNext": {
+    "placeholders": {
+      "event": {
+        "type": "String"
+      },
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "@eventOpposition": {
+    "placeholders": {
+      "planet": {
+        "type": "String"
+      }
+    }
+  },
+  "@eventEveningElongation": {
+    "placeholders": {
+      "planet": {
+        "type": "String"
+      }
+    }
+  },
+  "@eventMorningElongation": {
+    "placeholders": {
+      "planet": {
+        "type": "String"
+      }
+    }
+  },
+  "@eventConjunction": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
+    }
+  },
+  "@eventOppositionDesc": {
+    "placeholders": {
+      "planet": {
+        "type": "String"
+      }
+    }
+  },
+  "@eventEveningDesc": {
+    "placeholders": {
+      "planet": {
+        "type": "String"
+      },
+      "degrees": {
+        "type": "String"
+      }
+    }
+  },
+  "@eventMorningDesc": {
+    "placeholders": {
+      "planet": {
+        "type": "String"
+      },
+      "degrees": {
+        "type": "String"
+      }
+    }
+  },
+  "@eventConjunctionDesc": {
+    "placeholders": {
+      "degrees": {
+        "type": "String"
+      }
+    }
+  },
+  "@eventMeteorShower": {
+    "placeholders": {
+      "shower": {
+        "type": "String"
+      }
+    }
+  },
+  "@eventMeteorDesc": {
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "@eventInDays": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "@reminderSet": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "onlineTitle": "Online features",
+  "onlineSubtitle": "Show the space station, Tiangong, Hubble, rocket launches and space news. Astryl then contacts only wheretheiss.at, Celestrak, Launch Library 2 and the Spaceflight News API, which can see your phone’s internet address. Nothing else is sent. Off by default.",
+  "turnOnOnline": "Turn on online features",
+  "issTitle": "Space station",
+  "issCardHint": "Where it is now and when it passes over you",
+  "issNeedsOnline": "To show the station, Astryl needs its orbit data from the internet. It is downloaded once and then works offline for days.",
+  "issLoading": "Getting the orbit data…",
+  "issFailed": "Could not get the orbit data. Check your internet and try again.",
+  "issStale": "The orbit data is {days} days old, so positions may be off. Connect to the internet to refresh it.",
+  "issHeight": "Height",
+  "issSpeed": "Speed",
+  "issFromYou": "Distance from you",
+  "valueKmh": "{value} km/h",
+  "issAboveHorizon": "Above your horizon now! Look {direction}, {degrees}° high.",
+  "issBelowHorizon": "Below your horizon right now.",
+  "issPassesTitle": "Next passes over {city}",
+  "issNoPasses": "No good passes in the next 5 days.",
+  "issMaxHigh": "Up to {degrees}° high",
+  "issFromTo": "{start} to {end}",
+  "issVisible": "Easy to see",
+  "issHidden": "Hard to see",
+  "issPassTitle": "Space station passing over you",
+  "issPassBody": "Rises in 10 minutes, up to {degrees}° high. Look {direction}.",
+  "issNote": "Positions are worked out on your phone from the station's orbit data. A pass is easy to see when the sky is dark and the station is lit by the Sun: it looks like a bright, fast star.",
+  "launchesNeedOnline": "Turn on online features to see upcoming rocket launches here.",
+  "launchesFailed": "Could not update the launch list. Showing the saved one.",
+  "launchesNote": "Launch times come from Launch Library 2 and often change. Names and places are in English.",
+  "launchReminderBody": "Lifts off in about an hour. Times can change.",
+  "launchTimeTbd": "Time not set yet",
+  "@issStale": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "@valueKmh": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "@issAboveHorizon": {
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      },
+      "degrees": {
+        "type": "String"
+      }
+    }
+  },
+  "@issPassesTitle": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "@issMaxHigh": {
+    "placeholders": {
+      "degrees": {
+        "type": "String"
+      }
+    }
+  },
+  "@issFromTo": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "@issPassBody": {
+    "placeholders": {
+      "degrees": {
+        "type": "String"
+      },
+      "direction": {
+        "type": "String"
+      }
+    }
+  },
+  "quizChoose": "Choose a level",
+  "levelEasy": "Easy",
+  "levelMedium": "Medium",
+  "levelHard": "Hard",
+  "levelEasyHint": "The basics about the planets",
+  "levelMediumHint": "Planets and moons",
+  "levelHardHint": "Tricky comparisons and rankings",
+  "qStar": "Which of these is a star, not a planet?",
+  "qDwarf": "Which of these is a dwarf planet?",
+  "qMoonVisited": "Which moon have people walked on?",
+  "qLargestMoon": "Which of these moons is the largest?",
+  "qSmallestMoon": "Which of these moons is the smallest?",
+  "qThickAirMoon": "Which of these moons has a thick atmosphere?",
+  "qGeyserMoon": "Which moon shoots geysers of water into space?",
+  "qVolcanicMoon": "Which moon has the most active volcanoes?",
+  "qBackwardsMoon": "Which moon goes around its planet backwards?",
+  "qBiggestRocky": "Which of the four rocky planets is the biggest?",
+  "qColdestRocky": "Which of the four rocky planets is the coldest?",
+  "qHighestPressure": "Which planet has the heaviest air pressure at its surface?",
+  "qSecondLargest": "Which planet is the second largest?",
+  "qLongestYear": "Which planet has the longest year?",
+  "qShortestYear": "Which planet has the shortest year?",
+  "qSmallestGiant": "Which of the four giant planets is the smallest?",
+  "qRockyLongestYear": "Which of the four rocky planets has the longest year?",
+  "qFastestMoon": "Which of these moons goes around its planet the fastest?",
+  "qSlowestMoon": "Which of these moons takes the longest to go around its planet?",
+  "qStrongestMoonGravity": "Which of these moons has the strongest gravity?",
+  "qColdestMoon": "Which of these moons is the coldest?",
+  "qSecondLargestMoon": "Which of these moons is the second largest?",
+  "factTitle": "Did you know?",
+  "factTap": "Tap for another fact",
+  "factSun1": "The Sun holds 99.8% of all the mass in the solar system.",
+  "factSun2": "Sunlight takes about 8 minutes and 20 seconds to reach Earth.",
+  "factMercury1": "One day on Mercury, from sunrise to the next sunrise, lasts about 176 Earth days. That is twice as long as its year.",
+  "factMercury2": "Mercury has almost no air, so its sky is black even by day, and its nights are freezing cold.",
+  "factVenus1": "Venus spins backwards, so on Venus the Sun rises in the west.",
+  "factVenus2": "Venus is hotter than Mercury, even though it is farther from the Sun, because its thick air traps the heat.",
+  "factEarth1": "Earth is the only place we know with life, and about 71% of its surface is covered by water.",
+  "factEarth2": "Earth is not a perfect ball. It bulges a little at the equator because it spins.",
+  "factMars1": "Olympus Mons on Mars is the tallest volcano in the solar system, about two and a half times as tall as Mount Everest.",
+  "factMars2": "Sunsets on Mars look blue.",
+  "factJupiter1": "Jupiter has more than twice the mass of all the other planets put together.",
+  "factJupiter2": "The Great Red Spot is a storm bigger than Earth, and people have watched it for more than 150 years.",
+  "factSaturn1": "Saturn is so light for its size that it would float in water, if you could find a bathtub big enough.",
+  "factSaturn2": "Saturn's rings are very wide but very thin: in places only about ten metres thick.",
+  "factUranus1": "Uranus rolls around the Sun on its side, tilted by about 98 degrees.",
+  "factUranus2": "Uranus was the first planet found with a telescope. William Herschel spotted it in 1781.",
+  "factNeptune1": "Neptune has the fastest winds of any planet, more than 2,000 km/h.",
+  "factNeptune2": "Neptune was found with maths before anyone saw it: in 1846 astronomers worked out where it had to be.",
+  "factMoon1": "The Moon moves about 3.8 centimetres farther from Earth every year.",
+  "factMoon2": "We always see the same side of the Moon, because it turns exactly once for each trip around Earth.",
+  "factPluto1": "A year on Pluto lasts about 248 Earth years.",
+  "factPluto2": "Pluto has a huge heart-shaped plain of frozen nitrogen.",
+  "factIo1": "Io is the most volcanic world we know, with hundreds of active volcanoes.",
+  "factIo2": "Jupiter's gravity squeezes and stretches Io, and the heat from this powers its volcanoes.",
+  "factEuropa1": "Under its icy shell, Europa probably holds about twice as much water as all of Earth's oceans.",
+  "factEuropa2": "Europa is one of the best places to look for life beyond Earth. The Europa Clipper spacecraft is on its way there.",
+  "factGanymede1": "Ganymede is the largest moon in the solar system. It is even bigger than Mercury.",
+  "factGanymede2": "Ganymede is the only moon known to have a magnetic field of its own.",
+  "factCallisto1": "Callisto is one of the most heavily cratered places in the solar system, and its surface is very old.",
+  "factCallisto2": "Callisto is far enough from Jupiter to get less of its harsh radiation, so scientists have suggested it for a future base.",
+  "factTitan1": "Titan is the only moon with a thick atmosphere. Its air pressure at the surface is higher than on Earth.",
+  "factTitan2": "Titan has rivers and lakes, but they hold liquid methane and ethane, not water.",
+  "factEnceladus1": "Enceladus shoots jets of ice and water vapour into space through cracks near its south pole.",
+  "factEnceladus2": "The jets of Enceladus feed Saturn's E ring.",
+  "factTriton1": "Triton goes around Neptune backwards, so it was probably a dwarf planet that Neptune captured.",
+  "factTriton2": "At about −235 °C, Triton is one of the coldest places anyone has measured in the solar system.",
+  "jumpInput": "Your jump height on Earth (cm)",
+  "jumpHigh": "Jump: {height}",
+  "@jumpHigh": {
+    "placeholders": {
+      "height": {
+        "type": "String"
+      }
+    }
+  },
+  "jumpFeelsLike": "A {height} jump on Earth becomes",
+  "@jumpFeelsLike": {
+    "placeholders": {
+      "height": {
+        "type": "String"
+      }
+    }
+  },
+  "jumpNote": "Same push-off as on Earth. On the Sun and the gas giants there is no ground to stand on, so this is only a thought game.",
+  "valueCm": "{value} cm",
+  "@valueCm": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "valueM": "{value} m",
+  "@valueM": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "eclipseTotalLunar": "Total lunar eclipse",
+  "eclipsePartialLunar": "Partial lunar eclipse",
+  "eclipsePenumbralLunar": "Penumbral lunar eclipse",
+  "eclipseTotalSolar": "Total solar eclipse",
+  "eclipseAnnularSolar": "Annular solar eclipse",
+  "eclipseHybridSolar": "Hybrid solar eclipse",
+  "eclipsePartialSolar": "Partial solar eclipse",
+  "eclipseTotalLunarDesc": "The Moon moves fully into Earth's shadow and often turns a dim red. Everyone on the night side of Earth can see it, and it is safe to watch with your eyes.",
+  "eclipsePartialLunarDesc": "Part of the Moon ({percent}% of its width) moves into Earth's dark shadow. It is safe to watch with your eyes.",
+  "@eclipsePartialLunarDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "eclipsePenumbralLunarDesc": "The Moon passes through the faint outer shadow of Earth. It only dims a little, so it is hard to notice.",
+  "eclipseTotalSolarDesc": "The Moon completely covers the Sun along a narrow path across Earth. Outside that path you see a partial eclipse.",
+  "eclipseAnnularSolarDesc": "The Moon is a little too far away to cover the Sun fully, so a bright ring is left. The ring shows along a narrow path; outside it the eclipse is partial.",
+  "eclipseHybridSolarDesc": "Along its path this eclipse is total in some places and ring-shaped in others. Outside the path it is partial.",
+  "eclipsePartialSolarDesc": "The Moon covers only a part of the Sun, and nowhere on Earth is the Sun fully covered.",
+  "eclipseNoCity": "Choose a city in Astryl to see if you can watch it from there.",
+  "eclipseLunarUp": "The Moon is above the horizon in {city} at the middle of the eclipse.",
+  "@eclipseLunarUp": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "eclipseLunarPartly": "In {city} the Moon is above the horizon for only part of the eclipse.",
+  "@eclipseLunarPartly": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "eclipseLunarDown": "In {city} the Moon stays below the horizon, so you cannot see it from there.",
+  "@eclipseLunarDown": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "eclipseSolarNone": "Not visible from {city}: the Moon's shadow misses it, or the Sun is below the horizon.",
+  "@eclipseSolarNone": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "eclipseSolarSlight": "From {city} at most a very slight partial eclipse, hard to notice.",
+  "@eclipseSolarSlight": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "eclipseSolarPartial": "Rough estimate for {city}: the Moon covers about {percent}% of the Sun's width at best.",
+  "@eclipseSolarPartial": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "eclipseSolarNear": "{city} is close to the path where the Sun is almost or fully covered. Check an eclipse map; this estimate is rough.",
+  "@eclipseSolarNear": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "eclipseSolarSafety": "Never look at the Sun without proper eclipse glasses.",
+  "alertsTitle": "Alerts",
+  "tonightAlertSwitch": "Tonight in the sky, every evening",
+  "tonightAlertTime": "Time",
+  "tonightAlertNote": "A short note about the Moon and the planets you can see, at the time you choose. It is worked out on your phone, with no internet. Android only lets Astryl prepare about two weeks of notes ahead, so open the app now and then.",
+  "tonightNotifTitle": "Tonight in the sky",
+  "tonightMoon": "Moon: {phase}, {percent}% lit.",
+  "@tonightMoon": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "tonightPlanets": "Look for: {planets}.",
+  "@tonightPlanets": {
+    "placeholders": {
+      "planets": {
+        "type": "String"
+      }
+    }
+  },
+  "tonightNoPlanets": "No bright planets in the evening sky.",
+  "tonightNoCity": "Choose a city in Astryl to see the planets.",
+  "birthdayTitle": "My birthday sky",
+  "birthdaySubtitle": "The Moon and the planets on the day you were born, and the big days of your life.",
+  "birthdayCardHint": "Moon phase, planets and milestones",
+  "birthdayNeedDate": "Set your birth date",
+  "birthdayMoon": "Moon on your birthday",
+  "birthdayPlanets": "Planets on that day",
+  "birthdayDaysOld": "You are {count} days old today.",
+  "@birthdayDaysOld": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "birthdayMilestones": "Milestones",
+  "birthdayDayN": "Day {count}",
+  "@birthdayDayN": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "birthdayBillion": "1 billion seconds old",
+  "birthdayPassed": "Done",
+  "birthdayNote": "Worked out on your phone from the same orbits as the rest of Astryl. Your birth date never leaves it.",
+  "missionsTitle": "Space missions",
+  "missionsSubtitle": "Famous moments in the exploration of space, oldest first.",
+  "missionsCardHint": "Famous missions through time",
+  "missionSputnik1": "The first artificial satellite. This metal ball, about the size of a beach ball, circled Earth for about three months. Its beeping could be heard on radios and it started the space age.",
+  "missionVostok1": "Yuri Gagarin became the first person in space. He circled Earth once, in about 108 minutes.",
+  "missionApollo11": "Neil Armstrong and Buzz Aldrin landed in the Sea of Tranquility and became the first people to walk on the Moon. Michael Collins waited for them in orbit.",
+  "missionVenera7": "The first spacecraft to land on another planet and send a signal back. It sent data from Venus for about 23 minutes in the crushing heat.",
+  "missionViking1": "It landed on Mars and worked there for more than six years, sending the first long series of photos and weather reports from the surface of another planet.",
+  "missionVoyager1": "Launched in 1977, it flew past Jupiter and Saturn and entered interstellar space in 2012. It is the farthest human-made object from Earth.",
+  "missionHubble": "Launched in 1990, it looks at the universe from above Earth's air. Its sharp pictures helped measure the age of the universe and showed thousands of faraway galaxies.",
+  "missionHuygens": "Huygens, a probe carried by Cassini, parachuted down to Saturn's moon Titan. It was the first landing in the outer solar system, and it sent pictures from the surface.",
+  "missionCuriosity": "This car-sized rover landed in Gale Crater using a rocket-powered sky crane. It found that Mars once had the right conditions for life.",
+  "missionMangalyaan": "India's Mars Orbiter Mission reached Mars orbit on its first try, a first for any country, and at a very low cost.",
+  "missionRosetta": "Rosetta's lander Philae touched down on comet 67P/Churyumov–Gerasimenko, the first landing on a comet. Rosetta itself circled the comet for two years.",
+  "missionNewhorizons": "After a nine-year trip, it flew past Pluto and showed us icy mountains and a huge heart-shaped plain for the first time.",
+  "missionPerseverance": "The Perseverance rover landed in Jezero Crater to look for signs of old life and collect rock samples. Its helicopter Ingenuity made the first powered flight on another planet.",
+  "missionJwst": "The largest space telescope has a 6.5-metre gold mirror and watches the sky in infrared light from 1.5 million km away. It sees some of the first galaxies.",
+  "missionChandrayaan3": "India became the fourth country to land softly on the Moon, and the first near its south pole. The Vikram lander carried the Pragyan rover.",
+  "spacecraftTitle": "Spacecraft now",
+  "spacecraftSubtitle": "How far some famous spacecraft are from Earth right now.",
+  "spacecraftCardHint": "Voyager, JWST, Mars rovers and more",
+  "spacecraftDistance": "Distance from Earth",
+  "spacecraftAltitude": "Height above Earth",
+  "spacecraftInAu": "In astronomical units",
+  "spacecraftSpeed": "Speed",
+  "spacecraftSignal": "Radio signal takes",
+  "spacecraftNote": "Distances are estimates. For the far probes they are worked out from average speed and can be off by about 1%, because Earth moves round the Sun. The Mars distance is calculated for today. One AU (astronomical unit) is the distance from Earth to the Sun.",
+  "valueBillionKm": "{value} billion km",
+  "@valueBillionKm": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "valueAu": "{value} AU",
+  "@valueAu": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "valueKmS": "{value} km/s",
+  "@valueKmS": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "spacecraftVoyager1": "Launched in 1977. In 2012 it became the first spacecraft to enter interstellar space. Its radio signal is already about a day old when it reaches us.",
+  "spacecraftVoyager2": "Launched in 1977. It is the only spacecraft that has visited Uranus and Neptune, and it entered interstellar space in 2018.",
+  "spacecraftNewHorizons": "Flew past Pluto in 2015 and the Kuiper Belt object Arrokoth in 2019. It is still travelling outward and still sending data.",
+  "spacecraftJwst": "The largest space telescope, launched in 2021. It sits near a point called L2, about 1.5 million km from Earth, with its sunshield always facing the Sun.",
+  "spacecraftIss": "Circles Earth about every 90 minutes. People have lived on board without a break since 2000.",
+  "spacecraftHubble": "Launched in 1990 and still working. It circles Earth above the blurring air, so its pictures are very sharp.",
+  "spacecraftMarsRovers": "Curiosity (landed 2012) and Perseverance (landed 2021) are driving on Mars. The distance to Mars changes from about 55 million km to over 400 million km.",
+  "searchTooltip": "Search",
+  "searchHint": "Search planets, moons, missions…",
+  "searchClear": "Clear",
+  "searchEmpty": "Nothing found for “{query}”.",
+  "@searchEmpty": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "searchBodies": "Planets and moons",
+  "searchMissions": "Missions",
+  "searchSpacecraft": "Spacecraft",
+  "favoritesTitle": "Favourites",
+  "favoritesEmpty": "Tap the star on a planet, mission or spacecraft to keep it here.",
+  "favoriteAdd": "Add to favourites",
+  "favoriteRemove": "Remove from favourites",
+  "textSize": "Text size",
+  "textSizeNormal": "Normal",
+  "textSizeLarge": "Large",
+  "textSizeLarger": "Larger",
+  "textSizeNote": "Makes the text in Astryl bigger. It never goes below your phone's own text size.",
+  "skyOtherNight": "The night sky",
+  "planetsThatNight": "Planets that night",
+  "planetsTonightHint": "Which planets are up, when and where to look",
+  "previousDay": "Previous day",
+  "nextDay": "Next day",
+  "pickDate": "Choose a date",
+  "backToTonight": "Back to tonight",
+  "moonCalendar": "Moon calendar",
+  "moonCalendarHint": "The phase of the Moon on every day",
+  "previousMonth": "Previous month",
+  "nextMonth": "Next month",
+  "keyMoonDates": "Main phases this month",
+  "moonCalendarNote": "Phase dates and times are shown in your phone's time zone and are accurate to within about an hour.",
+  "seeSkyThatDay": "See the sky on this day",
+  "sunLightTitle": "Sun and light",
+  "firstLight": "First light",
+  "goldenMorningEnds": "Morning golden hour ends",
+  "solarNoon": "Solar noon",
+  "goldenEveningStarts": "Evening golden hour starts",
+  "lastLight": "Last light",
+  "darkSky": "Fully dark sky",
+  "sunDayLength": "Day length",
+  "durationHm": "{hours} h {minutes} min",
+  "@durationHm": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "sunNote": "Golden hour is when the Sun is less than 6° above the horizon. First and last light are when it is 6° below, and the sky is fully dark when it is 18° below. Times are worked out for the date you choose.",
+  "sunStaysUp": "On this day the Sun does not set.",
+  "sunStaysDown": "On this day the Sun does not rise.",
+  "solarSystemTitle": "Solar system",
+  "starMapTitle": "Star map",
+  "starMapCardHint": "Stars and constellations in your sky",
+  "starMapHint": "Drag to look around, pinch to zoom, tap a star or a constellation.",
+  "starsLabel": "Stars",
+  "constellationsLabel": "Constellations",
+  "starMapFind": "Find it",
+  "constellationsList": "All constellations",
+  "magnitudeValue": "Magnitude {value}",
+  "@magnitudeValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "starBelowHorizon": "Below the horizon at this time",
+  "starMapNow": "Now",
+  "starUnnamed": "Star",
+  "binocularsTitle": "Binocular guide",
+  "binocularsHint": "What to look for with ordinary binoculars",
+  "binocularsIntro": "Hold the binoculars steady, for example with your elbows on a wall or a car roof. Away from city lights, look for dim, fuzzy patches rather than sharp stars.",
+  "binocularsNote": "Times show when each object is highest during the dark part of the night in your chosen city. Object names are the ones used worldwide. Tap one to see it on the star map.",
+  "dsoCluster": "Star cluster",
+  "dsoGalaxy": "Galaxy",
+  "dsoNebula": "Nebula",
+  "storyOri": "Orion the Hunter is easy to find: three stars in a short straight line make his belt. Above the belt, orange Betelgeuse marks one shoulder; below it, blue-white Rigel marks one foot. Under the belt hangs a faint fuzzy patch, the Orion Nebula, a cloud where new stars are being born. Orion is an evening sight in winter in the north and in summer in the south.",
+  "storyUMa": "The seven bright stars of the Big Dipper, also called the Plough, are part of the Great Bear. The two stars at the end of the bowl, Dubhe and Merak, point the way to Polaris: follow the line upward for about five times the gap between them. From much of the north, the Big Dipper circles Polaris all night and never sets.",
+  "storyUMi": "Polaris, the North Star, sits at the tip of the Little Bear’s tail. It hardly moves because it lies almost exactly above Earth’s north pole, so the whole sky seems to turn around it. Its height above the horizon equals your latitude. It is not a very bright star, but it is the most useful one for finding north. It cannot be seen from the southern half of the world.",
+  "storyCas": "Cassiopeia is a W or an M, depending on the hour and the season, made of five fairly bright stars. It lies on the opposite side of Polaris from the Big Dipper, so when one is low the other is high. In the old story she was a queen who boasted of her beauty.",
+  "storyCyg": "Cygnus the Swan flies along the Milky Way. Its brightest stars form the Northern Cross, with Deneb at the top, the tail of the swan. Away from city lights the Milky Way looks like a pale river of light running through the swan, and binoculars show that it is made of countless faint stars. Summer and autumn evenings are the best time.",
+  "storySco": "Scorpius looks like a scorpion with a curved tail ending in a hook. Its heart is red Antares, whose name means rival of Mars because the two look alike in colour. It is a summer constellation in the north, low in the south, and it passes high overhead for people in the southern half of the world.",
+  "storyLeo": "Leo the Lion is one of the few constellations that really looks like its animal. A backward question mark of stars, the Sickle, forms the head and chest and ends at bright Regulus, the lion’s heart. The triangle of stars to the east is its hindquarters. Spring evenings are the best time in the north.",
+  "storyTau": "Taurus the Bull has a V-shaped face, the Hyades cluster, with orange Aldebaran as its eye. Aldebaran looks as if it belongs to the cluster, but it is much closer to us. Higher up, the Pleiades, or Seven Sisters, is a tiny group of blue stars that most people see as six or seven. The Pleiades are known all over the world and appear in the stories of many cultures.",
+  "storyGem": "Gemini the Twins are marked by two bright stars, Castor and Pollux, standing side by side like the heads of two brothers. Pollux is the brighter one and has an orange tint. Castor is really a system of six stars. Look for them high in the sky on winter and spring evenings in the north.",
+  "storyLyr": "Lyra the Lyre is small but holds Vega, one of the brightest stars of the northern sky. Vega is blue-white and, together with Deneb in Cygnus and Altair in Aquila, forms the Summer Triangle. Right next to Vega, a small parallelogram of stars makes the body of the lyre.",
+  "storyCru": "Crux, the Southern Cross, is the smallest of all the constellations but one of the most famous. Four bright stars make a cross, and the two stars of its long arm point towards the south celestial pole, so it helps travellers find south. It cannot be seen from most of the northern half of the world.",
+  "satellitesTitle": "Tiangong and Hubble",
+  "satellitesCardHint": "When they fly over your city",
+  "tiangongName": "Tiangong",
+  "hubbleName": "Hubble",
+  "satNeedsOnline": "To show {name}, Astryl needs its orbit data from the internet. It is downloaded once and then works offline for days.",
+  "@satNeedsOnline": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "satPassTitle": "{name} passing over you",
+  "@satPassTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "satNote": "Positions are worked out on your phone from the orbit data. A pass is easy to see when the sky is dark and the satellite is lit by the Sun. Tiangong is bright, like a fast star. Hubble is much fainter, so binoculars help.",
+  "newsTitle": "Space news",
+  "newsCardHint": "The latest articles from space news sites",
+  "newsNeedsOnline": "Turn on online features to read the latest space news.",
+  "newsFailed": "Could not update the news. Showing the saved articles.",
+  "newsNone": "No news could be loaded. Check your internet and try again.",
+  "newsNote": "Articles come from the Spaceflight News API and are in English. Tapping one opens the publisher’s website in your browser. Astryl downloads no pictures.",
+  "newsOpenFailed": "Could not open the link.",
+  "tonightShareTitle": "Share tonight’s sky",
+  "tonightShareHint": "A picture of the Moon and planets for your friends",
+  "tonightShareText": "The sky over {city}, made with Astryl, the free Solar System app: https://github.com/aditymishr098-collab/astryl",
+  "@tonightShareText": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "skyOverCity": "The sky over {city}",
+  "@skyOverCity": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "cancel": "Cancel",
+  "backupTitle": "Backup",
+  "backupNote": "Your favourites, settings, quiz scores, city and birth date go into one small file. It stays on your phone until you send it somewhere. Bells for single events are not included: set them again after restoring.",
+  "backupSave": "Save a backup",
+  "backupRestore": "Restore a backup",
+  "backupShareText": "Astryl backup",
+  "backupSaveFailed": "The backup could not be made.",
+  "backupRestoreTitle": "Restore this backup?",
+  "backupRestoreAsk": "This replaces your favourites, settings, quiz scores, city and birth date on this phone.",
+  "backupRestoreConfirm": "Restore",
+  "backupRestored": "Backup restored.",
+  "backupBad": "That file is not an Astryl backup.",
+  "surfaceMapTitle": "Surface map",
+  "surfaceMapOf": "{body}: surface map",
+  "@surfaceMapOf": {
+    "placeholders": {
+      "body": {
+        "type": "String"
+      }
+    }
+  },
+  "surfaceMapMoonHint": "Where Apollo, Chang'e, Chandrayaan and others landed.",
+  "surfaceMapMarsHint": "Where Viking, Curiosity, Perseverance and other landers and rovers touched down.",
+  "surfaceMapTap": "Tap a marker to read the story. Pinch to zoom in.",
+  "surfaceMapNote": "A simplified map, not a photo: the big seas, basins, craters and volcanoes are drawn in the right places, and every landing site is at its real latitude and longitude.",
+  "surfaceMapSites": "Landing sites",
+  "siteKindCrewed": "Crewed landing",
+  "siteKindLander": "Lander",
+  "siteKindRover": "Rover",
+  "siteKindSample": "Sample return",
+  "mapNearSide": "Near side",
+  "mapFarSide": "Far side",
+  "siteLuna9": "Luna 9 made the first soft landing on another world and sent back the first photos taken on the Moon's surface.",
+  "siteSurveyor1": "Surveyor 1 was the first American soft landing on the Moon. It sent back more than 11,000 photos and showed that the ground was firm enough to land on.",
+  "siteApollo11": "The first people on the Moon, Neil Armstrong and Buzz Aldrin, landed here at Tranquility Base in July 1969.",
+  "siteApollo12": "Apollo 12 landed close to the old probe Surveyor 3, and the crew brought some of its parts back to Earth.",
+  "siteLuna16": "Luna 16 was the first robot to bring Moon soil back to Earth, about 100 grams, with no crew on board.",
+  "siteLunokhod1": "Lunokhod 1 was the first rover on another world. It drove about 10 km over the Sea of Rains in eleven months.",
+  "siteApollo14": "Apollo 14 landed in the Fra Mauro highlands. Alan Shepard hit two golf balls on the Moon.",
+  "siteApollo15": "Apollo 15 was the first mission with a Moon buggy, and explored the foot of the Apennine mountains.",
+  "siteApollo16": "Apollo 16 explored the Descartes highlands by rover and brought back about 95 kg of rocks.",
+  "siteApollo17": "Apollo 17, in December 1972, is the most recent time people walked on the Moon. Geologist Harrison Schmitt was one of the two walkers.",
+  "siteChange3": "China's Chang'e 3 put the Yutu rover on the Moon in December 2013, the first soft landing there since 1976.",
+  "siteChange4": "Chang'e 4 made the first soft landing on the far side of the Moon, inside the huge South Pole-Aitken basin, in January 2019.",
+  "siteChange5": "Chang'e 5 brought back about 1.7 kg of Moon samples in December 2020, the first new samples in 44 years.",
+  "siteChandrayaan3": "India's Chandrayaan-3 landed near the Moon's south pole on 23 August 2023, making India the fourth country to land on the Moon.",
+  "siteSlim": "Japan's SLIM landed in January 2024 within about 100 metres of its target, a very precise landing.",
+  "siteViking1": "Viking 1 made the first successful Mars landing in July 1976 and worked on the surface for more than six years.",
+  "siteViking2": "Viking 2 landed in Utopia Planitia in September 1976 and photographed frost on the red ground.",
+  "sitePathfinder": "Mars Pathfinder landed in July 1997 and carried Sojourner, the first rover on Mars, about the size of a microwave oven.",
+  "siteSpirit": "Spirit landed in Gusev crater in January 2004 and found signs that water once shaped the rocks there.",
+  "siteOpportunity": "Opportunity landed in January 2004 and worked for almost 15 years, though it was built for 90 days.",
+  "sitePhoenix": "Phoenix landed near the north pole in May 2008 and confirmed that there is water ice just under the soil.",
+  "siteCuriosity": "Curiosity landed in Gale crater in August 2012 and showed that the place could once have supported microbial life.",
+  "siteInsight": "InSight landed in November 2018 and recorded hundreds of marsquakes, listening to the inside of the planet.",
+  "sitePerseverance": "Perseverance landed in Jezero crater in February 2021 with the helicopter Ingenuity, and collects rock samples for a future trip to Earth.",
+  "siteZhurong": "China's Zhurong landed in May 2021, making China the second country to drive a rover on Mars.",
+  "featImbrium": "Mare Imbrium (Sea of Showers)",
+  "featSerenitatis": "Mare Serenitatis (Sea of Serenity)",
+  "featTranquillitatis": "Mare Tranquillitatis (Sea of Tranquility)",
+  "featCrisium": "Mare Crisium (Sea of Crises)",
+  "featFecunditatis": "Mare Fecunditatis (Sea of Fertility)",
+  "featNectaris": "Mare Nectaris (Sea of Nectar)",
+  "featNubium": "Mare Nubium (Sea of Clouds)",
+  "featHumorum": "Mare Humorum (Sea of Moisture)",
+  "featProcellarum": "Oceanus Procellarum (Ocean of Storms)",
+  "featFrigoris": "Mare Frigoris (Sea of Cold)",
+  "featOrientale": "Orientale basin",
+  "featAitken": "South Pole-Aitken basin",
+  "featTycho": "Tycho crater",
+  "featCopernicus": "Copernicus crater",
+  "featOlympus": "Olympus Mons",
+  "featTharsis": "Tharsis volcanoes",
+  "featValles": "Valles Marineris",
+  "featHellas": "Hellas Planitia",
+  "featArgyre": "Argyre Planitia",
+  "featUtopia": "Utopia Planitia",
+  "featIsidis": "Isidis Planitia",
+  "featSyrtis": "Syrtis Major",
+  "featChryse": "Chryse Planitia",
+  "featAcidalia": "Acidalia Planitia",
+  "featElysium": "Elysium Mons",
+  "featNorthCap": "North polar cap",
+  "featSouthCap": "South polar cap",
+  "acctTitle": "Astryl account",
+  "acctCreateTitle": "Create your account",
+  "acctIntro": "A username and a password, no e-mail. Your favourites, quiz scores and settings then follow you between this app and astryl.space.",
+  "acctTabCreate": "Create account",
+  "acctTabLogin": "Log in",
+  "acctUsername": "Username",
+  "acctUsernameHint": "3 to 20 letters (a to z), digits or _",
+  "acctPassword": "Password",
+  "acctPasswordHint": "At least 8 characters",
+  "acctPasswordAgain": "Password again",
+  "acctForgot": "Forgot password?",
+  "acctRecoverTitle": "Reset with your recovery code",
+  "acctRecoverCode": "Recovery code",
+  "acctRecoverNewPassword": "New password",
+  "acctRecoverButton": "Set new password",
+  "acctBackToLogin": "Back to log in",
+  "acctConsent": "I have read and accept the Privacy Policy",
+  "acctReadPolicy": "Read the Privacy Policy",
+  "acctOptionalTitle": "Optional. All off until you switch them on.",
+  "acctCountMe": "Count me as an active user",
+  "acctCountMeNote": "Sends a random number made on this phone, once in a while, so Astryl can show how many people use it. It is not linked to you.",
+  "acctShareCountry": "Share my country",
+  "acctShareCountryNote": "The country from your phone’s language and region setting, for a chart of countries.",
+  "acctShareLocation": "Share my approximate location",
+  "acctShareLocationNote": "Needs an account. Android’s approximate location is used (a few kilometres). Only the latest place is kept, rounded to about 10 km, and it is updated when you open the app.",
+  "acctSkip": "Skip now",
+  "acctSkipNote": "You can make an account later in Settings. The app works the same without one.",
+  "acctCodeTitle": "Your recovery code",
+  "acctCodeWarn": "Write it down or keep it somewhere safe. If you forget your password, this code is the only way back in. It works 3 times.",
+  "acctCopy": "Copy",
+  "acctCopied": "Copied",
+  "acctCodeSaved": "I have saved my recovery code",
+  "acctContinue": "Continue",
+  "acctRecovered": "Password changed. The code can be used {count} more times.",
+  "@acctRecovered": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "acctLoggedInAs": "Logged in as {name}",
+  "@acctLoggedInAs": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "acctNotLoggedIn": "You are not logged in.",
+  "acctSync": "Sync my data",
+  "acctSyncNote": "Favourites, quiz scores, language, theme, city and birth date are kept in your account and shared with astryl.space.",
+  "acctSyncNow": "Sync now",
+  "acctSyncOk": "Synced",
+  "acctSyncFailed": "Could not sync. Check your internet and try again.",
+  "acctSyncing": "Syncing…",
+  "acctNewCode": "Make a new recovery code",
+  "acctNewCodeNote": "The old code stops working.",
+  "acctLogOut": "Log out",
+  "acctDelete": "Delete my account",
+  "acctDeleteNote": "Deletes your account and everything stored for it online. The data on this phone stays.",
+  "acctDeleteConfirmTitle": "Delete your account?",
+  "acctDeleteConfirmBody": "This cannot be undone. Type your password to confirm.",
+  "acctDeleteButton": "Delete",
+  "acctDeleted": "Account deleted.",
+  "acctCommunity": "Astryl community",
+  "acctStatsLine": "{registered} accounts · {active} active in the last 30 days",
+  "@acctStatsLine": {
+    "placeholders": {
+      "registered": {
+        "type": "String"
+      },
+      "active": {
+        "type": "String"
+      }
+    }
+  },
+  "acctStatsNote": "Active means people who chose to be counted.",
+  "acctPrivacyLink": "Privacy Policy",
+  "acctErrOffline": "No internet, or the server is not answering. Try again.",
+  "acctErrTaken": "That username is taken.",
+  "acctErrUsername": "Username: 3 to 20 letters (a to z), digits or _.",
+  "acctErrPassword": "Password: 8 to 72 characters.",
+  "acctErrMismatch": "The two passwords are not the same.",
+  "acctErrLogin": "Wrong username or password.",
+  "acctErrRecovery": "Wrong username or recovery code.",
+  "acctErrUsedUp": "This recovery code has already been used 3 times.",
+  "acctErrLocked": "Too many wrong tries. Wait 15 minutes.",
+  "acctErrRate": "Too many tries. Try again later.",
+  "acctErrGeneric": "Something went wrong. Try again.",
+  "acctErrCode": "A recovery code has 16 letters and digits.",
+  "myLocation": "My location",
+  "useMyLocation": "Use my location",
+  "locDenied": "Location permission was not given.",
+  "locOff": "Turn on location in your phone’s settings.",
+  "locError": "Could not find your location. Try again.",
+  "settingsAccountSubtitle": "Your data stays in step with astryl.space.",
+  "anonymousTitle": "Without an account",
+  "spaceMode": "Space",
+  "spaceBack": "Whole Solar System",
+  "spaceHint": "Drag to look around · Pinch to zoom · Tap a planet to fly to it · Sizes and distances not to scale",
+  "spacecraftAdityal1": "India's (ISRO) first solar observatory. Placed in a halo orbit around the Sun–Earth L1 point (1.5 million km away) to watch the Sun's corona and solar storms non-stop.",
+  "dailyUpdate": "This version cannot show today’s questions. Please update the app.",
+  "boardShow": "Show me on the leaderboard",
+  "boardShowNote": "Shows only your username and score. On by default; switch it off to hide.",
+  "uniTitle": "Universe map",
+  "uniCardHint": "Fly from the Sun to the farthest galaxies",
+  "uniHint": "Drag to turn · Pinch to zoom · Tap anything",
+  "uniLevelSolar": "Solar System",
+  "uniLevelStars": "Nearby stars",
+  "uniLevelMilkyWay": "Milky Way",
+  "uniLevelLocal": "Local Group",
+  "uniLevelGalaxies": "Galaxies",
+  "uniLevelUniverse": "Universe",
+  "uniGoTo": "Go to",
+  "uniSearchHint": "Search stars, galaxies, black holes",
+  "uniNothing": "Nothing found",
+  "uniSpeedReal": "Real time",
+  "uniSpeedDay": "1 day per second",
+  "uniSpeedYear": "1 year per second",
+  "uniSpeedMillion": "1 million years per second",
+  "uniSpeedFast": "25 million years per second",
+  "uniNow": "Now",
+  "uniAhead": "{value} from now",
+  "@uniAhead": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniBackToNow": "Back to now",
+  "uniSpedUp": "Sped up: in real time this motion is far too slow to see.",
+  "uniKindStar": "Star",
+  "uniKindPlanet": "Planet",
+  "uniKindBlackHole": "Black hole",
+  "uniKindGalaxyCluster": "Cluster of galaxies",
+  "uniShapeSpiral": "Spiral galaxy",
+  "uniShapeBarred": "Barred spiral galaxy",
+  "uniShapeElliptical": "Elliptical galaxy",
+  "uniShapeLenticular": "Lenticular galaxy",
+  "uniShapeIrregular": "Irregular galaxy",
+  "uniDistance": "Distance from Earth",
+  "uniDistanceNow": "Distance today",
+  "uniLightTime": "Its light travelled for",
+  "uniWidth": "Width",
+  "uniMass": "Mass",
+  "uniHorizon": "Horizon radius",
+  "uniEstimated": "Distance estimated from its redshift.",
+  "uniFlyHere": "Fly here",
+  "uniScreen": "Screen width ≈ {value}",
+  "@uniScreen": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniEdge": "Edge of the observable universe",
+  "uniLy": "{value} light-years",
+  "@uniLy": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniLyK": "{value} thousand light-years",
+  "@uniLyK": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniLyM": "{value} million light-years",
+  "@uniLyM": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniLyB": "{value} billion light-years",
+  "@uniLyB": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniDays": "{value} days",
+  "@uniDays": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniYr": "{value} years",
+  "@uniYr": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniYrK": "{value} thousand years",
+  "@uniYrK": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniYrM": "{value} million years",
+  "@uniYrM": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniYrB": "{value} billion years",
+  "@uniYrB": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniSuns": "{value} Suns",
+  "@uniSuns": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniSunsM": "{value} million Suns",
+  "@uniSunsM": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "uniSunsB": "{value} billion Suns",
+  "@uniSunsB": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "issBelowBy": "{direction}, {degrees}° below the horizon",
+  "@issBelowBy": {
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      },
+      "degrees": {
+        "type": "String"
+      }
+    }
+  },
+  "issLight": "Light",
+  "issInSun": "In sunlight",
+  "issInShadow": "In Earth's shadow",
+  "issNextVisible": "Next easy-to-see pass in {wait}, at {time}",
+  "@issNextVisible": {
+    "placeholders": {
+      "wait": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "issNextPass": "Next pass in {wait}, at {time}",
+  "@issNextPass": {
+    "placeholders": {
+      "wait": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "issTrackPast": "Where it was",
+  "issTrackNext": "Where it is going",
+  "issNight": "Night on Earth",
+  "issDataAge": "Orbit data from {time} ago",
+  "@issDataAge": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "issDays": "{value} days",
+  "@issDays": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "issOnlyVisible": "Only passes that are easy to see",
+  "issNoVisible": "No easy-to-see passes in the next 5 days."
+}

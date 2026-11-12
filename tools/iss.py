@@ -1,13 +1,14 @@
 """The space station page: live map and passes over your city (logic in site_src/iss.js and sgp4.js)."""
 import json
+import site_data
 import re
 
 from dskit import Kit
 
 
 def land_outline(root):
-    """The app's simplified world map (lib/data/world_outline.dart) as a list of shapes."""
-    text = (root / 'lib/data/world_outline.dart').read_text(encoding='utf-8')
+    """The simplified world map (data/tables/world_outline.dart) as a list of shapes."""
+    text = site_data.table('world_outline.dart')
     block = text[text.index('worldLand'):]
     block = block[:block.index('];')]
     return re.findall(r"'([-0-9., ]+)'", block)

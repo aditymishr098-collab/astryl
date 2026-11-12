@@ -1,6 +1,7 @@
 """The constellations page: all 88 IAU constellations drawn with a true sky projection, star sizes by brightness,
 the brightest star, when to see each one in the evening, whether it can be seen from India, and what to find in it."""
 import math
+import site_data
 import re
 from pathlib import Path
 
@@ -16,7 +17,7 @@ DSO_KIND = [('Star cluster', 'तारा समूह'), ('Galaxy', 'Galaxy'),
 
 
 def load():
-    text = (ROOT / 'lib/data/sky_catalog.dart').read_text(encoding='utf-8')
+    text = site_data.table('sky_catalog.dart')
     stars = [(float(a), float(b), float(c), d) for a, b, c, d in re.findall(r"StarData\(([-\d.]+), ([-\d.]+), ([-\d.]+)(?:, '([^']*)')?\)", text)]
     dsos = [dict(id=a, name=b.replace("\\'", "'"), kind=int(c), mag=float(d), ra=float(e), dec=float(f), con=g)
             for a, b, c, d, e, f, g in re.findall(r"DeepSkyData\('(\w+)', '((?:[^'\\]|\\.)*)', (\d), ([-\d.]+), ([-\d.]+), ([-\d.]+), '(\w+)'\)", text)]
