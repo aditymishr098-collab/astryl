@@ -397,7 +397,7 @@ def asset_v():
     '''A short hash of the scripts and styles, so a changed file is never served from an old cache.'''
     if not _ASSET_V:
         h = hashlib.md5()
-        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js'):
+        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js'):
             h.update((SRC / name).read_bytes())
         h.update(data_js().encode('utf-8'))
         h.update(umap.CATALOG.read_bytes())
@@ -706,7 +706,7 @@ def body_page(b, i):
 <section class="blk">{moons}{dyn}</section>
 {pn}'''
     en_name = tr('en', NAME_KEY[idn])
-    write(f'body/{idn}.html', shell(en_name, tr('hi', NAME_KEY[idn]), 'planets', body, f'{en_name}: size, gravity, temperature, day and year length, atmosphere and facts. On Astryl.', depth=1, canonical=f'body/{idn}.html', extra_head=f'<script defer src="../assets/moons.js?v={asset_v()}"></script>' if idn in ('jupiter', 'saturn') else '', ld=[{'@context': 'https://schema.org', '@type': 'WebPage', 'name': f'{en_name} · Astryl', 'url': f'{SITE}/body/{idn}.html', 'about': {'@type': 'Thing', 'name': en_name}, 'inLanguage': ['en', 'hi'], 'isPartOf': {'@type': 'WebSite', 'name': 'Astryl', 'url': SITE + '/'}}, {'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [{'@type': 'ListItem', 'position': 1, 'name': 'Astryl', 'item': SITE + '/'}, {'@type': 'ListItem', 'position': 2, 'name': 'Planets and moons', 'item': SITE + '/planets.html'}, {'@type': 'ListItem', 'position': 3, 'name': en_name, 'item': f'{SITE}/body/{idn}.html'}]}]))
+    write(f'body/{idn}.html', shell(en_name, tr('hi', NAME_KEY[idn]), 'planets', body, f'{en_name}: size, gravity, temperature, day and year length, atmosphere and facts. On Astryl.', depth=1, canonical=f'body/{idn}.html', extra_head=f'<script defer src="../assets/moons.js?v={asset_v()}"></script><script defer src="../assets/worlds.js?v={asset_v()}"></script>', ld=[{'@context': 'https://schema.org', '@type': 'WebPage', 'name': f'{en_name} · Astryl', 'url': f'{SITE}/body/{idn}.html', 'about': {'@type': 'Thing', 'name': en_name}, 'inLanguage': ['en', 'hi'], 'isPartOf': {'@type': 'WebSite', 'name': 'Astryl', 'url': SITE + '/'}}, {'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [{'@type': 'ListItem', 'position': 1, 'name': 'Astryl', 'item': SITE + '/'}, {'@type': 'ListItem', 'position': 2, 'name': 'Planets and moons', 'item': SITE + '/planets.html'}, {'@type': 'ListItem', 'position': 3, 'name': en_name, 'item': f'{SITE}/body/{idn}.html'}]}]))
 
 
 def orrery_svg():
@@ -1043,7 +1043,7 @@ def main():
     shutil.copy(SRC / 'learn.js', OUT / 'assets/learn.js')
     shutil.copy(SRC / 'universe.js', OUT / 'assets/universe.js')
     shutil.copytree(site_data.CITIES, OUT / 'assets' / 'cities')
-    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js'):
+    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js'):
         shutil.copy(SRC / name, OUT / 'assets' / name)
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#fbf7ee"/><circle r="30" fill="#1b3a8a"/><ellipse rx="50" ry="15" fill="none" stroke="#6a45d6" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#1b3a8a"/></svg>', encoding='utf-8')
