@@ -469,3 +469,44 @@ html.umlock,html.umlock body{overflow:hidden}
 .est{display:flex;flex-direction:column;gap:10px;align-items:stretch;margin:10px 0}.est input[type=range]{width:100%;accent-color:var(--accent);min-height:36px}
 .estv{text-align:center;font:700 1.6rem "Space Grotesk"}.estv b{font:inherit}
 .rex{margin:10px 0 12px;line-height:1.5}
+/* real space photos */
+.sphotos{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.sphotos.one{grid-template-columns:minmax(0,760px)}
+.sphoto{margin:0;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.sphoto img{display:block;width:100%;height:auto;max-height:520px;object-fit:cover;background:#000}
+.sphoto figcaption{padding:10px 14px 12px;font-size:.92rem;line-height:1.45}
+.sphoto figcaption small{color:var(--muted);font-size:.8rem}
+/* black hole animations */
+.bhcard{padding:12px}
+.bhstage{border-radius:12px;overflow:hidden;background:#000}
+.bhstage canvas,.bhcard>canvas{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#03050b;border-radius:12px}
+.bhcard>canvas{aspect-ratio:2/1}
+.bhctl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
+.bhtilt{display:flex;flex-wrap:wrap;gap:8px;align-items:center;flex:1;min-width:220px;font-size:.9rem}.bhtilt input{flex:1;min-width:120px;accent-color:var(--accent)}
+.bhfall{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bhfall figure{margin:0}.bhfall canvas{display:block;width:100%;aspect-ratio:4/3;border-radius:12px;background:#03050b}
+.bhfall figcaption{font-size:.85rem;margin-top:6px;line-height:1.4}
+@media(max-width:560px){.bhfall{grid-template-columns:1fr}}
+.bhstep{min-height:3.2em;margin:10px 0 0;line-height:1.5}
+.bhdots{display:flex;gap:6px}.bhdots i{width:10px;height:10px;border-radius:50%;background:var(--line);cursor:pointer}.bhdots i.on{background:var(--accent)}
+.hero2 .bhcard{align-self:center}
+/* planet panel */
+.sheetwrap{position:fixed;inset:0;z-index:80}
+.sheetback{position:absolute;inset:0;background:rgba(2,4,10,.55);opacity:0;transition:opacity .2s}
+.sheet{position:absolute;left:0;right:0;bottom:0;max-height:88vh;overflow:auto;overscroll-behavior:contain;background:var(--bg);border:1px solid var(--line);border-radius:20px 20px 0 0;padding:18px 16px 28px;transform:translateY(100%);transition:transform .22s ease-out;box-shadow:0 -10px 40px rgba(0,0,0,.4)}
+.sheet:focus{outline:none}
+.sheetwrap.on .sheetback{opacity:1}.sheetwrap.on .sheet{transform:none}
+@media(min-width:900px){.sheet{left:auto;top:0;bottom:0;width:min(560px,46vw);max-height:none;border-radius:20px 0 0 20px;transform:translateX(100%)}}
+html.sheetopen{overflow:hidden}
+.sheetx{position:sticky;top:0;float:right;margin:-6px -4px 0 8px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--text);font-size:1.1rem;cursor:pointer;z-index:2}
+.sheethead{display:flex;gap:14px;align-items:center;margin-bottom:12px}
+.sheethead img,.sheethead svg{width:110px;height:110px;flex:none;object-fit:contain}
+.sheethead h2{margin:0}.sheethead .sub{margin:.2em 0 0}
+.sheet h3{margin:22px 0 10px}
+.sheet .stats{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+.formhead{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:10px}
+.formtl{margin-top:14px}
+.sheetfacts{padding-left:1.2em;line-height:1.55}
+.sheetmoons{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.sheetmoons a{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px;border:1px solid var(--line);border-radius:12px;background:var(--card);text-align:center;font-size:.85rem;color:var(--text)}
+.sheetmoons img,.sheetmoons svg{width:56px;height:56px;object-fit:contain}

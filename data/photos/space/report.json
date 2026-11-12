@@ -1,0 +1,282 @@
+{
+ "bh-crab": {
+  "artist": "<a href=\"//commons.wikimedia.org/wiki/NASA\" title=\"NASA\">NASA</a>, <a href=\"//commons.wikimedia.org/wiki/ESA\" class=\"mw-redirect\" title=\"ESA\">ESA</a>, J. Hester and A. Loll (Arizona State University)",
+  "bytes": 322428,
+  "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"https://web.archive.org/web/20160402111608/http://hubblesite.org/newscenter/archive/releases/2005/37/image/a/warn/\">A Giant Hubble Mosaic of the Crab Nebula</a>",
+  "desc": "This is a mosaic image, one of the largest ever taken by NASA's Hubble Space Telescope, of the <a href=\"https://en.wikipedia.org/wiki/Crab_Nebula\" class=\"extiw\" title=\"w:Crab Nebula\">Crab Nebula</a>, a six-light-year-wide expanding remnant of a star's supernova explosion. Japanese and Chinese astron",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Crab_Nebula.jpg",
+  "pixels": [
+   1400,
+   1400
+  ],
+  "title": "File:Crab Nebula.jpg",
+  "tried": []
+ },
+ "bh-cygx1": {
+  "artist": "ESA, Hubble",
+  "bytes": 72406,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://apod.nasa.gov/apod/ap080811.html\">https://apod.nasa.gov/apod/ap080811.html</a>, <a rel=\"nofollow\" class=\"external free\" href=\"http://www.spacetelescope.org\">http://www.spacetelescope.org</a>",
+  "desc": "An artists illustration of material being gravitationally sucked off a blue supergiant variable star designated HDE 226868 onto a black hole Cygnus X-1",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Cygnus_X-1.png",
+  "pixels": [
+   1400,
+   875
+  ],
+  "title": "File:Cygnus X-1.png",
+  "tried": []
+ },
+ "bh-m87": {
+  "artist": "<a href=\"https://en.wikipedia.org/wiki/en:Event_Horizon_Telescope\" class=\"extiw\" title=\"w:en:Event Horizon Telescope\"><span title=\"project to create a global interferometric telescope array\">Event Horizon Telescope</span></a>, uploader cropped and converted TIF to JPG",
+  "bytes": 14068,
+  "credit": "<table class=\"layouttemplate sourcetemplate\" style=\"width:100%; clear:both; text-align:center; margin:0.5em auto; box-sizing: border-box; padding: 0; border-spacing: 8px; background-color: var(--background-color-neutral-subtle, #f6f7f5); color: var(--color-base, #202122); border: var(--border-subtle",
+  "desc": "The <a href=\"https://en.wikipedia.org/wiki/Event_Horizon_Telescope\" class=\"extiw\" title=\"w:Event Horizon Telescope\">Event Horizon Telescope</a> (EHT) — a planet-scale array of eight ground-based radio telescopes forged through international collaboration — was designed to capture images of a <a href",
+  "licence": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Black_hole_-_Messier_87_crop_max_res.jpg",
+  "pixels": [
+   1400,
+   1400
+  ],
+  "title": "File:Black hole - Messier 87 crop max res.jpg",
+  "tried": []
+ },
+ "bh-m87-jet": {
+  "artist": "NASA and The Hubble Heritage Team (STScI/AURA)",
+  "bytes": 102874,
+  "credit": "HubbleSite: <a rel=\"nofollow\" class=\"external text\" href=\"http://hubblesite.org/gallery/album/exotic/pr2000020a/\">gallery</a>, <a rel=\"nofollow\" class=\"external text\" href=\"http://hubblesite.org/newscenter/archive/releases/2000/20/image/a/\">release</a>.",
+  "desc": "The jet emerging from the galactic core of M87 (NGC 4486). The jet extends to about 20 arc seconds (absolute length ca. 5 kly).\n<p>Composite image of Hubble Telescope observations.\nThe galaxy is too distant for the Hubble Telescope to resolve individual stars; the bright dots in the image are star c",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:M87_jet.jpg",
+  "pixels": [
+   1222,
+   1276
+  ],
+  "title": "File:M87 jet.jpg",
+  "tried": []
+ },
+ "bh-sgra": {
+  "artist": "<a href=\"https://en.wikipedia.org/wiki/Event_Horizon_Telescope\" class=\"extiw\" title=\"w:Event Horizon Telescope\">EHT Collaboration</a>",
+  "bytes": 18426,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.eso.org/public/images/eso2208-eht-mwa/\">https://www.eso.org/public/images/eso2208-eht-mwa/</a> (<a rel=\"nofollow\" class=\"external text\" href=\"https://cdn.eso.org/images/original/eso2208-eht-mwa.tif\">image link</a>)",
+  "desc": "This is the first image of Sgr A*, the supermassive black hole at the centre of our galaxy. It’s the first direct visual evidence of the presence of this black hole. It was captured by the Event Horizon Telescope (EHT), an array which linked together eight existing radio observatories across the pla",
+  "licence": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:EHT_Sagittarius_A_black_hole.tif",
+  "pixels": [
+   1400,
+   1400
+  ],
+  "title": "File:EHT Saggitarius A black hole.tif",
+  "tried": []
+ },
+ "bh-sgra-multi": {
+  "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/50785054@N03\">NASA's James Webb Space Telescope</a> from Greenbelt, MD, USA",
+  "bytes": 169912,
+  "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/nasawebbtelescope/51657196986/\">Multiwavelength View of Sagittarius A*</a>",
+  "desc": "<p>An enormous swirling vortex of hot gas glows with infrared light, marking the approximate location of the supermassive black hole at the heart of our Milky Way galaxy. This multiwavelength composite image includes near-infrared light captured by NASA’s Hubble Space Telescope, and was the sharpest",
+  "licence": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Multiwavelength_View_of_Sagittarius_A*_(51657196986).jpg",
+  "pixels": [
+   1400,
+   815
+  ],
+  "title": "File:Multiwavelength View of Sagittarius A* (51657196986).jpg",
+  "tried": []
+ },
+ "bh-sgra-pol": {
+  "artist": "EHT Collaboration",
+  "bytes": 70700,
+  "credit": "<table class=\"layouttemplate sourcetemplate\" style=\"width:100%; clear:both; text-align:center; margin:0.5em auto; box-sizing: border-box; padding: 0; border-spacing: 8px; background-color: var(--background-color-neutral-subtle, #f6f7f5); color: var(--color-base, #202122); border: var(--border-subtle",
+  "desc": "The Event Horizon Telescope (EHT) collaboration, who produced the first ever image of our Milky Way black hole released in 2022, has captured a new view of the massive object at the centre of our Galaxy: how it looks in polarised light. This is the first time astronomers have been able to measure po",
+  "licence": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:A_view_of_the_Milky_Way_supermassive_black_hole_Sagittarius_A*_in_polarised_light_(eso2406a).jpg",
+  "pixels": [
+   1400,
+   1400
+  ],
+  "title": "File:A view of the Milky Way supermassive black hole Sagittarius A* in polarised light (eso2406a).jpg",
+  "tried": []
+ },
+ "gx-andromeda": {
+  "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/8269775@N05\">Adam Evans</a>",
+  "bytes": 297300,
+  "credit": "<p><a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/astroporn/4999978603/\">M31, the Andromeda Galaxy (now with h-alpha)</a>\n</p>\n<ul><li>Uploaded by <a href=\"//commons.wikimedia.org/wiki/User:NotFromUtrecht\" title=\"User:NotFromUtrecht\">NotFromUtrecht</a></li></ul>",
+  "desc": "The <b><a href=\"https://en.wikipedia.org/wiki/Andromeda_Galaxy\" class=\"extiw\" title=\"en:Andromeda Galaxy\">Andromeda Galaxy</a></b> is a spiral galaxy approximately 2.5 million light-years away in the constellation Andromeda. The image also shows <a href=\"https://en.wikipedia.org/wiki/Messier_Objects",
+  "licence": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Andromeda_Galaxy_(with_h-alpha).jpg",
+  "pixels": [
+   1400,
+   919
+  ],
+  "title": "File:Andromeda Galaxy (with h-alpha).jpg",
+  "tried": []
+ },
+ "gx-antennae": {
+  "artist": "NASA, ESA, and the Hubble Heritage Team (STScI/AURA)-ESA/Hubble Collaboration",
+  "bytes": 206022,
+  "credit": "<ul><li><a rel=\"nofollow\" class=\"external free\" href=\"http://www.spacetelescope.org/images/heic0615a/\">http://www.spacetelescope.org/images/heic0615a/</a></li>\n<li><a rel=\"nofollow\" class=\"external free\" href=\"http://hubblesite.org/newscenter/archive/releases/2006/46/image/a/\">http://hubblesite.org/",
+  "desc": "<b>Original caption from NASA:</b> “This NASA <a href=\"https://en.wikipedia.org/wiki/Hubble_Space_Telescope\" class=\"extiw\" title=\"en:Hubble Space Telescope\">Hubble Space Telescope</a> image of the <a href=\"https://en.wikipedia.org/wiki/Antennae_galaxies\" class=\"extiw\" title=\"en:Antennae galaxies\">An",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Antennae_galaxies_xl.jpg",
+  "pixels": [
+   1400,
+   1389
+  ],
+  "title": "File:Antennae galaxies xl.jpg",
+  "tried": []
+ },
+ "gx-lmc": {
+  "artist": "NASA/Ames Research Center",
+  "bytes": 68714,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://web.archive.org/web/20070327105953/http://ails.arc.nasa.gov/Images/Astrobiology/AC87-0459.html\">https://web.archive.org/web/20070327105953/http://ails.arc.nasa.gov/Images/Astrobiology/AC87-0459.html</a>",
+  "desc": "Image of the Large Magellanic Cloud and Supernova 1987A taken by the Kuiper Airborne Observatory (NASA 714) during its New Zealand deployment in 1987.",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Large.mc.arp.750pix.jpg",
+  "pixels": [
+   768,
+   512
+  ],
+  "title": "File:Large.mc.arp.750pix.jpg",
+  "tried": []
+ },
+ "gx-milkyway": {
+  "artist": "ESO/<a href=\"https://en.wikipedia.org/wiki/Serge_Brunier\" class=\"extiw\" title=\"w:Serge Brunier\">S. Brunier</a>",
+  "bytes": 115188,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.eso.org/public/images/eso0932a/\">https://www.eso.org/public/images/eso0932a/</a>",
+  "desc": "This magnificent 360-degree panoramic image, covering the entire southern and northern celestial sphere, reveals the cosmic landscape that surrounds our tiny blue planet. This gorgeous starscape serves as the first of three extremely high-resolution images featured in the GigaGalaxy Zoom project, la",
+  "licence": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:ESO_-_Milky_Way.jpg",
+  "pixels": [
+   1400,
+   700
+  ],
+  "title": "File:ESO - Milky Way.jpg",
+  "tried": []
+ },
+ "gx-sombrero": {
+  "artist": "NASA/ESA and The Hubble Heritage Team (STScI/AURA)",
+  "bytes": 54796,
+  "credit": "<ul><li><a rel=\"nofollow\" class=\"external free\" href=\"http://www.spacetelescope.org/images/opo0328a/\">http://www.spacetelescope.org/images/opo0328a/</a> ([cdn.spacetelescope.org/archives/images/screen/opo0328a.jpg direct link])</li>\n<li><a rel=\"nofollow\" class=\"external free\" href=\"http://hubblesite",
+  "desc": "The famous Sombrero galaxy (M104) is a bright nearby elliptical galaxy. The prominent dust lane and halo of stars and globular clusters give this galaxy its name. Something very energetic is going on in the Sombrero's center, as much X-ray light has been detected from it. This X-ray emission coupled",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:M104_ngc4594_sombrero_galaxy_hi-res.jpg",
+  "pixels": [
+   1400,
+   785
+  ],
+  "title": "File:M104 ngc4594 sombrero galaxy hi-res.jpg",
+  "tried": []
+ },
+ "gx-udf": {
+  "artist": "NASA and the European Space Agency. Edited by <a href=\"//commons.wikimedia.org/wiki/User:Noodle_snacks\" class=\"mw-redirect\" title=\"User:Noodle snacks\">Noodle snacks</a>",
+  "bytes": 129796,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://hubblesite.org/contents/news-releases/2004/news-2004-07.html\">https://hubblesite.org/contents/news-releases/2004/news-2004-07.html</a>",
+  "desc": "The <a href=\"https://en.wikipedia.org/wiki/Hubble_Ultra_Deep_Field\" class=\"extiw\" title=\"en:Hubble Ultra Deep Field\">Hubble Ultra Deep Field</a>, is an image of a small region of space in the constellation Fornax, composited from Hubble Space Telescope data accumulated over a period from September 3",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Hubble_ultra_deep_field_high_rez_edit1.jpg",
+  "pixels": [
+   1400,
+   1400
+  ],
+  "title": "File:Hubble ultra deep field high rez edit1.jpg",
+  "tried": []
+ },
+ "gx-webb": {
+  "artist": "NASA, ESA, CSA, and STScI",
+  "bytes": 90206,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://webbtelescope.org/contents/media/images/2022/038/01G7JGTH21B5GN9VCYAHBXKSD1\">https://webbtelescope.org/contents/media/images/2022/038/01G7JGTH21B5GN9VCYAHBXKSD1</a>",
+  "desc": "<b>SMACS 0723-73 (1RXS J072319.7-732735, SMACS J0723.3-7327)</b>\n<p>NASA’s James Webb Space Telescope has produced the deepest and sharpest infrared image of the distant universe to date. Known as Webb’s First Deep Field, this image of galaxy cluster SMACS 0723 is overflowing with detail.\n</p><p>Tho",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Webb%27s_First_Deep_Field.jpg",
+  "pixels": [
+   1372,
+   1400
+  ],
+  "title": "File:Webb's First Deep Field.jpg",
+  "tried": []
+ },
+ "gx-whirlpool": {
+  "artist": "<a href=\"//commons.wikimedia.org/wiki/NASA\" title=\"NASA\">NASA</a> and <a href=\"//commons.wikimedia.org/wiki/European_Space_Agency\" title=\"European Space Agency\">European Space Agency</a>",
+  "bytes": 140050,
+  "credit": "<p><a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://antwrp.gsfc.nasa.gov/apod/ap050428.html\" href=\"https://antwrp.gsfc.nasa.gov/apod/ap050428.html\">http://antwrp.gsfc.nasa.gov/apod/ap050428.html</a>\n</p>\nSOURCE OF 2ND VERSION: <a rel=\"nofollow\" class=\"external free\" href=\"http:/",
+  "desc": "The <a href=\"https://en.wikipedia.org/wiki/Whirlpool_Galaxy\" class=\"extiw\" title=\"en:Whirlpool Galaxy\">Whirlpool Galaxy</a> (Spiral Galaxy M51, NGC 5194), a classic spiral galaxy located in the Canes Venatici constellation, and its companion <a href=\"https://en.wikipedia.org/wiki/NGC_5195\" class=\"ex",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Messier51_sRGB.jpg",
+  "pixels": [
+   1400,
+   971
+  ],
+  "title": "File:Messier51 sRGB.jpg",
+  "tried": []
+ },
+ "moon-eclipse": {
+  "artist": "Alfredo Garcia, Jr, <a rel=\"nofollow\" class=\"external autonumber\" href=\"https://www.facebook.com/alfredogarciajr\">[2]</a>",
+  "bytes": 43216,
+  "credit": "Flickr <a rel=\"nofollow\" class=\"external autonumber\" href=\"https://www.flickr.com/photos/10151144@N04/22122694116\">[1]</a>",
+  "desc": "<a href=\"https://en.wikipedia.org/wiki/October_2014_lunar_eclipse\" class=\"extiw\" title=\"en:October 2014 lunar eclipse\">en:October 2014 lunar eclipse</a>, <a href=\"https://en.wikipedia.org/wiki/Loleta,_California\" class=\"extiw\" title=\"en:Loleta, California\">en:Loleta, California</a>, near greatest ec",
+  "licence": "CC BY-SA 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Lunar_eclipse_October_8_2014_California_Alfredo_Garcia_Jr_mideclipse.JPG",
+  "pixels": [
+   1400,
+   1383
+  ],
+  "title": "File:Lunar eclipse October 8 2014 California Alfredo Garcia Jr mideclipse.JPG",
+  "tried": []
+ },
+ "nb-cliffs": {
+  "artist": "<p>Image: \n</p>\n<ul><li><a href=\"https://en.wikipedia.org/wiki/NASA\" class=\"extiw\" title=\"w:NASA\">National Aeronautics and Space Administration</a>  (a <a href=\"https://en.wikipedia.org/wiki/U.S._federal_government\" class=\"extiw\" title=\"w:U.S. federal government\">U.S. federal government</a> agency; ",
+  "bytes": 203192,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://webbtelescope.org/contents/media/images/2022/031/01G77PKB8NKR7S8Z6HBXMYATGJ\">https://webbtelescope.org/contents/media/images/2022/031/01G77PKB8NKR7S8Z6HBXMYATGJ</a>",
+  "desc": "What looks much like craggy mountains on a moonlit evening is actually the edge of a nearby, young, star-forming region NGC 3324 in the Carina Nebula. Captured in infrared light by the Near-Infrared Camera (NIRCam) on NASA’s James Webb Space Telescope, this image reveals previously obscured areas of",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:NASA%E2%80%99s_Webb_Reveals_Cosmic_Cliffs,_Glittering_Landscape_of_Star_Birth.jpg",
+  "pixels": [
+   1400,
+   811
+  ],
+  "title": "File:NASA’s Webb Reveals Cosmic Cliffs, Glittering Landscape of Star Birth.jpg",
+  "tried": []
+ },
+ "nb-pillars": {
+  "artist": "SCIENCE: NASA, ESA, CSA, STScI; IMAGE PROCESSING: Joseph DePasquale (STScI), Anton M. Koekemoer (STScI), Alyssa Pagan (STScI)",
+  "bytes": 295884,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://webbtelescope.org/contents/media/images/2022/052/01GF423GBQSK6ANC89NTFJW8VM\">https://webbtelescope.org/contents/media/images/2022/052/01GF423GBQSK6ANC89NTFJW8VM</a>",
+  "desc": "The Pillars of Creation are set off in a kaleidoscope of color in NASA’s James Webb Space Telescope’s near-infrared-light view. The pillars look like arches and spires rising out of a desert landscape, but are filled with semi-transparent gas and dust, and ever changing. This is a region where young",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Pillars_of_Creation_(NIRCam_Image).jpg",
+  "pixels": [
+   808,
+   1400
+  ],
+  "title": "File:Pillars of Creation (NIRCam Image).jpg",
+  "tried": []
+ },
+ "sun-eclipse": {
+  "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Lviatour\" title=\"User:Lviatour\">Luc Viatour</a>",
+  "bytes": 73788,
+  "credit": "<span class=\"int-own-work\" lang=\"en\">Own work</span>, <a rel=\"nofollow\" class=\"external text\" href=\"http://www.lucnix.be\">www.lucnix.be</a>",
+  "desc": "Total Solar eclipse in France.",
+  "licence": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Solar_eclipse_1999_4.jpg",
+  "pixels": [
+   1400,
+   1379
+  ],
+  "title": "File:Solar eclipse 1999 4 NR.jpg",
+  "tried": []
+ },
+ "sun-sdo": {
+  "artist": "NASA/SDO (AIA)",
+  "bytes": 252612,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://sdo.gsfc.nasa.gov/assets/img/browse/2010/08/19/20100819_003221_4096_0304.jpg\" href=\"https://sdo.gsfc.nasa.gov/assets/img/browse/2010/08/19/20100819_003221_4096_0304.jpg\">http://sdo.gsfc.nasa.gov/assets/img/browse/2010/08/19/201008",
+  "desc": "The <a href=\"https://en.wikipedia.org/wiki/Sun\" class=\"extiw\" title=\"w:Sun\">Sun</a> photographed at 304 angstroms by the <a href=\"https://en.wikipedia.org/wiki/Solar_Dynamics_Observatory#Atmospheric_Imaging_Assembly\" class=\"extiw\" title=\"w:Solar Dynamics Observatory\">Atmospheric Imaging Assembly</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg",
+  "pixels": [
+   1400,
+   1337
+  ],
+  "title": "File:The Sun by the Atmospheric Imaging Assembly of NASA's Solar Dynamics Observatory - 20100819.jpg",
+  "tried": []
+ }
+}

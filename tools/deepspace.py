@@ -6,6 +6,7 @@ out here from the masses, not typed in.
 """
 
 from dskit import Kit, article_ld
+import spacephotos
 
 G = 6.674e-11        # m^3 kg^-1 s^-2
 C = 299792458.0      # m/s
@@ -129,7 +130,7 @@ def black_hole_pages(h):
         body = body + rel
         path = f'black-holes/{slug}.html'
         ld = article_ld(h['SITE'], en, desc, path, [('Astryl', ''), ('Black holes', 'black-holes.html'), (en, path)])
-        html = shell(en, hi, 'bh', body, desc, depth=1, canonical=path, ld=ld, extra_head=f'<script defer src="../assets/learn.js?v={h["asset_v"]()}"></script>')
+        html = shell(en, hi, 'bh', body, desc, depth=1, canonical=path, ld=ld, extra_head=f'<script defer src="../assets/learn.js?v={h["asset_v"]()}"></script><script defer src="../assets/bhsim.js?v={h["asset_v"]()}"></script>')
         return {'file': f'black-holes/{slug}.html', 'html': html}
 
     out = []
@@ -141,18 +142,20 @@ def black_hole_pages(h):
 <div><h1 class="rise">{bt("Black", "ब्लैक")} <span class="grad">{bt("holes.", "होल।")}</span></h1>
 <p class="lead rise">{bt("The darkest objects in the universe, explained from the start. No maths needed, and every number comes from real measurements.", "ब्रह्मांड की सबसे अँधेरी चीज़ें, शुरू से समझाई हुई। गणित की ज़रूरत नहीं, और हर आँकड़ा असली माप से आया है।")}</p>
 <div class="btns rise"><a class="btn primary" href="black-holes/what-is-a-black-hole.html">{bt("Start here", "यहाँ से शुरू करें")} →</a><a class="btn" href="black-holes/famous-black-holes.html">{bt("Famous black holes", "मशहूर ब्लैक होल")}</a><a class="btn" href="black-hole-lab.html">🧪 {bt("Black hole lab", "ब्लैक होल lab")}</a><a class="btn" href="black-holes-101.html">🎓 {bt("Black holes 101", "Black holes 101")}</a></div></div>
-<div>{anatomy_svg(bt)}</div></section>
+<div class="card bhcard" id="bhSim"></div></section>
 <section class="blk">{facts([
         ("Our Galaxy's black hole", 'हमारी आकाशगंगा का ब्लैक होल', '4.3 million Suns', '43 लाख सूरज के बराबर'),
         ('Distance to it', 'उसकी दूरी', '~26,000 light-years', '~26,000 प्रकाश-वर्ष'),
         ('First picture of one', 'पहली तस्वीर', 'April 2019 (M87*)', 'अप्रैल 2019 (M87*)'),
         ('Nearest known so far', 'अब तक का सबसे पास', '~1,600 light-years', '~1,600 प्रकाश-वर्ष'),
     ])}</section>
+<section class="blk"><h2>{bt("Real pictures", "असली तस्वीरें")}</h2><p class="sub">{bt("The Event Horizon Telescope joined radio dishes around the world into one Earth-sized telescope to take these.", "Event Horizon Telescope ने दुनिया भर के radio dishes को जोड़कर पृथ्वी जितना बड़ा एक telescope बनाया और ये तस्वीरें लीं।")}</p>{spacephotos.strip(['bh-m87', 'bh-sgra'], '', bt, esc).replace('<section class="blk">', '').replace('</section>', '')}</section>
+<section class="blk"><h2>{bt("Parts of a black hole", "ब्लैक होल के हिस्से")}</h2><div>{anatomy_svg(bt)}</div></section>
 <section class="blk"><h2>{bt("Seven short pages", "सात छोटे पन्ने")}</h2><div class="sc-grid" style="padding-top:6px">{cards}</div></section>
 <section class="blk callout"><b>{bt("Want to test yourself?", "खुद को परखना है?")}</b> {bt("Play the Daily 5 on the Quiz page, or the black hole and galaxy quiz.", "Quiz page पर Daily 5 खेलिए, या ब्लैक होल और galaxy वाली quiz।")} <a href="quiz.html">{bt("Quiz", "Quiz")} →</a></section>'''
     out.append({'file': 'black-holes.html', 'html': shell('Black holes explained', 'ब्लैक होल, आसान भाषा में', 'bh', hub,
                 'Black holes explained simply: what they are, how they form, what happens if you fall in, the famous ones and how we photographed them. Free, in English and Hindi.',
-                canonical='black-holes.html', ld=article_ld(h['SITE'], 'Black holes explained', 'Black holes explained simply: what they are, how they form, what happens if you fall in, the famous ones and how we photographed them.', 'black-holes.html', [('Astryl', ''), ('Black holes', 'black-holes.html')]))})
+                canonical='black-holes.html', ld=article_ld(h['SITE'], 'Black holes explained', 'Black holes explained simply: what they are, how they form, what happens if you fall in, the famous ones and how we photographed them.', 'black-holes.html', [('Astryl', ''), ('Black holes', 'black-holes.html')]), extra_head=f'<script defer src="assets/bhsim.js?v={h["asset_v"]()}"></script>')})
 
     # ---- 1. what is a black hole
     s = 'what-is-a-black-hole'
@@ -188,6 +191,7 @@ def black_hole_pages(h):
     body = head(s, 'How black holes form', 'ब्लैक होल कैसे बनते हैं',
                 'Some come from dying stars. Others sit in the middle of galaxies. There are also sizes in between.',
                 'कुछ मरते तारों से बनते हैं। कुछ galaxies के बीच में बैठे हैं। बीच के आकार भी होते हैं।') + sec(
+        '<div class="card bhcard" id="bhForm"></div>',
         H2('Stellar black holes', 'तारकीय (stellar) ब्लैक होल'),
         P('A star shines because fusion in its core pushes outward while gravity pulls inward. When a very massive star (roughly 20 or more times the Sun) runs out of fuel, its core collapses in a fraction of a second.',
           'तारा इसलिए चमकता है क्योंकि उसके केंद्र में fusion बाहर की ओर धक्का देता है और gravity अंदर की ओर खींचती है। जब बहुत भारी तारे (लगभग सूरज से 20 गुना या ज़्यादा) का ईंधन ख़त्म होता है, तो उसका केंद्र एक सेकंड के भी बहुत छोटे हिस्से में ढह जाता है।'),
@@ -268,6 +272,7 @@ def black_hole_pages(h):
     body = head(s, 'Falling into a black hole', 'ब्लैक होल में गिरना',
                 'The same fall looks very different to you and to someone watching from far away.',
                 'वही गिरना आपको और दूर से देखने वाले को बहुत अलग दिखता है।') + sec(
+        '<div class="card bhcard" id="bhFall"></div>',
         H2('Stretching', 'खिंचाव'),
         P('Gravity pulls harder on the part of you that is closer. Falling feet first, your feet are pulled harder than your head, and you are stretched. Scientists call it spaghettification.',
           'Gravity आपके उस हिस्से को ज़्यादा खींचती है जो पास होता है। पैरों के बल गिरते समय पैर सिर से ज़्यादा खिंचते हैं और आप लंबे खिंच जाते हैं। वैज्ञानिक इसे spaghettification कहते हैं।'),

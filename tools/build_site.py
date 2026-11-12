@@ -16,6 +16,8 @@ import myspace
 import skyevents
 import students
 import cons
+import spacephotos
+import formation
 import site_data
 import photos
 import quizbank
@@ -411,8 +413,9 @@ def asset_v():
     '''A short hash of the scripts and styles, so a changed file is never served from an old cache.'''
     if not _ASSET_V:
         h = hashlib.md5()
-        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'sw.js'):
+        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'sw.js'):
             h.update((SRC / name).read_bytes())
+        h.update((ROOT / 'tools' / 'formation.py').read_bytes())
         if (OUT / 'assets/quiz-bank.js').exists():
             h.update((OUT / 'assets/quiz-bank.js').read_bytes())
         h.update(data_js().encode('utf-8'))
@@ -639,6 +642,8 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 def write(path, content):
     f = OUT / path
     f.parent.mkdir(parents=True, exist_ok=True)
+    if path.endswith('.html'):
+        content = spacephotos.place(path, content, bt, esc)
     f.write_text(content, encoding='utf-8')
 
 
@@ -647,7 +652,8 @@ def stat(label_key, value_html):
     return f'<div class="stat"><b>{value_html}</b><span>{bi(label_key)}</span></div>'
 
 
-def body_page(b, i):
+def body_sub_stats(b):
+    """The short line under the name and the number boxes, shared by the body page and the planet panel."""
     idn = b['id']
     sub = {'star': bi('kindStar'), 'dwarf': bi('kindDwarf')}.get(b['kind']) if b['kind'] in ('star', 'dwarf') else None
     if b['id'] == 'pluto':
@@ -665,6 +671,46 @@ def body_page(b, i):
         stats.append(stat('distance', val(v_dist(b))))
         stats.append(f'<div class="stat"><b>{val(lambda lg: tr(lg, "valueKm", value=fmt(lg, b["dist"] * 1e6)))}</b><span>{bi("distanceFrom", body={lg: tr(lg, NAME_KEY[b["parent"]]) for lg in ("en", "hi")})}</span></div>')
     stats.append(stat('pressure', val(v_press(b))))
+    return sub, stats
+
+
+def form_html(idn):
+    """'When and how it formed': a short answer, the story, a timeline and the open question."""
+    f = formation.FORM.get(idn)
+    if not f:
+        return ''
+    steps = ''.join(f'<div class="m"><div class="y">{bt(esc(te), esc(th))}</div><p>{bt(esc(en), esc(hi))}</p></div>' for te, th, en, hi in f['steps'])
+    op = f'<div class="callout">❓ <b>{bt("Still unknown", "अभी भी अनजाना")}:</b> {bt(esc(f["open"][0]), esc(f["open"][1]))}</div>' if f.get('open') else ''
+    return (f'<div class="formhead"><div class="stat"><b>{bt(esc(f["when"][0]), esc(f["when"][1]))}</b><span>{bt("Formed", "कब बना")}</span></div>'
+            f'<div class="stat"><b>{bt(esc(f["took"][0]), esc(f["took"][1]))}</b><span>{bt("How long it took", "कितना समय लगा")}</span></div></div>'
+            f'<p>{bt(esc(f["how"][0]), esc(f["how"][1]))}</p><div class="tl formtl">{steps}</div>{op}'
+            f'<p class="note">{bt("All dates are estimates from meteorites, moon rocks, space missions and computer models.", "सभी तारीख़ें अनुमान हैं, जो उल्कापिंडों, चाँद की चट्टानों, अंतरिक्ष missions और computer models से आती हैं।")}</p>')
+
+
+def sheet_js():
+    """assets/sheet-data.js: everything the planet panel shows, already in both languages."""
+    data = {}
+    for b in BODIES:
+        idn = b['id']
+        sub, stats = body_sub_stats(b)
+        mo = [m for m in BODIES if m['parent'] == idn]
+        moons = ''
+        if mo:
+            moons = f'<h3>{bi("majorMoons")}</h3><div class="sheetmoons">' + ''.join(f'<a href="body/{m["id"]}.html">{planet_pic(m, "", uid="sm")}<span>{bname(m["id"])}</span></a>' for m in mo) + '</div>'
+        cap = idn.capitalize()
+        facts = ''.join(f'<li>{bi("fact" + cap + str(n))}</li>' for n in (1, 2) if f'fact{cap}{n}' in L['en'])
+        data[idn] = {
+            'head': f'<div class="sheethead">{planet_pic(b, "", small=False, uid="sh")}<div><h2 id="sheetTitle">{bname(idn)}</h2><p class="sub">{sub or ""}</p></div></div>',
+            'body': f'<div class="stats">{"".join(stats)}</div><h3>{bt("When and how it formed", "कब और कैसे बना")}</h3>{form_html(idn)}'
+                    + (f'<h3>{bi("factTitle")}</h3><ul class="sheetfacts">{facts}</ul>' if facts else '') + moons
+                    + f'<p><a class="btn primary" href="body/{idn}.html" data-full>{bt("Full page: layers, telescope view, atmosphere", "पूरा page: परतें, दूरबीन का दृश्य, वायुमंडल")} →</a></p>',
+        }
+    return 'window.ASTRYL_SHEET=' + json.dumps(data, ensure_ascii=False, separators=(',', ':')) + ';'
+
+
+def body_page(b, i):
+    idn = b['id']
+    sub, stats = body_sub_stats(b)
     # atmosphere
     atm = ''
     if b['atm'] or b['thin']:
@@ -712,6 +758,7 @@ def body_page(b, i):
     body = f'''<p style="margin-top:20px"><a href="../planets.html">← {bi("planetsTitle")}</a></p>
 <div class="bodyhead"><figure class="bodyphoto">{planet_pic(b, "../", small=False)}{f'<figcaption>📷 {esc(PHOTO_CREDIT[idn])}</figcaption>' if idn in PHOTO_CREDIT else ''}</figure><div><h1 style="margin:0">{bname(idn)}</h1><p class="sub" style="margin:.2em 0 0">{sub}</p><button class="btn favbtn" type="button" data-fav="{idn}" aria-pressed="false">☆</button></div></div>
 <div class="stats">{"".join(stats)}</div>
+<section class="blk"><h2>{bt("When and how it formed", "कब और कैसे बना")}</h2>{form_html(idn)}</section>
 <section class="blk"><h2>{bt("Inside this world · Tap a layer", "आंतरिक संरचना · किसी परत पर टैप करें")}</h2><div class="card" id="cutawaySim" data-body="{idn}"></div></section>
 <section class="blk"><h2>{bt("Telescope eyepiece simulator", "दूरबीन ज़ूम सिम्युलेटर (1x · 10x · 100x)")}</h2><div class="card" id="telescopeSim" data-body="{idn}"></div></section>
 {moon_orb}
@@ -808,7 +855,7 @@ def planets_page():
     secs = ''.join(f'<section class="blk"><h2>{t}</h2><div class="grid">{"".join(card(b) for b in bs)}</div></section>' for _, t, bs in groups)
     body = f'''<section class="blk"><h1>{bi("planetsTitle")}</h1><p class="sub">{bt("Tap a world for its size, gravity, temperature, atmosphere and facts.", "किसी दुनिया पर क्लिक करें: उसका आकार, गुरुत्वाकर्षण, तापमान, वायुमंडल और तथ्य।")}</p>
 <div class="row"><input type="search" id="q" placeholder="{esc(tr("en", "searchHint"))}" aria-label="Search"></div></section>{secs}'''
-    write('planets.html', shell('Planets and moons', 'ग्रह और चाँद', 'planets', body, 'Every planet, Pluto and nine major moons: diameter, gravity, temperature, day and year length, atmosphere and a life score.', canonical='planets.html'))
+    write('planets.html', shell('Planets and moons', 'ग्रह और चाँद', 'planets', body, 'Every planet, Pluto and nine major moons: diameter, gravity, temperature, day and year length, atmosphere and a life score.', canonical='planets.html', extra_head=f'<script defer src="assets/sheet.js?v={asset_v()}"></script>'))
 
 
 def simple_pages():
@@ -820,7 +867,7 @@ def simple_pages():
 <div class="card eyes-telemetry" id="solTelemetry"></div></div>
 <p class="note">{bt("Drag to tilt & rotate 3D camera · Click a planet to fly to it and see its 3D moon orbits · Distances compressed so inner and outer worlds fit together.", "3D कैमरा घुमाने के लिए खींचें · किसी ग्रह पर क्लिक करके उसकी और उसके चंद्रमाओं की 3D कक्षा देखें।")}</p></section>
 <section class="blk"><h2>{bi("distanceFromEarth")}</h2><div id="solTable"></div></section>'''
-    write('solar-system.html', shell('Solar System 3D Live', '3D लाइव सौरमंडल', 'solar', body, 'Interactive 3D Solar System explorer with real planet positions, moon orbits and live telemetry.', canonical='solar-system.html'))
+    write('solar-system.html', shell('Solar System 3D Live', '3D लाइव सौरमंडल', 'solar', body, 'Interactive 3D Solar System explorer with real planet positions, moon orbits and live telemetry.', canonical='solar-system.html', extra_head=f'<script defer src="assets/sheet.js?v={asset_v()}"></script>'))
     # compare
     body = f'''<section class="blk"><h1>{bi("compareTitle")}</h1><p class="sub">{bi("compareHint")}</p><div class="row"><select id="cmpA" aria-label="A"></select><span>vs</span><select id="cmpB" aria-label="B"></select></div><div id="cmpOut"></div></section>'''
     write('compare.html', shell('Compare planets', 'ग्रहों की तुलना', 'compare', body, 'Compare any two planets or moons side by side.', canonical='compare.html'))
@@ -1087,7 +1134,7 @@ def main():
     shutil.copy(SRC / 'learn.js', OUT / 'assets/learn.js')
     shutil.copy(SRC / 'universe.js', OUT / 'assets/universe.js')
     shutil.copytree(site_data.CITIES, OUT / 'assets' / 'cities')
-    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js'):
+    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js'):
         shutil.copy(SRC / name, OUT / 'assets' / name)
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#fbf7ee"/><circle r="30" fill="#1b3a8a"/><ellipse rx="50" ry="15" fill="none" stroke="#6a45d6" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#1b3a8a"/></svg>', encoding='utf-8')
@@ -1098,6 +1145,8 @@ def main():
     (OUT / '.nojekyll').write_text('', encoding='utf-8')
     (OUT / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n', encoding='utf-8')
     PHOTO.update(photos.build(OUT)); PHOTO_CREDIT.update(photos.credits())
+    spacephotos.build(OUT)
+    (OUT / 'assets/sheet-data.js').write_text(sheet_js(), encoding='utf-8')
     QB_SIZES = quizbank.build(OUT, ROOT, BODIES, lambda lg, i: tr(lg, NAME_KEY[i]), CONS, PHOTO)
     for i, b in enumerate(BODIES):
         body_page(b, i)
