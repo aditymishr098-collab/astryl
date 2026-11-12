@@ -862,7 +862,7 @@
       var h = wk.map(function (x) { return '<div class="h">' + x + '</div>'; }).join('');
       for (var i = 0; i < first; i++) h += '<div></div>';
       var td = new Date();
-      for (var d = 1; d <= days; d++) { var pp = moonPhase(new Date(y, m, d, 12).getTime()); h += '<div class="d' + (td.getFullYear() === y && td.getMonth() === m && td.getDate() === d ? ' today' : '') + '">' + d + moonSvg(pp.age, 34) + '</div>'; }
+      for (var d = 1; d <= days; d++) { var pp = moonPhase(new Date(y, m, d, 12).getTime()); h += '<div class="d' + (td.getFullYear() === y && td.getMonth() === m && td.getDate() === d ? ' istoday' : '') + '">' + d + moonSvg(pp.age, 34) + '</div>'; }
       $('#calGrid').innerHTML = h;
       // main phases this month
       var from = new Date(y, m, 1).getTime(), to = new Date(y, m + 1, 1).getTime(), ev = [], tt = from;

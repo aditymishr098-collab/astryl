@@ -261,6 +261,7 @@ a9d895c3	Around 1 January
 c3681c13	Around 22 December
 0f4e1aaa	Arrow
 f40fe2e6	As the gas fades
+69d9a05e	Ask a question
 adf6a2bf	Ask anything about space, tell others what you saw, or suggest something for Astryl.
 8d4f3ef4	Astronomical unit (AU)
 0de69044	Astryl Community
@@ -357,6 +358,7 @@ e5e1a327	Colour tells the age
 b4445552	Colt
 91cf0832	Comet 67P, about 4 km long, photographed by Rosetta in 2014.
 d4c6f7e8	Coming eclipses
+7d61983c	Community
 5052bb51	Community rules
 7eece51c	Compare
 37efe8f1	Compare planets
@@ -409,6 +411,7 @@ c4f85f81	Density is the mass divided by the volume inside the horizon. Hawking t
 b5f69448	Diameter
 8bbfdf3a	Did Jupiter move inward toward the Sun and back out again early on (the "Grand Tack" idea)? It could explain why Mars is small, but it is not proven.
 6302d4f5	Did Venus ever have oceans, and for how long? Missions planned for the 2030s (VERITAS, DAVINCI, EnVision) are meant to find out.
+9f9a7e52	Did not understand something? Ask in the Astryl Community, and others will help.
 c771fce1	Did you know?
 0aa6f421	Distance
 79b741d9	Distance from Earth
@@ -893,6 +896,7 @@ a98b9d3e	Only part of the Moon enters Earth’s dark shadow, so a dark bite appe
 e7dfc660	Open My space
 c0227cef	Open source
 c1155394	Open the Moon calendar
+c2d81e68	Open the community
 30638e16	Open the full Solar System
 f0525aaf	Ophiuchus
 8a584259	Opportunity landed in January 2004 and worked for almost 15 years, though it was built for 90 days.
@@ -1049,6 +1053,8 @@ ce34f886	Saptarishi and the Pole Star
 494cde74	Saturn is so light for its size that it would float in water, if you could find a bathtub big enough.
 dc72cd58	Saturn with the Sun behind it, photographed by Cassini; its rings glow in the backlight.
 100e2eea	Saturn's rings are very wide but very thin: in places only about ten metres thick.
+9f3b9e44	Saw something in the sky tonight? Take a photo and share it in the Astryl Community.
+570a64db	Saw the space station fly over? Share your photo in the Astryl Community.
 3a432448	Scale of the universe
 e318281d	Schwarzschild radius
 432f9107	Scored from temperature, air pressure, oxygen, water, surface and gravity. Earth scores 10.
@@ -1075,6 +1081,7 @@ b3531be8	Seven short pages
 9e98019a	Share my approximate location (app only, needs an account): when you make an account, the app asks Android for the location permission. If you allow it, this switch is on and the app sends Android's approximate location (a few kilometres) when you open it, at most once a day. The server rounds it to about 10 km and keeps only the latest place with its date, tied to your account. There is no location in the background. Switch it off in your account and the place is deleted from the server. If you say no to the permission, nothing is sent.
 c3981998	Share my country: the country from your phone's (or browser's) language and region setting, kept with that random number and shown only as a count per country. It is not worked out from your IP address or your location.
 1fe381cb	Share this page
+cad722e7	Share your own photos of the Moon, planets and stars, ask anything about space and answer other people's questions.
 5e31e511	Share your own sky photos, and ask and answer questions about space. Photos and posts appear right away; anything reported is checked by the moderator.
 970da5f1	Shield
 973bbbfd	Ship Compass
@@ -1150,6 +1157,7 @@ c2b21ca7	Stellar
 75a1ec15	Still unknown
 465f1871	Stretching
 e3afc765	Stretching, slowing time, and what an astronaut would really notice.
+1d30d003	Stuck on a question, or want to know more? Ask in the Astryl Community.
 ef6572e4	Sun
 44f106e1	Sun = star (makes light). Earth = planet. Moon = natural satellite.
 5c05dcb2	Sunlight falls on it
@@ -1561,6 +1569,7 @@ df275f5e	Your IP address itself, a cookie, any id, the time of day, your browser
 9b6b839b	Your choices and rights
 7df46c9c	Your city, birth date, favourites, quiz scores and settings are saved on your phone. The Backup file is made by you and goes only where you send it.
 065e3e3e	Your jump height on Earth (cm)
+5e230ab4	Your sky photos and your questions live in the Astryl Community.
 7d75b570	Your username and a hash of your password (the password itself is never stored or visible to us)
 ffe4aec8	Your weight on Earth (kg)
 a06cff9a	Your weight on other planets

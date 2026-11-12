@@ -186,4 +186,17 @@
   var al = document.getElementById('acctLine'); if (al) API.onRender(function () { acct(al); });
   var qz = document.getElementById('homeQuiz'); if (qz) quiz(qz);
   var sp = document.getElementById('surprise'); if (sp) surprise(sp);
+
+  /* Astryl Community card: the newest photo and the newest question */
+  var cm = document.getElementById('homeCmLatest');
+  if (cm) {
+    var CM = 'https://pmfjjlfggzihbnbmqkao.supabase.co/functions/v1/community';
+    var ask = function (action) { return fetch(CM, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: action }) }).then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; }); };
+    Promise.all([ask('photos'), ask('posts')]).then(function (r) {
+      var ph = r[0] && r[0].photos && r[0].photos[0], po = r[1] && r[1].posts && r[1].posts[0], h = '';
+      if (ph && /^[0-9a-f-]{36}$/.test(ph.id)) h += '<a href="' + root + 'community.html#gallery"><img src="' + CM + '?action=img&size=thumb&id=' + ph.id + '" alt="" loading="lazy"><span><b>' + esc(ph.title) + '</b><small>📷 ' + esc(ph.by) + '</small></span></a>';
+      if (po) h += '<a href="' + root + 'community.html#talk"><span style="font-size:1.6rem">💬</span><span><b>' + esc(String(po.body).slice(0, 110)) + (String(po.body).length > 110 ? '…' : '') + '</b><small>' + esc(po.by) + (po.replies && po.replies.length ? ' · ' + po.replies.length + ' ' + (hi() ? 'जवाब' : (po.replies.length === 1 ? 'answer' : 'answers')) : '') + '</small></span></a>';
+      cm.innerHTML = h;
+    });
+  }
 })();
