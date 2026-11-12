@@ -401,8 +401,8 @@ def cons_svg(c):
 
 # ------------------------------------------------------------------ page shell
 # The top menu keeps four main pages; the rest sit under "More". Home is the logo.
-NAV_MAIN = [('planets.html', 'planets', bi('planetsTitle')), ('solar-system.html', 'solar', bi('solarSystemTitle')), ('sky.html', 'sky', bi('skyTitle')), ('quiz.html', 'quiz', bi('navQuiz'))]
-NAV_MORE = [('community.html', 'community', bt('Astryl Community', 'Astryl Community')), ('my-space.html', 'myspace', bt('My space', 'My space')), ('sky-events.html', 'events', bt('Eclipses and meteor showers', 'ग्रहण और उल्कापात')), ('learn.html', 'school', bt('For students', 'छात्रों के लिए')), ('telescope.html', 'scope', bt('Telescope simulator', 'Telescope simulator')), ('iss.html', 'iss', bt('Space station passes', 'अंतरिक्ष स्टेशन कब दिखेगा')), ('compare.html', 'compare', bi('navCompare')), ('you.html', 'you', bt('You', 'आप')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')),
+NAV_MAIN = [('planets.html', 'planets', bi('planetsTitle')), ('solar-system.html', 'solar', bi('solarSystemTitle')), ('sky.html', 'sky', bi('skyTitle')), ('quiz.html', 'quiz', bi('navQuiz')), ('community.html', 'community', bt('Community', 'Community'))]
+NAV_MORE = [('my-space.html', 'myspace', bt('My space', 'My space')), ('sky-events.html', 'events', bt('Eclipses and meteor showers', 'ग्रहण और उल्कापात')), ('learn.html', 'school', bt('For students', 'छात्रों के लिए')), ('telescope.html', 'scope', bt('Telescope simulator', 'Telescope simulator')), ('iss.html', 'iss', bt('Space station passes', 'अंतरिक्ष स्टेशन कब दिखेगा')), ('compare.html', 'compare', bi('navCompare')), ('you.html', 'you', bt('You', 'आप')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')),
             ('missions.html', 'missions', bi('missionsTitle')), ('spacecraft.html', 'spacecraft', bi('spacecraftTitle')),
             ('universe-map.html', 'umap', bt('Universe map', 'ब्रह्मांड का नक्शा')), ('galaxies.html', 'gx', bt('Galaxies', 'Galaxies')), ('cosmic-scale.html', 'scale', bt('Scale of the universe', 'ब्रह्मांड का पैमाना')), ('universe-timeline.html', 'tline', bt('Timeline', 'समयरेखा')), ('glossary.html', 'gloss', bt('Glossary', 'शब्दकोश')), ('black-holes.html', 'bh', bt('Black holes', 'ब्लैक होल'))]
 
@@ -633,7 +633,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 </main>
 <footer><div class="wrap cols">
 <div><b>Astryl</b><br>{bt("Know your space.", "अपने अंतरिक्ष को जानिए।")}<br>© 2026 Astryl · <a href="{SITE}">astryl.space</a></div>
-<div><a href="{p}privacy.html">{bt("Privacy Policy", "Privacy Policy")}</a><br><a href="{p}account.html">{bt("Account", "खाता")}</a><br><a href="{p}my-space.html">{bt("My space", "My space")}</a></div>
+<div><a href="{p}privacy.html">{bt("Privacy Policy", "Privacy Policy")}</a><br><a href="{p}account.html">{bt("Account", "खाता")}</a><br><a href="{p}my-space.html">{bt("My space", "My space")}</a><br><a href="{p}community.html">👥 {bt("Astryl Community", "Astryl Community")}</a></div>
 <div>{bt("Facts: NASA Planetary Fact Sheet", "तथ्य: NASA Planetary Fact Sheet")}<div id="installBox" class="installbox"></div></div>
 </div></footer>
 {"<script src=\"" + p + "assets/data.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/app.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/account.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/me.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/fx.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/pwa.js?v=" + asset_v() + "\"></script>" if scripts else ""}
@@ -641,11 +641,30 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 '''
 
 
+# A short pointer to the Astryl Community at the end of some pages.
+CM_PROMO = {
+    'quiz.html': ('❓', 'Stuck on a question, or want to know more? Ask in the Astryl Community.', 'किसी सवाल पर अटके, या और जानना है? Astryl Community में पूछिए।'),
+    'sky.html': ('📷', 'Saw something in the sky tonight? Take a photo and share it in the Astryl Community.', 'आज रात आसमान में कुछ देखा? फ़ोटो खींचिए और Astryl Community में बाँटिए।'),
+    'iss.html': ('📷', 'Saw the space station fly over? Share your photo in the Astryl Community.', 'अंतरिक्ष स्टेशन को गुज़रते देखा? अपनी फ़ोटो Astryl Community में बाँटिए।'),
+    'learn.html': ('❓', 'Did not understand something? Ask in the Astryl Community, and others will help.', 'कुछ समझ नहीं आया? Astryl Community में पूछिए, दूसरे मदद करेंगे।'),
+    'glossary.html': ('❓', 'Did not understand something? Ask in the Astryl Community, and others will help.', 'कुछ समझ नहीं आया? Astryl Community में पूछिए, दूसरे मदद करेंगे।'),
+    'my-space.html': ('👥', 'Your sky photos and your questions live in the Astryl Community.', 'आपकी आसमान की फ़ोटो और आपके सवाल Astryl Community में हैं।'),
+}
+
+
+def cm_promo(path):
+    icon, en, hi = CM_PROMO[path]
+    p = '../' * path.count('/')
+    return f'<section class="blk"><div class="callout cmpromo"><span class="cmic">{icon}</span><p>{bt(en, hi)}</p><a class="btn" href="{p}community.html">👥 {bt("Astryl Community", "Astryl Community")} →</a></div></section>'
+
+
 def write(path, content):
     f = OUT / path
     f.parent.mkdir(parents=True, exist_ok=True)
     if path.endswith('.html'):
         content = spacephotos.place(path, content, bt, esc)
+        if path in CM_PROMO:
+            content = content.replace('\n</main>', '\n' + cm_promo(path) + '\n</main>', 1)
     f.write_text(content, encoding='utf-8')
 
 
@@ -857,6 +876,7 @@ def index_page():
 <div class="card" id="homeQuiz"><h2>{bt("Quick quiz", "झटपट quiz")}</h2><div class="q">{bt("Which planet is known for its Great Red Spot?", "किस ग्रह का Great Red Spot मशहूर है?")}</div><div class="opts">{quiz}</div><p class="qres"></p></div>
 <div class="card" id="surprise"><h2>{bt("Surprise me", "कुछ नया दिखाओ")}</h2><p>{bt("A real photo or a fact from somewhere in space, picked at random.", "अंतरिक्ष में कहीं से एक असली तस्वीर या तथ्य, बिना क्रम के चुना हुआ।")}</p><button type="button" class="btn primary">🎲 {bt("Show me something", "कुछ दिखाओ")}</button><div class="sres"></div></div>
 </section>
+<section class="blk"><div class="card cmhome" id="homeCommunity"><div class="cmtext"><h2>👥 {bt("Astryl Community", "Astryl Community")}</h2><p>{bt("Share your own photos of the Moon, planets and stars, ask anything about space and answer other people's questions.", "चाँद, ग्रहों और तारों की अपनी फ़ोटो बाँटिए, अंतरिक्ष के बारे में कुछ भी पूछिए और दूसरों के सवालों के जवाब दीजिए।")}</p><div class="btns"><a class="btn primary" href="community.html">{bt("Open the community", "Community खोलिए")} →</a><a class="btn" href="community.html#talk">❓ {bt("Ask a question", "सवाल पूछिए")}</a></div></div><div class="cmlatest" id="homeCmLatest"></div></div></section>
 {cards}
 <script>window.ASTRYL_SURPRISE={json.dumps(surprise, ensure_ascii=False).replace('</', '<\\/')};</script>
 <section class="journey" id="journey"><div class="stick">
