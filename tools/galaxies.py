@@ -285,8 +285,8 @@ def build(h):
         + card('Wait 20 minutes', '20 मिनट रुकिए', 'Eyes need that long to adjust. Do not look at a phone screen, or use a red light.', 'आँखों को ढलने में इतना समय लगता है। फ़ोन की screen न देखें, या लाल रोशनी इस्तेमाल करें।')
         + card('Look beside it', 'किनारे से देखिए', 'Look slightly to the side of the spot. The edge of the eye is more sensitive to faint light.', 'उस जगह से थोड़ा बग़ल में देखिए। आँख का किनारा हल्की रोशनी के लिए ज़्यादा संवेदनशील है।')
         + '</div>',
-        callout('The Astryl app shows the sky for your place and time, so you can find where Andromeda and the Milky Way are tonight.',
-                'Astryl app आपकी जगह और समय का आसमान दिखाता है, इसलिए आप ढूँढ सकते हैं कि आज रात Andromeda और आकाशगंगा कहाँ हैं।') + f' <a href="../get.html">{bt("Get the app", "App पाएँ")}</a>',
+        callout('The constellations page shows where Andromeda is in the sky, and My space shows how dark your sky gets tonight.',
+                'नक्षत्रों वाला page दिखाता है कि Andromeda आसमान में कहाँ है, और My space बताता है कि आज रात आपका आसमान कितना अँधेरा होगा।') + f' <a href="../constellations.html">{bt("Constellations", "नक्षत्र")}</a> · <a href="../my-space.html">{bt("My space", "My space")}</a>',
     ) + S.pn(s, last_link=('../black-holes.html', 'Black holes', 'ब्लैक होल'))
     out.append(S.page(s, body, 'Galaxies you can see', 'जो galaxies आप देख सकते हैं', 'Which galaxies you can see with your eyes, binoculars or a small telescope, and how to see them: the Milky Way, Andromeda and the Magellanic Clouds.'))
 

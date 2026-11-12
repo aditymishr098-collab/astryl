@@ -612,8 +612,8 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 </main>
 <footer><div class="wrap cols">
 <div><b>Astryl</b><br>{bt("Know your space.", "अपने अंतरिक्ष को जानिए।")}<br>© 2026 Astryl · <a href="{SITE}">astryl.space</a></div>
-<div>{bt("Free and open source", "मुफ़्त और open source")}<br><a href="{REPO}">{bt("Source code on GitHub", "GitHub पर source code")}</a><br><a href="{REPO}/blob/main/LICENSE">AGPL-3.0</a> · <a href="{p}privacy.html">{bt("Privacy Policy", "Privacy Policy")}</a><br><a href="{p}account.html">{bt("Account", "खाता")}</a></div>
-<div>{bt("Facts: NASA Planetary Fact Sheet", "तथ्य: NASA Planetary Fact Sheet")}<br><a class="btn" href="{p}get.html">⬇ {bt("Download the app", "App download करें")}</a></div>
+<div><a href="{p}privacy.html">{bt("Privacy Policy", "Privacy Policy")}</a><br><a href="{p}account.html">{bt("Account", "खाता")}</a><br><a href="{p}my-space.html">{bt("My space", "My space")}</a></div>
+<div>{bt("Facts: NASA Planetary Fact Sheet", "तथ्य: NASA Planetary Fact Sheet")}</div>
 </div></footer>
 {"<script src=\"" + p + "assets/data.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/app.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/account.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/me.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/fx.js?v=" + asset_v() + "\"></script>" if scripts else ""}
 </body></html>
@@ -706,7 +706,7 @@ def body_page(b, i):
 <section class="blk">{moons}{dyn}</section>
 {pn}'''
     en_name = tr('en', NAME_KEY[idn])
-    write(f'body/{idn}.html', shell(en_name, tr('hi', NAME_KEY[idn]), 'planets', body, f'{en_name}: size, gravity, temperature, day and year length, atmosphere and facts. From the Astryl Solar System app.', depth=1, canonical=f'body/{idn}.html', extra_head=f'<script defer src="../assets/moons.js?v={asset_v()}"></script>' if idn in ('jupiter', 'saturn') else '', ld=[{'@context': 'https://schema.org', '@type': 'WebPage', 'name': f'{en_name} · Astryl', 'url': f'{SITE}/body/{idn}.html', 'about': {'@type': 'Thing', 'name': en_name}, 'inLanguage': ['en', 'hi'], 'isPartOf': {'@type': 'WebSite', 'name': 'Astryl', 'url': SITE + '/'}}, {'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [{'@type': 'ListItem', 'position': 1, 'name': 'Astryl', 'item': SITE + '/'}, {'@type': 'ListItem', 'position': 2, 'name': 'Planets and moons', 'item': SITE + '/planets.html'}, {'@type': 'ListItem', 'position': 3, 'name': en_name, 'item': f'{SITE}/body/{idn}.html'}]}]))
+    write(f'body/{idn}.html', shell(en_name, tr('hi', NAME_KEY[idn]), 'planets', body, f'{en_name}: size, gravity, temperature, day and year length, atmosphere and facts. On Astryl.', depth=1, canonical=f'body/{idn}.html', extra_head=f'<script defer src="../assets/moons.js?v={asset_v()}"></script>' if idn in ('jupiter', 'saturn') else '', ld=[{'@context': 'https://schema.org', '@type': 'WebPage', 'name': f'{en_name} · Astryl', 'url': f'{SITE}/body/{idn}.html', 'about': {'@type': 'Thing', 'name': en_name}, 'inLanguage': ['en', 'hi'], 'isPartOf': {'@type': 'WebSite', 'name': 'Astryl', 'url': SITE + '/'}}, {'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [{'@type': 'ListItem', 'position': 1, 'name': 'Astryl', 'item': SITE + '/'}, {'@type': 'ListItem', 'position': 2, 'name': 'Planets and moons', 'item': SITE + '/planets.html'}, {'@type': 'ListItem', 'position': 3, 'name': en_name, 'item': f'{SITE}/body/{idn}.html'}]}]))
 
 
 def orrery_svg():
@@ -758,7 +758,7 @@ def index_page():
 <h1 class="rise">{bt("Explore the", "खोजिए")} <span class="grad">{bt("Universe.", "ब्रह्मांड।")}</span></h1>
 <p class="lead rise">{bt("Planets, moons, stars and space missions: real positions and real numbers for any date, in English and Hindi.", "ग्रह, चाँद, तारे और अंतरिक्ष missions: किसी भी तारीख़ की असली स्थिति और असली आँकड़े, English और हिंदी में।")}</p>
 <div class="btns rise"><a class="btn primary" href="planets.html">{bt("Explore space", "अंतरिक्ष खोजिए")} →</a><a class="btn" href="quiz.html">{bt("Take the quiz", "Quiz खेलिए")}</a></div>
-<p class="acctline rise">{bt("Free account: your favourites, scores and streak follow you between the app and this website.", "मुफ़्त खाता: आपके favourites, scores और streak app और website दोनों में साथ चलते हैं।")} <a href="account.html">{bt("Create account", "खाता बनाएँ")} →</a></p>
+<p class="acctline rise">{bt("Free account: your favourites, scores and streak are kept on every device.", "मुफ़्त खाता: आपके favourites, scores और streak हर device पर साथ रहते हैं।")} <a href="account.html">{bt("Create account", "खाता बनाएँ")} →</a></p>
 <div class="chips rise"><span class="chip">{bt("Free", "मुफ़्त")}</span><span class="chip">{bt("Open source", "Open source")}</span><span class="chip">{bt("No ads", "कोई विज्ञापन नहीं")}</span><span class="chip">{bt("English + हिन्दी", "English + हिन्दी")}</span></div>
 </div>
 {orrery_svg()}
@@ -781,7 +781,7 @@ def index_page():
 </section>
 <section class="blk"><div class="grid daily2"><div class="card apod" id="dailyPhoto"></div><div class="card" id="dailyFact"></div></div></section>
 <section class="blk"><h2>{bt("This website in numbers", "यह website आँकड़ों में")}</h2><div class="stats" id="stats"></div><p class="note" id="statsCountries"></p><p class="note" id="statsNote"></p></section>'''
-    write('index.html', shell('Explore the Universe', 'ब्रह्मांड खोजिए', 'home', body, 'Astryl: planets, moons, stars and space missions. Real positions and real numbers for any date, free and open source, in English and Hindi.', canonical='', extra_head=f'<script defer src="assets/cosmos.js?v={asset_v()}"></script><script defer src="assets/tonight.js?v={asset_v()}"></script><script defer src="assets/apod.js?v={asset_v()}"></script>', ld=[{'@context': 'https://schema.org', '@type': 'SoftwareApplication', 'name': 'Astryl', 'applicationCategory': 'EducationalApplication', 'operatingSystem': 'Android', 'description': 'Planets, moons, stars and space missions with real positions and real numbers for any date, in English and Hindi. Free and open source.', 'url': SITE + '/', 'downloadUrl': SITE + '/get.html', 'license': 'https://www.gnu.org/licenses/agpl-3.0.html', 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}, 'inLanguage': ['en', 'hi']}, {'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Astryl', 'url': SITE + '/', 'inLanguage': ['en', 'hi']}]))
+    write('index.html', shell('Explore the Universe', 'ब्रह्मांड खोजिए', 'home', body, 'Astryl: planets, moons, stars and space missions. Real positions and real numbers for any date, free and open source, in English and Hindi.', canonical='', extra_head=f'<script defer src="assets/cosmos.js?v={asset_v()}"></script><script defer src="assets/tonight.js?v={asset_v()}"></script><script defer src="assets/apod.js?v={asset_v()}"></script>', ld=[{'@context': 'https://schema.org', '@type': 'WebApplication', 'name': 'Astryl', 'applicationCategory': 'EducationalApplication', 'operatingSystem': 'Any', 'description': 'Planets, moons, stars and space missions with real positions and real numbers for any date, in English and Hindi. Free.', 'url': SITE + '/', 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}, 'inLanguage': ['en', 'hi']}, {'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Astryl', 'url': SITE + '/', 'inLanguage': ['en', 'hi']}]))
 
 
 def planets_page():
@@ -823,7 +823,7 @@ def simple_pages():
 <section class="blk"><h2>{bt("Planets tonight", "आज रात के ग्रह")}</h2><div class="card" id="planetsTonight"></div></section>
 <section class="blk"><h2>{bi("moonCalendar")}</h2><div class="row"><button class="btn" id="calPrev">‹ {bi("previousMonth")}</button><b id="calTitle"></b><button class="btn" id="calNext">{bi("nextMonth")} ›</button></div><div class="moons" id="calGrid"></div><div id="calPhases" style="margin-top:14px"></div><p class="note">{bi("moonCalendarNote")}</p></section>
 <section class="blk"><h2>{bi("eventsTitle")}</h2><p class="sub">{bt("Meteor shower peaks for the next 12 months, with how bright the Moon will be on the peak night.", "अगले 12 महीनों में उल्कापात के चरम दिन, और उस रात चाँद कितना चमकीला होगा।")}</p><div class="grid" id="showers"></div></section>
-<section class="blk callout"><b>{bt("Want it for your city?", "अपने शहर के लिए चाहिए?")}</b> {bt("The app adds moonrise and sunset for your city, which planets you can see, eclipses, a live star map and a compass planet finder, all offline.", "App में आपके शहर के लिए चाँद-सूरज के उगने-डूबने के समय, कौन-से ग्रह दिखेंगे, ग्रहण, live star map और compass से ग्रह ढूँढना है, सब ऑफ़लाइन।")} <a href="get.html">{bt("Get the app", "App पाएँ")}</a></section>'''
+<section class="blk callout"><b>{bt("Want it for your city?", "अपने शहर के लिए चाहिए?")}</b> {bt("My space shows sunset, moonrise and the planets you can see tonight from your city, and the space station page shows when the ISS flies over you.", "My space में आपके शहर का सूर्यास्त, चाँद का उगना और आज रात दिखने वाले ग्रह हैं, और अंतरिक्ष स्टेशन वाला page बताता है कि ISS आपके ऊपर से कब गुज़रेगा।")} <a href="my-space.html">{bt("Open My space", "My space खोलें")}</a> · <a href="iss.html">{bt("Space station passes", "अंतरिक्ष स्टेशन कब दिखेगा")}</a></section>'''
     write('sky.html', shell('Moon and sky', 'चाँद और आसमान', 'sky', body, "Tonight's Moon phase, a Moon calendar and the next meteor showers.", canonical='sky.html'))
     # spacecraft
     body = f'''<section class="blk"><h1>{bi("spacecraftTitle")}</h1><p class="sub">{bi("spacecraftSubtitle")}</p><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))" id="craft"></div><p class="note">{bi("spacecraftNote")}</p></section>'''
@@ -887,32 +887,9 @@ def maps_page():
 
 
 def get_page():
-    body = f'''<section class="blk"><h1>{bt("Get Astryl", "Astryl पाएँ")}</h1>
-<p class="sub">{bt("Astryl is only on GitHub Releases. There is no Play Store or other store listing, so nobody else controls it.", "Astryl सिर्फ़ GitHub Releases पर है। Play Store या किसी और store पर नहीं, इसलिए इस पर किसी और का control नहीं।")}</p>
-<div class="btns"><a class="btn primary dl-btn" href="{REPO}/releases/latest">⬇ {bt("Download the APK", "APK download करें")}</a><a class="btn" href="{REPO}/releases">{bt("All versions", "सभी versions")}</a></div><p class="note"><span class="ver"></span></p></section>
-<section class="blk"><div class="card" id="relCard"><p class="note">{bt("Loading the latest version…", "नया version देखा जा रहा है…")}</p></div></section>
-<section class="blk"><h2>{bt("Install", "Install कैसे करें")}</h2>
-<ol class="steps">
-<li>{bt("Download the APK from the button above on your phone.", "ऊपर के button से अपने फ़ोन में APK download करें।")}</li>
-<li>{bt("Open it. If Android asks, allow your browser (or file manager) to install apps.", "उसे खोलें। Android पूछे तो अपने browser (या file manager) को apps install करने दें।")}</li>
-<li>{bt("Tap Install. Later, every time you open the app it offers a new version first, with Update now or Skip.", "Install दबाएँ। आगे हर बार app खोलते ही नया version पहले पेश होता है: Update now या Skip।")}</li>
-</ol></section>
-<section class="blk"><h2>{bt("What the app adds", "App में और क्या है")}</h2><p class="sub">{bt("The website covers the facts. The app is the same facts in your pocket, plus things that need your phone.", "Website में तथ्य हैं। App वही तथ्य आपकी जेब में रखता है, साथ में वो चीज़ें जिनके लिए आपका फ़ोन चाहिए।")}</p>
-<div class="grid">
-<div class="card"><h3>🧭 {bt("Planet finder", "ग्रह खोजक")}</h3><p>{bt("Point your phone at the sky and the compass guides you to a planet.", "फ़ोन आसमान की तरफ़ करें, compass आपको ग्रह तक ले जाता है।")}</p></div>
-<div class="card"><h3>🔔 {bt("Reminders", "Reminders")}</h3><p>{bt("Notes for eclipses, meteor showers, planet views and a nightly sky note.", "ग्रहण, उल्कापात, ग्रह दिखने और हर रात के आसमान के लिए याद दिलाने वाले notes।")}</p></div>
-<div class="card"><h3>📍 {bt("Your city or your location", "आपका शहर या आपकी location")}</h3><p>{bt("Moonrise, sunset, golden hour and the planets above your horizon.", "चाँद का उगना, सूर्यास्त, golden hour और आपके क्षितिज के ऊपर के ग्रह।")}</p></div>
-<div class="card"><h3>🛰️ {bt("Space station", "अंतरिक्ष station")}</h3><p>{bt("ISS, Tiangong and Hubble passes over your city.", "आपके शहर के ऊपर ISS, Tiangong और Hubble का गुज़रना।")}</p></div>
-<div class="card"><h3>🪐 {bt("Space view", "Space view")}</h3><p>{bt("All the planets in one 3D scene: drag, pinch and tap a planet to fly to it.", "सारे ग्रह एक 3D दृश्य में: घुमाइए, ज़ूम कीजिए और किसी ग्रह पर टैप करके वहाँ पहुँचिए।")}</p></div>
-<div class="card"><h3>💾 {bt("Backup", "Backup")}</h3><p>{bt("Favourites, scores and settings in one small file that stays on your phone.", "Favourites, scores और settings एक छोटी file में, जो आपके फ़ोन में ही रहती है।")}</p></div>
-<div class="card"><h3>👤 {bt("Account", "खाता")}</h3><p>{bt("Username and password only. Your favourites, scores and settings sync with this website.", "सिर्फ़ username और password। आपके favourites, scores और settings इस website से sync होते हैं।")} <a href="account.html">{bt("Open", "खोलें")}</a></p></div>
-</div></section>
-<section class="blk"><div class="callout"><h3>{bt("Coming from Heliora (before version 1.17.5)?", "Heliora (version 1.17.5 से पहले) से आ रहे हैं?")}</h3>
-<p>{bt("Astryl 1.17.5 has a new app id, so it installs next to the old Heliora instead of replacing it. Your data moves in a minute:", "Astryl 1.17.5 का app id नया है, इसलिए यह पुराने Heliora की जगह नहीं लेता, उसके बग़ल में install होता है। आपका data एक मिनट में आ जाता है:")}</p>
-<ol><li>{bt("In the old Heliora: You tab → Backup → Save a backup.", "पुराने Heliora में: Settings → Backup → Save a backup।")}</li><li>{bt("In Astryl: You tab → Backup → Restore a backup, pick that file.", "Astryl में: Settings → Backup → Restore a backup, वही file चुनें।")}</li><li>{bt("Uninstall the old Heliora.", "पुराना Heliora uninstall कर दें।")}</li></ol></div></section>
-<section class="blk"><h2>{bt("Open source", "Open source")}</h2><p>{bt("Astryl is free software under the AGPL-3.0 licence (versions up to 1.17.3 were MIT). You can read, change and share the code.", "Astryl AGPL-3.0 licence के तहत मुफ़्त software है (1.17.3 तक के versions MIT थे)। आप code पढ़ सकते हैं, बदल सकते हैं और बाँट सकते हैं।")}</p>
-<div class="btns"><a class="btn" href="{REPO}">{bt("Source code", "Source code")}</a><a class="btn" href="{REPO}/blob/main/LICENSE">AGPL-3.0</a><a class="btn" href="{REPO}/issues">{bt("Report a problem", "समस्या बताएँ")}</a></div></section>'''
-    write('get.html', shell('Download Astryl', 'Astryl download', 'get', body, 'Download the Astryl APK from GitHub Releases, install steps and how to move from Heliora.', canonical='get.html'))
+    # The Android app is no longer offered here; old links to get.html go to the home page.
+    body = f'''<section class="blk"><h1>{bt("Astryl is a website", "Astryl एक website है")}</h1><p class="sub">{bt("Everything is here on astryl.space, in your browser. Taking you to the home page…", "सब कुछ यहीं astryl.space पर, आपके browser में है। आपको home page पर ले जा रहे हैं…")}</p><p><a class="btn primary" href="index.html">{bt("Go to the home page", "Home page पर जाएँ")} →</a></p></section>'''
+    write('get.html', shell('Astryl', 'Astryl', 'home', body, 'Astryl is a website: astryl.space.', canonical='index.html', extra_head='<meta name="robots" content="noindex"><meta http-equiv="refresh" content="2;url=index.html">'))
 
 
 def privacy_page():
@@ -925,7 +902,7 @@ def privacy_page():
            ("7", "This website", "यह website"), ("8", "Your choices and rights", "आपके विकल्प और अधिकार"), ("9", "Children", "बच्चे"), ("10", "Changes", "बदलाव")]
     toc_html = ''.join(f'<a href="#s{n}">{n}. {bt(en, hi)}</a>' for n, en, hi in toc)
     body = f"""<section class="blk policy-head"><h1>{bt("Privacy Policy", "Privacy Policy")}</h1>
-<p class="note">{bt("Last updated 9 November 2026 · applies to the Astryl app (version 1.19.1 and later; account features from 1.18.0) and to astryl.space", "आख़िरी बार 9 नवंबर 2026 को बदली गई · Astryl app (version 1.19.1 और बाद के; खाते की सुविधाएँ 1.18.0 से) और astryl.space पर लागू")}</p>
+<p class="note">{bt("Last updated 12 November 2026 · applies to astryl.space, and to the old Astryl Android app for people who still use it (it gets no new versions; 1.40.0 was the last)", "आख़िरी बार 12 नवंबर 2026 को बदली गई · astryl.space पर लागू, और पुराने Astryl Android app पर भी, उनके लिए जो उसे अब भी चलाते हैं (उसके नए version नहीं आएँगे; 1.40.0 आख़िरी था)")}</p>
 <p class="sub">{bt("In plain words: we do not sell anything about you, there are no ads, and you can use everything without an account. This page lists exactly what is kept when you do choose something, and how to remove it.", "सीधे शब्दों में: हम आपके बारे में कुछ नहीं बेचते, कोई विज्ञापन नहीं है, और आप खाते के बिना सब कुछ इस्तेमाल कर सकते हैं। जब आप कुछ चुनते हैं तब क्या रखा जाता है और उसे कैसे हटाएँ, यह पूरा इसी page पर है।")}</p>
 <div class="glance">
 <div class="card"><div class="ico">🚫</div><h3>{bt("No ads, nothing sold", "कोई विज्ञापन नहीं, कुछ बिकता नहीं")}</h3><p>{bt("No ad networks, no data brokers, no third-party analytics.", "कोई ad network, data broker या बाहरी analytics नहीं।")}</p></div>
@@ -936,7 +913,7 @@ def privacy_page():
 <section class="blk policy-layout"><nav class="toc" aria-label="Contents"><b>{bt("On this page", "इस page पर")}</b>{toc_html}</nav>
 <div class="policy">
 <h2 id="s1">{bt("1. Who is responsible", "1. ज़िम्मेदार कौन है")}</h2>
-<p>{bt("Astryl is a free, open-source project (AGPL-3.0). For questions about your data, write to", "Astryl एक मुफ़्त, open-source project है (AGPL-3.0)। अपने data के बारे में सवाल हों तो यहाँ लिखें:")} <a href="mailto:contact@astryl.space">contact@astryl.space</a>.</p>
+<p>{bt("For questions about your data, write to", "अपने data के बारे में सवाल हों तो यहाँ लिखें:")} <a href="mailto:contact@astryl.space">contact@astryl.space</a>.</p>
 
 <h2 id="s2">{bt("2. On your phone or in your browser", "2. आपके फ़ोन या browser में")}</h2>
 <ul>
@@ -985,7 +962,7 @@ def privacy_page():
 {li("Your browser remembers language, theme, quiz scores and whether you have seen the welcome window, in local storage on your own device. If you log in, a login token is kept there too, until you log out.", "आपका browser भाषा, theme, quiz scores और यह कि आपने welcome window देख ली है, आपके अपने device की local storage में याद रखता है। Log in करने पर वहीं एक login token भी रहता है, log out करने तक।")}
 {li("The first time you open the site, a welcome window offers to create an account or log in. “Continue without account” closes it and the site remembers that choice on your device.", "Site पहली बार खोलने पर एक welcome window खाता बनाने या log in करने का विकल्प देती है। “बिना खाते के आगे बढ़ें” उसे बंद कर देता है और site आपके device पर वह चुनाव याद रखती है।")}
 {li("A small notice at the bottom of the page can show a note from the Astryl team (you can close it) and, once, ask whether you want to share your approximate place. Your answer is remembered on your device. See “Visitors and places” below.", "Page के नीचे एक छोटी सूचना Astryl टीम का कोई संदेश दिखा सकती है (आप उसे बंद कर सकते हैं) और एक बार पूछ सकती है कि क्या आप अपनी अनुमानित जगह बताना चाहते हैं। आपका जवाब आपके device पर याद रखा जाता है। नीचे “Visitors और जगहें” देखें।")}
-{li("The home page asks the Astryl server for the public counter (accounts, active users, visitors, page views) and asks GitHub for the download count.", "Home page Astryl server से public counter (खाते, active users, visitors, page views) और GitHub से download की गिनती माँगता है।")}
+{li("The home page asks the Astryl server for the public counter (accounts, active users, visitors, page views).", "Home page Astryl server से public counter (खाते, active users, visitors, page views) माँगता है।")}
 {li("The home page shows NASA’s Astronomy Picture of the Day. The text comes through the Astryl server; the picture loads straight from NASA’s server (assets.science.nasa.gov), which sees your IP address like any website. The space station page gets the station’s orbit data from the Astryl server (or, if that fails, from wheretheiss.at). Nothing about you is sent.", "Home page पर NASA की Astronomy Picture of the Day दिखती है। उसका text Astryl server से आता है; तस्वीर सीधे NASA के server (assets.science.nasa.gov) से load होती है, जो किसी भी website की तरह आपका IP address देखता है। अंतरिक्ष स्टेशन वाला page station की कक्षा का data Astryl server से (या वह न चले तो wheretheiss.at से) लेता है। आपके बारे में कुछ नहीं भेजा जाता।")}
 </ul>
 <h3>{bt("Counting page views", "Page views की गिनती")}</h3>
@@ -1081,7 +1058,7 @@ def main():
     index_page(); planets_page(); simple_pages(); maps_page(); get_page(); privacy_page(); account_page(); not_found()
     helpers = dict(bt=bt, bi=bi, raw2=raw2, shell=shell, write=write, esc=esc, fmt=fmt, asset_v=asset_v, SITE=SITE, ROOT=ROOT)
     deep = deepspace.build(helpers) + galaxies.build(helpers) + lab.build(helpers) + universe.build(helpers) + learn.build(helpers) + umap.build(helpers) + myspace.build(helpers) + skyevents.build(helpers) + students.build(helpers) + telescope.build(helpers) + iss.build(helpers)
-    urls = ['', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'get.html', 'privacy.html', 'account.html', 'black-holes.html', 'galaxies.html'] + deep + [f'body/{b["id"]}.html' for b in BODIES]
+    urls = ['', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'privacy.html', 'account.html', 'black-holes.html', 'galaxies.html'] + deep + [f'body/{b["id"]}.html' for b in BODIES]
     (OUT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}/{u}</loc></url>\n' for u in urls) + '</urlset>\n', encoding='utf-8')
     og_images()
     (ROOT / 'tools' / 'i18n' / 'source.tsv').write_text('# id<TAB>English text of every translatable text on the site (generated by build_site.py)\n' + ''.join(f'{k}\t{v}\n' for k, v in sorted(SOURCE.items(), key=lambda kv: kv[1])), encoding='utf-8')

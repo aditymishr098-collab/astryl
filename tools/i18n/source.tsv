@@ -182,8 +182,6 @@ ce3e6d96	All eclipses and meteor showers
 cc3204a3	All planets, Pluto and the big moons
 d16c3da5	All steps
 172d2d21	All student topics
-eb0418e3	All the planets in one 3D scene: drag, pinch and tap a planet to fly to it.
-ac16ea2a	All versions
 9144cb9d	Almost no atmosphere. These gases form a very thin layer called an exosphere.
 61a5f0dd	Altar
 ee79be4e	Among the fastest meteors: they hit the air at about 66 km a second.
@@ -224,12 +222,9 @@ a9d895c3	Around 1 January
 c3681c13	Around 22 December
 0f4e1aaa	Arrow
 8d4f3ef4	Astronomical unit (AU)
-5a11af44	Astryl 1.17.5 has a new app id, so it installs next to the old Heliora instead of replacing it. Your data moves in a minute:
 1f9ccda6	Astryl account
-83fc8794	Astryl is a free, open-source project (AGPL-3.0). For questions about your data, write to
+fba240b7	Astryl is a website
 17a24589	Astryl is for everyone who likes space. If you are under 16, please ask a parent or guardian before making an account. The app is fully usable without one.
-d5e68efe	Astryl is free software under the AGPL-3.0 licence (versions up to 1.17.3 were MIT). You can read, change and share the code.
-fbb075b9	Astryl is only on GitHub Releases. There is no Play Store or other store listing, so nobody else controls it.
 dec53868	Astryl news (on by default, switch it off in Settings): about every six hours the app asks the Astryl server "anything new?" and shows a notification when the team has published a note. Only that question is sent, with nothing about you, and nothing is stored about the check.
 b4706625	At about −235 °C, Triton is one of the coldest places anyone has measured in the solar system.
 08a2b591	At full Moon, which body is in the middle?
@@ -240,7 +235,6 @@ cbc37b0c	At the centre, Einstein’s theory of gravity (general relativity) says
 442adc8a	Average temperature
 91e9d554	Back home
 69429851	Back to now
-3500ba09	Backup
 99a808d8	Balance
 5bf714cb	Barred spiral
 e7188c47	Before 1924 many astronomers thought the Milky Way was the whole universe. Edwin Hubble then measured the distance to Andromeda and showed it was a separate galaxy, far outside ours.
@@ -306,7 +300,6 @@ c047aedd	Clusters and the cosmic web
 e5e1a327	Colour tells the age
 b4445552	Colt
 d4c6f7e8	Coming eclipses
-18843c86	Coming from Heliora (before version 1.17.5)?
 7eece51c	Compare
 37efe8f1	Compare planets
 83ca2d13	Compass
@@ -361,9 +354,6 @@ c5503b36	Distance to it
 9b5e2c02	Distances are estimates. For the far probes they are worked out from average speed and can be off by about 1%, because Earth moves round the Sun. The Mars distance is calculated for today. One AU (astronomical unit) is the distance from Earth to the Sun.
 76f7843c	Dolphin
 1d22c812	Dove
-c974601f	Download the APK
-a621abda	Download the APK from the button above on your phone.
-979db79d	Download the app
 e38e0b00	Drag to tilt & rotate 3D camera · Click a planet to fly to it and see its 3D moon orbits · Distances compressed so inner and outer worlds fit together.
 583f4be1	Dragon
 bc518364	Dwarf
@@ -414,6 +404,7 @@ b95fe6f1	Every eclipse until the end of 2029 and the year's best meteor showers,
 8e5d31ef	Every planet in its real place today. Keep scrolling and time moves forward. Distances are squeezed so the inner planets stay visible.
 c64f5794	Every star is a sun, many of them bigger than ours, but so far away that they look like points. The nearest star after the Sun, Proxima Centauri, is about 4.2 light-years away: its light takes over four years to reach us.
 2cac5b27	Every world has an escape speed: how fast you must go to leave it for good. From Earth it is about 11 km per second. Squeeze the same mass into a smaller and smaller ball and the escape speed keeps growing.
+2f65c76f	Everything is here on astryl.space, in your browser. Taking you to the home page…
 0a527305	Example
 fb1837ba	Exoplanet
 9b90d4f1	Explore space
@@ -430,7 +421,6 @@ b2a5f967	Facts: NASA Planetary Fact Sheet
 ab160be3	Famous moments in the exploration of space, oldest first.
 329f9cf8	Far away, a black hole pulls like any object of the same mass. Only very close does its gravity become extreme.
 7b0af960	Farthest seen so far
-5c19ddd4	Favourites, scores and settings in one small file that stays on your phone.
 659e59f0	February
 34b0eec9	First atoms, first light
 44e39832	First picture of one
@@ -446,14 +436,14 @@ ea91680d	For a clock that hovers at rest at that distance. The clock rate is √
 8176daeb	For a small black hole you are already being pulled apart here.
 cb08f744	For how long
 c1a563aa	For more than 25 years, astronomers tracked stars orbiting an invisible point at the centre of our Galaxy. Their paths showed something with 4.3 million Suns of mass in a tiny space. That is Sagittarius A*.
+73dcdfed	For questions about your data, write to
 c2a35893	For students
 ca231f7b	For your city
 8bd27891	Formation and collisions
 65462b61	Four kinds at a glance
 f365c835	Four words to remember
 b24ce0cd	Free
-9419a44c	Free account: your favourites, scores and streak follow you between the app and this website.
-0a37c3db	Free and open source
+791d1097	Free account: your favourites, scores and streak are kept on every device.
 80b0c661	From a proton to everything we can see
 5c9e2532	From a proton to everything we can see, in 18 steps. Each step is a size or a distance. Use the arrows or the slider.
 f6b75ea5	From inside the disk we look along it, so its stars pile up into a pale band across the night sky. That band is the Milky Way. The dark patches in it are dust clouds that block the light behind them.
@@ -470,7 +460,7 @@ ca3622a5	Galaxies range from dwarfs with a few thousand stars to giants with tri
 8f56bfcd	Galaxies were not born big. They grew, mostly by merging.
 613a41be	Galaxies you can see
 756fb2b9	Galaxy
-944e38fd	Galaxy data: <a href="https://github.com/mattiaverga/OpenNGC" rel="noopener">OpenNGC</a> by Mattia Verga and contributors (CC BY-SA 4.0). The same map is in the Astryl app, under Sky.
+71620f9e	Galaxy data: <a href="https://github.com/mattiaverga/OpenNGC" rel="noopener">OpenNGC</a> by Mattia Verga and contributors (CC BY-SA 4.0).
 dda3edc9	Galaxy quiz
 67125d63	Ganymede
 b9ceb2fe	Ganymede is the largest moon in the solar system. It is even bigger than Mercury.
@@ -481,14 +471,13 @@ b9ceb2fe	Ganymede is the largest moon in the solar system. It is even bigger tha
 1e7244c1	Gemini the Twins are marked by two bright stars, Castor and Pollux, standing side by side like the heads of two brothers. Pollux is the brighter one and has an orange tint. Castor is really a system of six stars. Look for them high in the sky on winter and spring evenings in the north.
 8cfc03ce	Geminids
 c98a3543	Geminids meteor shower
-e23e50af	Get Astryl
 bd886887	Get away from city lights. Every streetlight you leave behind doubles what you see.
-ed1fbcf8	Get the app
 427debb8	Giraffe
 c951b59e	Give your eyes 20 minutes to get used to the dark, and keep your phone screen off.
 31d109d1	Glossary
 81622bc3	Go dark
 e43ec38a	Go to
+93194e05	Go to the home page
 ddf5ae8a	Going from the Sun to the whole observable universe is a jump of about 600 quadrillion times (6 × 10¹⁷). Light, the fastest thing there is, needs 4.6 seconds to cross the Sun.
 96dcd3f3	Goldfish
 f14942e0	Graving tool
@@ -538,7 +527,6 @@ ca86f603	Hunting Dogs
 0952754f	Huygens, a probe carried by Cassini, parachuted down to Saturn's moon Titan. It was the first landing in the outer solar system, and it sent pictures from the surface.
 e4ce2ac5	Hydrogen
 13fb8955	Hydrus
-c4d753e5	ISS, Tiangong and Hubble passes over your city.
 79148858	If a black hole evaporates, what happens to everything that fell in? This is the information paradox.
 1d681552	If sync is on: favourites, quiz scores (also the website’s black hole and galaxy quiz), which lessons you have read (Black holes, Galaxies and For students, in the app or on this website), the “I’ve seen it” list, language, theme, text size, city (never a GPS place), birth date and the daily sky note setting. Other website pages you have read stay in your browser and are never sent.
 11fd3d9b	If the app crashes, it sends one small report to the Astryl server: the error text, the technical trace of where it happened, the app version, the Android version string and the app language. It contains no name, no account, no device id, no IP address (the server keeps none in readable form) and no location.
@@ -546,13 +534,11 @@ c4d753e5	ISS, Tiangong and Hubble passes over your city.
 a22cfabb	Impossible for humans
 4282b7ed	In 1926 Edwin Hubble sorted galaxies by shape. The groups are still used today.
 54cc1e30	In 1974 Stephen Hawking showed that quantum effects make a black hole give off a very faint heat. The bigger the black hole, the colder it is. A black hole with the mass of the Sun would be about 60 billionths of a degree above absolute zero, colder than the 2.7 degrees of space itself, so today it takes in more than it gives out.
-d8904da3	In Astryl: You tab → Backup → Restore a backup, pick that file.
 a5fc063a	In between: a disk like a spiral, but with no arms and almost no new stars.
 48b79dba	In order from the Sun: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus and Neptune. A simple way to remember: "My Very Educated Mother Just Served Us Nachos". All of them go around the Sun in the same direction.
 f445b54d	In plain words: we do not sell anything about you, there are no ads, and you can use everything without an account. This page lists exactly what is kept when you do choose something, and how to remove it.
 35f799e0	In real time nothing here seems to move: the Sun needs about 230 million years for one trip around the Galaxy. The speed buttons run the clock faster so you can watch planets orbit and the Milky Way turn. The disk is turned as one piece to keep the picture simple.
 2523b17d	In the giant galaxy Messier 87. On 10 April 2019 it became the first black hole ever pictured, by the Event Horizon Telescope. It fires a jet that stretches thousands of light-years.
-d57784ab	In the old Heliora: You tab → Backup → Save a backup.
 13b6b311	InSight landed in November 2018 and recorded hundreds of marsquakes, listening to the inside of the planet.
 335b870f	India became the fourth country to land softly on the Moon, and the first near its south pole. The Vikram lander carried the Pragyan rover.
 4aabf92b	India's Chandrayaan-3 landed near the Moon's south pole on 23 August 2023, making India the fourth country to land on the Moon.
@@ -561,7 +547,6 @@ b5f6e3ec	Indian
 de1c318d	Infrared
 9b6d3000	Inside
 c3e42aa0	Inside this world · Tap a layer
-349838fb	Install
 b57ed7a0	Intermediate
 15981282	Intermediate-mass black hole
 16136436	Invisible matter that gives about five times more gravity than all the normal matter. We only see its pull.
@@ -606,7 +591,7 @@ f085939d	Laniakea Supercluster
 a58bb5fe	Large Magellanic Cloud
 43ec2a1d	Large spiral
 c805503c	Last stable orbit
-b96d179b	Last updated 9 November 2026 · applies to the Astryl app (version 1.19.1 and later; account features from 1.18.0) and to astryl.space
+2b782027	Last updated 12 November 2026 · applies to astryl.space, and to the old Astryl Android app for people who still use it (it gets no new versions; 1.40.0 was the last)
 974b34e4	Launched in 1977, it flew past Jupiter and Saturn and entered interstellar space in 2012. It is the farthest human-made object from Earth.
 4dbaee68	Launched in 1990, it looks at the universe from above Earth's air. Its sharp pictures helped measure the age of the universe and showed thousands of faraway galaxies.
 84928be0	Learn about the objects that sit in the middle of most galaxies.
@@ -630,7 +615,6 @@ e5e066b0	Little Fox
 061532d7	Live map and when the ISS flies over your city
 467a9428	Live moon positions
 2f7569e0	Lizard
-1f5b0eee	Loading the latest version…
 5f02f05c	Loading…
 095e9ef8	Local Group
 bffe9a3c	Log in
@@ -680,7 +664,6 @@ ce827da7	Moon of Jupiter
 219d5833	Moon of Neptune
 076fc12a	Moon of Saturn
 88d66818	Moon phase, calendar, meteor showers
-47bba677	Moonrise, sunset, golden hour and the planets above your horizon.
 d3da97e2	More
 d9c5c337	Most large galaxies have a black hole in the middle with millions or even billions of Suns. How they grew so big so early in the universe is still being studied. They probably started as smaller seeds, swallowed gas, and merged with other black holes.
 f5fe3b4f	Most large galaxies have a supermassive one at the centre.
@@ -690,6 +673,7 @@ df5a246c	My calendar for my city
 08d8f555	My own…
 be6f359b	My space
 13345265	My space needs JavaScript.
+e62d1bf5	My space shows sunset, moonrise and the planets you can see tonight from your city, and the space station page shows when the ISS flies over you.
 384c34e0	My space: add to calendar
 5811bc98	Myths
 d138edfc	Myths and big questions
@@ -732,7 +716,6 @@ ea2991f6	Not breathable, a spacesuit is needed
 9e076f58	Not found
 29e2f17d	Not seen from most of India
 2ff34314	Not stored at all
-7de8d811	Notes for eclipses, meteor showers, planet views and a nightly sky note.
 7e823b37	November
 01cce8ad	Numbers are rounded from published measurements and some are still being refined.
 49703179	Object
@@ -759,15 +742,14 @@ a8647325	One of the first strong black hole candidates, from the early 1970s. In
 1962825c	One orbit
 b1d08c67	Only from the southern hemisphere or near the equator
 a98b9d3e	Only part of the Moon enters Earth’s dark shadow, so a dark bite appears on one side of the full Moon.
-c3bf447e	Open
-f28163e9	Open it. If Android asks, allow your browser (or file manager) to install apps.
+e7dfc660	Open My space
 c0227cef	Open source
 c1155394	Open the Moon calendar
 30638e16	Open the full Solar System
 f0525aaf	Ophiuchus
 8a584259	Opportunity landed in January 2004 and worked for almost 15 years, though it was built for 90 days.
 2c984498	Optional switches
-05aba7ba	Orbit data: wheretheiss.at and CelesTrak, kept by Astryl’s server for a few hours. Positions use SGP4, the standard model for satellite orbits. The Astryl app also shows Tiangong and Hubble and can remind you before a pass.
+7812fb9b	Orbit data: wheretheiss.at and CelesTrak, kept by Astryl’s server for a few hours. Positions use SGP4, the standard model for satellite orbits.
 7e1ad070	Orion
 645a0221	Orion the Hunter is easy to find: three stars in a short straight line make his belt. Above the belt, orange Betelgeuse marks one shoulder; below it, blue-white Rigel marks one foot. Under the belt hangs a faint fuzzy patch, the Orion Nebula, a cloud where new stars are being born. Orion is an evening sight in winter in the north and in summer in the south.
 1bcd6837	Orionids
@@ -842,16 +824,14 @@ ab23a4a0	Planet 6 from the Sun
 96078ba8	Planet 7 from the Sun
 ff424a02	Planet 8 from the Sun
 99ce4aa3	Planet facts, the Moon, planet positions, eclipses, the star map and the quiz are worked out on your phone or in your browser.
-466c43a8	Planet finder
 d1498237	Planet quiz
 ceb07da5	Planets
 fa065e1b	Planets tonight
 e8658669	Planets, moons, stars and space missions: real positions and real numbers for any date, in English and Hindi.
-885292a7	Play the Daily 5 on the Quiz page, or open the app for the planets and the sky tonight.
+5d337bfd	Play the Daily 5 on the Quiz page, or the black hole and galaxy quiz.
 ea8dbc79	Pluto
 14e224fc	Pluto has a huge heart-shaped plain of frozen nitrogen.
 8660a9ec	Pluto was called a planet until 2006; now it is a dwarf planet. Between Mars and Jupiter lies the asteroid belt, full of rocks. Comets are balls of ice and dust from far away; near the Sun they grow long glowing tails.
-e52b4491	Point your phone at the sky and the compass guides you to a planet.
 da6e260a	Polaris, the North Star, sits at the tip of the Little Bear’s tail. It hardly moves because it lies almost exactly above Earth’s north pole, so the whole sky seems to turn around it. Its height above the horizon equals your latitude. It is not a very bright star, but it is the most useful one for finding north. It cannot be seen from the southern half of the world.
 f19b7de3	Poop Deck
 3a4edc67	Potassium
@@ -871,8 +851,6 @@ e5d284b6	Ram
 6b009e1c	Real positions on any date
 f52a9d91	Redshift
 45a236d2	Remember
-d5948411	Reminders
-0f6331fd	Report a problem
 da61a752	Reset progress
 621b144c	Ring of fire across Chile, Argentina, Uruguay and West Africa (Côte d’Ivoire, Ghana, Togo, Benin, Nigeria); a partial eclipse over most of South America and Africa.
 de19a131	Ring of fire across Ecuador, Peru and Brazil, ending at sunset in Portugal and Spain; a partial eclipse over the Americas, western Europe and West Africa.
@@ -940,8 +918,6 @@ a5ce5f39	Solstices and equinoxes
 d00f0f1f	Some come from dying stars. Others sit in the middle of galaxies. There are also sizes in between.
 93e2b4c0	Some galaxies have a centre that outshines all their stars. Gas falling into the supermassive black hole heats up and lights the core. These are called active galaxies, and the brightest ones are quasars.
 216752a6	Some scientists also think tiny primordial black holes may have formed in the very early universe. None has been found. For now it is only an idea.
-a98df735	Source code
-a43f596a	Source code on GitHub
 776ab00e	Southern sky
 018cdb6c	Southern Crown
 7357e2d0	Southern Fish
@@ -950,9 +926,7 @@ a43f596a	Source code on GitHub
 6e3079a0	Space glossary
 621f9f28	Space is mostly empty. The stars you see at night are not spread evenly: they come in giant islands called galaxies. Every star you can see with your eyes belongs to our own, the Milky Way.
 ad6231e1	Space missions
-000708f3	Space station
 1455d2d5	Space station passes
-afae9ae5	Space view
 348b2b67	Space words in plain English and Hindi
 0aafc097	Space, time and all the matter and energy we know begin as an extremely hot, dense state and start to expand.
 0978cd0d	Spacecraft
@@ -999,7 +973,6 @@ edc99319	Surveyor 1 was the first American soft landing on the Moon. It sent bac
 b8707884	Swan
 b7ce7c10	Take the Black hole quiz
 3ad136d3	Take the quiz
-9c1d9df5	Tap Install. Later, every time you open the app it offers a new version first, with Update now or Skip.
 1c515596	Tap a row to jump to it. Sizes are rounded; the Solar System step means Neptune’s orbit.
 23b67f51	Tap a world for its size, gravity, temperature, atmosphere and facts.
 b8834f14	Taurus the Bull has a V-shaped face, the Hyades cluster, with orange Aldebaran as its eye. Aldebaran looks as if it belongs to the cluster, but it is much closer to us. Higher up, the Pleiades, or Seven Sisters, is a tiny group of blue stars that most people see as six or seven. The Pleiades are known all over the world and appear in the stories of many cultures.
@@ -1009,7 +982,6 @@ b8834f14	Taurus the Bull has a V-shaped face, the Hyades cluster, with orange Al
 f9b2785f	Telescope simulator
 5ea69b5f	Ten questions in three levels, made from the planet data.
 0a8e2a0c	The Andromeda Galaxy
-c68eafd3	The Astryl app shows the sky for your place and time, so you can find where Andromeda and the Milky Way are tonight.
 267a796a	The Big Bang
 0cbc006d	The Earth
 19378a4b	The Earth does not make light. It goes around the Sun once in about 365¼ days (a year) and spins on its own axis once in a day. It is the only planet we know with liquid water on its surface and life.
@@ -1067,7 +1039,6 @@ bb1172d2	The Sun, the Moon, eclipses, planets, stars and seasons, explained simp
 3956dc76	The account
 c2f7786e	The account is for one thing: keeping your favourites, scores and settings in step between the app and this website. It needs a username and a password. No e-mail address, name or phone number is asked for. The app asks you to make an account (or log in) when it is first opened. On the website the account is optional: “Continue without account” lets you look around.
 5e39cbe8	The account page needs JavaScript.
-245772f3	The app adds moonrise and sunset for your city, which planets you can see, eclipses, a live star map and a compass planet finder, all offline.
 b7831e13	The app needs an account; the website does not. Just a username and a password, no e-mail, name or phone number.
 e61aa805	The average distance from Earth to the Sun, about 150 million km.
 923d722a	The bending of light by gravity, which can magnify or distort objects behind a massive body.
@@ -1078,6 +1049,7 @@ bf4fd240	The black hole at the centre of our Galaxy. Stars orbit it; one of them
 d9b0a5a3	The centre of a black hole, where our theories say density becomes infinite. It is where they stop working.
 27bc4fc7	The centre of the Milky Way
 41348cbd	The centre, where our theories say the mass is crushed to a point.
+397d6ad5	The constellations page shows where Andromeda is in the sky, and My space shows how dark your sky gets tonight.
 fdcd95f8	The country is read by the network from the connection when the request arrives; the address itself is not kept. A row only says, for example, “on 9 November, the page planets.html was opened 12 times in English from a medium screen in Armenia”. Rows are kept for 400 days. Nothing is counted if your browser sends “Do Not Track” or “Global Privacy Control”.
 201563e3	The crushed core of a massive star, about 20 km wide yet heavier than the Sun.
 02829038	The darkest objects in the universe, explained from the start. No maths needed, and every number comes from real measurements.
@@ -1107,7 +1079,7 @@ a908dc9b	The first writing, about 5,000 years ago. All of recorded history is in
 06225816	The group of more than 80 galaxies that includes the Milky Way and Andromeda.
 9c5c5c96	The growing half of the month is shukla paksha (waxing), the shrinking half is krishna paksha (waning). One full cycle from new Moon to new Moon takes about 29.5 days, a little longer than the Moon’s 27.3-day trip around us, because the Earth also moves around the Sun meanwhile.
 15ebc19e	The higher the pass (in degrees), the brighter it is. 90° is straight overhead; 10° is just above the horizon.
-9d7f78b7	The home page asks the Astryl server for the public counter (accounts, active users, visitors, page views) and asks GitHub for the download count.
+f1e54fca	The home page asks the Astryl server for the public counter (accounts, active users, visitors, page views).
 b72c51a6	The home page shows NASA’s Astronomy Picture of the Day. The text comes through the Astryl server; the picture loads straight from NASA’s server (assets.science.nasa.gov), which sees your IP address like any website. The space station page gets the station’s orbit data from the Astryl server (or, if that fails, from wheretheiss.at). Nothing about you is sent.
 3b3a1a9e	The horizon
 841d5986	The horizon of Sagittarius A* would fit inside the orbit of Mercury. The horizon of M87* is about four times wider than the orbit of Neptune.
@@ -1161,7 +1133,6 @@ b46eaf9b	The universe cools enough for atoms to form and light travels free. Tha
 e2eb8133	The universe is 13.8 billion years old. Squeeze all of it into one calendar year, with the Big Bang at midnight on 1 January, and see when things happen.
 938324fc	The universe is also expanding. Distant galaxies move away from each other, but galaxies inside a group, like ours and Andromeda, are held together by gravity.
 442f68ca	The unknown cause that makes the expansion of the universe speed up. It makes up about 68% of the universe’s total energy.
-ac149c2e	The website covers the facts. The app is the same facts in your pocket, plus things that need your phone.
 37bed959	The whole Moon passes into Earth’s dark shadow and turns a deep red or copper colour, lit only by sunlight bent through Earth’s air.
 0c2c5f84	These are tiny bits of Halley’s Comet, the same comet that gives us the Orionids in October.
 67960518	They appear in the equations, but there is no evidence they exist.
@@ -1217,7 +1188,6 @@ dfd0aa41	Type any mass and get the size of its event horizon, r = 2GM/c², plus 
 6e60cbbd	Types of galaxies
 70efcbb1	Under its icy shell, Europa probably holds about twice as much water as all of Earth's oceans.
 393eb740	Unicorn
-9c42569b	Uninstall the old Heliora.
 1e78dee4	Universe map
 2aeef800	Universe.
 49b37ba1	Until you delete the account
@@ -1229,7 +1199,6 @@ ae531639	Uranus rolls around the Sun on its side, tilted by about 98 degrees.
 5065c72a	Uranus was the first planet found with a telescope. William Herschel spotted it in 1781.
 e49ae9ea	Ursids
 e7f7def3	Ursids meteor shower
-ca16e379	Username and password only. Your favourites, scores and settings sync with this website.
 0bdc508a	Venus
 14c416de	Venus is hotter than Mercury, even though it is farther from the Sun, because its thick air traps the heat.
 bfdffaf4	Venus spins backwards, so on Venus the Sun rises in the west.
@@ -1268,7 +1237,6 @@ dea08d49	What is in the middle during a lunar eclipse?
 b90b098f	What it is
 e0831f7e	What mainly causes the seasons?
 a01ee55c	What stars are, and the patterns people have seen in them.
-471324ab	What the app adds
 f0b47bd9	What the pictures show is not the black hole itself but its dark shadow and the ring of glowing gas around it. The orange colour is added to show how bright each part is.
 409c963e	What we store
 237ac087	What your eyes, binoculars and a small telescope can reach.
@@ -1324,7 +1292,6 @@ df275f5e	Your IP address itself, a cookie, any id, the time of day, your browser
 2122a329	Your birth date is stored only if you have entered it in the app and sync is on. Turn sync off in the You tab → Account to stop this.
 7d07b77f	Your browser remembers language, theme, quiz scores and whether you have seen the welcome window, in local storage on your own device. If you log in, a login token is kept there too, until you log out.
 9b6b839b	Your choices and rights
-329e97b8	Your city or your location
 7df46c9c	Your city, birth date, favourites, quiz scores and settings are saved on your phone. The Backup file is made by you and goes only where you send it.
 065e3e3e	Your jump height on Earth (cm)
 7d75b570	Your username and a hash of your password (the password itself is never stored or visible to us)
@@ -1360,7 +1327,7 @@ d0b3fe96	~26,000 light-years
 0e1aefcb	~290 million years after the Big Bang
 d3db2a8d	~55 million light-years
 984b33d3	~7,000 light-years
-bcaa7d5f	“Best in the evening” is the month when it is highest at about 9 pm. “Seen from India” is worked out for Delhi; from South India a little more of the southern sky is visible. The app shows the sky live for your place and time.
+06784bae	“Best in the evening” is the month when it is highest at about 9 pm. “Seen from India” is worked out for Delhi; from South India a little more of the southern sky is visible.
 32915e33	“Use my location” in the city list asks Android for your approximate location, once, and uses it only on your phone to work out the sky. Nothing is sent for this.
 9aa7658e	⚠️ Never look at the Sun directly, not even during an eclipse. Use certified eclipse glasses (ISO 12312-2), a welder’s glass no. 14, or a pinhole projector. Sunglasses are not safe.
 50d0a111	⚠️ Never point a telescope or binoculars at the Sun without a proper solar filter over the front. It can blind you instantly.
