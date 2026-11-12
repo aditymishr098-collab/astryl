@@ -75,7 +75,7 @@ EVENTS = [
 FUTURE = [
     ('About 1 billion years from now', 'लगभग 1 अरब साल बाद', 'The Sun will be bright enough to boil away Earth’s oceans. Estimates range from 0.9 to 1.5 billion years.', 'सूर्य इतना चमकीला हो जाएगा कि पृथ्वी के महासागर भाप बन जाएँगे। अनुमान 0.9 से 1.5 अरब साल के बीच हैं।'),
     ('About 5 billion years', 'लगभग 5 अरब साल', 'The Sun runs out of hydrogen in its core, swells into a red giant, then shrinks to a white dwarf.', 'सूर्य के केंद्र की हाइड्रोजन ख़त्म होती है, वह फूलकर red giant बनता है और फिर सिकुड़कर white dwarf।'),
-    ('4 to 5 billion years, or later', '4 से 5 अरब साल, या उसके बाद', 'The Milky Way may merge with Andromeda, though the latest studies say it is not certain.', 'आकाशगंगा Andromeda से मिल सकती है, हालाँकि नए अध्ययन कहते हैं कि यह पक्का नहीं।'),
+    ('Perhaps in about 8 billion years', 'शायद लगभग 8 अरब साल बाद', 'The Milky Way may merge with Andromeda. A 2025 study gives it about even odds within 10 billion years, so it is not certain.', 'आकाशगंगा Andromeda से मिल सकती है। 2025 के एक अध्ययन के अनुसार 10 अरब साल के भीतर इसकी संभावना लगभग आधी है, इसलिए यह पक्का नहीं है।'),
     ('About 10¹⁴ years', 'लगभग 10¹⁴ साल', 'The last stars burn out. After that, only dark remnants remain.', 'आख़िरी तारे बुझ जाते हैं। उसके बाद सिर्फ़ अँधेरे अवशेष बचते हैं।'),
     ('About 10¹⁰⁰ years', 'लगभग 10¹⁰⁰ साल', 'Even the largest black holes would have evaporated through Hawking radiation, if the theory is right.', 'अगर सिद्धांत सही है तो सबसे बड़े ब्लैक होल भी Hawking radiation से भाप बनकर ख़त्म हो चुके होंगे।'),
 ]
@@ -102,7 +102,7 @@ GLOSSARY = [
     ('Infrared', 'अवरक्त (Infrared)', 'Light with a longer wavelength than red that our eyes cannot see. It can pass through dust.', 'लाल से लंबी तरंग-दैर्ध्य की रोशनी जो हमारी आँखें नहीं देख सकतीं। यह धूल के आर-पार जा सकती है।'),
     ('Intermediate-mass black hole', 'मध्यम ब्लैक होल', 'A black hole between about 100 and 100,000 Suns. Few have been found.', 'लगभग 100 से 1,00,000 सूरज के बीच का ब्लैक होल। बहुत कम मिले हैं।'),
     ('Jet', 'Jet', 'A narrow beam of gas shot out at nearly the speed of light along the spin axis of a black hole or young star.', 'ब्लैक होल या नए तारे की घूर्णन अक्ष के साथ लगभग प्रकाश की गति से फेंकी गई गैस की पतली धारा।'),
-    ('Light-year', 'प्रकाश-वर्ष', 'The distance light travels in one year, about 9.46 trillion km.', 'प्रकाश एक साल में जितनी दूरी तय करता है, लगभग 9.46 खरब km।'),
+    ('Light-year', 'प्रकाश-वर्ष', 'The distance light travels in one year, about 9.46 trillion km.', 'प्रकाश एक साल में जितनी दूरी तय करता है, लगभग 94.6 खरब km।'),
     ('Local Group', 'Local Group', 'The group of more than 80 galaxies that includes the Milky Way and Andromeda.', '80 से ज़्यादा galaxies का समूह जिसमें आकाशगंगा और Andromeda हैं।'),
     ('Nebula', 'नीहारिका (Nebula)', 'A cloud of gas and dust in space, where stars may be born or where a dying star has thrown off its layers.', 'अंतरिक्ष में गैस और धूल का बादल, जहाँ तारे जन्म ले सकते हैं या जहाँ कोई मरता तारा अपनी परतें फेंक चुका है।'),
     ('Neutron star', 'न्यूट्रॉन तारा', 'The crushed core of a massive star, about 20 km wide yet heavier than the Sun.', 'भारी तारे का कुचला हुआ केंद्र, लगभग 20 km चौड़ा पर सूरज से भारी।'),

@@ -102,8 +102,8 @@ def build(h):
 <section class="blk">{facts([
         ('Stars in the Milky Way', 'आकाशगंगा में तारे', '100 to 400 billion', '100 से 400 अरब'),
         ('Nearest big galaxy', 'सबसे पास की बड़ी galaxy', 'Andromeda, 2.5 million light-years', 'Andromeda, 25 लाख प्रकाश-वर्ष'),
-        ('Galaxies we can count', 'गिनी जा सकने वाली galaxies', 'about 2 trillion', 'लगभग 2 खरब'),
-        ('Farthest seen so far', 'अब तक की सबसे दूर', '~290 million years after the Big Bang', 'Big Bang के लगभग 29 करोड़ साल बाद'),
+        ('Galaxies in the visible universe', 'दिखने वाले ब्रह्मांड में galaxies', 'hundreds of billions, perhaps up to 2 trillion', 'कई खरब, शायद 20 खरब तक'),
+        ('Farthest seen so far', 'अब तक की सबसे दूर', 'under 300 million years after the Big Bang', 'Big Bang के 30 करोड़ साल से भी कम बाद'),
     ])}</section>
 <section class="blk"><h2>{bt("Seven short pages", "सात छोटे पन्ने")}</h2><div class="sc-grid" style="padding-top:6px">{S.cards()}</div></section>
 <section class="blk callout"><b>{bt("Next:", "आगे:")}</b> {bt("Learn about the objects that sit in the middle of most galaxies.", "उन चीज़ों के बारे में जानिए जो ज़्यादातर galaxies के बीच में बैठी हैं।")} <a href="black-holes.html">{bt("Black holes", "ब्लैक होल")} →</a></section>'''
@@ -123,9 +123,9 @@ def build(h):
         + '</div>',
         H2('How big, how many', 'कितनी बड़ी, कितनी सारी'),
         P('Galaxies range from dwarfs with a few thousand stars to giants with trillions. The Milky Way is about 100,000 light-years across. A light-year is the distance light travels in one year, about 9.5 trillion km.',
-          'Galaxies कुछ हज़ार तारों वाली बौनी से लेकर खरबों तारों वाली दानव तक होती हैं। आकाशगंगा लगभग 1,00,000 प्रकाश-वर्ष चौड़ी है। एक प्रकाश-वर्ष वह दूरी है जो प्रकाश एक साल में तय करता है, लगभग 9.5 खरब km।'),
-        P('Deep images from the Hubble and James Webb telescopes show that the observable universe holds roughly two trillion galaxies. This is an estimate that is still being refined.',
-          'Hubble और James Webb telescope की गहरी तस्वीरें बताती हैं कि दिखने योग्य ब्रह्मांड में लगभग दो खरब galaxies हैं। यह एक अनुमान है जिस पर अब भी काम चल रहा है।'),
+          'Galaxies कुछ हज़ार तारों वाली बौनी से लेकर खरबों तारों वाली दानव तक होती हैं। आकाशगंगा लगभग 1,00,000 प्रकाश-वर्ष चौड़ी है। एक प्रकाश-वर्ष वह दूरी है जो प्रकाश एक साल में तय करता है, लगभग 95 खरब km।'),
+        P('Deep images from the Hubble and James Webb telescopes show that the observable universe holds hundreds of billions of galaxies, perhaps up to two trillion. The number is still being refined.',
+          'Hubble और James Webb telescope की गहरी तस्वीरें बताती हैं कि दिखने योग्य ब्रह्मांड में कई खरब galaxies हैं, शायद 20 खरब (दो trillion) तक। यह संख्या अब भी सुधारी जा रही है।'),
         callout('Before 1924 many astronomers thought the Milky Way was the whole universe. Edwin Hubble then measured the distance to Andromeda and showed it was a separate galaxy, far outside ours.',
                 '1924 से पहले कई खगोलविद मानते थे कि आकाशगंगा ही पूरा ब्रह्मांड है। फिर Edwin Hubble ने Andromeda की दूरी नापी और दिखाया कि वह हमारी आकाशगंगा से बहुत बाहर एक अलग galaxy है।'),
     ) + S.pn(s)
@@ -151,8 +151,8 @@ def build(h):
         H2('The middle', 'बीच का हिस्सा'),
         P('At the centre sits Sagittarius A*, a black hole of 4.3 million Suns. Dust hides the centre in visible light, so astronomers use infrared and radio telescopes to look through it.',
           'केंद्र में Sagittarius A* है, 43 लाख सूरज वाला ब्लैक होल। दिखने वाली रोशनी में धूल केंद्र को छिपा देती है, इसलिए खगोलविद infrared और radio telescopes से उसके आर-पार देखते हैं।'),
-        callout('Most of the Milky Way’s mass is not stars. The total of about 1.5 trillion Suns is mostly dark matter, which we know only from how it pulls on stars and gas.',
-                'आकाशगंगा का ज़्यादातर द्रव्यमान तारे नहीं हैं। लगभग 1.5 खरब सूरज का कुल द्रव्यमान ज़्यादातर dark matter है, जिसे हम सिर्फ़ तारों और गैस पर उसके खिंचाव से जानते हैं।'),
+        callout('Most of the Milky Way’s mass is not stars. The total, roughly a trillion Suns (estimates range from about half a trillion to 1.5 trillion), is mostly dark matter, which we know only from how it pulls on stars and gas.',
+                'आकाशगंगा का ज़्यादातर द्रव्यमान तारे नहीं हैं। लगभग 10 खरब सूरज का कुल द्रव्यमान (अनुमान 5 से 15 खरब सूरज तक हैं) ज़्यादातर dark matter है, जिसे हम सिर्फ़ तारों और गैस पर उसके खिंचाव से जानते हैं।'),
     ) + S.pn(s)
     out.append(S.page(s, body, 'The Milky Way', 'हमारी आकाशगंगा', 'The Milky Way galaxy: its shape, size, number of stars, where the Sun is, and why we see a band across the night sky.'))
 
@@ -160,7 +160,7 @@ def build(h):
     s = 'andromeda-galaxy'
     body = S.head('The Andromeda Galaxy', 'देवयानी (Andromeda) galaxy', 'The nearest big galaxy, and the one that will one day merge with ours.', 'सबसे पास की बड़ी galaxy, जो एक दिन हमारी galaxy से मिल जाएगी।') + sec(
         facts([('Distance', 'दूरी', '~2.5 million light-years', '~25 लाख प्रकाश-वर्ष'),
-               ('Stars', 'तारे', 'about 1 trillion', 'लगभग 1 खरब'),
+               ('Stars', 'तारे', 'about 1 trillion', 'लगभग 10 खरब'),
                ('Width of the disk', 'Disk की चौड़ाई', '~150,000 light-years', '~1,50,000 प्रकाश-वर्ष'),
                ('Catalogue names', 'सूची के नाम', 'Messier 31, M31', 'Messier 31, M31')]),
         P('Andromeda is a spiral galaxy in the constellation Andromeda. It is larger than the Milky Way and has more stars, though the Milky Way may hold more dark matter. It is the farthest thing most people can see with the naked eye.',
@@ -169,12 +169,12 @@ def build(h):
         P('Its light takes about 2.5 million years to reach us. When you see Andromeda tonight, you see it as it was when early humans were just appearing on Earth.',
           'इसकी रोशनी हम तक पहुँचने में लगभग 25 लाख साल लगाती है। आज रात आप Andromeda को वैसा देखते हैं जैसी वह तब थी जब पृथ्वी पर शुरुआती इंसान बस उभर रहे थे।'),
         H2('A collision is coming', 'टक्कर आने वाली है'),
-        P('Andromeda is moving toward us at about 110 km per second. The two galaxies will most likely begin to merge in roughly 4 to 5 billion years, and settle into one big elliptical galaxy that people sometimes call Milkomeda.',
-          'Andromeda लगभग 110 km प्रति सेकंड की गति से हमारी ओर आ रही है। दोनों galaxies के लगभग 4 से 5 अरब साल में मिलना शुरू करने की सबसे ज़्यादा संभावना है, और वे मिलकर एक बड़ी elliptical galaxy बनेंगी जिसे कभी-कभी Milkomeda कहा जाता है।'),
+        P('Andromeda is moving toward us at about 110 km per second. If the two galaxies merge, they will settle into one big elliptical galaxy that people sometimes call Milkomeda.',
+          'Andromeda लगभग 110 km प्रति सेकंड की गति से हमारी ओर आ रही है। अगर दोनों galaxies मिलती हैं, तो वे एक बड़ी elliptical galaxy बन जाएँगी जिसे कभी-कभी Milkomeda कहा जाता है।'),
         P('Stars are so far apart that almost none will actually hit another. The Sun will probably be thrown into a new orbit, but not destroyed by the collision. By then the Sun will already be brighter and Earth far too hot for life as we know it.',
           'तारे एक-दूसरे से इतने दूर हैं कि लगभग कोई भी दूसरे से नहीं टकराएगा। सूर्य शायद नई कक्षा में फेंका जाएगा, पर टक्कर से नष्ट नहीं होगा। तब तक सूर्य और चमकीला हो चुका होगा और पृथ्वी हमारे जाने-पहचाने जीवन के लिए बहुत गर्म।'),
-        callout('Earlier studies expected a sure collision in about 4 to 5 billion years. A 2025 study that also counted the Large Magellanic Cloud and other galaxies puts the chance of a merger within 10 billion years at roughly one in two. So it is likely, but not certain.',
-                'पहले के अध्ययन लगभग 4 से 5 अरब साल में पक्की टक्कर मानते थे। 2025 के एक अध्ययन ने Large Magellanic Cloud और दूसरी galaxies को भी गिना, और 10 अरब साल के भीतर विलय की संभावना लगभग आधी निकाली। यानी यह संभव है, पर पक्का नहीं।'),
+        callout('Earlier studies expected a sure collision in about 4 to 5 billion years. A 2025 study that also counted the Large Magellanic Cloud and other galaxies puts the chance of a merger within 10 billion years at roughly one in two, most likely in about 8 billion years. A merger within the next 5 billion years now looks unlikely.',
+                'पहले के अध्ययन लगभग 4 से 5 अरब साल में पक्की टक्कर मानते थे। 2025 के एक अध्ययन ने Large Magellanic Cloud और दूसरी galaxies को भी गिना, और 10 अरब साल के भीतर विलय की संभावना लगभग आधी निकाली। सबसे संभावित समय लगभग 8 अरब साल बाद है। अगले 5 अरब साल में विलय अब कम संभावित लगता है।'),
         H2('How to find it', 'इसे कैसे ढूँढें'),
         P('On a dark autumn evening in the northern sky, find the Great Square of Pegasus and follow the line of stars of Andromeda. A faint, elongated smudge appears beside the star ν Andromedae. Binoculars show it much better.',
           'उत्तरी आसमान में अँधेरी शरद की शाम को Pegasus का Great Square ढूँढिए और Andromeda के तारों की क़तार पकड़िए। ν Andromedae तारे के पास हल्का, लंबा धुँधला धब्बा दिखता है। दूरबीन से यह बहुत बेहतर दिखता है।'),
@@ -191,7 +191,7 @@ def build(h):
             + card('Elliptical', 'Elliptical', 'A smooth, round or egg-shaped ball of mostly old red stars with little gas. The biggest galaxies in the universe are of this type.', 'चिकनी, गोल या अंडाकार गेंद, जिसमें ज़्यादातर पुराने लाल तारे और कम गैस होती है। ब्रह्मांड की सबसे बड़ी galaxies इसी प्रकार की हैं।')
             + card('Lenticular', 'Lenticular', 'In between: a disk like a spiral, but with no arms and almost no new stars.', 'बीच की: spiral जैसी disk, पर बिना भुजाओं के और लगभग बिना नए तारों के।')
             + card('Irregular', 'Irregular', 'No clear shape, often from a merger or a pull from a neighbour. The Large Magellanic Cloud is one.', 'कोई साफ़ आकार नहीं, अक्सर विलय या पड़ोसी के खिंचाव से। Large Magellanic Cloud एक है।')
-            + card('Dwarf', 'बौनी (Dwarf)', 'Small galaxies with a few million to a few billion stars. They are by far the most common kind.', 'छोटी galaxies जिनमें कुछ लाख से कुछ अरब तारे होते हैं। ये अब तक सबसे आम प्रकार की हैं।'), min_w=280),
+            + card('Dwarf', 'बौनी (Dwarf)', 'Small galaxies with a few thousand to a few billion stars. They are by far the most common kind.', 'छोटी galaxies जिनमें कुछ हज़ार से कुछ अरब तारे होते हैं। ये अब तक सबसे आम प्रकार की हैं।'), min_w=280),
         H2('Active galaxies', 'सक्रिय galaxies'),
         P('Some galaxies have a centre that outshines all their stars. Gas falling into the supermassive black hole heats up and lights the core. These are called active galaxies, and the brightest ones are quasars.',
           'कुछ galaxies का केंद्र उनके सारे तारों से ज़्यादा चमकता है। विशाल ब्लैक होल में गिरती गैस गर्म होकर केंद्र को रोशन करती है। इन्हें active galaxies कहते हैं, और सबसे चमकीली quasar हैं।'),
@@ -241,8 +241,8 @@ def build(h):
         table([('Trip', 'यात्रा'), ('Distance', 'दूरी'), ('Time at Voyager speed', 'Voyager की गति से समय')], rows, cols=True),
         note('Worked out from distance ÷ 17 km/s. Even the nearest star would take about 75,000 years.', 'दूरी ÷ 17 km/s से निकाला गया। सबसे पास का तारा भी लगभग 75,000 साल लेगा।'),
         H2('Clusters and the cosmic web', 'Clusters और cosmic web'),
-        P('The Local Group sits on the edge of the Virgo Cluster, about 54 million light-years away, with over a thousand galaxies. Clusters join into superclusters. Our home supercluster, Laniakea, spans about 500 million light-years and holds roughly 100,000 galaxies.',
-          'Local Group Virgo Cluster के किनारे पर है, जो लगभग 5.4 करोड़ प्रकाश-वर्ष दूर है और जिसमें हज़ार से ज़्यादा galaxies हैं। Clusters मिलकर superclusters बनाते हैं। हमारा supercluster Laniakea लगभग 50 करोड़ प्रकाश-वर्ष में फैला है और उसमें लगभग 1,00,000 galaxies हैं।'),
+        P('The nearest big cluster of galaxies, the Virgo Cluster, is about 54 million light-years away and holds over a thousand galaxies. Clusters join into superclusters. Our home supercluster, Laniakea, spans about 500 million light-years and holds roughly 100,000 galaxies.',
+          'सबसे पास का बड़ा galaxy cluster, Virgo Cluster, लगभग 5.4 करोड़ प्रकाश-वर्ष दूर है और उसमें हज़ार से ज़्यादा galaxies हैं। Clusters मिलकर superclusters बनाते हैं। हमारा supercluster Laniakea लगभग 50 करोड़ प्रकाश-वर्ष में फैला है और उसमें लगभग 1,00,000 galaxies हैं।'),
         P('On the largest scales galaxies line up in filaments around huge empty voids, like the walls of soap bubbles. This pattern is called the cosmic web.',
           'सबसे बड़े पैमाने पर galaxies विशाल ख़ाली voids के चारों ओर धागों में सजी हैं, जैसे साबुन के बुलबुलों की दीवारें। इस ढाँचे को cosmic web कहते हैं।'),
     ) + S.pn(s)
@@ -260,8 +260,8 @@ def build(h):
         P('Small galaxies fall into bigger ones. The Milky Way is still swallowing the Sagittarius Dwarf Galaxy, and streams of stars from earlier meals wrap around it. A bigger meal, a galaxy called Gaia-Enceladus, merged with us about 10 billion years ago.',
           'छोटी galaxies बड़ी में गिरती हैं। आकाशगंगा अब भी Sagittarius Dwarf Galaxy को निगल रही है, और पहले के शिकारों के तारों की धाराएँ उसके चारों ओर लिपटी हैं। और बड़ा शिकार, Gaia-Enceladus नाम की galaxy, लगभग 10 अरब साल पहले हमसे मिली।'),
         H2('What a collision looks like', 'टक्कर कैसी दिखती है'),
-        P('Two galaxies passing through each other is slow, over hundreds of millions of years. Stars rarely collide, but gas clouds do. They are squeezed and a burst of new stars forms, called a starburst. The Antennae Galaxies, 70 million light-years away, are two galaxies in the middle of this.',
-          'दो galaxies का एक-दूसरे से गुज़रना धीमा होता है, सैकड़ों मिलियन साल में। तारे शायद ही टकराते हैं, पर गैस के बादल टकराते हैं। वे दबते हैं और नए तारों की बौछार बनती है, जिसे starburst कहते हैं। 7 करोड़ प्रकाश-वर्ष दूर Antennae Galaxies इसी प्रक्रिया के बीच की दो galaxies हैं।'),
+        P('Two galaxies passing through each other is slow, over hundreds of millions of years. Stars rarely collide, but gas clouds do. They are squeezed and a burst of new stars forms, called a starburst. The Antennae Galaxies, roughly 45 to 70 million light-years away, are two galaxies in the middle of this.',
+          'दो galaxies का एक-दूसरे से गुज़रना धीमा होता है, सैकड़ों मिलियन साल में। तारे शायद ही टकराते हैं, पर गैस के बादल टकराते हैं। वे दबते हैं और नए तारों की बौछार बनती है, जिसे starburst कहते हैं। लगभग 4.5 से 7 करोड़ प्रकाश-वर्ष दूर Antennae Galaxies इसी प्रक्रिया के बीच की दो galaxies हैं।'),
         H2('Black holes grow too', 'ब्लैक होल भी बढ़ते हैं'),
         P('When galaxies merge, their central black holes sink to the middle and can merge too. The size of a galaxy’s central black hole is closely linked to the size of its central bulge of stars, so the two seem to grow together.',
           'Galaxies के मिलने पर उनके केंद्रीय ब्लैक होल बीच में डूबते हैं और वे भी मिल सकते हैं। Galaxy के केंद्रीय ब्लैक होल का आकार उसके तारों के केंद्रीय उभार के आकार से गहराई से जुड़ा है, यानी दोनों साथ-साथ बढ़ते लगते हैं।'),

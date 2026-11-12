@@ -10,6 +10,9 @@ ROOT = Path(__file__).resolve().parent.parent
 # Serpens is one constellation in two parts. The app's catalogue lists its tail twice; the head is added here.
 SERPENS_CAPUT = [237.405, -3.430, 237.704, 4.478, 236.067, 6.426, 233.701, 10.539, 236.547, 15.422, 235.388, 19.670, 237.185, 18.142, 239.113, 15.662, 236.547, 15.422]
 
+# stars shared by two figures, and the constellation they officially belong to (IAU boundaries)
+OWNER = {'Alpheratz': 'And', 'Regor': 'Vel', 'Naos': 'Pup', 'Sabik': 'Oph', 'Elnath': 'Tau'}
+
 ZODIAC = {'Ari', 'Tau', 'Gem', 'Cnc', 'Leo', 'Vir', 'Lib', 'Sco', 'Sgr', 'Cap', 'Aqr', 'Psc', 'Oph'}
 MONTHS_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 MONTHS_HI = ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर']
@@ -76,7 +79,9 @@ def info(c, stars):
     for r, d in pts:
         best = min(stars, key=lambda s: sep(r, d, s[0], s[1]))
         fig.append(best if sep(r, d, best[0], best[1]) < 0.3 else (r, d, 4.5, ''))
-    bright = min(fig, key=lambda s: s[2])
+    # some figures borrow a star from a neighbour; the brightest star must be one of this constellation's own
+    own = [f for f in fig if OWNER.get(f[3], c['id']) == c['id']]
+    bright = min(own or fig, key=lambda s: s[2])
     return ra0, dec0, pts, fig, bright
 
 
@@ -144,13 +149,16 @@ def build_page(h, cons_raw, stories):
         m = best_month(ra0)
         # from Delhi (28.6° N) the highest point is 90 - |28.6 - dec|
         top = 90 - abs(28.6 - dec0)
-        india = ('whole', '✅', 'Seen well from India', 'भारत से अच्छा दिखता है') if top > 25 else (('low', '🟡', 'Low in the south from India', 'भारत से दक्षिण में नीचे') if top > 5 else ('no', '❌', 'Not seen from most of India', 'भारत के ज़्यादातर हिस्से से नहीं दिखता'))
+        # its most northerly star, seen from central India (23° N): does it clear the southern horizon?
+        north = max([d for _, d in pts] + [dec0])
+        low = 90 - abs(23.0 - north)
+        india = ('whole', '✅', 'Seen well from India', 'भारत से अच्छा दिखता है') if top > 25 else (('low', '🟡', 'Low in the south from India', 'भारत से दक्षिण में नीचे') if low > 8 else ('no', '❌', 'Not seen from most of India', 'भारत के ज़्यादातर हिस्से से नहीं दिखता'))
         hemi = 'north' if dec0 > 15 else ('south' if dec0 < -15 else 'equator')
         tags = ' '.join([hemi, 'zodiac' if c['id'] in ZODIAC else '', 'india' if india[0] == 'whole' else ''])
         st = f'<p class="story">{bi(stories[c["id"]])}</p>' if c['id'] in stories else ''
         bstar = f'<li>⭐ {bt("Brightest star", "सबसे चमकीला तारा")}: <b>{esc(bright[3]) if bright[3] else "–"}</b> ({bright[2]:.1f})</li>' if bright[3] else ''
         objs = [d for d in dsos if d['con'] == c['id']]
-        olist = f'<li>🔭 {", ".join(esc(d["id"] + " " + d["name"]) for d in objs[:3])}</li>' if objs else ''
+        olist = f'<li>🔭 {", ".join(esc(d["id"] + (" " + d["name"] if d["name"] != d["id"] else "")) + " (" + bt(*DSO_KIND[d["kind"]]) + ")" for d in objs[:3])}</li>' if objs else ''
         cards += (f'<div class="card con" data-tags="{tags}" data-cons="{esc((en + " " + c["latin"] + " " + hi_ + " " + c["id"]).lower())}">{svg(c, stars)}'
                   f'<h3>{bt(en, hi_)}</h3><small>{c["latin"]}{" · " + bt("Zodiac", "राशि-पथ") if c["id"] in ZODIAC else ""}</small>'
                   f'<ul class="conmeta">{bstar}<li>🗓️ {bt("Best in the evening", "शाम को सबसे अच्छा")}: <b>{bt(MONTHS_EN[m], MONTHS_HI[m])}</b></li><li>{india[1]} {bt(india[2], india[3])}</li>{olist}</ul>{st}</div>')
@@ -158,6 +166,6 @@ def build_page(h, cons_raw, stories):
         ('all', 'All 88', 'सभी 88'), ('india', 'Seen well from India', 'भारत से दिखने वाले'), ('north', 'Northern sky', 'उत्तरी आसमान'), ('south', 'Southern sky', 'दक्षिणी आसमान'), ('zodiac', 'Zodiac', 'राशि-पथ')])
     body = f'''<section class="blk"><h1>{bi("constellationsLabel")}</h1><p class="sub">{bt("All 88 constellations, drawn as you see them when you face them in the sky: north up and east to the left. Bigger dots are brighter stars; faint dots are the stars around them.", "सभी 88 तारामंडल, वैसे ही बने जैसे आसमान में उनकी तरफ़ देखने पर दिखते हैं: ऊपर उत्तर और बाईं ओर पूर्व। बड़े बिंदु चमकीले तारे हैं; हल्के बिंदु आसपास के तारे।")}</p>
 <div class="row"><input type="search" id="cq" placeholder="Orion, सप्तर्षि…" aria-label="Search"></div><div class="umchips" id="cf">{chips}</div><p class="note" id="cn"></p><div class="cons">{cards}</div>
-<p class="note">{bt("“Best in the evening” is the month when it is highest at about 9 pm. “Seen from India” is worked out for Delhi; from South India a little more of the southern sky is visible.", "“शाम को सबसे अच्छा” वह महीना है जब यह रात 9 बजे के आसपास सबसे ऊँचा होता है। “भारत से” दिल्ली के लिए निकाला गया है; दक्षिण भारत से दक्षिणी आसमान थोड़ा ज़्यादा दिखता है।")}</p></section>
+<p class="note">{bt("“Best in the evening” is the month when it is highest at about 9 pm. “Seen well from India” means it climbs high from Delhi. “Low in the south” means at least part of it rises above the southern horizon from central India; the farther south you are in India, the higher it gets.", "“शाम को सबसे अच्छा” वह महीना है जब यह रात 9 बजे के आसपास सबसे ऊँचा होता है। “भारत से अच्छा दिखता है” का मतलब है कि यह दिल्ली से काफ़ी ऊँचा चढ़ता है। “दक्षिण में नीचे” का मतलब है कि मध्य भारत से इसका कम से कम कुछ हिस्सा दक्षिणी क्षितिज से ऊपर आता है; भारत में आप जितना दक्षिण में हों, यह उतना ऊँचा दिखता है।")}</p></section>
 <script>(function(){{var q=document.getElementById('cq'),f='all',cards=document.querySelectorAll('[data-cons]'),cn=document.getElementById('cn');function run(){{var s=q.value.toLowerCase(),n=0;cards.forEach(function(c){{var ok=(!s||c.dataset.cons.indexOf(s)>=0)&&(f==='all'||(' '+c.dataset.tags+' ').indexOf(' '+f+' ')>=0);c.classList.toggle('hide',!ok);if(ok)n++}});cn.textContent=n+' / 88'}}q.addEventListener('input',run);document.getElementById('cf').addEventListener('click',function(e){{var b=e.target.closest('button');if(!b)return;f=b.dataset.f;document.querySelectorAll('#cf button').forEach(function(x){{x.classList.toggle('on',x===b)}});run()}});run()}})();</script>'''
     write('constellations.html', shell('Constellations', 'तारामंडल', 'cons', body, 'All 88 constellations with true-to-the-sky drawings, the brightest star, the best month to see each one and whether it can be seen from India. In English and Hindi.', canonical='constellations.html'))

@@ -210,7 +210,7 @@
       scene(cvs.far, pf.r, { stretch: 1, alpha: Math.max(0.04, Math.pow(red, 0.8)), col: col });
       var slow = red > 0.001 ? (1 / red) : Infinity;
       box.querySelector('[data-c=far]').innerHTML = '⏱ ' + clock(pf.tau / S * 10) + ' · ' + (slow > 50 ? T('almost frozen, very red', 'लगभग जमा हुआ, बहुत लाल') : T('clock looks ', 'घड़ी ') + slow.toFixed(1) + T('× slower', '× धीमी दिखती'));
-      box.querySelector('[data-s]').innerHTML = kind === 'small' ? T('Horizon: about 30 km across. The pull on feet and head differs so much that a person is torn apart before reaching it.', 'Horizon: लगभग 30 km चौड़ा। पैरों और सिर पर खिंचाव में इतना फ़र्क है कि इंसान उस तक पहुँचने से पहले टूट जाता है।') : T('Horizon: about 25 million km across. Crossing it feels like nothing at all; the stretching only comes much deeper.', 'Horizon: लगभग 2.5 करोड़ km चौड़ा। इसे पार करना कुछ महसूस नहीं होता; खिंचाव बहुत गहराई में जाकर आता है।');
+      box.querySelector('[data-s]').innerHTML = kind === 'small' ? T('Horizon: about 60 km across. The pull on feet and head differs so much that a person is torn apart before reaching it.', 'Horizon: लगभग 60 km चौड़ा। पैरों और सिर पर खिंचाव में इतना फ़र्क है कि इंसान उस तक पहुँचने से पहले टूट जाता है।') : T('Horizon: about 25 million km across. Crossing it feels like nothing at all; the stretching only comes much deeper.', 'Horizon: लगभग 2.5 करोड़ km चौड़ा। इसे पार करना कुछ महसूस नहीं होता; खिंचाव बहुत गहराई में जाकर आता है।');
       if (run && tauU >= TAU_END && el > 12) run = false;
       if (run) requestAnimationFrame(frame);
     }
