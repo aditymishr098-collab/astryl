@@ -1,0 +1,358 @@
+// Astryl "community" Edge Function: sky reports ("I saw it"), the weekly challenge, polls,
+// leaderboards, the photo gallery and the Astryl Community board, plus moderation.
+//
+// Photos and posts are hidden until a moderator (a row in community_admins) approves them.
+// Everything is tied to the account and is deleted with it. Photos are re-drawn in the browser
+// before upload, so no camera or location data (EXIF) is sent.
+//
+// Deploy with "Verify JWT" switched OFF: the user's own token comes in x-astryl-token.
+// GET ?action=img&id=…&size=thumb|full serves an approved photo.
+
+import { createClient } from "npm:@supabase/supabase-js@2";
+import config from "./config.json" with { type: "json" };
+
+const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, {
+  auth: { persistSession: false, autoRefreshToken: false },
+});
+const CORS: Record<string, string> = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-astryl-token",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+};
+const CFG = config as {
+  sky: string[][]; challenges: string[][]; polls: [string, string, string, string[][]][]; photoKinds: string[][]; postKinds: string[][];
+};
+const SKY = new Set(CFG.sky.map((s) => s[0]));
+const PHOTO_KINDS = new Set(CFG.photoKinds.map((k) => k[0]));
+const POST_KINDS = new Set(CFG.postKinds.map((k) => k[0]));
+const MAX_FULL = 900_000, MAX_THUMB = 120_000;
+
+class Fail extends Error {
+  status: number;
+  constructor(status: number, code: string) { super(code); this.status = status; }
+}
+function reply(body: unknown, status = 200) {
+  return new Response(JSON.stringify(body), { status, headers: { ...CORS, "Content-Type": "application/json" } });
+}
+async function sha(s: string): Promise<string> {
+  const d = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("astryl-community:" + s));
+  return Array.from(new Uint8Array(d)).slice(0, 16).map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+async function userFrom(req: Request, required = true) {
+  const token = req.headers.get("x-astryl-token") || "";
+  if (!token) { if (required) throw new Fail(401, "no_token"); return null; }
+  const { data, error } = await admin.auth.getUser(token);
+  if (error || !data.user) { if (required) throw new Fail(401, "bad_token"); return null; }
+  return data.user;
+}
+async function isAdmin(uid: string) {
+  const { data } = await admin.from("community_admins").select("user_id").eq("user_id", uid).maybeSingle();
+  return !!data;
+}
+async function mustAdmin(req: Request) {
+  const u = await userFrom(req);
+  if (!(await isAdmin(u!.id))) throw new Fail(403, "not_admin");
+  return u!;
+}
+/** ISO week like 2026-W46, and its number. */
+function isoWeek(d = new Date()) {
+  const t = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+  const day = t.getUTCDay() || 7;
+  t.setUTCDate(t.getUTCDate() + 4 - day);
+  const y0 = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
+  const n = Math.ceil(((t.getTime() - y0.getTime()) / 86400000 + 1) / 7);
+  return { key: `${t.getUTCFullYear()}-W${String(n).padStart(2, "0")}`, n: t.getUTCFullYear() * 53 + n };
+}
+function weekStart() {
+  const d = new Date(); const day = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() - day + 1);
+  return d.toISOString().slice(0, 10);
+}
+function thisWeekChallenges() {
+  const w = isoWeek();
+  const sky = CFG.challenges.filter((c) => c[0] === "sky"), quiz = CFG.challenges.filter((c) => c[0] === "quiz");
+  return { week: w.key, list: [sky[w.n % sky.length], quiz[w.n % quiz.length]] };
+}
+/** Rate limit: at most n rows in a table for this user since a time. */
+async function countSince(table: string, uid: string, sinceIso: string) {
+  const { count } = await admin.from(table).select("id", { count: "exact", head: true }).eq("user_id", uid).gte("created_at", sinceIso);
+  return count ?? 0;
+}
+function b64(bytes: Uint8Array) {
+  let s = ""; for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return btoa(s);
+}
+function unb64(s: string) {
+  const bin = atob(s); const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+function hexToBytes(x: string) { // bytea comes back as \x…
+  const h = x.startsWith("\\x") ? x.slice(2) : x; const out = new Uint8Array(h.length / 2);
+  for (let i = 0; i < out.length; i++) out[i] = parseInt(h.substr(i * 2, 2), 16);
+  return out;
+}
+function bytesToHex(b: Uint8Array) { return "\\x" + Array.from(b).map((v) => v.toString(16).padStart(2, "0")).join(""); }
+function isJpeg(b: Uint8Array) { return b.length > 4 && b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff; }
+async function names(ids: string[]) {
+  const uniq = [...new Set(ids)]; if (!uniq.length) return {} as Record<string, string>;
+  const { data } = await admin.from("profiles").select("id, username").in("id", uniq);
+  return Object.fromEntries((data ?? []).map((p) => [p.id, p.username]));
+}
+/** Text that may be shown to everybody, after a moderator approves it. */
+function cleanText(s: unknown, min: number, max: number) {
+  const t = String(s ?? "").replace(/[\u0000-\u0008\u000b-\u001f\u007f]/g, "").replace(/\s+\n/g, "\n").trim();
+  if (t.length < min) throw new Fail(400, "too_short");
+  if (t.length > max) throw new Fail(400, "too_long");
+  if (/(https?:\/\/|www\.|\.(com|net|org|in|ru|xyz|io|me)\b)/i.test(t)) throw new Fail(400, "no_links");
+  if (/(\+?\d[\d\s-]{8,}\d)|([\w.]+@[\w-]+\.)/.test(t)) throw new Fail(400, "no_contacts");
+  return t;
+}
+
+// deno-lint-ignore no-explicit-any
+async function handle(req: Request, b: any): Promise<Response> {
+  const action = String(b.action ?? "");
+  switch (action) {
+    case "home": {
+      // everything the page needs on first load
+      const user = await userFrom(req, false);
+      const since = weekStart();
+      const { data: seen } = await admin.from("sky_seen").select("what, country").gte("day", since).limit(20000);
+      const counts: Record<string, number> = {}, countries: Record<string, number> = {};
+      for (const s of seen ?? []) { counts[s.what] = (counts[s.what] ?? 0) + 1; if (s.country) countries[s.country] = (countries[s.country] ?? 0) + 1; }
+      const ch = thisWeekChallenges();
+      const { data: chd } = await admin.from("challenge_done").select("cid, user_id").eq("week", ch.week);
+      const doneCount: Record<string, number> = {}; const mine: string[] = [];
+      for (const r of chd ?? []) { doneCount[r.cid] = (doneCount[r.cid] ?? 0) + 1; if (user && r.user_id === user.id) mine.push(r.cid); }
+      const { data: votes } = await admin.from("poll_votes").select("poll, choice").limit(50000);
+      const polls: Record<string, number[]> = {};
+      for (const p of CFG.polls) polls[p[0]] = p[3].map(() => 0);
+      for (const v of votes ?? []) if (polls[v.poll] && v.choice >= 0 && v.choice < polls[v.poll].length) polls[v.poll][v.choice]++;
+      const tot = async (t: string, f?: [string, string]) => { let q = admin.from(t).select("*", { count: "exact", head: true }); if (f) q = q.eq(f[0], f[1]); const { count } = await q; return count ?? 0; };
+      return reply({
+        week: ch.week, seen: counts, countries, challenges: ch.list.map((c) => ({ kind: c[0], id: c[1], en: c[2], hi: c[3], done: doneCount[c[1]] ?? 0, mine: mine.includes(c[1]) })),
+        polls, numbers: { seen: (seen ?? []).length, quiz: await tot("quiz_runs"), photos: await tot("community_photos", ["status", "approved"]), posts: await tot("community_posts", ["status", "approved"]) },
+        admin: user ? await isAdmin(user.id) : false,
+      });
+    }
+
+    case "seen": {
+      const what = String(b.what ?? "");
+      if (!SKY.has(what)) throw new Fail(400, "bad_what");
+      const user = await userFrom(req, false);
+      const device = String(b.device ?? "").slice(0, 64);
+      if (!user && device.length < 16) throw new Fail(400, "no_device");
+      const voter = await sha(user ? "u:" + user.id : "d:" + device);
+      const country = /^[A-Z]{2}$/.test(String(b.country ?? "")) ? String(b.country) : null;
+      const { error } = await admin.from("sky_seen").insert({ what, voter, user_id: user?.id ?? null, country });
+      return reply({ ok: true, again: !!error });
+    }
+
+    case "vote": {
+      const poll = CFG.polls.find((p) => p[0] === String(b.poll ?? ""));
+      const choice = Number(b.choice);
+      if (!poll || !Number.isInteger(choice) || choice < 0 || choice >= poll[3].length) throw new Fail(400, "bad_vote");
+      const user = await userFrom(req, false);
+      const device = String(b.device ?? "").slice(0, 64);
+      if (!user && device.length < 16) throw new Fail(400, "no_device");
+      const voter = await sha(user ? "u:" + user.id : "d:" + device);
+      const { error } = await admin.from("poll_votes").insert({ poll: poll[0], voter, user_id: user?.id ?? null, choice });
+      return reply({ ok: true, again: !!error });
+    }
+
+    case "challenge": {
+      const user = (await userFrom(req))!;
+      const ch = thisWeekChallenges();
+      const c = ch.list.find((x) => x[1] === String(b.id ?? ""));
+      if (!c) throw new Fail(400, "bad_challenge");
+      if (c[0] === "quiz") {
+        // checked against the rounds actually played this week
+        const { data: runs } = await admin.from("quiz_runs").select("score, qids, finished_at").eq("user_id", user.id).eq("kind", c[1])
+          .gte("started_at", weekStart()).not("finished_at", "is", null);
+        const ok = (runs ?? []).some((r) => c[1] === "est" ? Number(r.score) >= 30 : Number(r.score) >= 10 * (r.qids?.length ?? 10));
+        if (!ok) throw new Fail(409, "not_yet");
+      }
+      await admin.from("challenge_done").upsert({ user_id: user.id, week: ch.week, cid: c[1] });
+      return reply({ ok: true });
+    }
+
+    case "boards": {
+      const user = await userFrom(req, false);
+      const [pts, daily] = await Promise.all([
+        admin.rpc("astryl_points_board", { p_user: user ? user.id : null }),
+        admin.rpc("astryl_board", { p_day: new Date().toISOString().slice(0, 10), p_user: user ? user.id : null }),
+      ]);
+      return reply({ points: pts.data ?? null, daily: daily.data ?? null });
+    }
+
+    case "photos": {
+      const user = await userFrom(req, false);
+      const { data } = await admin.from("community_photos").select("id, user_id, title, kind, taken, w, h, stars, created_at")
+        .eq("status", "approved").order("created_at", { ascending: false }).limit(60);
+      const nm = await names((data ?? []).map((p) => p.user_id));
+      let starred: string[] = [];
+      if (user && data?.length) {
+        const { data: st } = await admin.from("photo_stars").select("photo_id").eq("user_id", user.id).in("photo_id", data.map((p) => p.id));
+        starred = (st ?? []).map((s) => s.photo_id);
+      }
+      let pending = 0;
+      if (user) { const { count } = await admin.from("community_photos").select("id", { count: "exact", head: true }).eq("user_id", user.id).eq("status", "pending"); pending = count ?? 0; }
+      return reply({ photos: (data ?? []).map((p) => ({ id: p.id, by: nm[p.user_id] ?? "", title: p.title, kind: p.kind, taken: p.taken, w: p.w, h: p.h, stars: p.stars, at: p.created_at, mine: user?.id === p.user_id, starred: starred.includes(p.id) })), pending });
+    }
+
+    case "upload": {
+      const user = (await userFrom(req))!;
+      if (b.own !== true) throw new Fail(400, "must_be_own");
+      const title = cleanText(b.title, 3, 80);
+      const kind = String(b.kind ?? ""); if (!PHOTO_KINDS.has(kind)) throw new Fail(400, "bad_kind");
+      const taken = b.taken ? cleanText(b.taken, 2, 60) : null;
+      const full = unb64(String(b.full ?? "")), thumb = unb64(String(b.thumb ?? ""));
+      if (!isJpeg(full) || !isJpeg(thumb)) throw new Fail(400, "not_jpeg");
+      if (full.length > MAX_FULL || thumb.length > MAX_THUMB) throw new Fail(413, "too_big");
+      const since = new Date(Date.now() - 86400000).toISOString();
+      if ((await countSince("community_photos", user.id, since)) >= 3) throw new Fail(429, "photo_limit");
+      const w = Math.min(4000, Math.max(1, Number(b.w) | 0)), h = Math.min(4000, Math.max(1, Number(b.h) | 0));
+      const ins = await admin.from("community_photos").insert({ user_id: user.id, title, kind, taken, w, h, img: bytesToHex(full), thumb: bytesToHex(thumb) }).select("id").single();
+      if (ins.error) throw new Fail(500, "upload_failed");
+      return reply({ ok: true, id: ins.data.id });
+    }
+
+    case "star": {
+      const user = (await userFrom(req))!;
+      const id = String(b.id ?? "");
+      const { data: p } = await admin.from("community_photos").select("id, stars").eq("id", id).eq("status", "approved").maybeSingle();
+      if (!p) throw new Fail(404, "no_photo");
+      const del = await admin.from("photo_stars").delete().eq("photo_id", id).eq("user_id", user.id).select("photo_id");
+      let on = false;
+      if (!del.data?.length) { await admin.from("photo_stars").insert({ photo_id: id, user_id: user.id }); on = true; }
+      const { count } = await admin.from("photo_stars").select("photo_id", { count: "exact", head: true }).eq("photo_id", id);
+      await admin.from("community_photos").update({ stars: count ?? 0 }).eq("id", id);
+      return reply({ on, stars: count ?? 0 });
+    }
+
+    case "report": {
+      const kind = String(b.kind ?? ""); const id = String(b.id ?? "");
+      if (kind !== "photo" && kind !== "post") throw new Fail(400, "bad_kind");
+      const user = await userFrom(req, false);
+      const device = String(b.device ?? "").slice(0, 64);
+      if (!user && device.length < 16) throw new Fail(400, "no_device");
+      const voter = await sha(user ? "u:" + user.id : "d:" + device);
+      const reason = String(b.reason ?? "").slice(0, 40);
+      const table = kind === "photo" ? "community_photos" : "community_posts";
+      const { data: t } = await admin.from(table).select("id, reports").eq("id", id).maybeSingle();
+      if (!t) throw new Fail(404, "not_found");
+      const { error } = await admin.from("community_reports").insert({ kind, target: id, voter, reason });
+      if (!error) await admin.from(table).update({ reports: (t.reports ?? 0) + 1 }).eq("id", id);
+      return reply({ ok: true });
+    }
+
+    case "posts": {
+      const user = await userFrom(req, false);
+      const { data } = await admin.from("community_posts").select("id, user_id, parent_id, kind, body, created_at").eq("status", "approved")
+        .order("created_at", { ascending: false }).limit(200);
+      const nm = await names((data ?? []).map((p) => p.user_id));
+      const all = (data ?? []).map((p) => ({ id: p.id, parent: p.parent_id, kind: p.kind, body: p.body, by: nm[p.user_id] ?? "", at: p.created_at, mine: user?.id === p.user_id }));
+      const top = all.filter((p) => !p.parent).slice(0, 50).map((p) => ({ ...p, replies: all.filter((r) => r.parent === p.id).reverse() }));
+      let pending = 0;
+      if (user) { const { count } = await admin.from("community_posts").select("id", { count: "exact", head: true }).eq("user_id", user.id).eq("status", "pending"); pending = count ?? 0; }
+      return reply({ posts: top, pending });
+    }
+
+    case "post": {
+      const user = (await userFrom(req))!;
+      const parent = b.parent ? String(b.parent) : null;
+      let kind = String(b.kind ?? "question");
+      if (parent) {
+        const { data: p } = await admin.from("community_posts").select("id, parent_id").eq("id", parent).eq("status", "approved").maybeSingle();
+        if (!p || p.parent_id) throw new Fail(404, "no_post");
+        kind = "reply";
+      } else if (!POST_KINDS.has(kind)) throw new Fail(400, "bad_kind");
+      const body = cleanText(b.body, 3, 600);
+      const since = new Date(Date.now() - 86400000).toISOString();
+      if ((await countSince("community_posts", user.id, since)) >= 10) throw new Fail(429, "post_limit");
+      const ins = await admin.from("community_posts").insert({ user_id: user.id, parent_id: parent, kind, body }).select("id").single();
+      if (ins.error) throw new Fail(500, "post_failed");
+      return reply({ ok: true });
+    }
+
+    case "mine_delete": {
+      // people can always remove their own photo or post
+      const user = (await userFrom(req))!;
+      const kind = String(b.kind ?? ""), id = String(b.id ?? "");
+      const table = kind === "photo" ? "community_photos" : kind === "post" ? "community_posts" : "";
+      if (!table) throw new Fail(400, "bad_kind");
+      await admin.from(table).delete().eq("id", id).eq("user_id", user.id);
+      return reply({ ok: true });
+    }
+
+    /* ---------- moderation ---------- */
+    case "admin_queue": {
+      await mustAdmin(req);
+      const { data: ph } = await admin.from("community_photos").select("id, user_id, title, kind, taken, status, reports, created_at, thumb")
+        .or("status.eq.pending,reports.gt.0").order("created_at").limit(40);
+      const { data: po } = await admin.from("community_posts").select("id, user_id, parent_id, kind, body, status, reports, created_at")
+        .or("status.eq.pending,reports.gt.0").order("created_at").limit(100);
+      const parents = (po ?? []).filter((p) => p.parent_id).map((p) => p.parent_id);
+      const { data: par } = parents.length ? await admin.from("community_posts").select("id, body").in("id", parents) : { data: [] };
+      const pb = Object.fromEntries((par ?? []).map((p) => [p.id, p.body]));
+      const nm = await names([...(ph ?? []).map((p) => p.user_id), ...(po ?? []).map((p) => p.user_id)]);
+      return reply({
+        photos: (ph ?? []).map((p) => ({ id: p.id, by: nm[p.user_id] ?? "", title: p.title, kind: p.kind, taken: p.taken, status: p.status, reports: p.reports, at: p.created_at, thumb: b64(hexToBytes(p.thumb as unknown as string)) })),
+        posts: (po ?? []).map((p) => ({ id: p.id, by: nm[p.user_id] ?? "", kind: p.kind, body: p.body, status: p.status, reports: p.reports, at: p.created_at, replyTo: p.parent_id ? pb[p.parent_id] ?? "" : null })),
+      });
+    }
+
+    case "admin_photo": {
+      await mustAdmin(req);
+      const { data } = await admin.from("community_photos").select("img").eq("id", String(b.id ?? "")).maybeSingle();
+      if (!data) throw new Fail(404, "no_photo");
+      return reply({ full: b64(hexToBytes(data.img as unknown as string)) });
+    }
+
+    case "admin_decide": {
+      await mustAdmin(req);
+      const kind = String(b.kind ?? ""), id = String(b.id ?? ""), verdict = String(b.verdict ?? "");
+      const table = kind === "photo" ? "community_photos" : kind === "post" ? "community_posts" : "";
+      if (!table) throw new Fail(400, "bad_kind");
+      if (verdict === "approve") {
+        await admin.from(table).update({ status: "approved", reports: 0, decided_at: new Date().toISOString() }).eq("id", id);
+        await admin.from("community_reports").delete().eq("kind", kind).eq("target", id);
+      } else if (verdict === "remove") {
+        await admin.from(table).delete().eq("id", id);
+        await admin.from("community_reports").delete().eq("kind", kind).eq("target", id);
+      } else throw new Fail(400, "bad_verdict");
+      return reply({ ok: true });
+    }
+
+    default:
+      throw new Fail(400, "unknown_action");
+  }
+}
+
+async function image(url: URL): Promise<Response> {
+  const id = url.searchParams.get("id") ?? "", full = url.searchParams.get("size") === "full";
+  if (!/^[0-9a-f-]{36}$/.test(id)) return new Response("not found", { status: 404, headers: CORS });
+  const { data } = await admin.from("community_photos").select(full ? "img" : "thumb").eq("id", id).eq("status", "approved").maybeSingle();
+  if (!data) return new Response("not found", { status: 404, headers: CORS });
+  // deno-lint-ignore no-explicit-any
+  const bytes = hexToBytes((data as any)[full ? "img" : "thumb"]);
+  return new Response(bytes, { headers: { ...CORS, "Content-Type": "image/jpeg", "Cache-Control": "public, max-age=86400" } });
+}
+
+Deno.serve(async (req: Request) => {
+  if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
+  try {
+    const url = new URL(req.url);
+    if (req.method === "GET" && url.searchParams.get("action") === "img") return await image(url);
+    if (req.method !== "POST") throw new Fail(405, "bad_method");
+    const text = await req.text();
+    if (text.length > 1_500_000) throw new Fail(413, "too_big");
+    let body: unknown = {};
+    try { body = text ? JSON.parse(text) : {}; } catch { throw new Fail(400, "bad_json"); }
+    return await handle(req, body);
+  } catch (e) {
+    if (e instanceof Fail) return reply({ error: e.message }, e.status);
+    console.error(e);
+    return reply({ error: "server_error" }, 500);
+  }
+});

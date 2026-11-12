@@ -402,7 +402,7 @@ def cons_svg(c):
 # ------------------------------------------------------------------ page shell
 # The top menu keeps four main pages; the rest sit under "More". Home is the logo.
 NAV_MAIN = [('planets.html', 'planets', bi('planetsTitle')), ('solar-system.html', 'solar', bi('solarSystemTitle')), ('sky.html', 'sky', bi('skyTitle')), ('quiz.html', 'quiz', bi('navQuiz'))]
-NAV_MORE = [('my-space.html', 'myspace', bt('My space', 'My space')), ('sky-events.html', 'events', bt('Eclipses and meteor showers', 'ग्रहण और उल्कापात')), ('learn.html', 'school', bt('For students', 'छात्रों के लिए')), ('telescope.html', 'scope', bt('Telescope simulator', 'Telescope simulator')), ('iss.html', 'iss', bt('Space station passes', 'अंतरिक्ष स्टेशन कब दिखेगा')), ('compare.html', 'compare', bi('navCompare')), ('you.html', 'you', bt('You', 'आप')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')),
+NAV_MORE = [('community.html', 'community', bt('Astryl Community', 'Astryl Community')), ('my-space.html', 'myspace', bt('My space', 'My space')), ('sky-events.html', 'events', bt('Eclipses and meteor showers', 'ग्रहण और उल्कापात')), ('learn.html', 'school', bt('For students', 'छात्रों के लिए')), ('telescope.html', 'scope', bt('Telescope simulator', 'Telescope simulator')), ('iss.html', 'iss', bt('Space station passes', 'अंतरिक्ष स्टेशन कब दिखेगा')), ('compare.html', 'compare', bi('navCompare')), ('you.html', 'you', bt('You', 'आप')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')),
             ('missions.html', 'missions', bi('missionsTitle')), ('spacecraft.html', 'spacecraft', bi('spacecraftTitle')),
             ('universe-map.html', 'umap', bt('Universe map', 'ब्रह्मांड का नक्शा')), ('galaxies.html', 'gx', bt('Galaxies', 'Galaxies')), ('cosmic-scale.html', 'scale', bt('Scale of the universe', 'ब्रह्मांड का पैमाना')), ('universe-timeline.html', 'tline', bt('Timeline', 'समयरेखा')), ('glossary.html', 'gloss', bt('Glossary', 'शब्दकोश')), ('black-holes.html', 'bh', bt('Black holes', 'ब्लैक होल'))]
 
@@ -414,7 +414,7 @@ def asset_v():
     '''A short hash of the scripts and styles, so a changed file is never served from an old cache.'''
     if not _ASSET_V:
         h = hashlib.md5()
-        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'sw.js'):
+        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'sw.js'):
             h.update((SRC / name).read_bytes())
         h.update((ROOT / 'tools' / 'formation.py').read_bytes())
         if (OUT / 'assets/quiz-bank.js').exists():
@@ -817,6 +817,7 @@ def index_page():
              (pic('earth'), 'navCompare', 'Any two worlds side by side', 'कोई भी दो दुनियाएँ आमने-सामने', 'compare.html')]
     by = {t[4]: t for t in tiles}
     by['telescope.html'] = ('🔭', bt('Telescope simulator', 'Telescope simulator'), 'What a telescope really shows, in real photos', 'Telescope में असल में क्या दिखता है, असली तस्वीरों में', 'telescope.html')
+    by['community.html'] = ('👥', bt('Astryl Community', 'Astryl Community'), 'Sky photos, challenges, polls and questions', 'आसमान की फ़ोटो, challenges, polls और सवाल', 'community.html')
     by['quiz.html'] = ('🏆', bt('Quiz and Space Points', 'Quiz और Space Points'), 'Photo, constellation and mission rounds', 'फ़ोटो, नक्षत्र और mission वाले rounds', 'quiz.html')
 
     def card(h):
@@ -825,7 +826,7 @@ def index_page():
     groups = [('img/planets/saturn.webp', bt('The Solar System', 'सौरमंडल'), bt('Planets, moons and where they are today', 'ग्रह, चाँद और वे आज कहाँ हैं'), ['planets.html', 'solar-system.html', 'compare.html', 'you.html', 'maps.html']),
               ('img/space/gx-whirlpool.webp', bt('Deep space', 'गहरा अंतरिक्ष'), bt('Black holes, galaxies and the whole universe', 'ब्लैक होल, आकाशगंगाएँ और पूरा ब्रह्मांड'), ['black-holes.html', 'black-holes-101.html', 'galaxies.html', 'universe-map.html', 'cosmic-scale.html', 'universe-timeline.html']),
               ('img/space/sun-eclipse.webp', bt('Watch the sky', 'आसमान देखिए'), bt('What to look for tonight, from your city', 'आज रात क्या देखें, आपके शहर से'), ['sky.html', 'constellations.html', 'sky-events.html', 'iss.html', 'telescope.html']),
-              ('img/space/pic-earthrise.webp', bt('Explore and learn', 'खोजिए और सीखिए'), bt('Missions, spacecraft, lessons and quizzes', 'Missions, अंतरिक्ष यान, पाठ और quiz'), ['missions.html', 'spacecraft.html', 'learn.html', 'quiz.html', 'glossary.html'])]
+              ('img/space/pic-earthrise.webp', bt('Explore and learn', 'खोजिए और सीखिए'), bt('Missions, spacecraft, lessons and quizzes', 'Missions, अंतरिक्ष यान, पाठ और quiz'), ['community.html', 'missions.html', 'spacecraft.html', 'learn.html', 'quiz.html', 'glossary.html'])]
     cards = ''.join(f'<section class="grp"><div class="grph" style="background-image:url({img})"><h2>{t}</h2><p>{sub}</p></div><div class="sc-grid">{"".join(card(h) for h in hs)}</div></section>' for img, t, sub, hs in groups)
     quiz = ''.join(f'<button type="button" class="opt"{" data-ok=1" if k == "planetJupiter" else ""}>{bi(k)}</button>' for k in ('planetSaturn', 'planetJupiter', 'planetMars', 'planetNeptune'))
     surprise = []
@@ -1011,6 +1012,30 @@ MAP_CREDIT = {
 }
 
 
+def community_pages():
+    cfg = json.loads((ROOT / 'supabase/functions/community/config.json').read_text(encoding='utf-8'))
+    v = asset_v()
+    body = f'''<section class="blk"><h1>👥 {bt("Astryl Community", "Astryl Community")}</h1><p class="sub">{bt("Space lovers sharing what they saw: tap what you spotted in the sky, take the weekly challenge, vote, share your own sky photos and ask questions. Photos and posts appear after the moderator has checked them.", "अंतरिक्ष के शौक़ीन जो देखा वह बाँटते हैं: आसमान में जो दिखा उस पर tap कीजिए, हफ़्ते का challenge लीजिए, वोट कीजिए, अपने आसमान की फ़ोटो भेजिए और सवाल पूछिए। फ़ोटो और posts moderator के जाँचने के बाद दिखते हैं।")}</p>
+<p class="cmjump"><a href="#seen">🔭 {bt("I saw it", "मैंने देखा")}</a> <a href="#challenge">🏆 {bt("Challenge", "Challenge")}</a> <a href="#polls">🗳️ {bt("Polls", "Polls")}</a> <a href="#boards">🥇 {bt("Leaderboards", "Leaderboards")}</a> <a href="#gallery">📷 {bt("Sky photos", "आसमान की फ़ोटो")}</a> <a href="#talk">💬 {bt("Questions and talk", "सवाल और बातचीत")}</a></p>
+<p id="cmAdmin" hidden><a class="btn" href="moderate.html">🛡️ {bt("Moderation queue", "Moderation queue")}</a></p></section>
+<section class="blk" id="seen"><h2>🔭 {bt("I saw it!", "मैंने देखा!")}</h2><p class="sub">{bt("Tap what you have seen in the sky today. Counts are for this week, from everyone.", "आज आसमान में जो देखा उस पर tap कीजिए। गिनती इस हफ़्ते की है, सबकी मिलाकर।")}</p><div class="seeng" id="cmSeen"></div><p class="note" id="cmSeenNote"></p></section>
+<section class="blk" id="challenge"><h2>🏆 {bt("This week's challenge", "इस हफ़्ते का challenge")}</h2><p class="sub">{bt("A new sky task and quiz task every Monday. Sky tasks are on your honour; quiz tasks are checked against the rounds you played.", "हर सोमवार एक नया आसमान वाला और एक quiz वाला काम। आसमान वाले काम आपकी ईमानदारी पर हैं; quiz वाले आपके खेले rounds से जाँचे जाते हैं।")}</p><div class="grid" id="cmChallenge"></div><p class="note" id="cmBadges"></p></section>
+<section class="blk" id="polls"><h2>🗳️ {bt("Polls", "Polls")}</h2><div class="grid" id="cmPolls"></div></section>
+<section class="blk" id="boards"><h2>🥇 {bt("Leaderboards", "Leaderboards")}</h2><div class="card" id="cmBoards"></div></section>
+<section class="blk" id="gallery"><h2>📷 {bt("Sky photos by the community", "Community की आसमान वाली फ़ोटो")}</h2><div id="cmGallery"></div></section>
+<section class="blk" id="talk"><h2>💬 {bt("Questions and talk", "सवाल और बातचीत")}</h2><p class="sub">{bt("Ask anything about space, tell others what you saw, or suggest something for Astryl.", "अंतरिक्ष के बारे में कुछ भी पूछिए, दूसरों को बताइए आपने क्या देखा, या Astryl के लिए सुझाव दीजिए।")}</p><div id="cmPosts"></div></section>
+<section class="blk callout"><b>{bt("Community rules", "Community के नियम")}</b><ul>
+<li>{bt("Be kind and stay on space and the sky.", "अच्छे से बात कीजिए और अंतरिक्ष व आसमान के विषय पर रहिए।")}</li>
+<li>{bt("Never share your phone number, e-mail, address, school or photos of people.", "अपना फ़ोन नंबर, e-mail, पता, स्कूल या लोगों की फ़ोटो कभी न डालें।")}</li>
+<li>{bt("Only share photos you took yourself.", "सिर्फ़ अपनी खींची फ़ोटो भेजिए।")}</li>
+<li>{bt("Everything is checked by the moderator before it appears; anything can be reported.", "हर चीज़ दिखने से पहले moderator जाँचते हैं; किसी भी चीज़ की शिकायत की जा सकती है।")}</li>
+<li>{bt("Deleting your account deletes all your photos, posts and votes.", "खाता मिटाने पर आपकी सारी फ़ोटो, posts और votes मिट जाते हैं।")}</li></ul></section>
+<script>window.ASTRYL_COMMUNITY={json.dumps(cfg, ensure_ascii=False).replace('</', '<\\/')};</script>'''
+    write('community.html', shell('Astryl Community', 'Astryl Community', 'community', body, 'The Astryl Community: what people saw in the sky this week, a weekly challenge, polls, leaderboards, sky photos and questions about space.', canonical='community.html', extra_head=f'<script defer src="assets/community.js?v={v}"></script>'))
+    body = f'''<section class="blk"><h1>🛡️ Moderation</h1><p class="sub">New photos and posts, and anything people reported. Approve to show it, remove to delete it for good.</p><div id="mod"></div></section>'''
+    write('moderate.html', shell('Moderation', 'Moderation', 'community', body, 'Astryl Community moderation.', canonical='moderate.html', extra_head=f'<meta name="robots" content="noindex"><script defer src="assets/moderate.js?v={v}"></script>'))
+
+
 def get_page():
     # The Android app is no longer offered here; old links to get.html go to the home page.
     body = f'''<section class="blk"><h1>{bt("Astryl is a website", "Astryl एक website है")}</h1><p class="sub">{bt("Everything is here on astryl.space, in your browser. Taking you to the home page…", "सब कुछ यहीं astryl.space पर, आपके browser में है। आपको home page पर ले जा रहे हैं…")}</p><p><a class="btn primary" href="index.html">{bt("Go to the home page", "Home page पर जाएँ")} →</a></p></section>'''
@@ -1059,6 +1084,7 @@ def privacy_page():
 {tr("If sync is on: favourites, quiz scores (also the website’s black hole and galaxy quiz), which lessons you have read (Black holes, Galaxies and For students, in the app or on this website), the “I’ve seen it” list, language, theme, text size, city (never a GPS place), birth date and the daily sky note setting. Other website pages you have read stay in your browser and are never sent.", "Sync चालू हो तो: favourites, quiz scores (website की black hole और galaxy quiz भी), कौन-से पाठ पढ़े (Black holes, Galaxies और छात्रों के लिए, app में या इस website पर), “मैंने देखा” वाली list, भाषा, theme, text size, शहर (GPS वाली जगह कभी नहीं), जन्मतिथि और रोज़ के आसमान वाले note की setting। Website के बाक़ी pages जो आपने पढ़े वे आपके browser में ही रहते हैं, कभी भेजे नहीं जाते।", "To keep the app and the website in step", "App और website को एक जैसा रखने के लिए", "Until you delete the account or switch sync off and delete it", "जब तक आप खाता नहीं मिटाते")}
 {tr("Daily 5: for each day you play, your score, how many answers were right and how long it took", "Daily 5: आप जिस दिन खेलें, उस दिन का score, कितने जवाब सही थे और कितना समय लगा", "To make the leaderboard and rank you", "Leaderboard बनाने और आपकी rank बताने के लिए", "Until you delete the account", "जब तक आप खाता नहीं मिटाते")}
 {tr("Quiz rounds (only when you play one while logged in): which questions you got, your answers with their time, the points of each round, and your Space Points in all and this week. The leaderboard shows only your username and points, and the “Show me on the leaderboard” switch hides you there too", "Quiz rounds (सिर्फ़ तब जब आप log in करके खेलें): आपको कौन-से सवाल मिले, आपके जवाब और उनका समय, हर round के points, और आपके कुल व इस हफ़्ते के Space Points। Leaderboard पर सिर्फ़ आपका username और points दिखते हैं, और “मुझे leaderboard में दिखाएँ” switch से आप वहाँ से भी छिप जाते हैं", "To check each answer on the server, keep the points fair and show the leaderboard", "Server पर हर जवाब जाँचने, points को निष्पक्ष रखने और leaderboard दिखाने के लिए", "Until you delete the account", "जब तक आप खाता नहीं मिटाते")}
+{tr("Astryl Community (only what you choose to add): sky photos you upload (made smaller, with camera and location data removed in your browser), your title and the place and date you type, your posts and replies, stars you give, challenges you finish. They are shown with your username only after the moderator approves them. You can delete any of them yourself", "Astryl Community (सिर्फ़ जो आप ख़ुद जोड़ें): आपकी भेजी आसमान की फ़ोटो (छोटी की हुई, browser में camera और location की जानकारी हटाकर), आपका शीर्षक और लिखी जगह व तारीख़, आपकी posts और जवाब, आपके दिए stars, आपके पूरे किए challenges। ये moderator की मंज़ूरी के बाद ही आपके username के साथ दिखते हैं। इनमें से कुछ भी आप ख़ुद मिटा सकते हैं", "To run the community page and keep it safe", "Community page चलाने और उसे सुरक्षित रखने के लिए", "Until you delete it or the account", "जब तक आप उसे या खाता नहीं मिटाते")}
 {tr("An optional profile photo (a small 256 px square picture you choose yourself)", "एक वैकल्पिक profile फ़ोटो (आपकी चुनी हुई छोटी 256 px चौकोर तस्वीर)", "To show it on your own passport and profile; it is not shown to other people and not on the leaderboard", "सिर्फ़ आपके अपने passport और profile पर दिखाने के लिए; दूसरों को या leaderboard पर नहीं दिखती", "Until you remove it or delete the account", "जब तक आप उसे हटाएँ या खाता मिटाएँ")}
 </table>
 <p>{bt("Your birth date is stored only if you have entered it in the app and sync is on. Turn sync off in the You tab → Account to stop this.", "आपकी जन्मतिथि तभी रखी जाती है जब आपने उसे app में लिखा हो और sync चालू हो। इसे रोकने के लिए You tab → Account में sync बंद करें।")}</p>
@@ -1085,6 +1111,7 @@ def privacy_page():
 <h2 id="s7">{bt("7. This website", "7. यह website")}</h2>
 <ul>
 {li("No cookies, no ads, no third-party analytics, scripts or fonts. Everything is calculated in your browser.", "कोई cookies, विज्ञापन, बाहरी analytics, scripts या fonts नहीं। सब कुछ आपके browser में calculate होता है।")}
+{li("On the community page, “I saw it” taps and poll votes need no account. To count each person once, the browser keeps a random id; the server stores only a scrambled form of it (a hash) with the tap or vote, and the country from your browser’s language setting. Reports of photos or posts are stored the same way.", "Community page पर “मैंने देखा” वाले tap और poll के vote के लिए खाता नहीं चाहिए। हर व्यक्ति को एक बार गिनने के लिए browser एक random id रखता है; server tap या vote के साथ उसका सिर्फ़ बदला हुआ रूप (hash) रखता है, और आपके browser की भाषा setting वाला देश। फ़ोटो या post की शिकायतें भी इसी तरह रखी जाती हैं।")}
 {li("Your browser remembers language, theme, quiz scores and whether you have seen the welcome window, in local storage on your own device. If you log in, a login token is kept there too, until you log out.", "आपका browser भाषा, theme, quiz scores और यह कि आपने welcome window देख ली है, आपके अपने device की local storage में याद रखता है। Log in करने पर वहीं एक login token भी रहता है, log out करने तक।")}
 {li("The first time you open the site, a welcome window offers to create an account or log in. “Continue without account” closes it and the site remembers that choice on your device.", "Site पहली बार खोलने पर एक welcome window खाता बनाने या log in करने का विकल्प देती है। “बिना खाते के आगे बढ़ें” उसे बंद कर देता है और site आपके device पर वह चुनाव याद रखती है।")}
 {li("A small notice at the bottom of the page can show a note from the Astryl team (you can close it) and, once, ask whether you want to share your approximate place. Your answer is remembered on your device. See “Visitors and places” below.", "Page के नीचे एक छोटी सूचना Astryl टीम का कोई संदेश दिखा सकती है (आप उसे बंद कर सकते हैं) और एक बार पूछ सकती है कि क्या आप अपनी अनुमानित जगह बताना चाहते हैं। आपका जवाब आपके device पर याद रखा जाता है। नीचे “Visitors और जगहें” देखें।")}
@@ -1195,7 +1222,7 @@ def main():
     shutil.copy(SRC / 'learn.js', OUT / 'assets/learn.js')
     shutil.copy(SRC / 'universe.js', OUT / 'assets/universe.js')
     shutil.copytree(site_data.CITIES, OUT / 'assets' / 'cities')
-    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js'):
+    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js'):
         shutil.copy(SRC / name, OUT / 'assets' / name)
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#fbf7ee"/><circle r="30" fill="#1b3a8a"/><ellipse rx="50" ry="15" fill="none" stroke="#6a45d6" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#1b3a8a"/></svg>', encoding='utf-8')
@@ -1212,10 +1239,10 @@ def main():
     QB_SIZES = quizbank.build(OUT, ROOT, BODIES, lambda lg, i: tr(lg, NAME_KEY[i]), CONS, PHOTO)
     for i, b in enumerate(BODIES):
         body_page(b, i)
-    index_page(); planets_page(); simple_pages(); maps_page(); get_page(); privacy_page(); account_page(); not_found(); pwa_files()
+    index_page(); planets_page(); simple_pages(); community_pages(); maps_page(); get_page(); privacy_page(); account_page(); not_found(); pwa_files()
     helpers = dict(bt=bt, bi=bi, raw2=raw2, shell=shell, write=write, esc=esc, fmt=fmt, asset_v=asset_v, SITE=SITE, ROOT=ROOT)
     deep = deepspace.build(helpers) + galaxies.build(helpers) + lab.build(helpers) + universe.build(helpers) + learn.build(helpers) + umap.build(helpers) + myspace.build(helpers) + skyevents.build(helpers) + students.build(helpers) + telescope.build(helpers) + iss.build(helpers)
-    urls = ['', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'privacy.html', 'account.html', 'black-holes.html', 'galaxies.html'] + deep + [f'body/{b["id"]}.html' for b in BODIES]
+    urls = ['', 'community.html', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'privacy.html', 'account.html', 'black-holes.html', 'galaxies.html'] + deep + [f'body/{b["id"]}.html' for b in BODIES]
     (OUT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}/{u}</loc></url>\n' for u in urls) + '</urlset>\n', encoding='utf-8')
     og_images()
     (ROOT / 'tools' / 'i18n' / 'source.tsv').write_text('# id<TAB>English text of every translatable text on the site (generated by build_site.py)\n' + ''.join(f'{k}\t{v}\n' for k, v in sorted(SOURCE.items(), key=lambda kv: kv[1])), encoding='utf-8')
