@@ -848,7 +848,9 @@ d19ab717	Quasar
 03c7fbb1	Questions still open
 f8ea0b5b	Quick quiz
 ab458f4b	Quiz
+651cafb2	Quiz rounds (only when you play one while logged in): which questions you got, your answers with their time, the points of each round, and your Space Points in all and this week. The leaderboard shows only your username and points, and the “Show me on the leaderboard” switch hides you there too
 e5d284b6	Ram
+f2c0292c	Real NASA photos, constellations, missions, bigger or smaller and best guess. Log in and every right answer earns Space Points.
 6b009e1c	Real positions on any date
 f52a9d91	Redshift
 45a236d2	Remember
@@ -859,6 +861,7 @@ af6d5a99	Ripples in space
 08706a05	Ripples in space itself, made for example when two black holes merge. First detected in 2015.
 4bb48bef	Rocky and giant planets
 c6669091	Rosetta's lander Philae touched down on comet 67P/Churyumov–Gerasimenko, the first landing on a comet. Rosetta itself circled the comet for two years.
+504734db	Rounds for Space Points
 dd913e43	Rover
 0d8e3621	Sagittarius A*
 6a2ef640	Sagittarius A* (4.3 million)
@@ -1159,6 +1162,7 @@ e2bb3f96	Titan
 2fe73664	Titan has rivers and lakes, but they hold liquid methane and ethane, not water.
 d30af567	Titan is the only moon with a thick atmosphere. Its air pressure at the surface is higher than on Earth.
 8ea8f578	To ask what is stored about you, to get a copy, or to have something corrected or removed, write to contact@astryl.space and tell us your username. Depending on where you live you may also have the right to complain to your data protection authority.
+929c249d	To check each answer on the server, keep the points fair and show the leaderboard
 a3d884c9	To keep the app and the website in step
 0c94b135	To log you in
 4c031e9d	To make the leaderboard and rank you

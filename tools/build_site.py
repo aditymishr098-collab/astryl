@@ -18,6 +18,7 @@ import students
 import cons
 import site_data
 import photos
+import quizbank
 import telescope
 import iss
 import universe
@@ -410,8 +411,10 @@ def asset_v():
     '''A short hash of the scripts and styles, so a changed file is never served from an old cache.'''
     if not _ASSET_V:
         h = hashlib.md5()
-        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'sw.js'):
+        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'sw.js'):
             h.update((SRC / name).read_bytes())
+        if (OUT / 'assets/quiz-bank.js').exists():
+            h.update((OUT / 'assets/quiz-bank.js').read_bytes())
         h.update(data_js().encode('utf-8'))
         h.update(umap.CATALOG.read_bytes())
         _ASSET_V.append(h.hexdigest()[:10])
@@ -829,8 +832,9 @@ def simple_pages():
     write('you.html', shell('Weight, age and birthday sky', 'वज़न, उम्र और जन्मदिन का आसमान', 'you', body, 'Your weight, jump height and age on every planet, the Moon and the planets on the day you were born, how far your birthday light has travelled, and a picture to share.', canonical='you.html', extra_head=f'<script defer src="assets/birthday.js?v={asset_v()}"></script>'))
     # quiz
     body = f'''<section class="blk"><h1>{bi("quizTitle")}</h1><div id="daily" class="daily"></div></section>
+<section class="blk"><h2>{bt("Rounds for Space Points", "Space Points वाले rounds")}</h2><p class="sub">{bt("Real NASA photos, constellations, missions, bigger or smaller and best guess. Log in and every right answer earns Space Points.", "NASA की असली तस्वीरें, नक्षत्र, missions, बड़ा या छोटा और अंदाज़ा। Log in करें तो हर सही जवाब पर Space Points मिलते हैं।")}</p><div id="rounds"></div></section>
 <section class="blk"><h2>{bt("Practice", "अभ्यास")}</h2><div id="quiz"></div></section>'''
-    write('quiz.html', shell('Planet quiz', 'ग्रहों की quiz', 'quiz', body, 'A planet and moon quiz with three levels, built from real planet data.', canonical='quiz.html'))
+    write('quiz.html', shell('Space quiz', 'अंतरिक्ष quiz', 'quiz', body, 'A space quiz: real NASA photos, constellations, missions, bigger or smaller, best guess and planet levels, with Space Points and a leaderboard.', canonical='quiz.html', extra_head=f'<script defer src="assets/quiz-bank.js?v={asset_v()}"></script><script defer src="assets/rounds.js?v={asset_v()}"></script>'))
     # sky
     body = f'''<section class="blk"><h1>{bi("skyTitle")}</h1><div class="card" id="moonNow"></div></section>
 <section class="blk"><h2>{bt("Planets tonight", "आज रात के ग्रह")}</h2><div class="card" id="planetsTonight"></div></section>
@@ -946,6 +950,7 @@ def privacy_page():
 {tr("The date you accepted this policy and its version, the date you joined, the date you last used the account", "आपने यह policy कब मानी और उसका version, आप कब जुड़े, खाता आख़िरी बार कब इस्तेमाल हुआ", "To show your consent and run the account", "आपकी सहमति दिखाने और खाता चलाने के लिए", "Until you delete the account", "जब तक आप खाता नहीं मिटाते")}
 {tr("If sync is on: favourites, quiz scores (also the website’s black hole and galaxy quiz), which lessons you have read (Black holes, Galaxies and For students, in the app or on this website), the “I’ve seen it” list, language, theme, text size, city (never a GPS place), birth date and the daily sky note setting. Other website pages you have read stay in your browser and are never sent.", "Sync चालू हो तो: favourites, quiz scores (website की black hole और galaxy quiz भी), कौन-से पाठ पढ़े (Black holes, Galaxies और छात्रों के लिए, app में या इस website पर), “मैंने देखा” वाली list, भाषा, theme, text size, शहर (GPS वाली जगह कभी नहीं), जन्मतिथि और रोज़ के आसमान वाले note की setting। Website के बाक़ी pages जो आपने पढ़े वे आपके browser में ही रहते हैं, कभी भेजे नहीं जाते।", "To keep the app and the website in step", "App और website को एक जैसा रखने के लिए", "Until you delete the account or switch sync off and delete it", "जब तक आप खाता नहीं मिटाते")}
 {tr("Daily 5: for each day you play, your score, how many answers were right and how long it took", "Daily 5: आप जिस दिन खेलें, उस दिन का score, कितने जवाब सही थे और कितना समय लगा", "To make the leaderboard and rank you", "Leaderboard बनाने और आपकी rank बताने के लिए", "Until you delete the account", "जब तक आप खाता नहीं मिटाते")}
+{tr("Quiz rounds (only when you play one while logged in): which questions you got, your answers with their time, the points of each round, and your Space Points in all and this week. The leaderboard shows only your username and points, and the “Show me on the leaderboard” switch hides you there too", "Quiz rounds (सिर्फ़ तब जब आप log in करके खेलें): आपको कौन-से सवाल मिले, आपके जवाब और उनका समय, हर round के points, और आपके कुल व इस हफ़्ते के Space Points। Leaderboard पर सिर्फ़ आपका username और points दिखते हैं, और “मुझे leaderboard में दिखाएँ” switch से आप वहाँ से भी छिप जाते हैं", "To check each answer on the server, keep the points fair and show the leaderboard", "Server पर हर जवाब जाँचने, points को निष्पक्ष रखने और leaderboard दिखाने के लिए", "Until you delete the account", "जब तक आप खाता नहीं मिटाते")}
 {tr("An optional profile photo (a small 256 px square picture you choose yourself)", "एक वैकल्पिक profile फ़ोटो (आपकी चुनी हुई छोटी 256 px चौकोर तस्वीर)", "To show it on your own passport and profile; it is not shown to other people and not on the leaderboard", "सिर्फ़ आपके अपने passport और profile पर दिखाने के लिए; दूसरों को या leaderboard पर नहीं दिखती", "Until you remove it or delete the account", "जब तक आप उसे हटाएँ या खाता मिटाएँ")}
 </table>
 <p>{bt("Your birth date is stored only if you have entered it in the app and sync is on. Turn sync off in the You tab → Account to stop this.", "आपकी जन्मतिथि तभी रखी जाती है जब आपने उसे app में लिखा हो और sync चालू हो। इसे रोकने के लिए You tab → Account में sync बंद करें।")}</p>
@@ -1082,7 +1087,7 @@ def main():
     shutil.copy(SRC / 'learn.js', OUT / 'assets/learn.js')
     shutil.copy(SRC / 'universe.js', OUT / 'assets/universe.js')
     shutil.copytree(site_data.CITIES, OUT / 'assets' / 'cities')
-    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js'):
+    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js'):
         shutil.copy(SRC / name, OUT / 'assets' / name)
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#fbf7ee"/><circle r="30" fill="#1b3a8a"/><ellipse rx="50" ry="15" fill="none" stroke="#6a45d6" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#1b3a8a"/></svg>', encoding='utf-8')
@@ -1093,6 +1098,7 @@ def main():
     (OUT / '.nojekyll').write_text('', encoding='utf-8')
     (OUT / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n', encoding='utf-8')
     PHOTO.update(photos.build(OUT)); PHOTO_CREDIT.update(photos.credits())
+    QB_SIZES = quizbank.build(OUT, ROOT, BODIES, lambda lg, i: tr(lg, NAME_KEY[i]), CONS, PHOTO)
     for i, b in enumerate(BODIES):
         body_page(b, i)
     index_page(); planets_page(); simple_pages(); maps_page(); get_page(); privacy_page(); account_page(); not_found(); pwa_files()
