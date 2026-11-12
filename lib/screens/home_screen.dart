@@ -13,6 +13,7 @@ import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
 import '../widgets/space_view.dart';
+import 'apod_screen.dart';
 import 'compare_screen.dart';
 import 'iss_screen.dart';
 import 'learn_hub.dart';
@@ -741,6 +742,11 @@ class _ExploreTabState extends State<ExploreTab>
             ),
           ),
         ],
+        // NASA's space photo of the day.
+        const Padding(
+          padding: EdgeInsets.fromLTRB(16, 14, 16, 6),
+          child: DailyPhotoCard(),
+        ),
         // Planet Showcase Grid (2 columns on phone, 3-4 on tablet)
         Padding(
           padding: const EdgeInsets.fromLTRB(18, 18, 18, 10),

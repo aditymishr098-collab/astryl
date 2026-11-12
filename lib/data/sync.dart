@@ -53,7 +53,9 @@ String formatCode(String raw) {
 /// The part of the settings that is kept in the account. Left out on
 /// purpose: reminders and the update check (they belong to one phone), the
 /// online-features switch, and a location found by GPS (it is only shared
-/// when the user switches that on separately).
+/// when the user switches that on separately). The lessons read ('lessons',
+/// as "group/slug") and the "I've seen it" list ('seen') are shared with the
+/// website.
 Map<String, Object> buildSyncPayload(HelioraSettings s) {
   return <String, Object>{
     'v': 1,
@@ -67,8 +69,13 @@ Map<String, Object> buildSyncPayload(HelioraSettings s) {
     'textScale': s.textScalePercent,
     'favorites': List<String>.of(s.favorites),
     'quizBests': Map<String, int>.of(s.quizBests),
+    'seen': Map<String, int>.of(s.seen),
+    'lessons': List<String>.of(s.readLessons),
   };
 }
+
+final RegExp _lessonKey = RegExp(r'^(blackholes|galaxies|students)/[a-z0-9-]{2,60}$');
+final RegExp _seenKey = RegExp(r'^[a-z]{2,20}$');
 
 /// Joins the account data [remote] with the phone's [local] settings.
 ///
@@ -105,7 +112,35 @@ HelioraSettings mergeSync(
     }
   }
 
-  var merged = local.copyWith(favorites: favorites, quizBests: bests);
+  // Lessons read are joined: reading is never undone.
+  final lessons = List<String>.of(local.readLessons);
+  final remoteLessons = remote['lessons'];
+  if (remoteLessons is List) {
+    for (final k in remoteLessons) {
+      if (k is String && _lessonKey.hasMatch(k) && !lessons.contains(k)) {
+        lessons.add(k);
+      }
+    }
+  }
+
+  // Things seen: when the account is newer its ticks are added (keeping the
+  // first date); otherwise the phone's list stays, so a tick taken away here
+  // stays away.
+  final seen = Map<String, int>.of(local.seen);
+  final remoteSeen = remote['seen'];
+  if (remoteWins && remoteSeen is Map) {
+    for (final e in remoteSeen.entries) {
+      final key = e.key;
+      final value = e.value;
+      if (key is String && _seenKey.hasMatch(key) && value is int && value > 0) {
+        final mine = seen[key];
+        seen[key] = mine == null || value < mine ? value : mine;
+      }
+    }
+  }
+
+  var merged = local.copyWith(
+      favorites: favorites, quizBests: bests, readLessons: lessons, seen: seen);
   if (!remoteWins) {
     return merged;
   }
