@@ -152,6 +152,27 @@ void main() {
       expect(merged.cityId, 'yerevan');
     });
 
+    test('lessons read and things seen travel with the account', () {
+      final phone = local.copyWith(
+        readLessons: <String>['blackholes/what-is-a-black-hole'],
+        seen: <String, int>{'moon': 200, 'venus': 300},
+      );
+      final remote = <String, dynamic>{
+        'lessons': <dynamic>['galaxies/the-milky-way', 'blackholes/what-is-a-black-hole', '../bad', 7],
+        'seen': <String, dynamic>{'moon': 100, 'iss': 400, 'BAD': 1, 'mars': 'x'},
+      };
+      final won = mergeSync(phone, remote, remoteWins: true);
+      expect(won.readLessons, <String>['blackholes/what-is-a-black-hole', 'galaxies/the-milky-way']);
+      expect(won.seen, <String, int>{'moon': 100, 'venus': 300, 'iss': 400});
+      // The phone is newer: its "seen" list stays as it is, lessons still join.
+      final kept = mergeSync(phone, remote, remoteWins: false);
+      expect(kept.seen, <String, int>{'moon': 200, 'venus': 300});
+      expect(kept.readLessons.length, 2);
+      final payload = buildSyncPayload(won);
+      expect(payload['lessons'], won.readLessons);
+      expect(payload['seen'], won.seen);
+    });
+
     test('merging what was just built changes nothing', () {
       final merged = mergeSync(
           local, Map<String, dynamic>.of(buildSyncPayload(local)),

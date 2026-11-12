@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import '../core/sgp4.dart';
 
@@ -47,6 +48,84 @@ class IssTle {
       return IssTle(name: name, line1: l1, line2: l2, fetchedAtMs: at);
     }
     return null;
+  }
+}
+
+/// NASA's Astronomy Picture of the Day, as Astryl's server passes it on.
+/// Only pictures from NASA's own server are used (never a video site).
+class Apod {
+  const Apod({
+    required this.date,
+    required this.title,
+    required this.explanation,
+    required this.url,
+    required this.hdUrl,
+    required this.copyright,
+    required this.page,
+    required this.fetchedAtMs,
+  });
+
+  /// The day of the picture, YYYY-MM-DD (US Eastern time, as NASA uses).
+  final String date;
+  final String title;
+
+  /// NASA's description, in English.
+  final String explanation;
+
+  /// The picture, or '' when today it is a video or animation.
+  final String url;
+  final String hdUrl;
+  final String copyright;
+
+  /// NASA's page for the day.
+  final String page;
+  final int fetchedAtMs;
+
+  bool get isImage => url.isNotEmpty;
+
+  static bool isNasaUrl(String u) => u.startsWith('https://apod.nasa.gov/');
+
+  Map<String, Object> toJson() => <String, Object>{
+        'date': date,
+        'title': title,
+        'explanation': explanation,
+        'url': url,
+        'hdurl': hdUrl,
+        'copyright': copyright,
+        'page': page,
+        'fetchedAtMs': fetchedAtMs,
+      };
+
+  /// Reads the server's answer (or a saved copy). Returns null when it does
+  /// not look right.
+  static Apod? fromJson(Object? json, {int? fetchedAtMs}) {
+    if (json is! Map<String, dynamic>) {
+      return null;
+    }
+    String text(String key) {
+      final v = json[key];
+      return v is String ? v : '';
+    }
+
+    final date = text('date');
+    final title = text('title').trim();
+    if (!RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(date) || title.isEmpty) {
+      return null;
+    }
+    final url = text('url');
+    final hd = text('hdurl');
+    final page = text('page');
+    final at = json['fetchedAtMs'];
+    return Apod(
+      date: date,
+      title: title.length > 200 ? title.substring(0, 200) : title,
+      explanation: text('explanation'),
+      url: isNasaUrl(url) ? url : '',
+      hdUrl: isNasaUrl(hd) ? hd : '',
+      copyright: text('copyright'),
+      page: isNasaUrl(page) ? page : 'https://apod.nasa.gov/apod/',
+      fetchedAtMs: fetchedAtMs ?? (at is int ? at : 0),
+    );
   }
 }
 
@@ -251,20 +330,28 @@ class OnlineService {
     'celestrak.org',
     'll.thespacedevs.com',
     'api.spaceflightnewsapi.net',
+    'pmfjjlfggzihbnbmqkao.supabase.co',
+    'apod.nasa.gov',
   };
 
   static const int _maxBytes = 3 * 1024 * 1024;
+  static const int _maxImageBytes = 8 * 1024 * 1024;
 
   static const String _issTleUrl =
       'https://api.wheretheiss.at/v1/satellites/25544/tles';
   static const String _issTleFallbackUrl =
       'https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE';
+  static const String _apodUrl =
+      'https://pmfjjlfggzihbnbmqkao.supabase.co/functions/v1/daily?what=apod';
   static const String _newsUrl =
       'https://api.spaceflightnewsapi.net/v4/articles/?limit=20';
   static const String _launchesUrl =
       'https://ll.thespacedevs.com/2.3.0/launches/upcoming/?limit=25&ordering=net';
 
-  Future<String> _get(String url) async {
+  Future<String> _get(String url) async =>
+      utf8.decode(await _getBytes(url, _maxBytes));
+
+  Future<Uint8List> _getBytes(String url, int maxBytes) async {
     final uri = Uri.parse(url);
     if (uri.scheme != 'https' || !trustedHosts.contains(uri.host)) {
       throw const HttpException('Unexpected address');
@@ -274,22 +361,22 @@ class OnlineService {
     try {
       final request = await client.getUrl(uri);
       request.headers.set('User-Agent', userAgent);
-      request.headers.set('Accept', 'application/json, text/plain');
+      request.headers.set('Accept', 'application/json, text/plain, image/*');
       final response =
           await request.close().timeout(const Duration(seconds: 20));
       if (response.statusCode != 200) {
         await response.drain<void>();
         throw HttpException('Server answered ${response.statusCode}');
       }
-      final bytes = <int>[];
+      final bytes = BytesBuilder(copy: false);
       await for (final chunk
-          in response.timeout(const Duration(seconds: 20))) {
-        bytes.addAll(chunk);
-        if (bytes.length > _maxBytes) {
+          in response.timeout(const Duration(seconds: 30))) {
+        bytes.add(chunk);
+        if (bytes.length > maxBytes) {
           throw const HttpException('Answer is too big');
         }
       }
-      return utf8.decode(bytes);
+      return bytes.takeBytes();
     } finally {
       client.close(force: true);
     }
@@ -312,6 +399,24 @@ class OnlineService {
         'https://celestrak.org/NORAD/elements/gp.php?CATNR=${sat.noradId}&FORMAT=TLE';
     return parseCelestrak(await _get(url), DateTime.now().millisecondsSinceEpoch,
         noradId: sat.noradId);
+  }
+
+  /// Downloads today's space photo details. Throws on any problem.
+  Future<Apod> fetchApod() async {
+    final apod = Apod.fromJson(jsonDecode(await _get(_apodUrl)),
+        fetchedAtMs: DateTime.now().millisecondsSinceEpoch);
+    if (apod == null) {
+      throw const FormatException('Not a space photo');
+    }
+    return apod;
+  }
+
+  /// Downloads a picture from NASA's server. Throws on any problem.
+  Future<Uint8List> fetchImage(String url) async {
+    if (!Apod.isNasaUrl(url)) {
+      throw const HttpException('Unexpected address');
+    }
+    return _getBytes(url, _maxImageBytes);
   }
 
   /// Downloads the latest space news. Throws on any problem.
@@ -508,6 +613,32 @@ class OnlineStore {
       return jsonDecode(await file.readAsString());
     } on Exception {
       return null;
+    }
+  }
+
+  Future<Uint8List?> readBytes(String name) async {
+    try {
+      final file = await _file(name);
+      if (file == null || !await file.exists()) {
+        return null;
+      }
+      return await file.readAsBytes();
+    } on Exception {
+      return null;
+    }
+  }
+
+  Future<void> writeBytes(String name, List<int> bytes) async {
+    try {
+      final file = await _file(name);
+      if (file == null) {
+        return;
+      }
+      final temp = File('${file.path}.tmp');
+      await temp.writeAsBytes(bytes, flush: true);
+      await temp.rename(file.path);
+    } on Exception {
+      // Saving is best effort.
     }
   }
 

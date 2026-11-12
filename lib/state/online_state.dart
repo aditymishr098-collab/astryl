@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/foundation.dart';
 
 import '../core/sgp4.dart';
@@ -34,6 +36,11 @@ class OnlineState extends ChangeNotifier {
   final Set<String> _loadingSats = <String>{};
   final Set<String> _failedSats = <String>{};
 
+  Apod? _apod;
+  Uint8List? _apodImage;
+  bool _loadingApod = false;
+  bool _apodFailed = false;
+
   List<NewsItem> _news = const <NewsItem>[];
   int _newsFetchedMs = 0;
   bool _loadingNews = false;
@@ -54,6 +61,14 @@ class OnlineState extends ChangeNotifier {
   IssTle? tleFor(String id) => _satTles[id];
   bool loadingSat(String id) => _loadingSats.contains(id);
   bool satFailed(String id) => _failedSats.contains(id);
+
+  /// NASA's space photo of the day, or null until it was downloaded once.
+  Apod? get apod => _apod;
+
+  /// The picture of [apod], or null (not downloaded yet, or a video day).
+  Uint8List? get apodImage => _apodImage;
+  bool get loadingApod => _loadingApod;
+  bool get apodFailed => _apodFailed;
 
   List<NewsItem> get news => _news;
   int get newsFetchedMs => _newsFetchedMs;
@@ -95,6 +110,11 @@ class OnlineState extends ChangeNotifier {
         _satTles[sat.id] = tle;
         _sats[sat.id] = orbit;
       }
+    }
+    final apod = Apod.fromJson(await _store.read('apod.json'));
+    if (apod != null) {
+      _apod = apod;
+      _apodImage = apod.isImage ? await _store.readBytes('apod.img') : null;
     }
     final savedNews = await _store.read('news.json');
     if (savedNews is Map<String, dynamic>) {
@@ -202,6 +222,40 @@ class OnlineState extends ChangeNotifier {
       _failedSats.add(id);
     } finally {
       _loadingSats.remove(id);
+      notifyListeners();
+    }
+  }
+
+  /// Downloads the space photo of the day when there is none or it is over
+  /// 3 hours old (or [force]), and its picture when that is new.
+  Future<void> refreshApod({bool force = false}) async {
+    if (_loadingApod) {
+      return;
+    }
+    final old = _apod;
+    final age = DateTime.now().millisecondsSinceEpoch - (old?.fetchedAtMs ?? 0);
+    if (!force && old != null && age < _newsMaxAge.inMilliseconds &&
+        (!old.isImage || _apodImage != null)) {
+      return;
+    }
+    _loadingApod = true;
+    _apodFailed = false;
+    notifyListeners();
+    try {
+      final fresh = await _service.fetchApod();
+      Uint8List? image =
+          old != null && old.url == fresh.url ? _apodImage : null;
+      if (fresh.isImage && image == null) {
+        image = await _service.fetchImage(fresh.url);
+        await _store.writeBytes('apod.img', image);
+      }
+      _apod = fresh;
+      _apodImage = fresh.isImage ? image : null;
+      await _store.write('apod.json', fresh.toJson());
+    } on Exception {
+      _apodFailed = true;
+    } finally {
+      _loadingApod = false;
       notifyListeners();
     }
   }
