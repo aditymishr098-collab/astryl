@@ -965,12 +965,14 @@ def surface_maps():
     from PIL import Image
     d = OUT / 'img' / 'space'
     d.mkdir(parents=True, exist_ok=True)
-    src = {'mars': ROOT / 'data/photos/space/map-mars.webp', 'moon': ROOT / 'data/textures/moon.webp', 'earth': ROOT / 'data/textures/earth.webp'}
+    sp = ROOT / 'data/photos/space'
+    src = {'mars': sp / 'map-mars.webp', 'moon': sp / 'map-moon.webp' if (sp / 'map-moon.webp').exists() else ROOT / 'data/textures/moon.webp',
+           'earth': sp / 'map-earth.webp' if (sp / 'map-earth.webp').exists() else ROOT / 'data/textures/earth.webp'}
     for k, f in src.items():
         if f.exists():
             im = Image.open(f).convert('RGB')
-            im.thumbnail((2000, 1000))
-            im.save(d / f'map-{k}.webp', 'WEBP', quality=80, method=6)
+            im.thumbnail((3000, 1500) if k == 'moon' else (2400, 1200) if k == 'mars' else (1440, 720))
+            im.save(d / f'map-{k}.webp', 'WEBP', quality=72, method=6)
             MAPS[k] = im.size
 
 

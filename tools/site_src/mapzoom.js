@@ -2,11 +2,13 @@
    zoom, and "Show on the map" on a landing site flies to it. Dots and labels keep their size. */
 (function () {
   document.querySelectorAll('svg.surfmap').forEach(function (svg) {
-    var wrap = svg.closest('.mapwrap'), W = 360, H = 180, v = { x: 0, y: 0, w: W, h: H }, anim = null;
+    var wrap = svg.closest('.mapwrap'), W = 360, H = 180, MIN = svg.dataset.world === 'mars' ? 30 : 24, v = { x: 0, y: 0, w: W, h: H }, anim = null;
     var dots = svg.querySelectorAll('.sdot'), texts = svg.querySelectorAll('text');
     var base = [].map.call(texts, function (t) { return +t.getAttribute('font-size') || 5; });
+    var lines = svg.querySelectorAll('line'), lw = [].map.call(lines, function (l) { return +l.getAttribute('stroke-width') || 0.4; });
+    var tw = [].map.call(texts, function (t) { return +t.getAttribute('stroke-width') || 0.6; });
     function clamp() {
-      v.w = Math.max(18, Math.min(W, v.w)); v.h = v.w / 2;
+      v.w = Math.max(MIN, Math.min(W, v.w)); v.h = v.w / 2;
       v.x = Math.max(0, Math.min(W - v.w, v.x)); v.y = Math.max(0, Math.min(H - v.h, v.y));
     }
     function apply() {
@@ -14,7 +16,8 @@
       svg.setAttribute('viewBox', v.x.toFixed(2) + ' ' + v.y.toFixed(2) + ' ' + v.w.toFixed(2) + ' ' + v.h.toFixed(2));
       var k = v.w / W;
       dots.forEach(function (d) { d.setAttribute('r', (2.6 * Math.max(k, 0.12)).toFixed(2)); d.setAttribute('stroke-width', (1 * Math.max(k, 0.12)).toFixed(2)); });
-      texts.forEach(function (t, i) { t.setAttribute('font-size', (base[i] * Math.max(k, 0.2)).toFixed(2)); });
+      texts.forEach(function (t, i) { t.setAttribute('font-size', (base[i] * Math.max(k, 0.2)).toFixed(2)); t.setAttribute('stroke-width', (tw[i] * Math.max(k, 0.2)).toFixed(3)); });
+      lines.forEach(function (l, i) { l.setAttribute('stroke-width', (lw[i] * k).toFixed(3)); });
     }
     function fly(to) {
       cancelAnimationFrame(anim);
@@ -26,7 +29,7 @@
       })(t0);
     }
     function zoomAt(cx, cy, factor) {
-      var nw = Math.max(18, Math.min(W, v.w * factor));
+      var nw = Math.max(MIN, Math.min(W, v.w * factor));
       fly({ x: cx - (cx - v.x) * nw / v.w, y: cy - (cy - v.y) * nw / v.w, w: nw });
     }
     function toMap(e) { var r = svg.getBoundingClientRect(); return { x: v.x + (e.clientX - r.left) / r.width * v.w, y: v.y + (e.clientY - r.top) / r.height * v.h }; }
@@ -46,7 +49,7 @@
         var mx = (start.p[ids[0]].x + start.p[ids[1]].x) / 2 - r.left, my = (start.p[ids[0]].y + start.p[ids[1]].y) / 2 - r.top;
         var cx = start.v.x + mx * s, cy = start.v.y + my * s, nw = start.v.w * d0 / Math.max(d1, 1);
         moved = true; cancelAnimationFrame(anim);
-        v.w = Math.max(18, Math.min(W, nw)); v.x = cx - (cx - start.v.x) * v.w / start.v.w; v.y = cy - (cy - start.v.y) * v.w / start.v.w; apply();
+        v.w = Math.max(MIN, Math.min(W, nw)); v.x = cx - (cx - start.v.x) * v.w / start.v.w; v.y = cy - (cy - start.v.y) * v.w / start.v.w; apply();
       }
     });
     function up(e) { delete pts[e.pointerId]; start = Object.keys(pts).length ? { v: { x: v.x, y: v.y, w: v.w }, p: JSON.parse(JSON.stringify(pts)) } : null; }
@@ -59,7 +62,7 @@
     });
     svg.zoomTo = function (id) {
       var a = svg.querySelector('[data-site="' + id + '"]'); if (!a) return false;
-      var x = +a.dataset.x, y = +a.dataset.y, w = 40;
+      var x = +a.dataset.x, y = +a.dataset.y, w = 48;
       fly({ x: x - w / 2, y: y - w / 4, w: w });
       dots.forEach(function (d) { d.classList.toggle('pick', d.parentNode === a); });
       return true;

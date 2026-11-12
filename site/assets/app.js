@@ -898,7 +898,7 @@
       lb.innerHTML = '<h2 style="margin-top:0">' + (hiL ? 'कौन कहाँ तक पहुँचा' : 'How far each one has gone') + '</h2><p class="note">' + (hiL ? 'पृथ्वी से अभी की दूरी। हर अगला निशान दस गुना दूर है (log पैमाना)।' : 'Distance from Earth right now. Each step along the bar is ten times farther (a log scale).') + '</p>' +
         rows.map(function (r) {
           var f = Math.max(0.02, Math.min(1, (Math.log10(Math.max(r[2], 200)) - lo) / (top - lo)));
-          return '<div class="lrow' + (r[3] ? ' mark' : '') + '"><span class="ln">' + r[0] + ' ' + esc(r[1]) + '</span><span class="lbar"><i style="width:' + (f * 100).toFixed(1) + '%"></i></span><span class="lv">' + PT.km(r[2]) + '<small> · ' + PT.duration(r[2] / C_KMS) + (hiL ? ' रोशनी' : ' of light') + '</small></span></div>';
+          return '<div class="lrow' + (r[3] ? ' mark' : '') + '"><span class="ln">' + r[0] + ' ' + esc(r[1]) + '</span><span class="lbar"><i style="width:' + (f * 100).toFixed(1) + '%"></i></span><span class="lv">' + PT.km(r[2]) + '<small> · ' + (r[2] / C_KMS < 1 ? fmt(r[2] / C_KMS * 1000, 1) + ' ms' : PT.duration(r[2] / C_KMS)) + (hiL ? ' रोशनी' : ' of light') + '</small></span></div>';
         }).join('');
     }
     function distKm(s, now) {
@@ -910,7 +910,7 @@
       var now = Date.now(), h = '';
       D.spacecraft.forEach(function (s) {
         var km = distKm(s, now);
-        h += '<div class="card"><h3>' + s.name + '</h3><p style="color:var(--text)">' + t('spacecraft' + s.id.charAt(0).toUpperCase() + s.id.slice(1)) + '</p><div class="stats" style="margin-top:10px">' +
+        h += '<div class="card"><h3>' + s.name + '</h3><p style="color:var(--text)">' + t('spacecraft' + ({ newhorizons: 'NewHorizons', marsrovers: 'MarsRovers' }[s.id] || (s.id.charAt(0).toUpperCase() + s.id.slice(1)))) + '</p><div class="stats" style="margin-top:10px">' +
           '<div class="stat"><b>' + (s.kind === 'lowOrbit' ? PT.km(km) : PT.km(km)) + '</b><span>' + (s.kind === 'lowOrbit' ? t('spacecraftAltitude') : t('spacecraftDistance')) + '</span></div>' +
           (s.kind === 'lowOrbit' ? '' : '<div class="stat"><b>' + t('valueAu', { value: fmt(km / KM_AU, 2) }) + '</b><span>' + t('spacecraftInAu') + '</span></div>') +
           (s.kind === 'probe' ? '<div class="stat"><b>' + t('valueKmS', { value: fmt(s.speed, 1) }) + '</b><span>' + t('spacecraftSpeed') + '</span></div>' : '') +

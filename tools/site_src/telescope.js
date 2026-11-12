@@ -72,8 +72,16 @@
     var P = PICS[t], im = P && img(P.src);
     if (im && im.complete && im.naturalWidth) {
       var wpx = P.across * k, hpx = wpx * im.naturalHeight / im.naturalWidth;
-      if (P.deep) ctx.filter = (blur ? 'blur(' + blur.toFixed(1) + 'px) ' : '') + 'grayscale(0.55) brightness(0.8) contrast(1.15)';
-      ctx.drawImage(im, cx - wpx / 2, cy - hpx / 2, wpx, hpx);
+      if (P.deep) {
+        // fade the photo's square edges into the dark sky
+        var oc = document.createElement('canvas'), ow = Math.max(2, Math.round(Math.min(wpx, 2 * W))), oh = Math.max(2, Math.round(ow * hpx / wpx)), og = oc.getContext('2d');
+        oc.width = ow; oc.height = oh; og.drawImage(im, 0, 0, ow, oh);
+        og.globalCompositeOperation = 'destination-in';
+        var gr = og.createRadialGradient(ow / 2, oh / 2, Math.min(ow, oh) * 0.25, ow / 2, oh / 2, Math.min(ow, oh) * 0.5);
+        gr.addColorStop(0, 'rgba(0,0,0,1)'); gr.addColorStop(1, 'rgba(0,0,0,0)'); og.fillStyle = gr; og.fillRect(0, 0, ow, oh);
+        ctx.filter = (blur ? 'blur(' + blur.toFixed(1) + 'px) ' : '') + 'grayscale(0.55) brightness(0.8) contrast(1.15)';
+        ctx.drawImage(oc, cx - wpx / 2, cy - hpx / 2, wpx, hpx);
+      } else ctx.drawImage(im, cx - wpx / 2, cy - hpx / 2, wpx, hpx);
       ctx.filter = blur ? 'blur(' + blur.toFixed(1) + 'px)' : 'none';
       if (t === 'moon') { ctx.fillStyle = 'rgba(4,6,12,0.88)'; ctx.beginPath(); ctx.arc(cx, cy, s + 1, Math.PI / 2, Math.PI * 1.5); ctx.ellipse(cx, cy, s * 0.35, s + 1, 0, Math.PI * 1.5, Math.PI / 2, true); ctx.fill(); }
       if (t === 'jupiter') { var jr2 = (44 / 60) * k / 2; [[-7.5, 0], [-4.4, 0.05], [3.0, -0.05], [12.5, 0.1]].forEach(function (m) { ctx.fillStyle = '#f4f0e0'; ctx.beginPath(); ctx.arc(cx + m[0] * k, cy + m[1] * k, Math.max(1, jr2 * 0.07), 0, 7); ctx.fill(); }); }
