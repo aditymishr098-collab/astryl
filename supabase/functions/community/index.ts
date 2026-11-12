@@ -41,6 +41,9 @@ async function userFrom(req: Request, required = true) {
   if (!token) { if (required) throw new Fail(401, "no_token"); return null; }
   const { data, error } = await admin.auth.getUser(token);
   if (error || !data.user) { if (required) throw new Fail(401, "bad_token"); return null; }
+  // only accounts made through the "account" function (they have a profile) may take part
+  const { data: prof } = await admin.from("profiles").select("id").eq("id", data.user.id).maybeSingle();
+  if (!prof) { if (required) throw new Fail(401, "no_profile"); return null; }
   return data.user;
 }
 async function isAdmin(uid: string) {
