@@ -1,5 +1,5 @@
 -- Astryl Community: "I saw it" sky reports, weekly challenges, polls, a photo gallery and a
--- discussion board. Photos and posts stay hidden until a moderator approves them.
+-- discussion board. Photos and posts appear at once; reported ones go to the moderators.
 -- Everything a person adds is tied to their account and is deleted with it (on delete cascade);
 -- photos are kept in the database for exactly that reason.
 -- Only the "community" Edge Function (service role) reads or writes these tables.

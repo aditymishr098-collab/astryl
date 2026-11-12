@@ -1,6 +1,6 @@
 /* Moderation for the Astryl Community (only for accounts listed as moderators on the server).
-   New photos and posts wait here; approve to show them, or remove them for good. Reported items
-   that are already public also come back here. */
+   Photos and posts go public at once; anything reported comes here (hidden after three reports).
+   Keep it, or remove it for good. */
 (function () {
   var ACCT = window.ASTRYL_ACCT, box = document.getElementById('mod');
   if (!box) return;
@@ -14,17 +14,17 @@
   }
   function when(s) { return new Date(s).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); }
   function draw(q) {
-    var h = '<p class="note">' + q.photos.length + ' photos and ' + q.posts.length + ' posts waiting. <button type="button" class="btn" data-m="reload">↻ Refresh</button></p>';
+    var h = '<p class="note">' + q.photos.length + ' photos and ' + q.posts.length + ' posts reported. <button type="button" class="btn" data-m="reload">↻ Refresh</button></p>';
     h += '<h2>Photos</h2>' + (q.photos.length ? q.photos.map(function (p) {
       return '<div class="card mitem" data-k="photo" data-id="' + p.id + '"><img src="data:image/jpeg;base64,' + p.thumb + '" alt="" data-m="big"><div><b>' + esc(p.title) + '</b><br><small class="note">' + esc(p.kind) + (p.taken ? ' · ' + esc(p.taken) : '') + ' · by ' + esc(p.by) + ' · ' + when(p.at) + '</small>' +
-        (p.status === 'approved' ? '<p class="no">⚠️ Public, reported ' + p.reports + '×</p>' : '<p class="note">New, not public yet</p>') +
-        '<div class="btns"><button type="button" class="btn primary" data-m="approve">✓ ' + (p.status === 'approved' ? 'Keep' : 'Approve') + '</button><button type="button" class="btn" data-m="remove">✕ Remove</button></div></div></div>';
+        (p.status === 'approved' ? '<p class="no">⚠️ Still public, reported ' + p.reports + '×</p>' : '<p class="no">🙈 Hidden after ' + p.reports + ' reports</p>') +
+        '<div class="btns"><button type="button" class="btn primary" data-m="approve">✓ ' + (p.status === 'approved' ? 'Keep' : 'Show again') + '</button><button type="button" class="btn" data-m="remove">✕ Remove</button></div></div></div>';
     }).join('') : '<p class="note">Nothing to check.</p>');
     h += '<h2>Posts</h2>' + (q.posts.length ? q.posts.map(function (p) {
       return '<div class="card mitem" data-k="post" data-id="' + p.id + '"><div><small class="note">' + esc(p.kind) + ' · by <b>' + esc(p.by) + '</b> · ' + when(p.at) + '</small>' +
         (p.replyTo !== null ? '<p class="note">↩ Reply to: “' + esc(p.replyTo).slice(0, 140) + '”</p>' : '') + '<p class="mbody">' + esc(p.body).replace(/\n/g, '<br>') + '</p>' +
-        (p.status === 'approved' ? '<p class="no">⚠️ Public, reported ' + p.reports + '×</p>' : '') +
-        '<div class="btns"><button type="button" class="btn primary" data-m="approve">✓ ' + (p.status === 'approved' ? 'Keep' : 'Approve') + '</button><button type="button" class="btn" data-m="remove">✕ Remove</button></div></div></div>';
+        (p.status === 'approved' ? '<p class="no">⚠️ Still public, reported ' + p.reports + '×</p>' : '<p class="no">🙈 Hidden after ' + p.reports + ' reports</p>') +
+        '<div class="btns"><button type="button" class="btn primary" data-m="approve">✓ ' + (p.status === 'approved' ? 'Keep' : 'Show again') + '</button><button type="button" class="btn" data-m="remove">✕ Remove</button></div></div></div>';
     }).join('') : '<p class="note">Nothing to check.</p>');
     box.innerHTML = h;
   }
