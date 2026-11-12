@@ -1,0 +1,87 @@
+{
+ "sun": {
+  "licence": "Public domain",
+  "artist": "NASA/SDO (AIA)",
+  "page": "https://commons.wikimedia.org/wiki/File:The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg"
+ },
+ "mercury": {
+  "licence": "Public domain",
+  "artist": "NASA/Johns Hopkins University Applied Physics Laboratory/Arizona State University/Carnegie Institution of Washington",
+  "page": "https://commons.wikimedia.org/wiki/File:Mercury_in_true_color.jpg"
+ },
+ "venus": {
+  "licence": "Public domain",
+  "artist": "NASA or Ricardo Nunes",
+  "page": "https://commons.wikimedia.org/wiki/File:Venus-real_color.jpg"
+ },
+ "earth": {
+  "licence": "Public domain",
+  "artist": "<div class=\"fn value\">\nNASA/Apollo 17 crew; taken by either <a href=\"https://en.wikipedia.org/wiki/Harrison_Schmitt\" class=\"extiw\" title=\"en:Harrison Schmitt\">Harrison Schmitt</a> or <a href=\"https://en.wikipedia.org/wiki/Ronald_Evans_(astronaut)\" class=\"extiw\" title=\"en:Ronald Evans (astronaut)\">Ro",
+  "page": "https://commons.wikimedia.org/wiki/File:The_Blue_Marble_(remastered).jpg"
+ },
+ "mars": {
+  "licence": "Public domain",
+  "artist": "NASA / USGS (see <a rel=\"nofollow\" class=\"external text\" data-mw-original-href=\"http://photojournal.jpl.nasa.gov/catalog/PIA04304\" href=\"https://photojournal.jpl.nasa.gov/catalog/PIA04304\">PIA04304 catalog page</a>)",
+  "page": "https://commons.wikimedia.org/wiki/File:Mars_Valles_Marineris.jpeg"
+ },
+ "jupiter": {
+  "licence": "Public domain",
+  "artist": "NASA, ESA, and A. Simon (Goddard Space Flight Center)",
+  "page": "https://commons.wikimedia.org/wiki/File:Jupiter_and_its_shrunken_Great_Red_Spot.jpg"
+ },
+ "saturn": {
+  "licence": "Public domain",
+  "artist": "<a href=\"https://en.wikipedia.org/wiki/National_Aeronautics_and_Space_Administration\" class=\"extiw\" title=\"w:National Aeronautics and Space Administration\">NASA</a> / <a href=\"https://en.wikipedia.org/wiki/Jet_Propulsion_Laboratory\" class=\"extiw\" title=\"w:Jet Propulsion Laboratory\">JPL</a> / <a href",
+  "page": "https://commons.wikimedia.org/wiki/File:Saturn_during_Equinox.jpg"
+ },
+ "uranus": {
+  "licence": "Public domain",
+  "artist": "NASA/JPL-Caltech",
+  "page": "https://commons.wikimedia.org/wiki/File:Uranus2.jpg"
+ },
+ "neptune": {
+  "licence": "Public domain",
+  "artist": "NASA",
+  "page": "https://commons.wikimedia.org/wiki/File:Neptune_Full.jpg"
+ },
+ "pluto": {
+  "licence": "Public domain",
+  "artist": "NASA/Johns Hopkins University Applied Physics Laboratory/Southwest Research Institute/Alex Parker",
+  "page": "https://commons.wikimedia.org/wiki/File:Pluto_in_True_Color_-_High-Res.jpg"
+ },
+ "io": {
+  "licence": "Public domain",
+  "artist": "NASA / JPL / University of Arizona",
+  "page": "https://commons.wikimedia.org/wiki/File:Io_highest_resolution_true_color.jpg"
+ },
+ "europa": {
+  "licence": "Public domain",
+  "artist": "NASA/JPL/DLR",
+  "page": "https://commons.wikimedia.org/wiki/File:Europa-moon-with-margins.jpg"
+ },
+ "ganymede": {
+  "licence": "Public domain",
+  "artist": "NASA/JPL (edited by <a href=\"//commons.wikimedia.org/wiki/User:PlanetUser\" title=\"User:PlanetUser\">PlanetUser</a>)",
+  "page": "https://commons.wikimedia.org/wiki/File:Ganymede_g1_true-edit1.jpg"
+ },
+ "callisto": {
+  "licence": "Public domain",
+  "artist": "NASA/JPL/DLR(German Aerospace Center)",
+  "page": "https://commons.wikimedia.org/wiki/File:Callisto.jpg"
+ },
+ "titan": {
+  "licence": "Public domain",
+  "artist": "NASA/JPL-Caltech/Space Science Institute",
+  "page": "https://commons.wikimedia.org/wiki/File:Titan_in_true_color.jpg"
+ },
+ "enceladus": {
+  "licence": "Public domain",
+  "artist": "<a href=\"https://en.wikipedia.org/wiki/NASA\" class=\"extiw\" title=\"wikipedia:NASA\">National Aeronautics and Space Administration</a> (NASA) / <a href=\"https://en.wikipedia.org/wiki/Jet_Propulsion_Laboratory\" class=\"extiw\" title=\"wikipedia:Jet Propulsion Laboratory\">Jet Propulsion Laboratory</a> (JPL)",
+  "page": "https://commons.wikimedia.org/wiki/File:PIA17202_-_Approaching_Enceladus.jpg"
+ },
+ "triton": {
+  "licence": "Public domain",
+  "artist": "NASA / Jet Propulsion Lab / U.S. Geological Survey",
+  "page": "https://commons.wikimedia.org/wiki/File:Triton_moon_mosaic_Voyager_2_(large).jpg"
+ }
+}

@@ -21,8 +21,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install Pillow (share pictures)
-        run: pip install pillow
+      - name: Install Pillow and NumPy (pictures)
+        run: pip install pillow numpy
       - name: Build the site without the app's folders
         run: |
           rm -rf lib assets android test
