@@ -1,0 +1,27 @@
+{
+  "photos": {
+    "sun": "File:The Sun by the Atmospheric Imaging Assembly of NASA's Solar Dynamics Observatory - 20100819.jpg",
+    "mercury": "File:Mercury in true color.jpg",
+    "venus": "File:Venus-real color.jpg",
+    "earth": "File:The Blue Marble (remastered).jpg",
+    "moon": "File:Moon nearside LRO 5000 (cropped).jpg",
+    "mars": "File:Mars Valles Marineris.jpeg",
+    "jupiter": "File:Jupiter and its shrunken Great Red Spot.jpg",
+    "saturn": "File:Saturn during Equinox.jpg",
+    "uranus": "File:Uranus2.jpg",
+    "neptune": "File:Neptune Full.jpg",
+    "pluto": "File:Pluto in True Color - High-Res.jpg",
+    "io": "File:Io highest resolution true color.jpg",
+    "europa": "File:Europa-moon-with-margins.jpg",
+    "ganymede": "File:Ganymede g1 true-edit1.jpg",
+    "callisto": "File:Callisto.jpg",
+    "titan": "File:Titan in true color.jpg",
+    "enceladus": "File:PIA17202 - Approaching Enceladus.jpg",
+    "triton": "File:Triton moon mosaic Voyager 2 (large).jpg"
+  },
+  "textures": {
+    "sun": "2k_sun.jpg", "mercury": "2k_mercury.jpg", "venus": "2k_venus_atmosphere.jpg", "earth": "2k_earth_daymap.jpg",
+    "moon": "2k_moon.jpg", "mars": "2k_mars.jpg", "jupiter": "2k_jupiter.jpg", "saturn": "2k_saturn.jpg",
+    "uranus": "2k_uranus.jpg", "neptune": "2k_neptune.jpg", "saturn_ring": "2k_saturn_ring_alpha.png"
+  }
+}
