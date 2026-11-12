@@ -516,13 +516,15 @@ async function handle(req: Request, b: any): Promise<Response> {
       const user = await userFrom(req);
       const data = b.data;
       if (!data || typeof data !== "object" || Array.isArray(data)) throw new Fail(400, "bad_data");
-      // The app does not know the website's progress ("web"), so when its data comes without
-      // that part, the part already stored is kept.
-      if (!("web" in data)) {
+      // The app does not know the website's progress ("web"), and older app versions do not
+      // send the lessons read or the "I've seen it" list. When data comes without one of these
+      // parts, the part already stored is kept.
+      const keep = ["web", "seen", "lessons"].filter((k) => !(k in data));
+      if (keep.length) {
         const old = await admin.from("user_data").select("data").eq("user_id", user.id).maybeSingle();
         const oldData = old.data ? old.data.data : null;
-        if (oldData && typeof oldData === "object" && !Array.isArray(oldData) && oldData.web) {
-          data.web = oldData.web;
+        if (oldData && typeof oldData === "object" && !Array.isArray(oldData)) {
+          for (const k of keep) if (oldData[k] !== undefined) data[k] = oldData[k];
         }
       }
       if (JSON.stringify(data).length > MAX_DATA_CHARS) throw new Fail(413, "too_big");

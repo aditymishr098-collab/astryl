@@ -394,3 +394,27 @@ a.sc.next{border-color:var(--accent)}
 .cityres{display:grid;gap:6px;margin-top:8px;max-height:300px;overflow:auto}
 .cityres button{text-align:start;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card2);color:var(--text);font:inherit;cursor:pointer}
 .cityres small{color:var(--muted)}
+/* space station page */
+.issmap{width:100%;height:auto;display:block;border-radius:14px;border:1px solid var(--line)}
+.issmap .sea{fill:color-mix(in srgb,var(--accent) 16%,var(--card))}
+.issmap .land{fill:color-mix(in srgb,var(--good) 30%,var(--card2));stroke:color-mix(in srgb,var(--good) 45%,var(--line));stroke-width:.6}
+.issmap .night{fill:#000;opacity:.32}
+.issmap .grid{stroke:var(--line);stroke-width:.5;opacity:.6}
+.issmap .trk{fill:none;stroke:#f2b84b;stroke-width:2;stroke-dasharray:5 4}
+.issmap .sun{fill:#f2b84b;opacity:.85}
+.issmap .me,.dot.me{fill:var(--bad);stroke:#fff;stroke-width:1.5}
+.dot.me{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--bad);border:1.5px solid #fff;vertical-align:middle}
+.issmap .iss circle{fill:#fff;stroke:#f2b84b;stroke-width:2}.issmap .iss text{font-size:13px}
+.issstats>div{background:var(--card2);border-radius:12px;padding:10px 12px}
+.issstats b{display:block;font:700 1.05rem "Space Grotesk"}.issstats small{color:var(--muted)}
+.issnext{background:var(--card2);border-radius:14px;padding:12px 14px;margin:10px 0}
+.issnext .big{font:700 1.5rem "Space Grotesk";color:var(--text);margin:0}
+.passes{list-style:none;padding:0;margin:10px 0;display:grid;gap:8px}
+.passes li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:var(--card2);opacity:.75}
+.passes li.on{opacity:1;border:1px solid color-mix(in srgb,var(--good) 50%,transparent)}
+.passes small{color:var(--muted)}.passes .btn{flex:none;padding:8px 10px}
+.passes .vis{color:var(--good);font-weight:700;font-size:.85rem}.passes .nv{color:var(--muted);font-size:.85rem}
+/* space photo of the day */
+.daily2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));align-items:start}
+.apod .apodimg img{width:100%;max-height:420px;object-fit:cover;border-radius:14px;display:block;margin:6px 0}
+.apodtxt{font-size:.92rem}

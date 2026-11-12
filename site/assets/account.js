@@ -28,7 +28,7 @@
       bannerLater: 'Not now', statsTitle: 'Astryl in numbers', statsRegistered: 'Accounts', statsActive: 'Active users (30 days)',
       statsDownloads: 'APK downloads', statsCountries: 'Top countries',
       statsNote: 'Active means people who chose to be counted. Downloads are counted by GitHub.',
-      webNote: 'On this website your language, theme and quiz scores sync. Sharing your location is only in the app.',
+      webNote: 'On this website your language, theme, quiz scores, lessons read and the things you have seen sync. Sharing your location is only in the app.',
       loading: 'Loading…', showPassword: 'Show password',
       statsViews: 'Page views (30 days)', statsVisitors: 'Visitors (30 days)',
       barLocText: 'Share your approximate place (about 10 km) so we can see where Astryl is used? Only a rounded point is added to a count; nothing else is sent and it is not tied to you.', barLocYes: 'Share', barLocNo: 'No thanks', barClose: 'Close', barNews: 'News',
@@ -50,7 +50,7 @@
       bannerLater: 'अभी नहीं', statsTitle: 'Astryl आँकड़ों में', statsRegistered: 'खाते', statsActive: 'Active users (30 दिन)',
       statsDownloads: 'APK downloads', statsCountries: 'शीर्ष देश',
       statsNote: 'Active यानी वे लोग जिन्होंने गिने जाना चुना है। Downloads की गिनती GitHub करता है।',
-      webNote: 'इस website पर आपकी भाषा, theme और quiz scores sync होते हैं। Location साझा करना सिर्फ़ app में है।',
+      webNote: 'इस website पर आपकी भाषा, theme, quiz scores, पढ़े हुए पाठ और जो चीज़ें आपने देखी हैं, sync होते हैं। Location साझा करना सिर्फ़ app में है।',
       loading: 'Loading…', showPassword: 'Password दिखाएँ',
       statsViews: 'Page views (30 दिन)', statsVisitors: 'Visitors (30 दिन)',
       barLocText: 'क्या आप अपनी अनुमानित जगह (लगभग 10 km) बताएँगे, ताकि हम देख सकें कि Astryl कहाँ इस्तेमाल होता है? गिनती में सिर्फ़ एक गोल किया हुआ बिंदु जुड़ता है; और कुछ नहीं जाता और यह आपसे जुड़ा नहीं होता।', barLocYes: 'बताएँ', barLocNo: 'अभी नहीं', barClose: 'बंद करें', barNews: 'ख़बर',
@@ -196,25 +196,51 @@
     merged.favorites = fav;
     store.set('astryl-favs', JSON.stringify(fav));
     var rw = remote && remote.web && typeof remote.web === 'object' ? remote.web : {}, web = { ds: {}, bh101: [] };
+    // Deep space quiz bests: the app keeps them as quizBests "ds-bh", "ds-gx", "ds-all".
+    var qb = merged.quizBests || (merged.quizBests = {});
     ['bh', 'gx', 'all'].forEach(function (k) {
-      var local = parseInt(readJson('astryl-ds-best-' + k, 0), 10) || 0, far = parseInt(rw.ds && rw.ds[k], 10) || 0, best = Math.max(local, far);
-      if (best > 0) web.ds[k] = best;
+      var local = parseInt(readJson('astryl-ds-best-' + k, 0), 10) || 0, far = Math.max(parseInt(rw.ds && rw.ds[k], 10) || 0, parseInt(qb['ds-' + k], 10) || 0), best = Math.max(local, far);
+      if (best > 0) { web.ds[k] = best; qb['ds-' + k] = best; }
       if (best > local) store.set('astryl-ds-best-' + k, JSON.stringify(best));
     });
-    var lessons = readJson('astryl-bh101', []);
-    if (!Array.isArray(lessons)) lessons = [];
-    (Array.isArray(rw.bh101) ? rw.bh101 : []).concat(lessons).forEach(function (x) { if (typeof x === 'string' && web.bh101.indexOf(x) < 0) web.bh101.push(x); });
+    // Lessons read, shared with the app's Learn screen as "group/slug" (blackholes/what-is-a-black-hole).
+    // Reading is never undone, so both sides are joined.
+    var read = readJson('astryl-read', {}), lessons = [];
+    if (!read || typeof read !== 'object' || Array.isArray(read)) read = {};
+    var bh = readJson('astryl-bh101', []);
+    if (!Array.isArray(bh)) bh = [];
+    function addLesson(k) { if (typeof k === 'string' && /^(blackholes|galaxies|students)\/[a-z0-9-]{2,60}$/.test(k) && lessons.indexOf(k) < 0) lessons.push(k); }
+    Object.keys(read).forEach(function (path) {
+      var m = path.match(/^(black-holes|galaxies|learn)\/([a-z0-9-]+)\.html$/);
+      if (m) addLesson(LESSON_GROUP[m[1]] + '/' + m[2]);
+    });
+    (Array.isArray(rw.bh101) ? rw.bh101 : []).concat(bh).forEach(function (x) { if (typeof x === 'string') addLesson('blackholes/' + x); });
+    (remote && Array.isArray(remote.lessons) ? remote.lessons : []).forEach(addLesson);
+    var readChanged = false;
+    lessons.forEach(function (k) {
+      var g = k.split('/')[0], slug = k.split('/')[1], path = LESSON_PATH[g] + '/' + slug + '.html';
+      if (!read[path]) { read[path] = Date.now(); readChanged = true; }
+      if (g === 'blackholes') web.bh101.push(slug);
+    });
+    web.bh101 = web.bh101.filter(function (x, i, a) { return a.indexOf(x) === i; });
+    if (readChanged) store.set('astryl-read', JSON.stringify(read));
     store.set('astryl-bh101', JSON.stringify(web.bh101));
-    // Things seen with your own eyes: joined, keeping the first date.
-    var seenL = readJson('astryl-seen', {}), seenR = rw.seen && typeof rw.seen === 'object' ? rw.seen : {}, seenM = {};
+    merged.lessons = lessons;
+    // Things seen with your own eyes, shared with the app: joined, keeping the first date.
+    var seenL = readJson('astryl-seen', {}), seenR = {}, seenM = {};
     if (!seenL || typeof seenL !== 'object' || Array.isArray(seenL)) seenL = {};
+    [rw.seen, remote && remote.seen].forEach(function (src) {
+      if (!src || typeof src !== 'object' || Array.isArray(src)) return;
+      Object.keys(src).forEach(function (k) { var v = parseInt(src[k], 10) || 0; if (v && (!seenR[k] || v < seenR[k])) seenR[k] = v; });
+    });
     Object.keys(seenR).concat(Object.keys(seenL)).forEach(function (k) {
-      var a = parseInt(seenL[k], 10) || 0, b = parseInt(seenR[k], 10) || 0, v = a && b ? Math.min(a, b) : (a || b);
+      var a = parseInt(seenL[k], 10) || 0, b = seenR[k] || 0, v = a && b ? Math.min(a, b) : (a || b);
       if (v && /^[a-z]{2,20}$/.test(k)) seenM[k] = v;
     });
     // ...unless this browser is newer and a tick was taken away here.
     if (!remoteWins && p0().syncedMs) { Object.keys(seenM).forEach(function (k) { if (!seenL[k]) delete seenM[k]; }); }
     store.set('astryl-seen', JSON.stringify(seenM));
+    merged.seen = seenM;
     web.seen = seenM;
     merged.web = web;
     // The city is shared with the app (same city list). The newer side wins.
@@ -225,6 +251,7 @@
     if (!lcity && rcity && appIds.indexOf(rcity) >= 0) store.set('astryl-city', JSON.stringify(rcity));
     else if (typeof lcity === 'string' && appIds.indexOf(lcity) >= 0) merged.city = lcity;
   }
+  var LESSON_GROUP = { 'black-holes': 'blackholes', galaxies: 'galaxies', learn: 'students' }, LESSON_PATH = { blackholes: 'black-holes', galaxies: 'galaxies', students: 'learn' };
   function p0() { return getPrefs(); }
   window.ASTRYL_ACCT = { api: api, token: token, session: getSession, prefs: getPrefs, sync: sync, status: function () { return syncStatus; } };
   var timer = null;
