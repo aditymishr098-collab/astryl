@@ -580,7 +580,9 @@
     var data = {};
     function paint() {
       var n = function (v) { return v === undefined ? '–' : Number(v).toLocaleString(lang() === 'hi' ? 'hi-IN' : 'en-US'); };
-      var h = '<div class="stat"><b>' + n(data.registered) + '</b><span>' + esc(w('statsRegistered')) + '</span></div><div class="stat"><b>' + n(data.active) + '</b><span>' + esc(w('statsActive')) + '</span></div><div class="stat"><b>' + n(data.visitors) + '</b><span>' + esc(w('statsVisitors')) + '</span></div><div class="stat"><b>' + n(data.views) + '</b><span>' + esc(w('statsViews')) + '</span></div>';
+      // accounts and active users are shown once there are enough of them to be meaningful
+      var big = (data.registered || 0) >= 100;
+      var h = (big ? '<div class="stat"><b>' + n(data.registered) + '</b><span>' + esc(w('statsRegistered')) + '</span></div><div class="stat"><b>' + n(data.active) + '</b><span>' + esc(w('statsActive')) + '</span></div>' : '') + '<div class="stat"><b>' + n(data.visitors) + '</b><span>' + esc(w('statsVisitors')) + '</span></div><div class="stat"><b>' + n(data.views) + '</b><span>' + esc(w('statsViews')) + '</span></div>';
       box.innerHTML = h;
       var c = $('#statsCountries');
       if (c) {

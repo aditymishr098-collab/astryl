@@ -88,8 +88,9 @@
   });
 
   /* 3. "Keep exploring": pages you have read get a tick and move to the end. */
+  var first = true; // one "Next for you" on the page, even when the cards are in several groups
   Array.prototype.forEach.call(document.querySelectorAll('.sc-grid'), function (grid) {
-    var cards = Array.prototype.slice.call(grid.querySelectorAll('a.sc')), r = read(), first = true;
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('a.sc')), r = read();
     if (!cards.length) return;
     cards.forEach(function (a) {
       var href = a.getAttribute('href') || '', path = '';
