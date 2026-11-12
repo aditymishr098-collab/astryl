@@ -26,7 +26,7 @@ void main() {
     test('a video day has no picture, and bad answers are refused', () {
       final v = Apod.fromJson(<String, dynamic>{'date': '2026-11-12', 'title': 'A video', 'url': 'https://www.youtube.com/embed/x'})!;
       expect(v.isImage, isFalse);
-      expect(v.page, 'https://apod.nasa.gov/apod/');
+      expect(v.page, 'https://science.nasa.gov/apod/');
       expect(Apod.fromJson(<String, dynamic>{'title': 'No date'}), isNull);
       expect(Apod.fromJson(<String, dynamic>{'date': '2026-11-12', 'title': ' '}), isNull);
       expect(Apod.fromJson('nope'), isNull);
@@ -34,6 +34,9 @@ void main() {
 
     test('NASA and the Astryl server are the only new hosts', () {
       expect(OnlineService.trustedHosts, contains('apod.nasa.gov'));
+      expect(OnlineService.trustedHosts, contains('assets.science.nasa.gov'));
+      expect(Apod.isNasaUrl('https://assets.science.nasa.gov/dynamicimage/x.jpg?w=1280'), isTrue);
+      expect(Apod.isNasaUrl('https://example.com/x.jpg'), isFalse);
       expect(OnlineService.trustedHosts, contains('pmfjjlfggzihbnbmqkao.supabase.co'));
     });
   });

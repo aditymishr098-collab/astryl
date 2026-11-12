@@ -1,7 +1,7 @@
 // Astryl "daily" Edge Function: public, read-only data for the app and website.
 //
 //   GET ?what=tle&sat=iss|css|hst  orbit data (TLE) of a satellite
-//   GET ?what=apod                 NASA's Astronomy Picture of the Day
+//   GET ?what=apod                 NASA's Astronomy Picture of the Day (science.nasa.gov RSS)
 //
 // Answers are cached in the feed_cache table, so the outside services are asked
 // at most every few hours, however many people open the page. Nothing about
@@ -12,7 +12,6 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, {
   auth: { persistSession: false, autoRefreshToken: false },
 });
-const NASA_KEY = Deno.env.get("NASA_API_KEY") || "DEMO_KEY";
 const UA = "Astryl (github.com/aditymishr098-collab/astryl)";
 
 const CORS: Record<string, string> = {
@@ -31,11 +30,11 @@ function reply(body: unknown, status = 200, maxAge = 600) {
   });
 }
 
-async function getText(url: string): Promise<string> {
+async function getText(url: string, max = 200000): Promise<string> {
   const r = await fetch(url, { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(12000) });
   if (!r.ok) throw new Error(`upstream ${r.status}`);
   const t = await r.text();
-  if (t.length > 200000) throw new Error("too big");
+  if (t.length > max) throw new Error("too big");
   return t;
 }
 
@@ -72,45 +71,59 @@ async function freshTle(sat: string) {
   return checkTle(lines[0], lines[1], lines[2], norad);
 }
 
+const NASA_IMG = /^https:\/\/(apod\.nasa\.gov|assets\.science\.nasa\.gov)\//;
+const NASA_PAGE = /^https:\/\/(apod\.nasa\.gov|science\.nasa\.gov)\//;
 const MONTHS = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
-const NASA_IMG = /^https:\/\/apod\.nasa\.gov\//;
 
-function apodBody(date: string, title: string, explanation: string, isImage: boolean, url: string, hdurl: string, copyright: string) {
+function decode(s: string): string {
+  return s.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
+    .replace(/&#0?38;|&amp;/g, "&").replace(/&quot;|&#0?34;/g, '"').replace(/&#0?39;|&apos;|&#8217;/g, "'")
+    .replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&nbsp;/g, " ");
+}
+
+function plain(html: string): string {
+  return decode(html).replace(/<br\s*\/?>/gi, " ").replace(/<[^>]+>/g, "").replace(/\s+/g, " ")
+    .replace(/\s+([.,;:!?)])/g, "$1").trim();
+}
+
+function tag(item: string, name: string): string {
+  const m = item.match(new RegExp(`<${name}>([\\s\\S]*?)<\\/${name}>`));
+  return m ? m[1].trim() : "";
+}
+
+// NASA moved APOD to science.nasa.gov in 2026; its RSS feed carries today's picture first.
+async function freshApod() {
+  const xml = await getText("https://science.nasa.gov/feed/apod-basic/", 3_000_000);
+  const item = (xml.match(/<item>([\s\S]*?)<\/item>/) || [])[1];
+  if (!item) throw new Error("no APOD item");
+  const page = decode(tag(item, "link"));
+  const dm = page.match(/apod-(\d{4})-([a-z]+)-(\d{1,2})-/);
+  let date = "";
+  if (dm && MONTHS.includes(dm[2])) {
+    date = `${dm[1]}-${String(MONTHS.indexOf(dm[2]) + 1).padStart(2, "0")}-${dm[3].padStart(2, "0")}`;
+  } else {
+    const t = Date.parse(tag(item, "pubDate"));
+    if (!Number.isFinite(t)) throw new Error("no date");
+    date = new Date(t - 5 * 3600 * 1000).toISOString().slice(0, 10); // US Eastern day
+  }
+  const title = plain(tag(item, "title"));
+  const hd = decode(tag(item, "apod:hdurl"));
+  const isImage = NASA_IMG.test(hd) && !/\.(mp4|webm|mov)(\?|$)/i.test(hd);
+  // A smaller copy for the card: NASA's image service scales on request.
+  const url = isImage && hd.includes("/dynamicimage/") ? hd.replace(/\?.*$/, "") + "?w=1280&h=1280&fit=clip" : (isImage ? hd : "");
+  const explanation = plain(tag(item, "apod:explanation") || tag(item, "description"))
+    .replace(/^Explanation:\s*/i, "").replace(/\s*Tomorrow['’]s picture:.*$/s, "").trim();
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !title) throw new Error("bad APOD");
   return {
     date,
-    title: title.replace(/\s+/g, " ").trim(),
-    explanation: explanation.replace(/\s*Tomorrow['’]s picture:.*$/s, "").replace(/\s+/g, " ").trim(),
+    title: title.slice(0, 200),
+    explanation,
     media: isImage ? "image" : "other",
-    // Only pictures from NASA's own server are passed on (no video sites).
-    url: isImage && NASA_IMG.test(url) ? url : "",
-    hdurl: isImage && NASA_IMG.test(hdurl) ? hdurl : "",
-    copyright: copyright.replace(/\s+/g, " ").replace(/^Image Credit[^:]*:\s*/i, "").trim().slice(0, 200),
-    page: `https://apod.nasa.gov/apod/ap${date.slice(2, 4)}${date.slice(5, 7)}${date.slice(8, 10)}.html`,
+    url,
+    hdurl: isImage ? hd : "",
+    copyright: plain(tag(item, "apod:copyright") || tag(item, "apod:credit")).slice(0, 200),
+    page: NASA_PAGE.test(page) ? page : "https://science.nasa.gov/apod/",
   };
-}
-
-// NASA's API (api.nasa.gov) first; it fails now and then, so NASA's own page is read when it does.
-async function freshApod() {
-  try {
-    const j = JSON.parse(await getText(`https://api.nasa.gov/planetary/apod?api_key=${encodeURIComponent(NASA_KEY)}`));
-    const str = (v: unknown) => (typeof v === "string" ? v : "");
-    return apodBody(str(j.date), str(j.title), str(j.explanation), j.media_type === "image", str(j.url), str(j.hdurl), str(j.copyright));
-  } catch (e) {
-    console.error("apod api", String(e));
-  }
-  const html = await getText("https://apod.nasa.gov/apod/astropix.html");
-  const text = (h: string) => h.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").replace(/\s+([.,;:!?)])/g, "$1").trim();
-  const dm = html.match(/(\d{4})\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})/i);
-  if (!dm) throw new Error("no date");
-  const date = `${dm[1]}-${String(MONTHS.indexOf(dm[2].toLowerCase()) + 1).padStart(2, "0")}-${dm[3].padStart(2, "0")}`;
-  const tm = html.match(/<center>\s*<b>([\s\S]*?)<\/b>/i);
-  const em = html.match(/Explanation:\s*<\/b>([\s\S]*?)(<p>\s*<center>|<center>|$)/i);
-  const im = html.match(/<img[^>]+src="([^"]+)"/i);
-  const hm = html.match(/<a\s+href="(image\/[^"]+)"/i);
-  const cm = html.match(/(Image Credit[\s\S]*?)<\/center>/i);
-  const abs = (u: string | undefined) => (u ? new URL(u, "https://apod.nasa.gov/apod/").href : "");
-  return apodBody(date, tm ? text(tm[1]) : "", em ? text(em[1]) : "", !!im, abs(im?.[1]), abs(hm?.[1]), cm ? text(cm[1]) : "");
 }
 
 async function serve(key: string, maxAgeMs: number, make: () => Promise<Record<string, unknown>>) {
