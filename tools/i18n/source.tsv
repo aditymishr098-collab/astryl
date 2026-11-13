@@ -262,7 +262,6 @@ c3681c13	Around 22 December
 0f4e1aaa	Arrow
 f40fe2e6	As the gas fades
 69d9a05e	Ask a question
-adf6a2bf	Ask anything about space, tell others what you saw, or suggest something for Astryl.
 8d4f3ef4	Astronomical unit (AU)
 0de69044	Astryl Community
 2684b345	Astryl Community (only what you choose to add): sky photos you upload (made smaller, with camera and location data removed in your browser), your title and the place and date you type, your posts and replies, stars you give. They are shown with your username right away; anything reported is checked by the moderator and may be removed. You can delete any of them yourself
@@ -970,6 +969,8 @@ ef96a391	Perseus
 c3d48f07	Phoenix landed near the north pole in May 2008 and confirmed that there is water ice just under the soil.
 bf564f75	Photo, constellation and mission rounds
 f43dd7f0	Photon sphere
+5daaf223	Photos
+4d3f0890	Photos of the Moon, planets and stars taken by space lovers, and a place to ask and answer anything about space.
 a9a13c3f	Photosynthesis raises oxygen in the atmosphere about 2.4 billion years ago.
 10dad8e7	Pick a telescope and an eyepiece to see the magnification, how much sky fits in view and roughly what the Moon, planets and deep-sky objects look like.
 fe472f18	Pick two planets to see them side by side.
@@ -1007,6 +1008,7 @@ b3a907bf	Pulsar
 823f4311	Quadrantids
 3059889b	Quadrantids meteor shower
 d19ab717	Quasar
+6ce3bdc3	Questions
 9ea54b1d	Questions and answers
 03c7fbb1	Questions still open
 f8ea0b5b	Quick quiz
@@ -1078,11 +1080,12 @@ b3531be8	Seven short pages
 15178316	Several million years, like Uranus
 032bc0bf	Sextant
 7520fc6c	Shape groups are a simplification. Many galaxies do not fit neatly and astronomers use finer classes.
+b0586856	Share a photo
 9e98019a	Share my approximate location (app only, needs an account): when you make an account, the app asks Android for the location permission. If you allow it, this switch is on and the app sends Android's approximate location (a few kilometres) when you open it, at most once a day. The server rounds it to about 10 km and keeps only the latest place with its date, tied to your account. There is no location in the background. Switch it off in your account and the place is deleted from the server. If you say no to the permission, nothing is sent.
 c3981998	Share my country: the country from your phone's (or browser's) language and region setting, kept with that random number and shown only as a count per country. It is not worked out from your IP address or your location.
+dd0b2160	Share the sky. Ask the universe.
 1fe381cb	Share this page
 cad722e7	Share your own photos of the Moon, planets and stars, ask anything about space and answer other people's questions.
-5e31e511	Share your own sky photos, and ask and answer questions about space. Photos and posts appear right away; anything reported is checked by the moderator.
 970da5f1	Shield
 973bbbfd	Ship Compass
 7e774a36	Show me on the leaderboard (on by default): the Daily 5 leaderboard shows your username, score, right answers and time. Switch it off in your account (website or the You tab in the app) and your name no longer appears; your own rank stays visible to you.
@@ -1096,7 +1099,6 @@ e67d9331	Sirius
 f9d6aa20	Six black holes that changed what we know, from our own Galaxy to the far side of the universe.
 cf41cfe2	Size or distance
 49f71166	Sky photos
-a2309348	Sky photos by the community
 77d1207b	Sky photos, and questions and answers
 9cac6b50	Slowly, perhaps over a million years or more
 aee2f481	Small Magellanic Cloud
@@ -1456,7 +1458,7 @@ ae531639	Uranus rolls around the Sun on its side, tilted by about 98 degrees.
 5065c72a	Uranus was the first planet found with a telescope. William Herschel spotted it in 1781.
 e49ae9ea	Ursids
 e7f7def3	Ursids meteor shower
-5bf6f587	Use “Report” for anything that breaks these rules. The moderator checks every report, and anything reported by three people is hidden at once.
+d9829d79	Use “Report” in the ⋯ menu for anything that breaks these rules. The moderator checks every report, and anything reported by three people is hidden at once.
 0bdc508a	Venus
 564d7a48	Venus grew the same way as Earth and to almost the same size. Its story split from Earth's later: its air filled with carbon dioxide and trapped so much heat that any water boiled away.
 14c416de	Venus is hotter than Mercury, even though it is farther from the Sun, because its thick air traps the heat.
@@ -1559,6 +1561,7 @@ af96ab41	Writing
 cae8d14e	You
 348ba4d0	You are offline
 ffb1b808	You can delete it all
+bdb62300	You can edit or delete your own photos and posts at any time from the ⋯ menu.
 d727e408	You cross. No bump, no wall. But there is no way back, and no message can reach the outside.
 65700e4c	You need no telescope for the first three.
 df275f5e	Your IP address itself, a cookie, any id, the time of day, your browser or device model, or anything that could point to one person.
