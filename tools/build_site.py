@@ -1036,17 +1036,22 @@ MAP_CREDIT = {
 def community_pages():
     cfg = json.loads((ROOT / 'supabase/functions/community/config.json').read_text(encoding='utf-8'))
     v = asset_v()
-    body = f'''<section class="blk"><h1>👥 {bt("Astryl Community", "Astryl Community")}</h1><p class="sub">{bt("Share your own sky photos, and ask and answer questions about space. Photos and posts appear right away; anything reported is checked by the moderator.", "अपने आसमान की फ़ोटो बाँटिए, और अंतरिक्ष के बारे में सवाल पूछिए और जवाब दीजिए। फ़ोटो और posts तुरंत दिखते हैं; जिसकी शिकायत हो, उसे moderator जाँचते हैं।")}</p>
-<p class="cmjump"><a href="#gallery">📷 {bt("Sky photos", "आसमान की फ़ोटो")}</a> <a href="#talk">💬 {bt("Questions and answers", "सवाल और जवाब")}</a></p>
-<p id="cmAdmin" hidden><a class="btn" href="moderate.html">🛡️ {bt("Moderation queue", "Moderation queue")}</a></p></section>
-<section class="blk" id="gallery"><h2>📷 {bt("Sky photos by the community", "Community की आसमान वाली फ़ोटो")}</h2><div id="cmGallery"></div></section>
-<section class="blk" id="talk"><h2>💬 {bt("Questions and answers", "सवाल और जवाब")}</h2><p class="sub">{bt("Ask anything about space, tell others what you saw, or suggest something for Astryl.", "अंतरिक्ष के बारे में कुछ भी पूछिए, दूसरों को बताइए आपने क्या देखा, या Astryl के लिए सुझाव दीजिए।")}</p><div id="cmPosts"></div></section>
-<section class="blk callout"><b>{bt("Community rules", "Community के नियम")}</b><ul>
+    body = f'''<section class="blk cmhero"><div class="cmherobg" aria-hidden="true"></div><div class="cmherotx"><span class="cmeyebrow">👥 Astryl Community</span>
+<h1>{bt("Share the sky. Ask the universe.", "आसमान बाँटिए। ब्रह्मांड से पूछिए।")}</h1>
+<p class="sub">{bt("Photos of the Moon, planets and stars taken by space lovers, and a place to ask and answer anything about space.", "अंतरिक्ष के शौक़ीनों की खींची चाँद, ग्रहों और तारों की फ़ोटो, और अंतरिक्ष के बारे में कुछ भी पूछने और जवाब देने की जगह।")}</p>
+<div class="btns"><button type="button" class="btn primary" data-new="photo">📷 {bt("Share a photo", "फ़ोटो भेजिए")}</button><button type="button" class="btn" data-new="post">❓ {bt("Ask a question", "सवाल पूछिए")}</button><a class="btn" id="cmAdmin" hidden href="moderate.html">🛡️ {bt("Moderation queue", "Moderation queue")}</a></div>
+<div class="cmnums" id="cmNums"></div></div></section>
+<div class="cmtabs" id="cmTabs" role="tablist"><button type="button" role="tab" data-tab="gallery">📷 <span class="tlong">{bt("Sky photos", "आसमान की फ़ोटो")}</span><span class="tshort">{bt("Photos", "फ़ोटो")}</span></button><button type="button" role="tab" data-tab="talk">💬 <span class="tlong">{bt("Questions and answers", "सवाल और जवाब")}</span><span class="tshort">{bt("Questions", "सवाल-जवाब")}</span></button></div>
+<section class="blk cmpanel" id="gallery"><div id="cmGallery"></div></section>
+<section class="blk cmpanel" id="talk" hidden><div id="cmPosts"></div></section>
+<section class="blk"><details class="cmrules"><summary>📜 {bt("Community rules", "Community के नियम")}</summary><ul>
 <li>{bt("Be kind and stay on space and the sky.", "अच्छे से बात कीजिए और अंतरिक्ष व आसमान के विषय पर रहिए।")}</li>
 <li>{bt("Never share your phone number, e-mail, address, school or photos of people.", "अपना फ़ोन नंबर, e-mail, पता, स्कूल या लोगों की फ़ोटो कभी न डालें।")}</li>
 <li>{bt("Only share photos you took yourself.", "सिर्फ़ अपनी खींची फ़ोटो भेजिए।")}</li>
-<li>{bt("Use “Report” for anything that breaks these rules. The moderator checks every report, and anything reported by three people is hidden at once.", "नियम तोड़ने वाली किसी भी चीज़ पर “शिकायत” दबाइए। Moderator हर शिकायत जाँचते हैं, और जिसकी तीन लोग शिकायत करें वह तुरंत छिप जाती है।")}</li>
-<li>{bt("Deleting your account deletes all your photos and posts.", "खाता मिटाने पर आपकी सारी फ़ोटो और posts मिट जाते हैं।")}</li></ul></section>
+<li>{bt("You can edit or delete your own photos and posts at any time from the ⋯ menu.", "अपनी फ़ोटो और posts आप कभी भी ⋯ menu से बदल या हटा सकते हैं।")}</li>
+<li>{bt("Use “Report” in the ⋯ menu for anything that breaks these rules. The moderator checks every report, and anything reported by three people is hidden at once.", "नियम तोड़ने वाली किसी भी चीज़ पर ⋯ menu में “शिकायत करें” दबाइए। Moderator हर शिकायत जाँचते हैं, और जिसकी तीन लोग शिकायत करें वह तुरंत छिप जाती है।")}</li>
+<li>{bt("Deleting your account deletes all your photos and posts.", "खाता मिटाने पर आपकी सारी फ़ोटो और posts मिट जाते हैं।")}</li></ul></details></section>
+<button type="button" class="cmfab" id="cmFab" aria-label="New">＋</button><div class="cmfabmenu" id="cmFabMenu" hidden><button type="button" data-new="photo">📷 {bt("Share a photo", "फ़ोटो भेजिए")}</button><button type="button" data-new="post">❓ {bt("Ask a question", "सवाल पूछिए")}</button></div>
 <script>window.ASTRYL_COMMUNITY={json.dumps(cfg, ensure_ascii=False).replace('</', '<\\/')};</script>'''
     write('community.html', shell('Astryl Community', 'Astryl Community', 'community', body, 'The Astryl Community: sky photos by space lovers, and questions and answers about space.', canonical='community.html', extra_head=f'<script defer src="assets/community.js?v={v}"></script>'))
     body = f'''<section class="blk"><h1>🛡️ Moderation</h1><p class="sub">Photos and posts people reported. Keep it to show it again, remove to delete it for good.</p><div id="mod"></div></section>'''
