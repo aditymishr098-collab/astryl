@@ -1,0 +1,417 @@
+{
+ "st-antares": {
+  "artist": "ESO/K. Ohnaka",
+  "bytes": 5612,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://www.eso.org/public/images/eso1726a/\">http://www.eso.org/public/images/eso1726a/</a>",
+  "desc": "Using ESO’s Very Large Telescope Interferometer astronomers have constructed this remarkable image of the red supergiant star Antares. This is the most detailed image ever of this object, or any other star apart from the Sun.",
+  "licence": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:VLTI_reconstructed_view_of_the_surface_of_Antares.jpg",
+  "pixels": [
+   600,
+   600
+  ],
+  "title": "File:VLTI reconstructed view of the surface of Antares.jpg",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Antares VLTI map.jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Antares surface (VLTI).jpg"
+   }
+  ]
+ },
+ "st-betelgeuse": {
+  "artist": "ALMA (ESO/NAOJ/NRAO)/E. O’Gorman/P. Kervella",
+  "bytes": 13902,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://www.eso.org/public/unitedkingdom/images/potw1726a/\">http://www.eso.org/public/unitedkingdom/images/potw1726a/</a>",
+  "desc": "This orange blob shows the nearby star Betelgeuse, as seen by the Atacama Large Millimeter/submillimeter Array (ALMA). This is the first time that ALMA has ever observed the surface of a star and this first attempt has resulted in the highest-resolution image of Betelgeuse available. Betelgeuse is o",
+  "licence": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Betelgeuse_captured_by_ALMA.jpg",
+  "pixels": [
+   1400,
+   1400
+  ],
+  "title": "File:Betelgeuse captured by ALMA.jpg",
+  "tried": []
+ },
+ "st-casa": {
+  "artist": "Oliver Krause (Steward Observatory) George H. Rieke (Steward Observatory) Stephan M. Birkmann (Max-Planck-Institut für Astronomie) Emeric Le Floc'h (Steward Observatory) Karl D. Gordon (Steward Observatory) Eiichi Egami (Steward Observatory) John Bieging (Steward Observatory) John P. Hughes (Rutgers",
+  "bytes": 128544,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://gallery.spitzer.caltech.edu/Imagegallery/image.php?image_name=ssc2005-14c\">http://gallery.spitzer.caltech.edu/Imagegallery/image.php?image_name=ssc2005-14c</a>",
+  "desc": "A false color image of Cassiopeia A (Cas A) using observations from both the Hubble and Spitzer telescopes as well as the Chandra X-ray Observatory (cropped).",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Cassiopeia_A_Spitzer_Crop.jpg",
+  "pixels": [
+   1400,
+   1066
+  ],
+  "title": "File:Cassiopeia A Spitzer Crop.jpg",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Cassiopeia A (NIRCam image).jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Cassiopeia A (MIRI image).jpg"
+   }
+  ]
+ },
+ "st-catseye": {
+  "artist": "J.P. Harrington and K.J. Borkowski (University of Maryland), and NASA",
+  "bytes": 31698,
+  "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"http://hubblesite.org/newscenter/archive/releases/1995/49/image/h/\">HST's Greatest Hits</a>",
+  "desc": "X-ray/optical composite image of NGC 6543, the Cat's Eye Nebula (X-ray: NASA/UIUC/Y.Chu et al., Optical: NASA/HST). \n<p><b>Optical image</b>:  Wide Field Planetary Camera-2, composite image of three images taken at different wavelengths: \n</p>\n<ul><li>red, hydrogen-alpha, 656.28 nm;</li>\n<li>blue, n",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:NGC6543.jpg",
+  "pixels": [
+   1400,
+   1400
+  ],
+  "title": "File:NGC6543.jpg",
+  "tried": []
+ },
+ "st-crabcore": {
+  "artist": "NASA/CXC/SAO/F. Seward et al",
+  "bytes": 159956,
+  "credit": "<table class=\"layouttemplate sourcetemplate\" style=\"width:100%; clear:both; text-align:center; margin:0.5em auto; box-sizing: border-box; padding: 0; border-spacing: 8px; background-color: var(--background-color-neutral-subtle, #f6f7f5); color: var(--color-base, #202122); border: var(--border-subtle",
+  "desc": "This image gives the first clear view of the faint boundary of the Crab Nebula's X-ray-emitting pulsar wind nebula. The nebula is powered by a rapidly rotating, highly magnetized neutron star, or pulsar (white dot near the center). The combination of rapid rotating and strong magnetic field generate",
+  "licence": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Chandra_X-Ray_Observatory_Image_of_the_Crab_Nebula_(M1-Comparison-X-ray-Chandra-ACIS-1997).tiff",
+  "pixels": [
+   1400,
+   1400
+  ],
+  "title": "File:Chandra X-Ray Observatory Image of the Crab Nebula (M1-Comparison-X-ray-Chandra-ACIS-1997).tiff",
+  "tried": [
+   {
+    "licence": "No restrictions",
+    "missing": false,
+    "title": "File:Crab Nebula pulsar x-ray.jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Chandra image of the Crab Nebula.jpg"
+   }
+  ]
+ },
+ "st-etacar": {
+  "artist": "Jon Morse (University of Colorado) &amp; NASA Hubble Space Telescope",
+  "bytes": 43014,
+  "credit": "Hubble Site <a rel=\"nofollow\" class=\"external autonumber\" href=\"http://hubblesite.org/newscenter/archive/releases/1996/23/image/a/\">[1]</a>",
+  "desc": "<p>(NASA News Release) A huge, billowing pair of gas and dust clouds are captured in this stunning NASA Hubble Space Telescope image of the supermassive star Eta Carinae.\n</p><p>Using a combination of image processing techniques (dithering, subsampling and deconvolution), astronomers created one of ",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Eta_Carinae.jpg",
+  "pixels": [
+   1400,
+   1399
+  ],
+  "title": "File:Eta Carinae.jpg",
+  "tried": []
+ },
+ "st-hh211": {
+  "artist": "Image: ESA/Webb, NASA, CSA, Tom Ray (Dublin)",
+  "bytes": 37366,
+  "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"https://webbtelescope.org/contents/media/images/2023/141/01H9NWH9JEBFPKVD3M1RRTGGQJ\">HH 211 (NIRCam Image)</a>",
+  "desc": "NASA’s James Webb Space Telescope’s high resolution, near-infrared look at Herbig-Haro 211 reveals exquisite detail of the outflow of a young star, an infantile analogue of our Sun. Herbig-Haro objects are formed when stellar winds or jets of gas spewing from newborn stars form shock waves colliding",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:HH_211_(NIRCam_Image)_(2023-141).png",
+  "pixels": [
+   1400,
+   1143
+  ],
+  "title": "File:HH 211 (NIRCam Image) (2023-141).png",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:HH 211 (NIRCam image).jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Webb captures outflow from infant star HH 211.jpg"
+   }
+  ]
+ },
+ "st-hh46": {
+  "artist": "NASA, ESA, CSA, J. DePasquale (STScI)",
+  "bytes": 174986,
+  "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"https://esawebb.org/images/weic2319b\">Herbig-Haro 46/47 (NIRCam image - annotated)</a>",
+  "desc": "The NASA/ESA/CSA James Webb Space Telescope has captured a high-resolution image of a tightly bound pair of actively forming stars, known as Herbig-Haro 46/47, in near-infrared light. Look for them at the centre of the red diffraction spikes. The stars are buried deeply, appearing as an orange-white",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Herbig-Haro_46-47_(NIRCam_image_-_annotated)_(weic2319b).jpg",
+  "pixels": [
+   1400,
+   964
+  ],
+  "title": "File:Herbig-Haro 46-47 (NIRCam image - annotated) (weic2319b).jpg",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Herbig-Haro 46-47 (NIRCam Image).jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Herbig-Haro 46-47 NIRCam.png"
+   }
+  ]
+ },
+ "st-omegacen": {
+  "artist": "ESO",
+  "bytes": 675998,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.eso.org/public/images/eso0844a/\">https://www.eso.org/public/images/eso0844a/</a>",
+  "desc": "<p>The globular cluster Omega Centauri — with as many as ten million stars — is seen in all its splendour in this image captured with the WFI camera from ESO's La Silla Observatory. The image shows only the central part of the cluster — about the size of the full moon on the sky (half a degree). Nor",
+  "licence": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Omega_Centauri_by_ESO.jpg",
+  "pixels": [
+   1400,
+   1316
+  ],
+  "title": "File:Omega Centauri by ESO.jpg",
+  "tried": []
+ },
+ "st-orion": {
+  "artist": "Rogelio Bernal Andreo",
+  "bytes": 248734,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://deepskycolors.com/astro/JPEG/RBA_Orion_HeadToToes.jpg\">http://deepskycolors.com/astro/JPEG/RBA_Orion_HeadToToes.jpg</a>",
+  "desc": "Photo taken by Rogelio Bernal Andreo in October 2010 of the Orion constellation showing the surrounding nebulas of the Orion Molecular Cloud complex.  Also captured is the red supergiant Betelgeuse (top left) and the famous belt of Orion composed of the OB stars Alnitak, Alnilam and Mintaka.  To the",
+  "licence": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Orion_Head_to_Toe.jpg",
+  "pixels": [
+   908,
+   1400
+  ],
+  "title": "File:Orion Head to Toe.jpg",
+  "tried": []
+ },
+ "st-polaris": {
+  "artist": "NASA/HST",
+  "bytes": 52918,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://hubblesite.org/newscenter/newsdesk/archive/releases/2006/02/image/a\">http://hubblesite.org/newscenter/newsdesk/archive/releases/2006/02/image/a</a> (Image: STScI-2006-02)",
+  "desc": "<b>Polaris</b> (Alpha Ursae Minoris) as seen by the Hubble Space Telescope.",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Polaris_alpha_ursae_minoris.jpg",
+  "pixels": [
+   1400,
+   945
+  ],
+  "title": "File:Polaris alpha ursae minoris.jpg",
+  "tried": []
+ },
+ "st-proxima": {
+  "artist": "ESA/Hubble &amp; NASA",
+  "bytes": 8992,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://www.spacetelescope.org/images/potw1343a/\">http://www.spacetelescope.org/images/potw1343a/</a>",
+  "desc": "Shining brightly in this Hubble image is our closest stellar neighbour: Proxima Centauri.\n<p>Proxima Centauri lies in the constellation of Centaurus (The Centaur), just over four light-years from Earth. Although it looks bright through the eye of Hubble, as you might expect from the nearest star to ",
+  "licence": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:New_shot_of_Proxima_Centauri,_our_nearest_neighbour.jpg",
+  "pixels": [
+   604,
+   592
+  ],
+  "title": "File:New shot of Proxima Centauri, our nearest neighbour.jpg",
+  "tried": []
+ },
+ "st-rhooph": {
+  "artist": "Image",
+  "bytes": 63038,
+  "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"https://webbtelescope.org/contents/media/images/2023/128/01H449193V5Q4Q6GFBKXAZ3S03\">Rho Ophiuchi (NIRCam Image)</a>",
+  "desc": "The first anniversary image from NASA’s James Webb Space Telescope displays star birth like it’s never been seen before, full of detailed, impressionistic texture. The subject is the Rho Ophiuchi cloud complex, the closest star-forming region to Earth. It is a relatively small, quiet stellar nursery",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Rho_Ophiuchi_(NIRCam_Image)_(2023-128).tiff",
+  "pixels": [
+   1400,
+   1311
+  ],
+  "title": "File:Rho Ophiuchi (NIRCam Image) (2023-128).tiff",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Rho Ophiuchi cloud complex (NIRCam Image).jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Rho Ophiuchi (NIRCam image).jpg"
+   }
+  ]
+ },
+ "st-ring": {
+  "artist": "The Hubble Heritage Team (AURA/STScI/NASA)",
+  "bytes": 31334,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://hubblesite.org/contents/news-releases/1999/news-1999-01.html\">https://hubblesite.org/contents/news-releases/1999/news-1999-01.html</a> (<a rel=\"nofollow\" class=\"external text\" href=\"https://stsci-opo.org/STScI-01EVVFQSN9VS4R6NBD4T4X6J5G.jpg\">dire",
+  "desc": "السديم الحلقي، سديم كوكبي مشابه لما ستصبح عليه الشمس.",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:M57_The_Ring_Nebula.JPG",
+  "pixels": [
+   1215,
+   1241
+  ],
+  "title": "File:M57 The Ring Nebula.JPG",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Ring Nebula (NIRCam image).jpg"
+   }
+  ]
+ },
+ "st-siriusb": {
+  "artist": "NASA, ESA, H. Bond (STScI), and M. Barstow (University of Leicester)",
+  "bytes": 8970,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://www.spacetelescope.org/images/heic0516a/\">http://www.spacetelescope.org/images/heic0516a/</a>",
+  "desc": "This Hubble Space Telescope image shows Sirius A, the brightest star in our nighttime sky, along with its faint, tiny stellar companion, Sirius B. Astronomers overexposed the image of Sirius A [at centre] so that the dim Sirius B [tiny dot at lower left] could be seen. The cross-shaped diffraction s",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Sirius_A_and_B_Hubble_photo.jpg",
+  "pixels": [
+   369,
+   403
+  ],
+  "title": "File:Sirius A and B Hubble photo.jpg",
+  "tried": []
+ },
+ "st-sn1987a": {
+  "artist": "ESA/Hubble &amp; NASA",
+  "bytes": 32064,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://www.spacetelescope.org/images/potw1142a/\">http://www.spacetelescope.org/images/potw1142a/</a>",
+  "desc": "Supernova SN 1987A, one of the brightest stellar explosions since the invention of the telescope more than 400 years ago, is no stranger to the NASA/ESA Hubble Space Telescope. The observatory has been on the frontline of studies into this brilliant dying star since its launch in 1990, three years a",
+  "licence": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:SN_1987A_HST.jpg",
+  "pixels": [
+   850,
+   850
+  ],
+  "title": "File:SN 1987A HST.jpg",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:SN1987a Hubble 2017.jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Supernova 1987A.jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:SN 1987A (NIRCam image).jpg"
+   }
+  ]
+ },
+ "st-southring": {
+  "artist": "<p>Image: \n</p>\n<ul><li><a href=\"https://en.wikipedia.org/wiki/NASA\" class=\"extiw\" title=\"w:NASA\">National Aeronautics and Space Administration</a>  (a <a href=\"https://en.wikipedia.org/wiki/U.S._federal_government\" class=\"extiw\" title=\"w:U.S. federal government\">U.S. federal government</a> agency; ",
+  "bytes": 50048,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.flickr.com/photos/nasawebbtelescope/albums/72177720300469752/with/52211582643/\">https://www.flickr.com/photos/nasawebbtelescope/albums/72177720300469752/with/52211582643/</a>",
+  "desc": "This side-by-side comparison shows observations of the Southern Ring Nebula in near-infrared light (L) and mid-infrared light (R), from NASA’s Webb Telescope. The central star has a white dwarf orbiting it to the lower left.\n<p>In the Near-Infrared Camera (NIRCam) image, the white dwarf is partially",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Southern_Ring_Nebula_(NIRCam_and_MIRI_Images_Side_by_Side).png",
+  "pixels": [
+   1400,
+   650
+  ],
+  "title": "File:Southern Ring Nebula (NIRCam and MIRI Images Side by Side).png",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Southern Ring Nebula (NIRCam Image).jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:NGC 3132 (NIRCam image).png"
+   }
+  ]
+ },
+ "st-sunsurface": {
+  "artist": "Credit: NSO/NSF/AURA",
+  "bytes": 88332,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.nso.edu/telescopes/dkist/first-light-cropped-image/\">https://www.nso.edu/telescopes/dkist/first-light-cropped-image/</a>  <a rel=\"nofollow\" class=\"external free\" href=\"https://www.nso.edu/wp-content/uploads/2020/01/crop_image_full.tif\">https:",
+  "desc": "Caption:\n<p>The Daniel K. Inouye Solar Telescope has produced the highest resolution image of the Sun’s surface ever taken. In this picture taken at 789nm, we can see features as small as 30km (18 miles) in size for the first time ever. The image shows a pattern of turbulent, “boiling” gas that cove",
+  "licence": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Daniel_K._Inouye_Solar_Telescope_highest_resolution_image_of_the_Sun%E2%80%99s_surface_-_Crop_image_full.tif",
+  "pixels": [
+   1280,
+   1280
+  ],
+  "title": "File:Daniel K. Inouye Solar Telescope highest resolution image of the Sun’s surface - Crop image full.tif",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:DKIST-Sun-Image.jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:Sun surface DKIST.jpg"
+   }
+  ]
+ },
+ "st-tycho": {
+  "artist": "NASA/CXC/Rutgers/J.Warren &amp; J.Hughes et al.",
+  "bytes": 125020,
+  "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"https://chandra.harvard.edu/photo/2005/tycho/\">Tycho's Supernova Remnant: Tycho's Remnant Provides Shocking Evidence for Cosmic Rays</a>",
+  "desc": "The Chandra X-ray Observatory image of Tycho's Supernova Remnant depicts a glowing, multi-colored sphere that appears to be suspended in the blackness of space. This spherical structure is actually a remnant of a massive explosion that occurred over 400 years ago, when the star underwent a catastrop",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Tycho-supernova-xray.jpg",
+  "pixels": [
+   1400,
+   1400
+  ],
+  "title": "File:Tycho-supernova-xray.jpg",
+  "tried": []
+ },
+ "st-vela": {
+  "artist": "NASA/CXC/PSU/G.Pavlov et al.",
+  "bytes": 7514,
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://heasarc.gsfc.nasa.gov/docs/objects/heapow/archive/compact_objects/vela_pulsar_jet.html\" href=\"https://heasarc.gsfc.nasa.gov/docs/objects/heapow/archive/compact_objects/vela_pulsar_jet.html\">http://heasarc.gsfc.nasa.gov/docs/object",
+  "desc": "The <a href=\"https://en.wikipedia.org/wiki/Vela_Pulsar\" class=\"extiw\" title=\"w:Vela Pulsar\">Vela Pulsar</a>, a neutron star corpse left from a titanic stellar supernova explosion, shoots through space powered by a jet emitted from one of the neutron star's rotational poles. Now a counter jet in fron",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Vela_Pulsar_jet.jpg",
+  "pixels": [
+   600,
+   630
+  ],
+  "title": "File:Vela Pulsar jet.jpg",
+  "tried": []
+ },
+ "st-wr124": {
+  "artist": "NASA, ESA, CSA, STScI, Webb ERO Production Team",
+  "bytes": 60246,
+  "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"https://esawebb.org/images/weic2307c\">Wolf-Rayet 124 (MIRI image)</a>",
+  "desc": "Wolf-Rayet stars are known to be efficient dust producers, and the Mid-Infrared Instrument (<a rel=\"nofollow\" class=\"external text\" href=\"https://esawebb.org/about/instruments/miri/\">MIRI</a>) on the NASA/ESA/CSA James Webb Space Telescope shows this to great effect. Cooler cosmic dust glows at the ",
+  "licence": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Wolf-Rayet_124_(MIRI_image)_(weic2307c).tiff",
+  "pixels": [
+   1280,
+   977
+  ],
+  "title": "File:Wolf-Rayet 124 (MIRI image) (weic2307c).tiff",
+  "tried": [
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:WR 124 (NIRCam and MIRI composite image).jpg"
+   },
+   {
+    "licence": null,
+    "missing": true,
+    "title": "File:WR 124 (NIRCam and MIRI image).jpg"
+   }
+  ]
+ }
+}

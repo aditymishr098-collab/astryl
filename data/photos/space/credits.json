@@ -412,6 +412,153 @@
   "page": "https://commons.wikimedia.org/wiki/File:Perseverance_First_Two_Missions_Paths_Distinguished.png",
   "title": "File:Perseverance First Two Missions Paths Distinguished.png"
  },
+ "st-antares": {
+  "artist": "ESO/K. Ohnaka",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://www.eso.org/public/images/eso1726a/\">http://www.eso.org/public/images/eso1726a/</a>",
+  "licence": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:VLTI_reconstructed_view_of_the_surface_of_Antares.jpg",
+  "title": "File:VLTI reconstructed view of the surface of Antares.jpg"
+ },
+ "st-betelgeuse": {
+  "artist": "ALMA (ESO/NAOJ/NRAO)/E. O’Gorman/P. Kervella",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://www.eso.org/public/unitedkingdom/images/potw1726a/\">http://www.eso.org/public/unitedkingdom/images/potw1726a/</a>",
+  "licence": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Betelgeuse_captured_by_ALMA.jpg",
+  "title": "File:Betelgeuse captured by ALMA.jpg"
+ },
+ "st-casa": {
+  "artist": "Oliver Krause (Steward Observatory) George H. Rieke (Steward Observatory) Stephan M. Birkmann (Max-Planck-Institut für Astronomie) Emeric Le Floc'h (Steward Observatory) Karl D. Gordon (Steward Observatory) Eiichi Egami (Steward Observatory) John Bieging (Steward Observatory) John P. Hughes (Rutgers",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://gallery.spitzer.caltech.edu/Imagegallery/image.php?image_name=ssc2005-14c\">http://gallery.spitzer.caltech.edu/Imagegallery/image.php?image_name=ssc2005-14c</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Cassiopeia_A_Spitzer_Crop.jpg",
+  "title": "File:Cassiopeia A Spitzer Crop.jpg"
+ },
+ "st-catseye": {
+  "artist": "J.P. Harrington and K.J. Borkowski (University of Maryland), and NASA",
+  "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"http://hubblesite.org/newscenter/archive/releases/1995/49/image/h/\">HST's Greatest Hits</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:NGC6543.jpg",
+  "title": "File:NGC6543.jpg"
+ },
+ "st-crabcore": {
+  "artist": "NASA/CXC/SAO/F. Seward et al",
+  "credit": "<table class=\"layouttemplate sourcetemplate\" style=\"width:100%; clear:both; text-align:center; margin:0.5em auto; box-sizing: border-box; padding: 0; border-spacing: 8px; background-color: var(--background-color-neutral-subtle, #f6f7f5); color: var(--color-base, #202122); border: var(--border-subtle",
+  "licence": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Chandra_X-Ray_Observatory_Image_of_the_Crab_Nebula_(M1-Comparison-X-ray-Chandra-ACIS-1997).tiff",
+  "title": "File:Chandra X-Ray Observatory Image of the Crab Nebula (M1-Comparison-X-ray-Chandra-ACIS-1997).tiff"
+ },
+ "st-etacar": {
+  "artist": "Jon Morse (University of Colorado) &amp; NASA Hubble Space Telescope",
+  "credit": "Hubble Site <a rel=\"nofollow\" class=\"external autonumber\" href=\"http://hubblesite.org/newscenter/archive/releases/1996/23/image/a/\">[1]</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Eta_Carinae.jpg",
+  "title": "File:Eta Carinae.jpg"
+ },
+ "st-hh211": {
+  "artist": "Image: ESA/Webb, NASA, CSA, Tom Ray (Dublin)",
+  "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"https://webbtelescope.org/contents/media/images/2023/141/01H9NWH9JEBFPKVD3M1RRTGGQJ\">HH 211 (NIRCam Image)</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:HH_211_(NIRCam_Image)_(2023-141).png",
+  "title": "File:HH 211 (NIRCam Image) (2023-141).png"
+ },
+ "st-hh46": {
+  "artist": "NASA, ESA, CSA, J. DePasquale (STScI)",
+  "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"https://esawebb.org/images/weic2319b\">Herbig-Haro 46/47 (NIRCam image - annotated)</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Herbig-Haro_46-47_(NIRCam_image_-_annotated)_(weic2319b).jpg",
+  "title": "File:Herbig-Haro 46-47 (NIRCam image - annotated) (weic2319b).jpg"
+ },
+ "st-omegacen": {
+  "artist": "ESO",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.eso.org/public/images/eso0844a/\">https://www.eso.org/public/images/eso0844a/</a>",
+  "licence": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Omega_Centauri_by_ESO.jpg",
+  "title": "File:Omega Centauri by ESO.jpg"
+ },
+ "st-orion": {
+  "artist": "Rogelio Bernal Andreo",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://deepskycolors.com/astro/JPEG/RBA_Orion_HeadToToes.jpg\">http://deepskycolors.com/astro/JPEG/RBA_Orion_HeadToToes.jpg</a>",
+  "licence": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Orion_Head_to_Toe.jpg",
+  "title": "File:Orion Head to Toe.jpg"
+ },
+ "st-polaris": {
+  "artist": "NASA/HST",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://hubblesite.org/newscenter/newsdesk/archive/releases/2006/02/image/a\">http://hubblesite.org/newscenter/newsdesk/archive/releases/2006/02/image/a</a> (Image: STScI-2006-02)",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Polaris_alpha_ursae_minoris.jpg",
+  "title": "File:Polaris alpha ursae minoris.jpg"
+ },
+ "st-proxima": {
+  "artist": "ESA/Hubble &amp; NASA",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://www.spacetelescope.org/images/potw1343a/\">http://www.spacetelescope.org/images/potw1343a/</a>",
+  "licence": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:New_shot_of_Proxima_Centauri,_our_nearest_neighbour.jpg",
+  "title": "File:New shot of Proxima Centauri, our nearest neighbour.jpg"
+ },
+ "st-rhooph": {
+  "artist": "Image",
+  "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"https://webbtelescope.org/contents/media/images/2023/128/01H449193V5Q4Q6GFBKXAZ3S03\">Rho Ophiuchi (NIRCam Image)</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Rho_Ophiuchi_(NIRCam_Image)_(2023-128).tiff",
+  "title": "File:Rho Ophiuchi (NIRCam Image) (2023-128).tiff"
+ },
+ "st-ring": {
+  "artist": "The Hubble Heritage Team (AURA/STScI/NASA)",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://hubblesite.org/contents/news-releases/1999/news-1999-01.html\">https://hubblesite.org/contents/news-releases/1999/news-1999-01.html</a> (<a rel=\"nofollow\" class=\"external text\" href=\"https://stsci-opo.org/STScI-01EVVFQSN9VS4R6NBD4T4X6J5G.jpg\">dire",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:M57_The_Ring_Nebula.JPG",
+  "title": "File:M57 The Ring Nebula.JPG"
+ },
+ "st-siriusb": {
+  "artist": "NASA, ESA, H. Bond (STScI), and M. Barstow (University of Leicester)",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://www.spacetelescope.org/images/heic0516a/\">http://www.spacetelescope.org/images/heic0516a/</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Sirius_A_and_B_Hubble_photo.jpg",
+  "title": "File:Sirius A and B Hubble photo.jpg"
+ },
+ "st-sn1987a": {
+  "artist": "ESA/Hubble &amp; NASA",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"http://www.spacetelescope.org/images/potw1142a/\">http://www.spacetelescope.org/images/potw1142a/</a>",
+  "licence": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:SN_1987A_HST.jpg",
+  "title": "File:SN 1987A HST.jpg"
+ },
+ "st-southring": {
+  "artist": "<p>Image: \n</p>\n<ul><li><a href=\"https://en.wikipedia.org/wiki/NASA\" class=\"extiw\" title=\"w:NASA\">National Aeronautics and Space Administration</a>  (a <a href=\"https://en.wikipedia.org/wiki/U.S._federal_government\" class=\"extiw\" title=\"w:U.S. federal government\">U.S. federal government</a> agency; ",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.flickr.com/photos/nasawebbtelescope/albums/72177720300469752/with/52211582643/\">https://www.flickr.com/photos/nasawebbtelescope/albums/72177720300469752/with/52211582643/</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Southern_Ring_Nebula_(NIRCam_and_MIRI_Images_Side_by_Side).png",
+  "title": "File:Southern Ring Nebula (NIRCam and MIRI Images Side by Side).png"
+ },
+ "st-sunsurface": {
+  "artist": "Credit: NSO/NSF/AURA",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.nso.edu/telescopes/dkist/first-light-cropped-image/\">https://www.nso.edu/telescopes/dkist/first-light-cropped-image/</a>  <a rel=\"nofollow\" class=\"external free\" href=\"https://www.nso.edu/wp-content/uploads/2020/01/crop_image_full.tif\">https:",
+  "licence": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Daniel_K._Inouye_Solar_Telescope_highest_resolution_image_of_the_Sun%E2%80%99s_surface_-_Crop_image_full.tif",
+  "title": "File:Daniel K. Inouye Solar Telescope highest resolution image of the Sun’s surface - Crop image full.tif"
+ },
+ "st-tycho": {
+  "artist": "NASA/CXC/Rutgers/J.Warren &amp; J.Hughes et al.",
+  "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"https://chandra.harvard.edu/photo/2005/tycho/\">Tycho's Supernova Remnant: Tycho's Remnant Provides Shocking Evidence for Cosmic Rays</a>",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Tycho-supernova-xray.jpg",
+  "title": "File:Tycho-supernova-xray.jpg"
+ },
+ "st-vela": {
+  "artist": "NASA/CXC/PSU/G.Pavlov et al.",
+  "credit": "<a rel=\"nofollow\" class=\"external free\" data-mw-original-href=\"http://heasarc.gsfc.nasa.gov/docs/objects/heapow/archive/compact_objects/vela_pulsar_jet.html\" href=\"https://heasarc.gsfc.nasa.gov/docs/objects/heapow/archive/compact_objects/vela_pulsar_jet.html\">http://heasarc.gsfc.nasa.gov/docs/object",
+  "licence": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Vela_Pulsar_jet.jpg",
+  "title": "File:Vela Pulsar jet.jpg"
+ },
+ "st-wr124": {
+  "artist": "NASA, ESA, CSA, STScI, Webb ERO Production Team",
+  "credit": "<a rel=\"nofollow\" class=\"external text\" href=\"https://esawebb.org/images/weic2307c\">Wolf-Rayet 124 (MIRI image)</a>",
+  "licence": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Wolf-Rayet_124_(MIRI_image)_(weic2307c).tiff",
+  "title": "File:Wolf-Rayet 124 (MIRI image) (weic2307c).tiff"
+ },
  "sun-eclipse": {
   "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Lviatour\" title=\"User:Lviatour\">Luc Viatour</a>",
   "credit": "<span class=\"int-own-work\" lang=\"en\">Own work</span>, <a rel=\"nofollow\" class=\"external text\" href=\"http://www.lucnix.be\">www.lucnix.be</a>",

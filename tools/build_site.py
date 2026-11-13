@@ -10,6 +10,7 @@ from pathlib import Path
 
 import deepspace
 import galaxies
+import stars
 import lab
 import umap
 import myspace
@@ -404,7 +405,7 @@ def cons_svg(c):
 NAV_MAIN = [('planets.html', 'planets', bi('planetsTitle')), ('solar-system.html', 'solar', bi('solarSystemTitle')), ('sky.html', 'sky', bi('skyTitle')), ('quiz.html', 'quiz', bi('navQuiz')), ('community.html', 'community', bt('Community', 'Community'))]
 NAV_MORE = [('my-space.html', 'myspace', bt('My space', 'My space')), ('sky-events.html', 'events', bt('Eclipses and meteor showers', 'ग्रहण और उल्कापात')), ('learn.html', 'school', bt('For students', 'छात्रों के लिए')), ('telescope.html', 'scope', bt('Telescope simulator', 'Telescope simulator')), ('iss.html', 'iss', bt('Space station passes', 'अंतरिक्ष स्टेशन कब दिखेगा')), ('compare.html', 'compare', bi('navCompare')), ('you.html', 'you', bt('You', 'आप')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')),
             ('missions.html', 'missions', bi('missionsTitle')), ('spacecraft.html', 'spacecraft', bi('spacecraftTitle')),
-            ('universe-map.html', 'umap', bt('Universe map', 'ब्रह्मांड का नक्शा')), ('galaxies.html', 'gx', bt('Galaxies', 'Galaxies')), ('cosmic-scale.html', 'scale', bt('Scale of the universe', 'ब्रह्मांड का पैमाना')), ('universe-timeline.html', 'tline', bt('Timeline', 'समयरेखा')), ('glossary.html', 'gloss', bt('Glossary', 'शब्दकोश')), ('black-holes.html', 'bh', bt('Black holes', 'ब्लैक होल'))]
+            ('universe-map.html', 'umap', bt('Universe map', 'ब्रह्मांड का नक्शा')), ('stars.html', 'stars', bt('Stars', 'तारे')), ('galaxies.html', 'gx', bt('Galaxies', 'Galaxies')), ('cosmic-scale.html', 'scale', bt('Scale of the universe', 'ब्रह्मांड का पैमाना')), ('universe-timeline.html', 'tline', bt('Timeline', 'समयरेखा')), ('glossary.html', 'gloss', bt('Glossary', 'शब्दकोश')), ('black-holes.html', 'bh', bt('Black holes', 'ब्लैक होल'))]
 
 
 _ASSET_V = []
@@ -414,7 +415,7 @@ def asset_v():
     '''A short hash of the scripts and styles, so a changed file is never served from an old cache.'''
     if not _ASSET_V:
         h = hashlib.md5()
-        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'sw.js'):
+        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'sw.js'):
             h.update((SRC / name).read_bytes())
         h.update((ROOT / 'tools' / 'formation.py').read_bytes())
         if (OUT / 'assets/quiz-bank.js').exists():
@@ -455,8 +456,11 @@ GX_PAGES = {'galaxies', 'what-is-a-galaxy', 'the-milky-way', 'andromeda-galaxy',
 COSMOS_PAGES = {'universe-map', 'cosmic-scale', 'universe-timeline', 'glossary', 'deep-space-quiz'}
 
 
+ST_PAGES = {'stars', 'how-stars-are-born', 'life-of-a-star', 'supernova', 'neutron-stars-and-pulsars', 'white-dwarfs-and-planetary-nebulae', 'star-colours-and-sizes', 'famous-stars'}
+
+
 def og_theme(name):
-    return 'bh' if name in BH_PAGES else 'gx' if name in GX_PAGES else 'cosmos' if name in COSMOS_PAGES else ''
+    return 'bh' if name in BH_PAGES else 'gx' if name in GX_PAGES or name in ST_PAGES else 'cosmos' if name in COSMOS_PAGES else ''
 
 
 def _og_theme_art(img, theme, name):
@@ -596,7 +600,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
     p = '../' * depth
     def navlink(h, k, label):
         return f'<a href="{p}{h}"{" class=on" if k == page else ""}>{label}</a>'
-    more_on = page in ('compare', 'you', 'cons', 'maps', 'missions', 'bh', 'gx', 'scale', 'tline', 'gloss', 'umap', 'myspace', 'events', 'school', 'scope', 'iss')
+    more_on = page in ('compare', 'you', 'cons', 'maps', 'missions', 'bh', 'gx', 'scale', 'tline', 'gloss', 'umap', 'myspace', 'events', 'school', 'scope', 'iss', 'stars')
     nav = (''.join(navlink(*x) for x in NAV_MAIN)
            + f'<details class="more"><summary{" class=on" if more_on else ""}>{bt("More", "और")} ▾</summary><div class="morepanel">'
            + ''.join(navlink(*x) for x in NAV_MORE) + '</div></details>')
@@ -837,6 +841,7 @@ def index_page():
              (pic('earth'), 'navCompare', 'Any two worlds side by side', 'कोई भी दो दुनियाएँ आमने-सामने', 'compare.html')]
     by = {t[4]: t for t in tiles}
     by['telescope.html'] = ('🔭', bt('Telescope simulator', 'Telescope simulator'), 'What a telescope really shows, in real photos', 'Telescope में असल में क्या दिखता है, असली तस्वीरों में', 'telescope.html')
+    by['stars.html'] = ('⭐', bt('Stars', 'तारे'), 'How stars are born, live and die', 'तारे कैसे जन्म लेते, जीते और मरते हैं', 'stars.html')
     by['community.html'] = ('👥', bt('Astryl Community', 'Astryl Community'), 'Sky photos, and questions and answers', 'आसमान की फ़ोटो, और सवाल-जवाब', 'community.html')
     by['quiz.html'] = ('🏆', bt('Quiz and Space Points', 'Quiz और Space Points'), 'Photo, constellation and mission rounds', 'फ़ोटो, नक्षत्र और mission वाले rounds', 'quiz.html')
 
@@ -844,7 +849,7 @@ def index_page():
         ic, k, en, hi_, _ = by[h]
         return f'<a class="sc" href="{h}"><span class="ic">{ic}</span><span><b>{k if k.startswith("<") else bi(k)}</b><small>{bt(en, hi_)}</small></span><span class="go">→</span></a>'
     groups = [('img/planets/saturn.webp', bt('The Solar System', 'सौरमंडल'), bt('Planets, moons and where they are today', 'ग्रह, चाँद और वे आज कहाँ हैं'), ['planets.html', 'solar-system.html', 'compare.html', 'you.html', 'maps.html']),
-              ('img/space/gx-whirlpool.webp', bt('Deep space', 'गहरा अंतरिक्ष'), bt('Black holes, galaxies and the whole universe', 'ब्लैक होल, आकाशगंगाएँ और पूरा ब्रह्मांड'), ['black-holes.html', 'black-holes-101.html', 'galaxies.html', 'universe-map.html', 'cosmic-scale.html', 'universe-timeline.html']),
+              ('img/space/gx-whirlpool.webp', bt('Deep space', 'गहरा अंतरिक्ष'), bt('Stars, black holes, galaxies and the whole universe', 'तारे, ब्लैक होल, आकाशगंगाएँ और पूरा ब्रह्मांड'), ['stars.html', 'black-holes.html', 'black-holes-101.html', 'galaxies.html', 'universe-map.html', 'cosmic-scale.html', 'universe-timeline.html']),
               ('img/space/sun-eclipse.webp', bt('Watch the sky', 'आसमान देखिए'), bt('What to look for tonight, from your city', 'आज रात क्या देखें, आपके शहर से'), ['sky.html', 'constellations.html', 'sky-events.html', 'iss.html', 'telescope.html']),
               ('img/space/pic-earthrise.webp', bt('Explore and learn', 'खोजिए और सीखिए'), bt('Missions, spacecraft, lessons and quizzes', 'Missions, अंतरिक्ष यान, पाठ और quiz'), ['community.html', 'missions.html', 'spacecraft.html', 'learn.html', 'quiz.html', 'glossary.html'])]
     cards = ''.join(f'<section class="grp"><div class="grph" style="background-image:url({img})"><h2>{t}</h2><p>{sub}</p></div><div class="sc-grid">{"".join(card(h) for h in hs)}</div></section>' for img, t, sub, hs in groups)
@@ -1227,7 +1232,7 @@ def data_js():
 def main():
     # Only the generated parts are rebuilt; other files in site/ (images, the
     # favicon) are left alone.
-    for sub in ('assets', 'body', 'fonts', 'black-holes', 'galaxies', 'sky-events', 'learn'):
+    for sub in ('assets', 'body', 'fonts', 'black-holes', 'galaxies', 'stars', 'sky-events', 'learn'):
         if (OUT / sub).exists():
             shutil.rmtree(OUT / sub)
     for old in OUT.glob('*.html'):
@@ -1244,7 +1249,7 @@ def main():
     shutil.copy(SRC / 'learn.js', OUT / 'assets/learn.js')
     shutil.copy(SRC / 'universe.js', OUT / 'assets/universe.js')
     shutil.copytree(site_data.CITIES, OUT / 'assets' / 'cities')
-    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js'):
+    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js'):
         shutil.copy(SRC / name, OUT / 'assets' / name)
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#fbf7ee"/><circle r="30" fill="#1b3a8a"/><ellipse rx="50" ry="15" fill="none" stroke="#6a45d6" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#1b3a8a"/></svg>', encoding='utf-8')
@@ -1263,7 +1268,7 @@ def main():
         body_page(b, i)
     index_page(); planets_page(); simple_pages(); community_pages(); maps_page(); get_page(); privacy_page(); account_page(); not_found(); pwa_files()
     helpers = dict(bt=bt, bi=bi, raw2=raw2, shell=shell, write=write, esc=esc, fmt=fmt, asset_v=asset_v, SITE=SITE, ROOT=ROOT)
-    deep = deepspace.build(helpers) + galaxies.build(helpers) + lab.build(helpers) + universe.build(helpers) + learn.build(helpers) + umap.build(helpers) + myspace.build(helpers) + skyevents.build(helpers) + students.build(helpers) + telescope.build(helpers) + iss.build(helpers)
+    deep = deepspace.build(helpers) + galaxies.build(helpers) + stars.build(helpers) + lab.build(helpers) + universe.build(helpers) + learn.build(helpers) + umap.build(helpers) + myspace.build(helpers) + skyevents.build(helpers) + students.build(helpers) + telescope.build(helpers) + iss.build(helpers)
     urls = ['', 'community.html', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'privacy.html', 'account.html', 'black-holes.html', 'galaxies.html'] + deep + [f'body/{b["id"]}.html' for b in BODIES]
     (OUT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}/{u}</loc></url>\n' for u in urls) + '</urlset>\n', encoding='utf-8')
     og_images()

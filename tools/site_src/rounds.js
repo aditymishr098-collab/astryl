@@ -6,9 +6,9 @@
   var QB = window.ASTRYL_QB, API = window.ASTRYL_API, ACCT = window.ASTRYL_ACCT;
   if (!box || !QB || !API) return;
   var URL = 'https://pmfjjlfggzihbnbmqkao.supabase.co/functions/v1/quiz';
-  var ORDER = ['photo', 'cons', 'missions', 'hl', 'est', 'easy', 'medium', 'hard'];
+  var ORDER = ['photo', 'cons', 'stars', 'missions', 'hl', 'est', 'easy', 'medium', 'hard'];
   var LEVELS = [[0, '🧑‍🚀', 'Cadet', 'कैडेट'], [200, '✈️', 'Pilot', 'पायलट'], [600, '🧭', 'Navigator', 'नेविगेटर'], [1500, '👩‍🚀', 'Astronaut', 'अंतरिक्ष यात्री'], [3500, '🚀', 'Commander', 'कमांडर'], [7000, '🌌', 'Galaxy Explorer', 'गैलेक्सी खोजी']];
-  var BADGES = [['photo', '📷', 'Photo expert: 10/10 photos', 'फ़ोटो उस्ताद: 10/10 तस्वीरें'], ['cons', '⭐', 'Star gazer: 10/10 constellations', 'तारा-दर्शक: 10/10 नक्षत्र'], ['missions', '🛰️', 'Space historian: 10/10', 'अंतरिक्ष इतिहासकार: 10/10'], ['hl', '⚖️', 'Sharp eye: 10/10 bigger or smaller', 'तेज़ नज़र: बड़ा-छोटा 10/10'], ['est', '🎯', 'Great guesser: 40+ points', 'शानदार अंदाज़ा: 40+ points']];
+  var BADGES = [['photo', '📷', 'Photo expert: 10/10 photos', 'फ़ोटो उस्ताद: 10/10 तस्वीरें'], ['cons', '⭐', 'Star gazer: 10/10 constellations', 'तारा-दर्शक: 10/10 नक्षत्र'], ['stars', '🌟', 'Star expert: 10/10 stars', 'तारा विशेषज्ञ: 10/10 तारे'], ['missions', '🛰️', 'Space historian: 10/10', 'अंतरिक्ष इतिहासकार: 10/10'], ['hl', '⚖️', 'Sharp eye: 10/10 bigger or smaller', 'तेज़ नज़र: बड़ा-छोटा 10/10'], ['est', '🎯', 'Great guesser: 40+ points', 'शानदार अंदाज़ा: 40+ points']];
   var root = document.body.getAttribute('data-root') || '';
   function hi() { return API.lang() === 'hi'; }
   function L(p) { return p ? (hi() ? p[1] : p[0]) : ''; }
@@ -39,7 +39,7 @@
   function item(kind, id) { var list = QB[kind].items; for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i]; return null; }
   function label(kind, key, it) {
     if (kind === 'cons') return L(QB.cons.names[key]);
-    if (kind === 'missions') return L(it.o[+key]);
+    if (kind === 'missions' || kind === 'stars') return L(it.o[+key]);
     return API.bname(key);
   }
   function question(kind, it) {
@@ -128,14 +128,14 @@
     });
   }
   function keysFor(kind, it) {
-    if (it.o) return kind === 'missions' ? shuffle(['0', '1', '2', '3']) : shuffle(it.o);
+    if (it.o) return (kind === 'missions' || kind === 'stars') ? shuffle(['0', '1', '2', '3']) : shuffle(it.o);
     if (it.pool) {
       var pool = it.pool === '*' ? QB[kind].items.map(function (x) { return x.a; }).filter(function (x) { return x !== it.a; }) : it.pool;
       return shuffle([it.a].concat(shuffle(pool).slice(0, 3)));
     }
     return [];
   }
-  function rightOf(q) { return q.kind === 'missions' ? '0' : q.it.a; }
+  function rightOf(q) { return (q.kind === 'missions' || q.kind === 'stars') ? '0' : q.it.a; }
   function playHtml() {
     var q = R.qs[R.i], it = q.it, done = R.answers.length > R.i, ans = done ? R.answers[R.i] : null, h = '';
     h += '<div class="rhead"><span class="note">' + esc(L(QB[q.kind].name)) + ' · ' + (R.i + 1) + '/' + R.qs.length + (R.practice ? ' · ' + (hi() ? 'अभ्यास' : 'practice') : ' · 🏆 ' + n(R.total) + ' pts') + '</span><button type="button" class="linkbtn" data-act="quit">' + (hi() ? 'छोड़ें' : 'Quit') + '</button></div>';
@@ -171,9 +171,9 @@
     var q = R.qs[R.i];
     if (R.answers.length > R.i || R.busy) return;
     var local = function () {
-      var a = q.kind === 'missions' ? '0' : q.it.a, ok, s;
+      var a = (q.kind === 'missions' || q.kind === 'stars') ? '0' : q.it.a, ok, s;
       if (q.kind === 'est') { s = closeness(pick.v, q.it); ok = s >= 6; } else { ok = pick === String(a); s = ok ? 10 : 0; }
-      return { ok: ok, a: q.kind === 'missions' ? '0' : a, s: s };
+      return { ok: ok, a: (q.kind === 'missions' || q.kind === 'stars') ? '0' : a, s: s };
     };
     var finish = function (res) {
       var ans = { pick: q.kind === 'est' ? null : pick, slider: q.kind === 'est' ? pick.s : null, ok: res.ok, a: res.a, s: res.s, fast: res.fast };
