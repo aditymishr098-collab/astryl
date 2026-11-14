@@ -130,7 +130,7 @@ a daily space quiz, and an honest answer to "could humans live here?"
 
 ## 🌐 The website
 
-[**astryl.space**](https://astryl.space) is the same Astryl in your browser, with the same account, in English and Hindi, dark by default.
+[**astryl.space**](https://astryl.space) is the same Astryl in your browser, with the same account, in English, dark by default.
 
 - **Planets and 18 world pages** with facts, a 3D look, the interior, and for **Jupiter and Saturn their moons at their real positions** on any date.
 - **Solar system, Compare, You** (weight, jump and age), **Constellations**, **Surface maps**, **Space missions** and **Spacecraft now**.

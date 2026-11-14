@@ -20,7 +20,7 @@ def build(h):
 </section>
 <section class="blk prose"><h2>{bt("2. How big is it?", "2. यह कितना बड़ा है?")}</h2>
 {P("Type any mass and get the size of its event horizon, r = 2GM/c², plus a few more things worked out from it. Tap a preset to try an example.", "कोई भी द्रव्यमान लिखिए और उसके event horizon का आकार, r = 2GM/c², और उससे निकली कुछ और बातें पाइए। उदाहरण के लिए preset दबाइए।")}
-<div class="row"><input type="number" id="cMass" value="1" min="0" step="any" aria-label="Mass"><select id="cUnit" aria-label="Unit"><option value="kg">kg</option><option value="earth">{"Earths / पृथ्वी"}</option><option value="sun" selected>{"Suns / सूरज"}</option></select></div>
+<div class="row"><input type="number" id="cMass" value="1" min="0" step="any" aria-label="Mass"><select id="cUnit" aria-label="Unit"><option value="kg">kg</option><option value="earth">Earths</option><option value="sun" selected>Suns</option></select></div>
 <div class="row">{preset_btn("A person", "एक इंसान", v=70, u="kg")}{preset_btn("Earth", "पृथ्वी", v=1, u="earth")}{preset_btn("The Sun", "सूरज", v=1, u="sun")}{preset_btn("10 Suns", "10 सूरज", v=10, u="sun")}{preset_btn("Sagittarius A*", "Sagittarius A*", v=4300000, u="sun")}{preset_btn("M87*", "M87*", v=6500000000, u="sun")}</div>
 <div class="stats" id="cOut"></div><p class="note" id="cNote"></p>
 {k.note("Density is the mass divided by the volume inside the horizon. Hawking temperature and evaporation time come from Hawking’s 1974 formulas; they are predictions, never measured.", "घनत्व = द्रव्यमान ÷ horizon के अंदर का आयतन। Hawking temperature और ख़त्म होने का समय Hawking के 1974 के सूत्रों से हैं; ये भविष्यवाणियाँ हैं, कभी नापी नहीं गईं।")}

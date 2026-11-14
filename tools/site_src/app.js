@@ -12,10 +12,9 @@
   };
 
   /* ---------- language and theme ---------- */
-  var LANGS = ['en', 'hi', 'es', 'pt', 'fr', 'ar'], SHORT = { en: 'EN', hi: 'हि', es: 'ES', pt: 'PT', fr: 'FR', ar: 'ع' };
+  var LANGS = ['en'], SHORT = { en: 'EN', hi: 'हि', es: 'ES', pt: 'PT', fr: 'FR', ar: 'ع' };
   var LOCALE = { en: 'en-US', hi: 'hi-IN', es: 'es-ES', pt: 'pt-PT', fr: 'fr-FR', ar: 'ar' };
-  var lang = store.get('astryl-lang');
-  if (LANGS.indexOf(lang) < 0) { lang = (navigator.language || 'en').slice(0, 2); if (LANGS.indexOf(lang) < 0) lang = 'en'; }
+  var lang = 'en'; // the website is English only
   var page = document.body.dataset.page || '';
   var renderers = [];
 
@@ -28,7 +27,7 @@
     return Number(n).toLocaleString(LOCALE[lang], { maximumFractionDigits: dec || 0, minimumFractionDigits: 0 });
   }
   function setLang(l) {
-    lang = l;
+    l = 'en'; lang = l;
     document.documentElement.lang = l;
     document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
     store.set('astryl-lang', l);
