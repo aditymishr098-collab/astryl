@@ -386,11 +386,11 @@ def build(h):
         cards += (f'<article class="card fstar" id="{sid}"><div class="fsdot" style="--c:{colour(st[4])}"></div><div><h3>{bt(st[1], st[2])}</h3><p class="note">{bt(st[8], st[9])}</p><p>{bt(st[10], st[11])}</p>'
                   f'<dl class="fsdl"><div><dt>{bt("Distance", "दूरी")}</dt><dd>{bt(de, dh)}</dd></div><div><dt>{bt("Surface", "सतह")}</dt><dd>{st[4]:,} K</dd></div>'
                   f'<div><dt>{bt("Width", "चौड़ाई")}</dt><dd>{bt(f"{st[5]:g} × Sun", f"{st[5]:g} × सूर्य")}</dd></div><div><dt>{bt("Brightness", "चमक")}</dt><dd>{bt(f"{st[6]:,g} × Sun", f"{st[6]:,g} × सूर्य")}</dd></div></dl></div></article>')
-    body = S.head('Famous stars', 'मशहूर तारे', 'Ten stars worth knowing, with Indian names where they have one.', 'दस तारे जिन्हें जानना चाहिए, जहाँ हैं वहाँ भारतीय नामों के साथ।') + sec(
+    body = S.head('Famous stars', 'मशहूर तारे', 'Ten stars worth knowing, with real numbers.', 'दस तारे जिन्हें जानना चाहिए, जहाँ हैं वहाँ भारतीय नामों के साथ।') + sec(
         f'<div class="fstars">{cards}</div>',
         note('Sizes and brightness of the supergiants are estimates; Betelgeuse in particular has published sizes between about 640 and 1,000 times the Sun.', 'महादानवों के आकार और चमक अनुमान हैं; ख़ासकर आर्द्रा (Betelgeuse) के प्रकाशित आकार सूर्य के लगभग 640 से 1,000 गुना के बीच हैं।'),
         H2('How to find them', 'इन्हें कैसे खोजें'),
-        P('Start with Orion (मृग), high in the evening sky from December to March. Red Betelgeuse is its left shoulder, blue Rigel its right foot. Follow the three belt stars down and left to Sirius, the brightest star of the night. Follow them up and right to orange Aldebaran (रोहिणी).',
+        P('Start with Orion (Mriga in Indian astronomy), high in the evening sky from December to March. Red Betelgeuse is its left shoulder, blue Rigel its right foot. Follow the three belt stars down and left to Sirius, the brightest star of the night. Follow them up and right to orange Aldebaran (Rohini).',
           'मृग (Orion) से शुरू कीजिए, जो दिसंबर से मार्च तक शाम के आसमान में ऊँचा होता है। लाल आर्द्रा (Betelgeuse) इसका बायाँ कंधा है, नीला Rigel इसका दायाँ पैर। कमर के तीन तारों के साथ नीचे बाईं ओर चलिए तो लुब्धक (Sirius) मिलेगा, रात का सबसे चमकीला तारा। उनके साथ ऊपर दाईं ओर चलिए तो नारंगी रोहिणी (Aldebaran)।'),
         P('For Polaris, find the Saptarishi (Big Dipper) and follow its two pointer stars. The Constellations and Tonight’s sky pages show where each star is from your city right now.',
           'ध्रुव तारे के लिए सप्तर्षि खोजिए और उसके दो इशारा करने वाले तारों के साथ चलिए। नक्षत्र और आज रात का आसमान वाले pages दिखाते हैं कि आपके शहर से अभी हर तारा कहाँ है।'),

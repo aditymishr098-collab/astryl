@@ -211,7 +211,7 @@ def esc(s):
 # text; the others are looked up by a short hash of the English text. A text with no
 # translation simply shows in English, because the CSS only hides the English span when a
 # translated span exists (data-tr).
-EXTRA_LANGS = ['es', 'pt', 'fr', 'ar']
+EXTRA_LANGS = []  # the website is English only
 LANG_NAMES = {'en': 'English', 'hi': 'हिन्दी', 'es': 'Español', 'pt': 'Português', 'fr': 'Français', 'ar': 'العربية'}
 LANG_SHORT = {'en': 'EN', 'hi': 'हि', 'es': 'ES', 'pt': 'PT', 'fr': 'FR', 'ar': 'ع'}
 TRX = {}
@@ -233,12 +233,8 @@ def xid(en):
 def spans(en, hi):
     h = xid(en)
     SOURCE[h] = en
-    have = [lg for lg in EXTRA_LANGS if h in TRX[lg]]
-    attr = f' data-tr="{" ".join(have)}"' if have else ''
-    out = f'<span class="t" lang="en"{attr}>{esc(en)}</span><span class="t" lang="hi">{esc(hi)}</span>'
-    for lg in have:
-        out += f'<span class="t" lang="{lg}">{esc(TRX[lg][h])}</span>'
-    return out
+    # the website is English only; the Hindi text in the sources is no longer shown
+    return f'<span class="t" lang="en">{esc(en)}</span>'
 
 
 def bi(key, **p):
@@ -252,7 +248,7 @@ def bt(en, hi):
 
 
 def raw2(en, hi):
-    return f'<span class="t" lang="en">{en}</span><span class="t" lang="hi">{hi}</span>'
+    return f'<span class="t" lang="en">{en}</span>'
 
 
 def bname(i):
@@ -630,7 +626,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 <header class="top"><div class="wrap bar">
 <a class="brand" href="{p}index.html">{logo_svg()}Astryl</a>
 <nav class="links">{nav}</nav>
-<div class="tools"><details class="more langdd" id="langDd"><summary id="langBtn" aria-label="Language">🌐 <b id="langCur">EN</b></summary><div class="morepanel" id="langMenu">{lang_menu()}</div></details><button id="themeBtn" aria-label="Theme">☾</button><span id="acctNav" class="acctnav"><a class="btn" href="{p}account.html?mode=login">{bt("Log in", "Login")}</a><a class="btn primary" href="{p}account.html">{bt("Sign up", "खाता बनाएँ")}</a></span></div>
+<div class="tools"><button id="themeBtn" aria-label="Theme">☾</button><span id="acctNav" class="acctnav"><a class="btn" href="{p}account.html?mode=login">{bt("Log in", "Login")}</a><a class="btn primary" href="{p}account.html">{bt("Sign up", "खाता बनाएँ")}</a></span></div>
 </div></header>
 <main class="wrap">
 {body}

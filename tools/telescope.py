@@ -17,7 +17,7 @@ def build(h):
     sel_eye = ''.join(f'<option value="{a}"{" selected" if a == "25,52" else ""}>{n}</option>' for a, n in eyes)
     targets = [('moon', 'The Moon', 'चाँद'), ('jupiter', 'Jupiter and its moons', 'बृहस्पति और उसके चाँद'), ('saturn', 'Saturn and its rings', 'शनि और उसके छल्ले'), ('mars', 'Mars', 'मंगल'),
                ('orion', 'Orion Nebula (M42)', 'ओरायन नीहारिका'), ('pleiades', 'Pleiades (M45)', 'कृत्तिका'), ('andromeda', 'Andromeda Galaxy (M31)', 'एंड्रोमेडा galaxy')]
-    sel_t = ''.join(f'<option value="{a}">{en} / {hi}</option>' for a, en, hi in targets)
+    sel_t = ''.join(f'<option value="{a}">{en}</option>' for a, en, hi in targets)
     body = f'''<section class="blk"><h1>🔭 {bt("Telescope eyepiece simulator", "Telescope eyepiece simulator")}</h1><p class="sub">{bt("Pick a telescope and an eyepiece to see the magnification, how much sky fits in view and roughly what the Moon, planets and deep-sky objects look like.", "Telescope और eyepiece चुनिए और देखिए कितना ज़ूम मिलेगा, कितना आसमान दिखेगा, और चाँद, ग्रह और दूर की चीज़ें लगभग कैसी दिखेंगी।")}</p></section>
 <section class="blk ts"><div class="tsgrid"><div>
 <label>{bt("Telescope", "Telescope")}<select id="tsScope">{sel_scope}<option value="">{bt("My own…", "अपना…")}</option></select></label>

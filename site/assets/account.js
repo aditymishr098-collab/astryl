@@ -285,7 +285,7 @@
     var el = document.createElement('div');
     el.className = 'gate'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-labelledby', 'gateTitle');
     el.innerHTML = '<div class="gate-art" aria-hidden="true"><i></i><i></i><i></i><b></b></div>' +
-      '<div class="gate-card"><button class="btn gate-lang" id="gateLang" type="button"></button>' +
+      '<div class="gate-card">' +
       '<h1 id="gateTitle"></h1><p class="sub" id="gateSub"></p>' +
       '<div id="acct"></div>' +
       '<p class="gate-skip"><button class="btn" id="gateSkip" type="button"></button></p></div>';
@@ -293,11 +293,9 @@
     function paint() {
       $('#gateTitle').textContent = w('welcomeTitle'); $('#gateSub').textContent = w('welcomeSub');
       $('#gateSkip').textContent = w('welcomeSkip') + ' →';
-      var cur = document.documentElement.lang, names = { en: 'English', hi: 'हिन्दी', es: 'Español', pt: 'Português', fr: 'Français', ar: 'العربية' }; $('#gateLang').textContent = '🌐 ' + (names[cur] || 'English');
     }
     paint(); onLang(paint);
     $('#gateSkip').addEventListener('click', function () { closeGate(true); });
-    $('#gateLang').addEventListener('click', function () { var api = window.ASTRYL_API, L = api && api.langs, i = L ? L.indexOf(document.documentElement.lang) : -1; if (L) api.setLang(L[(i + 1) % L.length]); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && gateEl) closeGate(true); });
   }
 
