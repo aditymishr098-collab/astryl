@@ -1,8 +1,8 @@
-@font-face{font-family:"DM Sans";src:url(../fonts/DMSans-Regular.ttf);font-weight:400;font-display:swap}
-@font-face{font-family:"DM Sans";src:url(../fonts/DMSans-Medium.ttf);font-weight:500;font-display:swap}
-@font-face{font-family:"DM Sans";src:url(../fonts/DMSans-Bold.ttf);font-weight:700;font-display:swap}
-@font-face{font-family:"Space Grotesk";src:url(../fonts/SpaceGrotesk-Medium.ttf);font-weight:500;font-display:swap}
-@font-face{font-family:"Space Grotesk";src:url(../fonts/SpaceGrotesk-Bold.ttf);font-weight:700;font-display:swap}
+@font-face{font-family:"DM Sans";src:url(../fonts/DMSans-Regular.woff) format("woff");font-weight:400;font-display:swap}
+@font-face{font-family:"DM Sans";src:url(../fonts/DMSans-Medium.woff) format("woff");font-weight:500;font-display:swap}
+@font-face{font-family:"DM Sans";src:url(../fonts/DMSans-Bold.woff) format("woff");font-weight:700;font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url(../fonts/SpaceGrotesk-Medium.woff) format("woff");font-weight:500;font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url(../fonts/SpaceGrotesk-Bold.woff) format("woff");font-weight:700;font-display:swap}
 :root{--bg:#f4f6fa;--bg2:#e9eef6;--card:#ffffff;--card2:#e9eef6;--line:#d5dfee;--text:#0d1321;--muted:#56657f;--accent:#2b6cb0;--accent2:#2563eb;--on:#ffffff;--violet:#3b82f6;--good:#059669;--bad:#dc2626;--shadow:0 6px 18px rgba(13,19,33,.04)}
 :root[data-theme=dark]{--bg:#06080e;--bg2:#0c101a;--card:#10141f;--card2:#171d2b;--line:#222a3d;--text:#f3f6fc;--muted:#8c9bb5;--accent:#5b9bff;--accent2:#7db0ff;--on:#060a12;--violet:#6b8afd;--good:#34d399;--bad:#f87171;--shadow:0 8px 24px rgba(0,0,0,.35)}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
@@ -683,3 +683,15 @@ details.cmenu>summary::-webkit-details-marker{display:none}details.cmenu>summary
 .pswrap{display:grid;grid-template-columns:260px 1fr;gap:18px;align-items:center;margin-bottom:10px}@media(max-width:700px){.pswrap{grid-template-columns:1fr}.pulsar{max-width:260px;margin:auto}}
 .pulsar svg{width:100%;height:auto;display:block}.psrot{transform-origin:150px 150px;animation:lcspin 1.6s linear infinite}
 @media(prefers-reduced-motion:reduce){.psrot,.lcstar,.lcring{animation:none!important}}
+/* profile page */
+a.plink{color:inherit;text-decoration:none}a.plink:hover,a.plink:focus-visible{text-decoration:underline;color:var(--accent)}
+.prhead{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:12px}.prav{width:84px;height:84px;font-size:2.2rem}.prwho h1{margin:0;font-size:clamp(1.6rem,4vw,2.3rem);overflow-wrap:anywhere}.prwho{flex:1;min-width:220px}
+.prnums{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:6px;color:var(--muted)}.prnums b{color:var(--text);font-size:1.1rem}
+.prbadges span small{color:var(--muted)}a.prpost{display:block;color:inherit;text-decoration:none}a.prpost:hover{border-color:var(--accent)}
+/* accessibility */
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:absolute;left:12px;top:-60px;z-index:100;padding:10px 14px;border-radius:10px;background:var(--accent);color:var(--on);font-weight:700;text-decoration:none;transition:top .15s}
+.skip:focus{top:12px}
+:focus-visible{outline:3px solid var(--accent2);outline-offset:2px;border-radius:6px}
+main:focus{outline:none}
+.sphoto img,.mphoto img{cursor:zoom-in}

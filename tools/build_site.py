@@ -411,7 +411,7 @@ def asset_v():
     '''A short hash of the scripts and styles, so a changed file is never served from an old cache.'''
     if not _ASSET_V:
         h = hashlib.md5()
-        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'sw.js'):
+        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'sw.js'):
             h.update((SRC / name).read_bytes())
         h.update((ROOT / 'tools' / 'formation.py').read_bytes())
         if (OUT / 'assets/quiz-bank.js').exists():
@@ -618,17 +618,19 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 <meta property="og:site_name" content="Astryl"><meta name="robots" content="max-image-preview:large"><meta property="og:image:alt" content="{esc(title_en)} · Astryl">
 <meta property="og:image" content="{ogimg}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{esc(title_en)} · Astryl"><meta name="twitter:description" content="{esc(desc_en)}"><meta name="twitter:image" content="{ogimg}">
 <link rel="icon" href="{p}assets/icon.svg" type="image/svg+xml"><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Astryl"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preload" href="{p}fonts/DMSans-Regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="{p}fonts/SpaceGrotesk-Bold.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="{p}assets/style.css?v={asset_v()}">
 <script>try{{var s=localStorage,A=["en","hi","es","pt","fr","ar"],l=s.getItem("astryl-lang");if(A.indexOf(l)<0){{l=(navigator.language||"en").slice(0,2);if(A.indexOf(l)<0)l="en"}}var d=document.documentElement;d.lang=l;d.dir=l==="ar"?"rtl":"ltr";if(s.getItem("astryl-theme")!=="light")d.setAttribute("data-theme","dark")}}catch(e){{document.documentElement.setAttribute("data-theme","dark")}}if(window.IntersectionObserver&&!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))document.documentElement.classList.add("js")</script>
 {ldtag}{extra_head}</head>
 <body data-page="{page}" data-root="{p}">
+<a class="skip" href="#main">Skip to content</a>
 <div class="stars"></div>
 <header class="top"><div class="wrap bar">
 <a class="brand" href="{p}index.html">{logo_svg()}Astryl</a>
 <nav class="links">{nav}</nav>
 <div class="tools"><button id="themeBtn" aria-label="Theme">☾</button><span id="acctNav" class="acctnav"><a class="btn" href="{p}account.html?mode=login">{bt("Log in", "Login")}</a><a class="btn primary" href="{p}account.html">{bt("Sign up", "खाता बनाएँ")}</a></span></div>
 </div></header>
-<main class="wrap">
+<main class="wrap" id="main" tabindex="-1">
 {body}
 </main>
 <footer><div class="wrap cols">
@@ -658,6 +660,36 @@ def cm_promo(path):
     return f'<section class="blk"><div class="callout cmpromo"><span class="cmic">{icon}</span><p>{bt(en, hi)}</p><a class="btn" href="{p}community.html">👥 {bt("Astryl Community", "Astryl Community")} →</a></div></section>'
 
 
+# Pages whose first headings after the title are card titles (h3): a heading for screen readers
+# goes before them, so the outline does not jump from h1 to h3.
+H2_FOR = {
+    'black-holes/famous-black-holes.html': 'The black holes', 'galaxies/types-of-galaxies.html': 'The types of galaxies',
+    'constellations.html': 'All constellations', 'glossary.html': 'Space words from A to Z', 'missions.html': 'Missions in order',
+    'privacy.html': 'Our promises', 'solar-system.html': 'The planets', 'universe-timeline.html': 'The timeline',
+    'you.html': 'Your weight on each world', 'stars/famous-stars.html': 'The ten stars', 'stars/life-of-a-star.html': 'Play the life of a star',
+}
+
+H2_AT = {'solar-system.html': '<div class="eyes-wrap">', 'you.html': '<div id="wOut">'}
+
+
+def heading_fix(path, html):
+    label = H2_FOR.get(path)
+    if not label:
+        return html
+    at = H2_AT.get(path)
+    if at and at in html:  # cards drawn later by the page's script: the heading goes before their box
+        return html.replace(at, f'<h2 class="sr-only">{esc(label)}</h2>' + at, 1)
+    m = html.find('<main')
+    h1 = html.find('<h1', m)
+    h3 = html.find('<h3', h1)
+    if h1 < 0 or h3 < 0 or '<h2' in html[h1:h3]:
+        return html
+    # put it at the start of the block (section or div) that holds the first card title
+    k = max(html.rfind('<section', h1, h3), html.rfind('<div class="grid', h1, h3), html.rfind('<div class="lifecycle', h1, h3))
+    k = k if k > h1 else h3
+    return html[:k] + f'<h2 class="sr-only">{esc(label)}</h2>' + html[k:]
+
+
 def write(path, content):
     f = OUT / path
     f.parent.mkdir(parents=True, exist_ok=True)
@@ -665,6 +697,7 @@ def write(path, content):
         content = spacephotos.place(path, content, bt, esc)
         if path in CM_PROMO:
             content = content.replace('\n</main>', '\n' + cm_promo(path) + '\n</main>', 1)
+        content = heading_fix(path, content)
     f.write_text(content, encoding='utf-8')
 
 
@@ -991,7 +1024,7 @@ def maps_page():
             hi = L['hi']['feat' + f['id']].split(' (')[0]
             o += f'<text x="{tx:.1f}" y="{90 - f["lat"]:.1f}" font-size="5" fill="#fff" text-anchor="middle" stroke="#000" stroke-opacity=".5" stroke-width=".6" paint-order="stroke" class="t" lang="hi">{esc(hi)}</text>'
         for si in [x for x in SITES if x['world'] == world]:
-            o += f'<a href="#site-{si["id"]}" data-site="{si["id"]}" data-x="{si["lon"] + 180:.2f}" data-y="{90 - si["lat"]:.2f}"><circle class="sdot" cx="{si["lon"] + 180:.2f}" cy="{90 - si["lat"]:.2f}" r="2.6" fill="{colors[si["kind"]]}" stroke="#fff" stroke-width="1"><title>{esc(si["name"])}</title></circle></a>'
+            o += f'<a href="#site-{si["id"]}" aria-label="{esc(si["name"])}" data-site="{si["id"]}" data-x="{si["lon"] + 180:.2f}" data-y="{90 - si["lat"]:.2f}"><circle class="sdot" cx="{si["lon"] + 180:.2f}" cy="{90 - si["lat"]:.2f}" r="2.6" fill="{colors[si["kind"]]}" stroke="#fff" stroke-width="1"><title>{esc(si["name"])}</title></circle></a>'
         return o + '</svg>'
 
     def fmtll(lat, lon):
@@ -1040,7 +1073,7 @@ def community_pages():
     body = f'''<section class="blk cmhero"><div class="cmherobg" aria-hidden="true"></div><div class="cmherotx"><span class="cmeyebrow">👥 Astryl Community</span>
 <h1>{bt("Share the sky. Ask the universe.", "आसमान बाँटिए। ब्रह्मांड से पूछिए।")}</h1>
 <p class="sub">{bt("Photos of the Moon, planets and stars taken by space lovers, and a place to ask and answer anything about space.", "अंतरिक्ष के शौक़ीनों की खींची चाँद, ग्रहों और तारों की फ़ोटो, और अंतरिक्ष के बारे में कुछ भी पूछने और जवाब देने की जगह।")}</p>
-<div class="btns"><button type="button" class="btn primary" data-new="photo">📷 {bt("Share a photo", "फ़ोटो भेजिए")}</button><button type="button" class="btn" data-new="post">❓ {bt("Ask a question", "सवाल पूछिए")}</button><a class="btn" id="cmAdmin" hidden href="moderate.html">🛡️ {bt("Moderation queue", "Moderation queue")}</a></div>
+<div class="btns"><button type="button" class="btn primary" data-new="photo">📷 {bt("Share a photo", "फ़ोटो भेजिए")}</button><button type="button" class="btn" data-new="post">❓ {bt("Ask a question", "सवाल पूछिए")}</button><a class="btn" id="cmMe" hidden href="profile.html">👤 {bt("My profile", "My profile")}</a><a class="btn" id="cmAdmin" hidden href="moderate.html">🛡️ {bt("Moderation queue", "Moderation queue")}</a></div>
 <div class="cmnums" id="cmNums"></div></div></section>
 <div class="cmtabs" id="cmTabs" role="tablist"><button type="button" role="tab" data-tab="gallery">📷 <span class="tlong">{bt("Sky photos", "आसमान की फ़ोटो")}</span><span class="tshort">{bt("Photos", "फ़ोटो")}</span></button><button type="button" role="tab" data-tab="talk">💬 <span class="tlong">{bt("Questions and answers", "सवाल और जवाब")}</span><span class="tshort">{bt("Questions", "सवाल-जवाब")}</span></button></div>
 <section class="blk cmpanel" id="gallery"><div id="cmGallery"></div></section>
@@ -1055,6 +1088,9 @@ def community_pages():
 <button type="button" class="cmfab" id="cmFab" aria-label="New">＋</button><div class="cmfabmenu" id="cmFabMenu" hidden><button type="button" data-new="photo">📷 {bt("Share a photo", "फ़ोटो भेजिए")}</button><button type="button" data-new="post">❓ {bt("Ask a question", "सवाल पूछिए")}</button></div>
 <script>window.ASTRYL_COMMUNITY={json.dumps(cfg, ensure_ascii=False).replace('</', '<\\/')};</script>'''
     write('community.html', shell('Astryl Community', 'Astryl Community', 'community', body, 'The Astryl Community: sky photos by space lovers, and questions and answers about space.', canonical='community.html', extra_head=f'<script defer src="assets/community.js?v={v}"></script>'))
+    body = f'''<div id="prof" class="prof"></div>
+<script>window.ASTRYL_COMMUNITY={json.dumps(cfg, ensure_ascii=False).replace('</', '<\\/')};</script>'''
+    write('profile.html', shell('Profile', 'Profile', 'community', body, 'A space lover’s public page on Astryl: sky photos, questions, answers and quiz badges.', canonical='profile.html', extra_head=f'<meta name="robots" content="noindex"><script defer src="assets/profile.js?v={v}"></script>'))
     body = f'''<section class="blk"><h1>🛡️ Moderation</h1><p class="sub">Photos and posts people reported. Keep it to show it again, remove to delete it for good.</p><div id="mod"></div></section>'''
     write('moderate.html', shell('Moderation', 'Moderation', 'community', body, 'Astryl Community moderation.', canonical='moderate.html', extra_head=f'<meta name="robots" content="noindex"><script defer src="assets/moderate.js?v={v}"></script>'))
 
@@ -1202,9 +1238,27 @@ def pwa_files():
     v = asset_v()
     core = ['/', '/index.html', '/offline.html', '/planets.html', '/assets/icon.svg', '/img/icons/icon-192.png']
     core += [f'/assets/{n}?v={v}' for n in ('style.css', 'data.js', 'app.js', 'account.js', 'me.js', 'fx.js', 'pwa.js', 'cosmos.js', 'tonight.js', 'apod.js')]
-    core += [f'/fonts/{f}' for f in ('DMSans-Regular.ttf', 'DMSans-Medium.ttf', 'DMSans-Bold.ttf', 'SpaceGrotesk-Medium.ttf', 'SpaceGrotesk-Bold.ttf')]
+    core += [f'/fonts/{f.replace(".ttf", ".woff")}' for f in FONT_FILES]
     sw = (SRC / 'sw.js').read_text(encoding='utf-8').replace("'__VERSION__'", json.dumps(v)).replace('__CORE__', json.dumps(core))
     (OUT / 'sw.js').write_text(sw, encoding='utf-8')
+
+
+FONT_FILES = ('DMSans-Regular.ttf', 'DMSans-Medium.ttf', 'DMSans-Bold.ttf', 'SpaceGrotesk-Medium.ttf', 'SpaceGrotesk-Bold.ttf')
+# Latin, punctuation and the symbols the pages use; everything else falls back to the system font
+FONT_UNICODES = '0000-00FF,0131,0152-0153,02C6,02DA,02DC,2000-206F,2070-209F,20AC,2100-214F,2190-21FF,2212,2215,2248,2260,2264,2265,00D7,2032,2033'
+
+
+def web_font(src, dst):
+    """A smaller copy of a font for the website: Latin only, as WOFF (cached by source size)."""
+    from fontTools import subset
+    cache = ROOT / 'build' / 'fonts' / (dst.name + f'.{src.stat().st_size}')
+    if not cache.exists():
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        opts = subset.Options(); opts.flavor = 'woff'; opts.layout_features = ['*']; opts.name_IDs = ['*']; opts.notdef_outline = True
+        font = subset.load_font(str(src), opts)
+        sub = subset.Subsetter(opts); sub.populate(unicodes=subset.parse_unicodes(FONT_UNICODES)); sub.subset(font)
+        subset.save_font(font, str(cache), opts)
+    shutil.copy(cache, dst)
 
 
 def parse_cities():
@@ -1215,7 +1269,7 @@ def parse_cities():
 def data_js():
     data = dict(cities=parse_cities(), eclipses=skyevents.eclipse_json(),
         bodies=[{k: v for k, v in b.items()} for b in BODIES], orbits=ORBITS, factIds=FACT_IDS, milestones=MILESTONES, meteors=METEORS,
-        spacecraft=CRAFT, L=dict(L))
+        spacecraft=CRAFT, L={'en': L['en']})
     for lg in EXTRA_LANGS:
         f = ROOT / 'tools' / 'i18n' / f'arb_{lg}.json'
         if f.exists():
@@ -1245,13 +1299,15 @@ def main():
     shutil.copy(SRC / 'learn.js', OUT / 'assets/learn.js')
     shutil.copy(SRC / 'universe.js', OUT / 'assets/universe.js')
     shutil.copytree(site_data.CITIES, OUT / 'assets' / 'cities')
-    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js'):
+    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js'):
         shutil.copy(SRC / name, OUT / 'assets' / name)
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#fbf7ee"/><circle r="30" fill="#1b3a8a"/><ellipse rx="50" ry="15" fill="none" stroke="#6a45d6" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#1b3a8a"/></svg>', encoding='utf-8')
     (OUT / 'fonts').mkdir()
-    for f in ('DMSans-Regular.ttf', 'DMSans-Medium.ttf', 'DMSans-Bold.ttf', 'SpaceGrotesk-Medium.ttf', 'SpaceGrotesk-Bold.ttf', 'OFL-DMSans.txt', 'OFL-SpaceGrotesk.txt'):
+    for f in ('OFL-DMSans.txt', 'OFL-SpaceGrotesk.txt'):
         shutil.copy(site_data.FONTS / f, OUT / 'fonts' / f)
+    for f in FONT_FILES:
+        web_font(site_data.FONTS / f, OUT / 'fonts' / f.replace('.ttf', '.woff'))
     (OUT / 'CNAME').write_text('astryl.space\n', encoding='utf-8')
     (OUT / '.nojekyll').write_text('', encoding='utf-8')
     (OUT / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n', encoding='utf-8')
