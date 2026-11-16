@@ -624,7 +624,7 @@
         h += '<ol class="lb">';
         rows.forEach(function (r) {
           var sub = d.tab === 'today' ? fill(w('boardRight'), { c: r.c }) + ' · ' + fill(w('boardTime'), { s: sec(r.ms) }) : fill(w('boardDays'), { d: r.d });
-          h += '<li' + (r.u === mine ? ' class="me"' : '') + '><span class="nm">' + esc(r.u) + (r.u === mine ? ' (' + esc(w('boardYours')) + ')' : '') + '<small>' + esc(sub) + '</small></span><b>' + r.p + '</b></li>';
+          h += '<li' + (r.u === mine ? ' class="me"' : '') + '><span class="nm"><a class="plink" href="' + ROOT + 'profile.html?u=' + encodeURIComponent(r.u) + '">' + esc(r.u) + '</a>' + (r.u === mine ? ' (' + esc(w('boardYours')) + ')' : '') + '<small>' + esc(sub) + '</small></span><b>' + r.p + '</b></li>';
         });
         h += '</ol>';
       }

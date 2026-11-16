@@ -198,6 +198,41 @@ async function handle(req: Request, b: any): Promise<Response> {
       return reply({ ok: true });
     }
 
+    case "profile": {
+      // a person's public page: what they have shared here, and (if they show themselves on the
+      // leaderboard) their Space Points and the quiz rounds they have got all right
+      const u = String(b.u ?? "").trim().toLowerCase();
+      if (!/^[a-z0-9_]{3,20}$/.test(u)) throw new Fail(400, "bad_user");
+      const me = await userFrom(req, false);
+      const { data: pr } = await admin.from("profiles").select("id, username, created_at, show_on_board").eq("username", u).maybeSingle();
+      if (!pr) throw new Fail(404, "no_user");
+      const [ph, po, rp] = await Promise.all([
+        admin.from("community_photos").select("id, title, kind, stars, created_at").eq("user_id", pr.id).eq("status", "approved").order("created_at", { ascending: false }).limit(30),
+        admin.from("community_posts").select("id, kind, body, created_at").eq("user_id", pr.id).eq("status", "approved").is("parent_id", null).order("created_at", { ascending: false }).limit(20),
+        admin.from("community_posts").select("id, parent_id, body, created_at").eq("user_id", pr.id).eq("status", "approved").not("parent_id", "is", null).order("created_at", { ascending: false }).limit(20),
+      ]);
+      const qids = (po.data ?? []).map((p) => p.id), pids = [...new Set((rp.data ?? []).map((r) => r.parent_id))];
+      const { data: kids } = qids.length ? await admin.from("community_posts").select("parent_id").in("parent_id", qids).eq("status", "approved") : { data: [] };
+      const replies: Record<string, number> = {};
+      for (const k of kids ?? []) replies[k.parent_id] = (replies[k.parent_id] ?? 0) + 1;
+      const { data: parents } = pids.length ? await admin.from("community_posts").select("id, body").in("id", pids).eq("status", "approved") : { data: [] };
+      const pb = Object.fromEntries((parents ?? []).map((p) => [p.id, p.body]));
+      let quiz = null;
+      if (pr.show_on_board) {
+        const { data: sp } = await admin.from("space_points").select("total").eq("user_id", pr.id).maybeSingle();
+        const { data: runs } = await admin.from("quiz_runs").select("kind, correct, score, qids").eq("user_id", pr.id).not("finished_at", "is", null).limit(2000);
+        const badges = [...new Set((runs ?? []).filter((r) => r.kind === "est" ? Number(r.score) >= 40 : (r.qids?.length ?? 0) >= 10 && r.correct === r.qids.length).map((r) => r.kind))];
+        quiz = { points: sp?.total ?? 0, rounds: (runs ?? []).length, badges };
+      }
+      return reply({
+        u: pr.username, since: String(pr.created_at).slice(0, 7), mine: me?.id === pr.id,
+        photos: (ph.data ?? []).map((p) => ({ id: p.id, title: p.title, kind: p.kind, stars: p.stars, at: p.created_at })),
+        questions: (po.data ?? []).map((p) => ({ id: p.id, kind: p.kind, body: p.body, at: p.created_at, replies: replies[p.id] ?? 0 })),
+        answers: (rp.data ?? []).filter((r) => pb[r.parent_id]).map((r) => ({ id: r.id, body: r.body, at: r.created_at, q: pb[r.parent_id] })),
+        quiz,
+      });
+    }
+
     case "edit": {
       // people may change their own photo title or post text; the same rules as for new ones apply
       const user = (await userFrom(req))!;

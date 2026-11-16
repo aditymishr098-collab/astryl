@@ -59,6 +59,7 @@
     } catch (e) { }
     return new Date(t).toLocaleDateString(locale(), { day: 'numeric', month: 'short', year: 'numeric' });
   }
+  function who(name) { return '<a class="plink" href="' + root + 'profile.html?u=' + encodeURIComponent(name) + '">' + esc(name) + '</a>'; }
   function edited(x) { return x.edited ? ' · <i>' + T('edited', 'बदला गया') + '</i>' : ''; }
   function kindOf(list, k) { return list.filter(function (p) { return p[0] === k; })[0]; }
 
@@ -73,6 +74,7 @@
       return '<span><b>' + num(x[0]) + '</b> ' + x[1] + ' ' + T(x[2], x[3]) + '</span>';
     }).join('') : '';
     var a = $('cmAdmin'); if (a) a.hidden = !(H && H.admin);
+    var me = $('cmMe'), ss = session(); if (me) { me.hidden = !(ss && ss.username); if (ss && ss.username) me.href = root + 'profile.html?u=' + encodeURIComponent(ss.username); }
     document.querySelectorAll('[data-tab]').forEach(function (b) { var on = b.dataset.tab === tab; b.classList.toggle('on', on); b.setAttribute('aria-selected', on ? 'true' : 'false'); });
     var g = $('gallery'), t = $('talk'); if (g) g.hidden = tab !== 'gallery'; if (t) t.hidden = tab !== 'talk';
   }
@@ -103,7 +105,7 @@
   function photoCard(p) {
     var k = kindOf(C.photoKinds, p.kind);
     return '<figure class="cph" data-pid="' + esc(p.id) + '"><button type="button" class="cphimg" data-open="' + esc(p.id) + '" aria-label="' + esc(p.title) + '"><img src="' + URL_ + '?action=img&size=thumb&id=' + encodeURIComponent(p.id) + '" alt="' + esc(p.title) + '" loading="lazy"></button>' +
-      '<figcaption><span class="ckind">' + (k ? k[1] : '') + '</span><b>' + esc(p.title) + '</b><small>' + avatar(p.by) + esc(p.by) + ' · ' + ago(p.at) + '</small>' +
+      '<figcaption><span class="ckind">' + (k ? k[1] : '') + '</span><b>' + esc(p.title) + '</b><small>' + avatar(p.by) + who(p.by) + ' · ' + ago(p.at) + '</small>' +
       '<span class="cact"><button type="button" class="star' + (p.starred ? ' on' : '') + '" data-star="' + esc(p.id) + '" aria-label="' + (hi() ? 'Star दें' : 'Give a star') + '">⭐ ' + num(p.stars) + '</button>' + menu('photo', p) + '</span></figcaption></figure>';
   }
   function empty(icon, text, what) {
@@ -117,7 +119,7 @@
     var k = kindOf(C.photoKinds, p.kind);
     var box = document.createElement('div'); box.className = 'lightbox cmlb'; box.setAttribute('role', 'dialog');
     box.innerHTML = '<div class="cmlbin"><img src="' + URL_ + '?action=img&size=full&id=' + encodeURIComponent(p.id) + '" alt="' + esc(p.title) + '">' +
-      '<div class="cmlbcap" data-pid="' + esc(p.id) + '"><b>' + esc(p.title) + '</b><small>' + (k ? k[1] + ' ' + esc(L([k[2], k[3]])) : '') + (p.taken ? ' · 📍 ' + esc(p.taken) : '') + '</small><small>' + avatar(p.by) + esc(p.by) + ' · ' + ago(p.at) + edited(p) + '</small>' +
+      '<div class="cmlbcap" data-pid="' + esc(p.id) + '"><b>' + esc(p.title) + '</b><small>' + (k ? k[1] + ' ' + esc(L([k[2], k[3]])) : '') + (p.taken ? ' · 📍 ' + esc(p.taken) : '') + '</small><small>' + avatar(p.by) + who(p.by) + ' · ' + ago(p.at) + edited(p) + '</small>' +
       '<span class="cact"><button type="button" class="star' + (p.starred ? ' on' : '') + '" data-star="' + esc(p.id) + '">⭐ ' + num(p.stars) + '</button>' + menu('photo', p) + '</span></div>' +
       '<button type="button" class="cmlbx" aria-label="Close">✕</button></div>';
     box.addEventListener('click', function (e) { if (e.target === box || e.target.closest('.cmlbx')) box.remove(); });
@@ -207,11 +209,11 @@
   }
   function postCard(p) {
     var k = kindOf(C.postKinds, p.kind);
-    return '<article class="card post" data-pid="' + esc(p.id) + '"><header class="ph">' + avatar(p.by) + '<span class="pwho"><b>' + esc(p.by) + '</b><small>' + ago(p.at) + edited(p) + '</small></span>' +
+    return '<article class="card post" data-pid="' + esc(p.id) + '"><header class="ph">' + avatar(p.by) + '<span class="pwho"><b>' + who(p.by) + '</b><small>' + ago(p.at) + edited(p) + '</small></span>' +
       (k ? '<span class="pbadge pb-' + esc(p.kind) + '">' + k[1] + ' ' + T(esc(k[2]), esc(k[3])) + '</span>' : '') + menu('post', p) + '</header>' + body(p, 'post') +
       '<div class="pact">' + (session() ? '<button type="button" class="linkbtn" data-reply="' + esc(p.id) + '">↩ ' + T('Answer', 'जवाब दीजिए') + '</button>' : '') + '<span class="note">💬 ' + num(p.replies.length) + ' ' + T(p.replies.length === 1 ? 'answer' : 'answers', 'जवाब') + '</span></div>' +
       (p.replies.length ? '<div class="replies">' + p.replies.map(function (r) {
-        return '<div class="rep" data-pid="' + esc(r.id) + '"><header class="ph">' + avatar(r.by) + '<span class="pwho"><b>' + esc(r.by) + '</b><small>' + ago(r.at) + edited(r) + '</small></span>' + menu('post', r) + '</header>' + body(r, 'post') + '</div>';
+        return '<div class="rep" data-pid="' + esc(r.id) + '"><header class="ph">' + avatar(r.by) + '<span class="pwho"><b>' + who(r.by) + '</b><small>' + ago(r.at) + edited(r) + '</small></span>' + menu('post', r) + '</header>' + body(r, 'post') + '</div>';
       }).join('') + '</div>' : '') +
       (reply === p.id ? composer(p.id) : '') + '</article>';
   }

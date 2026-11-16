@@ -5,6 +5,7 @@ One bank, two copies:
   supabase/functions/quiz/bank.json   the answers, for the "quiz" Edge Function that checks ranked rounds
 """
 import json
+import re
 import random
 
 import cons as conslib
@@ -111,6 +112,17 @@ CONS_IDS = ['Ori', 'UMa', 'UMi', 'Cas', 'Cyg', 'Lyr', 'Aql', 'Sco', 'Cru', 'Cen'
             'Leo', 'Tau', 'Gem', 'Vir', 'Sgr', 'Cnc', 'Ari', 'Psc', 'Aqr', 'Cap', 'Lib', 'Lep', 'Crv', 'Del', 'Car', 'Oph']
 
 
+def en_only(x):
+    """Drops the Hindi half of [English, Hindi] text pairs (kept as "" so the shapes stay the same)."""
+    if isinstance(x, list):
+        if len(x) == 2 and all(isinstance(v, str) for v in x) and re.search('[\u0900-\u097F]', x[1]):
+            return [x[0], '']
+        return [en_only(v) for v in x]
+    if isinstance(x, dict):
+        return {k: en_only(v) for k, v in x.items()}
+    return x
+
+
 def build(out_dir, root, bodies, name_of, cons_raw, photos):
     """Writes both copies of the bank. name_of(lang, id) gives a body's name."""
     rng = random.Random(42)
@@ -178,6 +190,7 @@ def build(out_dir, root, bodies, name_of, cons_raw, photos):
         add('hl', {'id': f'hl:{prop}:{a}:{b2}', 'q': list(q), 'o': [a, b2], 'a': win, 'ex': [ex_en, ex_hi]}, {'a': win, 'o': [a, b2]})
     for eid, q, ans, lo, hi_, log, unit, ex in ESTIMATES:
         add('est', {'id': 'es:' + eid, 'q': list(q), 'a': ans, 'min': lo, 'max': hi_, 'log': log, 'unit': list(unit), 'ex': list(ex)}, {'a': ans, 'min': lo, 'max': hi_, 'log': log})
+    client = en_only(client)  # the website is English only
     (out_dir / 'assets' / 'quiz-bank.js').write_text('/* Made by tools/quizbank.py. */\nwindow.ASTRYL_QB=' + json.dumps(client, ensure_ascii=False, separators=(',', ':')) + ';\n', encoding='utf-8')
     target = root / 'supabase' / 'functions' / 'quiz' / 'bank.json'
     target.parent.mkdir(parents=True, exist_ok=True)

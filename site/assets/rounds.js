@@ -92,7 +92,7 @@
     if (!b) return h + '<p class="note">' + (hi() ? 'Load हो रहा है…' : 'Loading…') + '</p></div>';
     var rows = (S.tab === 'week' ? b.week : b.all) || [], mine = session() ? session().username : '';
     if (!rows.length) h += '<p class="note">' + (hi() ? 'अभी कोई नहीं। पहले बनिए!' : 'Nobody yet. Be the first!') + '</p>';
-    else h += '<ol class="lb">' + rows.map(function (r) { var lv = levelOf(S.tab === 'all' ? r.p : 0); return '<li' + (r.u === mine ? ' class="me"' : '') + '><span class="nm">' + (S.tab === 'all' ? lv.l[1] + ' ' : '') + esc(r.u) + '</span><b>' + n(r.p) + '</b></li>'; }).join('') + '</ol>';
+    else h += '<ol class="lb">' + rows.map(function (r) { var lv = levelOf(S.tab === 'all' ? r.p : 0); return '<li' + (r.u === mine ? ' class="me"' : '') + '><span class="nm">' + (S.tab === 'all' ? lv.l[1] + ' ' : '') + '<a class="plink" href="' + (document.body.getAttribute('data-root') || '') + 'profile.html?u=' + encodeURIComponent(r.u) + '">' + esc(r.u) + '</a></span><b>' + n(r.p) + '</b></li>'; }).join('') + '</ol>';
     if (b.me) { var rk = S.tab === 'week' ? b.me.rank_week : b.me.rank_all; if (rk) h += '<p class="note"><b>' + (hi() ? 'आपका rank: ' + rk : 'Your rank: ' + rk) + '</b></p>'; }
     return h + '</div>';
   }

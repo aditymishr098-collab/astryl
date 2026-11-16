@@ -137,10 +137,16 @@
     var im = e.target.closest('.sphoto img, .mphoto img');
     if (!im || box) return;
     box = document.createElement('div'); box.className = 'lightbox'; box.setAttribute('role', 'dialog');
-    var big = new Image(); big.src = im.currentSrc || im.src; big.alt = im.alt;
+    var big = new Image(); big.src = im.src; big.alt = im.alt; // the full-size file, not the small srcset one
     box.appendChild(big); box.onclick = close; document.body.appendChild(box);
   });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') close();
+    // keyboard: Enter or Space on a photo opens it too
+    var im = e.target.closest && e.target.closest('.sphoto img, .mphoto img');
+    if (im && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); im.click(); }
+  });
+  document.querySelectorAll('.sphoto img, .mphoto img').forEach(function (im) { im.tabIndex = 0; im.setAttribute('role', 'button'); });
 })();
 
 /* First visit only: a short trip at warp speed (about a second), then the page. Skippable, and

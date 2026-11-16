@@ -123,10 +123,17 @@ def build(out):
         im = Image.open(f).convert('RGB')
         im.thumbnail((1400, 700) if pid == 'gx-milkyway' else (1000, 1000))
         im.save(out / 'img' / 'space' / f'{pid}.webp', 'WEBP', quality=78, method=6)
+        sm = im.copy(); sm.thumbnail((640, 640))  # what most screens need inside a page
+        (out / 'img' / 'space' / 'sm').mkdir(parents=True, exist_ok=True)
+        sm.save(out / 'img' / 'space' / 'sm' / f'{pid}.webp', 'WEBP', quality=76, method=6)
+        SMALL[pid] = sm.size
         SIZES[pid] = im.size
         m = meta.get(pid, {})
         CREDITS[pid] = {'licence': m.get('licence', ''), 'page': m.get('page', '')}
     return SIZES
+
+
+SMALL = {}
 
 
 def figure(pid, prefix, bt, esc, cls='sphoto'):
@@ -136,7 +143,7 @@ def figure(pid, prefix, bt, esc, cls='sphoto'):
     credit, en, hi = INFO[pid]
     c = CREDITS[pid]
     lic = f' · <a href="{esc(c["page"])}" rel="noopener" target="_blank">{esc(c["licence"])}</a>' if c['page'] else ''
-    return (f'<figure class="{cls}"><img src="{prefix}img/space/{pid}.webp" width="{w}" height="{h}" loading="lazy" decoding="async" alt="{esc(en)}">'
+    return (f'<figure class="{cls}"><img src="{prefix}img/space/{pid}.webp" srcset="{prefix}img/space/sm/{pid}.webp {SMALL.get(pid, (640, 0))[0]}w, {prefix}img/space/{pid}.webp {w}w" sizes="(max-width: 700px) 100vw, 50vw" width="{w}" height="{h}" loading="lazy" decoding="async" alt="{esc(en)}">'
             f'<figcaption>{bt(en, hi)}<br><small>📷 {esc(credit)}{lic}</small></figcaption></figure>')
 
 
