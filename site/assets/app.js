@@ -907,95 +907,142 @@
     }
     /* "Where is it now": a top-down map of the solar system with every spacecraft at its estimated
        place. Planets come from the orbit math above. Far probes move in a straight line away from
-       the Sun in a fixed direction (their published sky position), so their spot is an estimate. */
+       the Sun in a fixed direction (their published sky position), so their spot is an estimate.
+       Distances are shown as light travel time. The view turns slowly; it stops while you point at it. */
     var CM_DIR = { voyager1: [258.3, 12.0], voyager2: [301.5, -58.2], newhorizons: [287.8, -20.5] }; // RA, Dec in degrees
     var CM_PL = [['mercury', '#b5a49a', 'Mercury'], ['venus', '#e8c27a', 'Venus'], ['earth', '#4fa3ff', 'Earth'], ['mars', '#e2673f', 'Mars'], ['jupiter', '#d9a46c', 'Jupiter'], ['saturn', '#e8d08a', 'Saturn'], ['uranus', '#8fd8e8', 'Uranus'], ['neptune', '#5c7cff', 'Neptune'], ['pluto', '#c9b7a6', 'Pluto']];
     var CM_VIEWS = { inner: [1.9, 'Inner planets'], outer: [34, 'Outer planets'], far: [165, 'Voyager region'], earth: [0, 'Near Earth'] };
-    var cmView = 'far', cmSel = 'voyager1', cmOff = 0;
+    var LS_AU = 499.005, KM_LY = 9460730472580.8;
+    var cmView = 'far', cmSel = 'voyager1', cmOff = 0, cmRot = 0, cmPlay = true, cmHold = false;
+    var cmCalm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (cmCalm) cmPlay = false;
+    function lightText(sec, short) { // light travel time as words: "24 light-hours"
+      var u = sec < 60 ? [1, 'second'] : sec < 3600 ? [60, 'minute'] : sec < 86400 ? [3600, 'hour'] : [86400, 'day'], v = sec / u[0];
+      v = v >= 10 || short ? Math.round(v * (short ? 1 : 10)) / (short ? 1 : 10) : Math.round(v * 10) / 10;
+      return fmt(v, v % 1 ? 1 : 0) + ' light-' + u[1] + (v === 1 ? '' : 's');
+    }
+    function lyText(km) { return fmt(km / KM_LY, 4) + ' light-years'; }
     function cmEcl(ra, dec) { // equatorial direction to ecliptic longitude and latitude
       var e = rad(23.4393), a = rad(ra), d = rad(dec);
       var x = Math.cos(d) * Math.cos(a), y = Math.cos(d) * Math.sin(a) * Math.cos(e) + Math.sin(d) * Math.sin(e), z = -Math.cos(d) * Math.sin(a) * Math.sin(e) + Math.sin(d) * Math.cos(e);
       return { lon: Math.atan2(y, x), lat: Math.asin(z) };
     }
     function cmCraftXY(s, ms) { // heliocentric ecliptic x, y in AU (top-down), or null when near Earth
-      if (s.kind === 'mars') { var m = helio('mars', ms); return { x: m.x, y: m.y, au: Math.hypot(m.x, m.y) }; }
+      if (s.kind === 'mars') { var m = helio('mars', ms); return { x: m.x, y: m.y }; }
       if (s.kind !== 'probe') return null;
       var r = Math.max(0, distKm(s, ms) / KM_AU), dir = cmEcl(CM_DIR[s.id][0], CM_DIR[s.id][1]), rp = r * Math.cos(dir.lat);
-      return { x: rp * Math.cos(dir.lon), y: rp * Math.sin(dir.lon), au: r };
+      return { x: rp * Math.cos(dir.lon), y: rp * Math.sin(dir.lon) };
     }
     function cmInfo(s, ms) {
-      var km = distKm(s, ms);
-      return '<b>' + esc(s.name) + '</b> · ' + (s.kind === 'lowOrbit' ? PT.km(km) + ' above Earth' : PT.km(km) + ' from Earth (' + fmt(km / KM_AU, 2) + ' AU)') +
-        (s.kind === 'probe' ? ' · moving out at ' + fmt(s.speed, 1) + ' km/s' : '') + ' · a radio signal takes ' + (km / C_KMS < 1 ? fmt(km / C_KMS * 1000, 1) + ' ms' : PT.duration(km / C_KMS));
+      var km = distKm(s, ms), sec = km / C_KMS;
+      return '<b>' + esc(s.name) + '</b> · ' + (s.kind === 'lowOrbit' ? PT.km(km) + ' above Earth' : PT.km(km) + ' from Earth') + ' · light takes <b>' + (sec < 1 ? fmt(sec * 1000, 1) + ' ms' : PT.duration(sec)) + '</b> to get there' +
+        (km > 1e9 ? ' (' + lyText(km) + ')' : '') + (s.kind === 'probe' ? ' · moving out at ' + fmt(s.speed, 1) + ' km/s' : '');
+    }
+    function cmMax(ms) { // the far view zooms out so the farthest probe always fits
+      if (cmView !== 'far') return CM_VIEWS[cmView][0];
+      var m = 0; D.spacecraft.forEach(function (s) { if (s.kind === 'probe') { var c = cmCraftXY(s, ms); m = Math.max(m, Math.hypot(c.x, c.y)); } });
+      return Math.max(CM_VIEWS.far[0], m * 1.12);
     }
     function cmSolar(ms, maxAu) {
-      var S = 500, k = 440 / maxAu, o = '';
-      function P(x, y) { return [(S + x * k).toFixed(1), (S - y * k).toFixed(1)]; }
-      if (maxAu > 100) {
-        o += '<circle cx="500" cy="500" r="' + (120 * k).toFixed(1) + '" class="cmhp"/><text x="500" y="' + (500 - 120 * k - 8).toFixed(1) + '" class="cmt cmdim" text-anchor="middle">Heliopause, edge of the Sun\'s bubble (~120 AU)</text>';
-        [50, 100, 150].forEach(function (r) { o += '<text x="' + (500 + r * k * 0.707 + 4).toFixed(1) + '" y="' + (500 + r * k * 0.707 + 12).toFixed(1) + '" class="cmt cmdim">' + r + ' AU</text>'; });
+      var k = 450 / maxAu, cr = Math.cos(cmRot), sr = Math.sin(cmRot), o = '';
+      function P(x, y) { var X = x * cr - y * sr, Y = x * sr + y * cr; return [+(500 + X * k).toFixed(1), +(500 - Y * k).toFixed(1)]; }
+      // rings of light travel time from the Sun
+      var maxLs = maxAu * LS_AU, steps = [60, 120, 300, 600, 1800, 3600, 7200, 10800, 21600, 43200, 86400, 172800], st = steps[steps.length - 1];
+      for (var i = 0; i < steps.length; i++) if (maxLs / steps[i] <= 4.2) { st = steps[i]; break; }
+      for (var ls = st; ls < maxLs * 0.97; ls += st) {
+        var rr = ls / LS_AU * k;
+        o += '<circle cx="500" cy="500" r="' + rr.toFixed(1) + '" class="cmlt"/><text x="' + (500 + rr * 0.707 + 5).toFixed(1) + '" y="' + (500 + rr * 0.707 + 16).toFixed(1) + '" class="cmt cmlab">' + lightText(ls, true) + '</text>';
       }
+      if (maxAu > 100) o += '<circle cx="500" cy="500" r="' + (120 * k).toFixed(1) + '" class="cmhp"/><text x="500" y="' + (500 - 120 * k - 8).toFixed(1) + '" class="cmt cmdim" text-anchor="middle">Heliopause, edge of the Sun\'s bubble (~' + lightText(120 * LS_AU, true) + ')</text>';
       CM_PL.forEach(function (p) {
         var a = D.orbits[p[0]][0], r = a * k; if (r < 3 || a > maxAu * 1.15) return;
         o += '<circle cx="500" cy="500" r="' + r.toFixed(1) + '" class="cmorb" style="stroke:' + p[1] + '"/>';
         var h = helio(p[0], ms), q = P(h.x, h.y);
         if (Math.hypot(h.x, h.y) > maxAu * 1.12) return;
-        o += '<circle cx="' + q[0] + '" cy="' + q[1] + '" r="' + (p[0] === 'jupiter' || p[0] === 'saturn' ? 7 : 5) + '" fill="' + p[1] + '"/>' + (r > 40 ? '<text x="' + (+q[0] + 9) + '" y="' + (+q[1] + 4) + '" class="cmt">' + p[2] + '</text>' : '');
+        o += '<circle cx="' + q[0] + '" cy="' + q[1] + '" r="' + (p[0] === 'jupiter' || p[0] === 'saturn' ? 8 : 6) + '" fill="' + p[1] + '"/>' + (r > 40 ? '<text x="' + (q[0] + 10) + '" y="' + (q[1] + 5) + '" class="cmt">' + p[2] + '</text>' : '');
       });
-      o += '<circle cx="500" cy="500" r="' + (maxAu > 100 ? 6 : 11) + '" class="cmsun"/>';
+      o += '<circle cx="500" cy="500" r="' + (maxAu > 100 ? 6 : 12) + '" class="cmsun"/>';
       if (maxAu > 100) o += '<text x="500" y="' + (500 + 31 * k + 22).toFixed(1) + '" class="cmt cmdim" text-anchor="middle">Sun and planets</text>';
       var off = [];
       D.spacecraft.forEach(function (s) {
         if (s.kind === 'mars' && maxAu > 5) return;
         var c = cmCraftXY(s, ms); if (!c) return;
-        var q = P(c.x, c.y), far = Math.hypot(c.x, c.y) > maxAu * 1.1, on = cmSel === s.id;
-        if (far) { // past the edge: a small arrow on the rim pointing to it
-          var ang = Math.atan2(c.y, c.x), cs = Math.cos(ang), sn = Math.sin(ang);
+        var q = P(c.x, c.y), on = cmSel === s.id;
+        if (Math.hypot(c.x, c.y) > maxAu * 1.1) { // past the edge: a small arrow on the rim pointing to it
+          var ang = Math.atan2(c.y, c.x) + cmRot;
           function R(r, t) { return (500 + Math.cos(ang + t) * r).toFixed(1) + ' ' + (500 - Math.sin(ang + t) * r).toFixed(1); }
-          o += '<g class="cmo' + (on ? ' on' : '') + '" data-id="' + s.id + '" tabindex="0" role="button" aria-label="' + esc(s.name) + ', off this map"><path d="M' + R(482, 0) + 'L' + R(458, 0.035) + 'L' + R(458, -0.035) + 'Z" class="cmcraft"/></g>';
+          o += '<g class="cmo' + (on ? ' on' : '') + '" data-id="' + s.id + '" tabindex="0" role="button" aria-label="' + esc(s.name) + ', off this map"><path d="M' + R(486, 0) + 'L' + R(462, 0.035) + 'L' + R(462, -0.035) + 'Z" class="cmcraft"/></g>';
           off.push(s.name.split(' (')[0]);
           return;
         }
-        if (s.kind === 'probe' && maxAu > 30) o += '<line x1="500" y1="500" x2="' + q[0] + '" y2="' + q[1] + '" class="cmpath"/>';
-        o += '<g class="cmo' + (on ? ' on' : '') + '" data-id="' + s.id + '" tabindex="0" role="button" aria-label="' + esc(s.name) + '"><circle cx="' + q[0] + '" cy="' + q[1] + '" r="16" class="cmhit"/><path d="M' + (q[0] - 7) + ' ' + q[1] + 'L' + q[0] + ' ' + (q[1] - 7) + 'L' + (+q[0] + 7) + ' ' + q[1] + 'L' + q[0] + ' ' + (+q[1] + 7) + 'Z" class="cmcraft"/><text x="' + (+q[0] + 11) + '" y="' + (s.kind === 'mars' ? +q[1] + 24 : q[1] - 9) + '" class="cmt cmct">' + esc(s.kind === 'mars' ? 'Mars rovers' : s.name) + '</text></g>';
+        if (s.kind === 'probe' && maxAu > 30) {
+          o += '<line x1="500" y1="500" x2="' + q[0] + '" y2="' + q[1] + '" class="cmpath"/>';
+          if (Math.abs(cmOff) > 0.2) { // where it is today, to compare with the chosen date
+            var c0 = cmCraftXY(s, Date.now()), q0 = P(c0.x, c0.y);
+            o += '<line x1="' + q0[0] + '" y1="' + q0[1] + '" x2="' + q[0] + '" y2="' + q[1] + '" class="cmtrail"/><circle cx="' + q0[0] + '" cy="' + q0[1] + '" r="5" class="cmthen"/>' + (on ? '<text x="' + (q0[0] + 9) + '" y="' + (q0[1] + 20) + '" class="cmt cmdim">today</text>' : '');
+          }
+        }
+        o += '<g class="cmo' + (on ? ' on' : '') + '" data-id="' + s.id + '" tabindex="0" role="button" aria-label="' + esc(s.name) + '"><circle cx="' + q[0] + '" cy="' + q[1] + '" r="18" class="cmhit"/><path d="M' + (q[0] - 8) + ' ' + q[1] + 'L' + q[0] + ' ' + (q[1] - 8) + 'L' + (q[0] + 8) + ' ' + q[1] + 'L' + q[0] + ' ' + (q[1] + 8) + 'Z" class="cmcraft"/><text x="' + (q[0] + 12) + '" y="' + (s.kind === 'mars' ? q[1] + 26 : q[1] - 10) + '" class="cmt cmct">' + esc(s.kind === 'mars' ? 'Mars rovers' : s.name) + '</text></g>';
       });
       if (off.length) o += '<text x="500" y="36" class="cmt cmdim" text-anchor="middle">Farther out (arrows): ' + esc(off.join(', ')) + '. Open “Voyager region”.</text>';
       return o;
     }
     function cmEarth(ms) {
       // Earth in the middle, the Sun's direction to the left. Scale: 1.6 million km to the edge.
-      var k = 440 / 1.6e6, o = '<text x="40" y="440" class="cmt cmdim">← to the Sun</text><circle cx="500" cy="500" r="' + (384400 * k).toFixed(1) + '" class="cmorb" style="stroke:#9aa7c7"/>';
+      var k = 450 / 1.6e6, o = '<text x="40" y="440" class="cmt cmdim">← to the Sun</text><circle cx="500" cy="500" r="' + (384400 * k).toFixed(1) + '" class="cmorb" style="stroke:#9aa7c7"/><text x="500" y="' + (500 - 384400 * k - 8).toFixed(1) + '" class="cmt cmlab" text-anchor="middle">Moon\'s path · 1.3 light-seconds</text>';
       var m = moonEcl(ms), a = rad(m.lon - sunLon(ms)) + Math.PI, mx = 500 + Math.cos(a) * 384400 * k, my = 500 - Math.sin(a) * 384400 * k;
-      o += '<circle cx="' + mx.toFixed(1) + '" cy="' + my.toFixed(1) + '" r="6" fill="#d8d8d8"/><text x="' + (mx + 9).toFixed(1) + '" y="' + (my + 4).toFixed(1) + '" class="cmt">Moon</text>';
-      o += '<circle cx="500" cy="500" r="11" fill="#4fa3ff"/><circle cx="500" cy="500" r="24" class="cmleo"/><text x="500" y="570" class="cmt cmdim" text-anchor="middle">Earth · ISS and Hubble circle just above it (ring enlarged)</text>';
-      var spots = { adityal1: [500 - 1.5e6 * k, 'L1, between Earth and the Sun'], jwst: [500 + 1.5e6 * k, 'L2, behind Earth'], iss: [524, ''], hubble: [500, ''] };
+      o += '<circle cx="' + mx.toFixed(1) + '" cy="' + my.toFixed(1) + '" r="7" fill="#d8d8d8"/><text x="' + (mx + 10).toFixed(1) + '" y="' + (my + 5).toFixed(1) + '" class="cmt">Moon</text>';
+      o += '<circle cx="500" cy="500" r="12" fill="#4fa3ff"/><circle cx="500" cy="500" r="25" class="cmleo"/><text x="500" y="570" class="cmt cmdim" text-anchor="middle">Earth · ISS and Hubble circle just above it (ring enlarged)</text>';
+      var spots = { adityal1: [500 - 1.5e6 * k, 'L1, 5 light-seconds toward the Sun'], jwst: [500 + 1.5e6 * k, 'L2, 5 light-seconds behind Earth'], iss: [525, ''], hubble: [500, ''] };
       D.spacecraft.forEach(function (s) {
         var sp = spots[s.id]; if (!sp) return;
-        var x = sp[0], y = s.id === 'iss' ? 500 : s.id === 'hubble' ? 476 : 500, on = cmSel === s.id;
-        o += '<g class="cmo' + (on ? ' on' : '') + '" data-id="' + s.id + '" tabindex="0" role="button" aria-label="' + esc(s.name) + '"><circle cx="' + x + '" cy="' + y + '" r="16" class="cmhit"/><path d="M' + (x - 6) + ' ' + y + 'L' + x + ' ' + (y - 6) + 'L' + (x + 6) + ' ' + y + 'L' + x + ' ' + (y + 6) + 'Z" class="cmcraft"/><text x="' + (s.id === 'jwst' ? x - 6 : x + 9) + '" y="' + (y - 12) + '" class="cmt cmct"' + (s.id === 'jwst' ? ' text-anchor="end"' : '') + '>' + esc(s.name.split(' (')[0]) + '</text>' + (sp[1] ? '<text x="' + (s.id === 'jwst' ? x - 6 : x + 9) + '" y="' + (y + 22) + '" class="cmt cmdim"' + (s.id === 'jwst' ? ' text-anchor="end"' : '') + '>' + sp[1] + '</text>' : '') + '</g>';
+        var x = sp[0], y = s.id === 'hubble' ? 475 : 500, on = cmSel === s.id, end = s.id === 'jwst' ? ' text-anchor="end"' : '', tx = s.id === 'jwst' ? x - 6 : x + 10;
+        o += '<g class="cmo' + (on ? ' on' : '') + '" data-id="' + s.id + '" tabindex="0" role="button" aria-label="' + esc(s.name) + '"><circle cx="' + x + '" cy="' + y + '" r="18" class="cmhit"/><path d="M' + (x - 7) + ' ' + y + 'L' + x + ' ' + (y - 7) + 'L' + (x + 7) + ' ' + y + 'L' + x + ' ' + (y + 7) + 'Z" class="cmcraft"/><text x="' + tx + '" y="' + (y - 12) + '" class="cmt cmct"' + end + '>' + esc(s.name.split(' (')[0]) + '</text>' + (sp[1] ? '<text x="' + tx + '" y="' + (y + 24) + '" class="cmt cmdim"' + end + '>' + sp[1] + '</text>' : '') + '</g>';
       });
       return o;
     }
+    function cmMs() { return Date.now() + cmOff * 365.25 * 86400000; }
+    function cmSvg() {
+      var mb = $('#craftMap'), ms = cmMs();
+      mb.querySelector('svg').innerHTML = cmView === 'earth' ? cmEarth(ms) : cmSolar(ms, cmMax(ms));
+    }
     function cmDraw() {
       var mb = $('#craftMap'); if (!mb) return;
-      var ms = Date.now() + cmOff * 365.25 * 86400000, d = new Date(ms);
+      var ms = cmMs(), d = new Date(ms);
       if (!mb.dataset.ready) {
         mb.dataset.ready = '1';
-        mb.innerHTML = '<h2 style="margin-top:0">Where each one is right now</h2><p class="note">The solar system seen from above. Tap a spacecraft to see its numbers.</p>' +
+        mb.innerHTML = '<h2 style="margin-top:0">Where each one is right now</h2><p class="note">The solar system seen from above. Rings show how long light takes to travel from the Sun. Tap a spacecraft to see its numbers.</p>' +
           '<div class="cmtabs" role="tablist">' + Object.keys(CM_VIEWS).map(function (v) { return '<button type="button" role="tab" data-v="' + v + '">' + CM_VIEWS[v][1] + '</button>'; }).join('') + '</div>' +
-          '<svg class="cmsvg" viewBox="0 0 1000 1000" role="img" aria-label="Map of the solar system with the spacecraft"></svg><p class="cminfo" aria-live="polite"></p>' +
+          '<div class="cmwrap"><svg class="cmsvg" viewBox="0 0 1000 1000" role="img" aria-label="Map of the solar system with the spacecraft"></svg><button type="button" class="cmspin" aria-pressed="true"></button></div><p class="cminfo" aria-live="polite"></p>' +
           '<label class="cmdate"><span>Date: <b></b></span><input type="range" min="-10" max="20" step="0.05" value="0" aria-label="Move the date"><button type="button" class="btn">Today</button></label>' +
-          '<p class="note">Planets are at their real places for the date. The far probes are an estimate: each one is placed on a straight line from the Sun toward the part of the sky it is heading for, at its distance for that date. Sizes and the near-Earth rings are not to scale.</p>';
+          '<p class="note">Planets are at their real places for the date. The far probes are an estimate: each one is placed on a straight line from the Sun toward the part of the sky it is heading for, at its distance for that date. Sizes and the near-Earth rings are not to scale. A light-year is far bigger than all of this: Voyager 1 needs about 17,000 years to travel one.</p>';
+        var svg = mb.querySelector('svg');
         mb.addEventListener('click', function (e) {
           var b = e.target.closest('[data-v]'); if (b) { cmView = b.dataset.v; cmSel = { far: 'voyager1', outer: 'voyager1', inner: 'marsrovers', earth: 'jwst' }[cmView]; cmDraw(); return; }
-          var g = e.target.closest('.cmo'); if (g) { cmSel = g.dataset.id; cmDraw(); return; }
+          if (e.target.closest('.cmspin')) { cmPlay = !cmPlay; cmDraw(); return; }
           if (e.target.closest('.cmdate .btn')) { cmOff = 0; mb.querySelector('input').value = 0; cmDraw(); }
         });
+        // pointerdown, not click: the picture is redrawn while it turns
+        svg.addEventListener('pointerdown', function (e) { var g = e.target.closest('.cmo'); if (g) { cmSel = g.dataset.id; cmDraw(); } });
+        svg.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') cmHold = true; });
+        svg.addEventListener('pointerleave', function () { cmHold = false; });
+        svg.addEventListener('focusin', function () { cmHold = true; });
+        svg.addEventListener('focusout', function () { cmHold = false; });
         mb.addEventListener('keydown', function (e) { var g = e.target.closest('.cmo'); if (g && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); cmSel = g.dataset.id; cmDraw(); setTimeout(function () { var n = mb.querySelector('.cmo[data-id="' + cmSel + '"]'); if (n) n.focus(); }, 0); } });
         mb.querySelector('input').addEventListener('input', function (e) { cmOff = +e.target.value; cmDraw(); });
+        var last = 0, drawn = 0;
+        (function spin(ts) {
+          var dt = last ? Math.min(100, ts - last) : 0; last = ts;
+          if (cmPlay && !cmHold && cmView !== 'earth' && !document.hidden) {
+            cmRot += dt / 1000 * (2 * Math.PI / 180); // one turn in three minutes
+            if (ts - drawn > 40) { drawn = ts; cmSvg(); }
+          }
+          requestAnimationFrame(spin);
+        })(0);
       }
       mb.querySelectorAll('[data-v]').forEach(function (b) { b.setAttribute('aria-selected', b.dataset.v === cmView); b.classList.toggle('on', b.dataset.v === cmView); });
-      mb.querySelector('svg').innerHTML = cmView === 'earth' ? cmEarth(ms) : cmSolar(ms, CM_VIEWS[cmView][0]);
+      var sp = mb.querySelector('.cmspin'); sp.hidden = cmView === 'earth'; sp.textContent = cmPlay ? '⏸ Stop turning' : '▶ Turn slowly'; sp.setAttribute('aria-pressed', cmPlay);
+      cmSvg();
       mb.querySelector('.cmdate b').textContent = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) + (cmOff ? '' : ' (today)');
       var s = D.spacecraft.filter(function (x) { return x.id === cmSel; })[0];
       mb.querySelector('.cminfo').innerHTML = s ? cmInfo(s, ms) : '';
@@ -1006,7 +1053,7 @@
         var km = distKm(s, now);
         h += '<div class="card"><h3>' + s.name + '</h3><p style="color:var(--text)">' + t('spacecraft' + ({ newhorizons: 'NewHorizons', marsrovers: 'MarsRovers' }[s.id] || (s.id.charAt(0).toUpperCase() + s.id.slice(1)))) + '</p><div class="stats" style="margin-top:10px">' +
           '<div class="stat"><b>' + (s.kind === 'lowOrbit' ? PT.km(km) : PT.km(km)) + '</b><span>' + (s.kind === 'lowOrbit' ? t('spacecraftAltitude') : t('spacecraftDistance')) + '</span></div>' +
-          (s.kind === 'lowOrbit' ? '' : '<div class="stat"><b>' + t('valueAu', { value: fmt(km / KM_AU, 2) }) + '</b><span>' + t('spacecraftInAu') + '</span></div>') +
+          (s.kind === 'lowOrbit' || km < 1e9 ? '' : '<div class="stat"><b>' + lyText(km) + '</b><span>Part of a light-year</span></div>') +
           (s.kind === 'probe' ? '<div class="stat"><b>' + t('valueKmS', { value: fmt(s.speed, 1) }) + '</b><span>' + t('spacecraftSpeed') + '</span></div>' : '') +
           '<div class="stat"><b>' + PT.duration(km / C_KMS) + '</b><span>' + t('spacecraftSignal') + '</span></div></div>' + ((window.ASTRYL_CRAFTPICS || {})[s.id] || '') + '</div>';
       });
