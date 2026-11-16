@@ -787,3 +787,31 @@ body[data-page=account] main.wrap{max-width:none;padding:0 clamp(16px,3.2vw,48px
 :root:not([data-theme=dark]){--streak:#b4501a}
 .lcpick button.on{color:#fff}
 .sclass{display:inline-block;min-width:1.6em;text-align:center;padding:1px 6px;border-radius:6px;background:#05070f}
+
+/* ---------- spacecraft map ---------- */
+.cmap{margin-bottom:16px}
+.cmtabs{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.cmtabs button{font:inherit;font-size:.88rem;padding:7px 14px;border-radius:99px;border:1px solid var(--line);background:var(--card2);color:var(--text);cursor:pointer;transition:background .2s,color .2s}
+.cmtabs button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.cmsvg{display:block;width:100%;max-width:760px;margin:0 auto;aspect-ratio:1;border-radius:18px;background:radial-gradient(circle at 50% 50%,#0f1834,#060914 70%,#03050b);touch-action:manipulation}
+.cmsvg .cmt{font:600 19px system-ui,sans-serif;fill:#dfe7ff;paint-order:stroke;stroke:#060914;stroke-width:4px}
+.cmsvg .cmdim{font-weight:400;font-size:16px;fill:#9fb0d6}
+.cmsvg .cmct{fill:#ffd36b}
+.cmsvg .cmorb{fill:none;stroke-width:1.4;opacity:.45}
+.cmsvg .cmhp{fill:none;stroke:#7fb0ff;stroke-width:1.5;stroke-dasharray:6 7;opacity:.6}
+.cmsvg .cmsun{fill:#ffcf4a;filter:drop-shadow(0 0 10px #ffb300)}
+.cmsvg .cmleo{fill:none;stroke:#6fd0ff;stroke-width:1.2;stroke-dasharray:3 4}
+.cmsvg .cmpath{stroke:#ffd36b;stroke-width:1.2;stroke-dasharray:2 6;opacity:.55}
+.cmsvg .cmcraft{fill:#ffd36b;stroke:#060914;stroke-width:2}
+.cmsvg .cmarr{stroke:#ffd36b;stroke-width:3;fill:none;stroke-linecap:round}
+.cmsvg .cmhit{fill:transparent}
+.cmsvg .cmo{cursor:pointer;outline:none}
+.cmsvg .cmo.on .cmcraft{fill:#fff;transform-box:fill-box;transform-origin:center;animation:cmpulse 1.6s ease-in-out infinite}
+.cmsvg .cmo.on .cmct{fill:#fff}
+.cmsvg .cmo:focus-visible .cmhit{stroke:#fff;stroke-width:2}
+@keyframes cmpulse{50%{transform:scale(1.45)}}
+@media (prefers-reduced-motion:reduce){.cmsvg .cmo.on .cmcraft{animation:none}}
+.cminfo{min-height:2.8em;margin:10px auto 4px;max-width:760px;text-align:center}
+.cmdate{display:flex;flex-wrap:wrap;align-items:center;gap:10px;max-width:760px;margin:6px auto}
+.cmdate input{flex:1;min-width:160px;accent-color:var(--accent)}
+@media (max-width:700px){.cmtabs{display:grid;grid-template-columns:1fr 1fr}.cmtabs button{padding:8px 6px}.cmsvg{border-radius:12px}.cmsvg .cmt{font-size:30px;stroke-width:6px}.cmsvg .cmdim{font-size:24px}}
