@@ -180,3 +180,28 @@
     requestAnimationFrame(frame);
   })(t0);
 })();
+
+/* "On this page": on wide screens, long reading pages get a list of their sections on the right
+   that follows you as you scroll and shows where you are. Phones and tablets do not need it. */
+(function () {
+  var main = document.querySelector('main'); if (!main || main.querySelector('.toc,.ptoc')) return;
+  var hs = [].slice.call(main.querySelectorAll('.prose h2')).filter(function (h) { return h.offsetParent !== null && !h.closest('details,.card,#comments'); });
+  if (hs.length < 3) return;
+  var used = {};
+  var items = hs.map(function (h) {
+    if (!h.id) { var s = (h.textContent || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48) || 'part'; var id = s, n = 2; while (used[id] || document.getElementById(id)) id = s + '-' + n++; h.id = id; }
+    used[h.id] = 1;
+    return '<li><a href="#' + h.id + '">' + (h.textContent || '').replace(/[<>&]/g, '') + '</a></li>';
+  });
+  var aside = document.createElement('aside');
+  aside.className = 'ptoc'; aside.setAttribute('aria-label', 'On this page');
+  aside.innerHTML = '<div class="tocin"><p class="tochd">On this page</p><ol>' + items.join('') + '</ol><a class="toctop" href="#main">↑ Back to top</a></div>';
+  main.appendChild(aside); main.classList.add('hastoc');
+  if (!('IntersectionObserver' in window)) return;
+  var links = aside.querySelectorAll('a[href^="#"]:not(.toctop)'), cur = null;
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) cur = e.target.id; });
+    links.forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + cur); });
+  }, { rootMargin: '-80px 0px -65% 0px' });
+  hs.forEach(function (h) { io.observe(h); });
+})();

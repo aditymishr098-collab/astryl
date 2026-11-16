@@ -172,7 +172,7 @@ def build(h):
 
     # the list of posts
     body = ('<section class="blk"><h1>📝 The Astryl blog</h1><p class="sub">Longer stories about space, time and the universe. Everyone can join the conversation in the comments.</p>'
-            '<div class="bloglist">' + ''.join(card(p, '') for p in POSTS) + '</div></section>')
+            '<div class="bloglist feat">' + ''.join(card(p, '') for p in POSTS) + '</div></section>')
     write('blog.html', shell('Blog', 'Blog', 'blog', body, 'The Astryl blog: longer stories about space, time and the universe, with comments from readers.', canonical='blog.html', extra_head=head.format(p='')))
 
     for p in POSTS:
