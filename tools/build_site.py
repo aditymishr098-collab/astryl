@@ -11,6 +11,7 @@ from pathlib import Path
 import deepspace
 import galaxies
 import stars
+import blog
 import lab
 import umap
 import myspace
@@ -399,7 +400,7 @@ def cons_svg(c):
 # ------------------------------------------------------------------ page shell
 # The top menu keeps four main pages; the rest sit under "More". Home is the logo.
 NAV_MAIN = [('planets.html', 'planets', bi('planetsTitle')), ('solar-system.html', 'solar', bi('solarSystemTitle')), ('sky.html', 'sky', bi('skyTitle')), ('quiz.html', 'quiz', bi('navQuiz')), ('community.html', 'community', bt('Community', 'Community'))]
-NAV_MORE = [('my-space.html', 'myspace', bt('My space', 'My space')), ('sky-events.html', 'events', bt('Eclipses and meteor showers', 'ग्रहण और उल्कापात')), ('learn.html', 'school', bt('For students', 'छात्रों के लिए')), ('telescope.html', 'scope', bt('Telescope simulator', 'Telescope simulator')), ('iss.html', 'iss', bt('Space station passes', 'अंतरिक्ष स्टेशन कब दिखेगा')), ('compare.html', 'compare', bi('navCompare')), ('you.html', 'you', bt('You', 'आप')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')),
+NAV_MORE = [('blog.html', 'blog', bt('Blog', 'Blog')), ('my-space.html', 'myspace', bt('My space', 'My space')), ('sky-events.html', 'events', bt('Eclipses and meteor showers', 'ग्रहण और उल्कापात')), ('learn.html', 'school', bt('For students', 'छात्रों के लिए')), ('telescope.html', 'scope', bt('Telescope simulator', 'Telescope simulator')), ('iss.html', 'iss', bt('Space station passes', 'अंतरिक्ष स्टेशन कब दिखेगा')), ('compare.html', 'compare', bi('navCompare')), ('you.html', 'you', bt('You', 'आप')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')),
             ('missions.html', 'missions', bi('missionsTitle')), ('spacecraft.html', 'spacecraft', bi('spacecraftTitle')),
             ('universe-map.html', 'umap', bt('Universe map', 'ब्रह्मांड का नक्शा')), ('stars.html', 'stars', bt('Stars', 'तारे')), ('galaxies.html', 'gx', bt('Galaxies', 'Galaxies')), ('cosmic-scale.html', 'scale', bt('Scale of the universe', 'ब्रह्मांड का पैमाना')), ('universe-timeline.html', 'tline', bt('Timeline', 'समयरेखा')), ('glossary.html', 'gloss', bt('Glossary', 'शब्दकोश')), ('black-holes.html', 'bh', bt('Black holes', 'ब्लैक होल'))]
 
@@ -411,7 +412,7 @@ def asset_v():
     '''A short hash of the scripts and styles, so a changed file is never served from an old cache.'''
     if not _ASSET_V:
         h = hashlib.md5()
-        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'sw.js'):
+        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'blog.js', 'sw.js'):
             h.update((SRC / name).read_bytes())
         h.update((ROOT / 'tools' / 'formation.py').read_bytes())
         if (OUT / 'assets/quiz-bank.js').exists():
@@ -596,7 +597,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
     p = '../' * depth
     def navlink(h, k, label):
         return f'<a href="{p}{h}"{" class=on" if k == page else ""}>{label}</a>'
-    more_on = page in ('compare', 'you', 'cons', 'maps', 'missions', 'bh', 'gx', 'scale', 'tline', 'gloss', 'umap', 'myspace', 'events', 'school', 'scope', 'iss', 'stars')
+    more_on = page in ('compare', 'you', 'cons', 'maps', 'missions', 'bh', 'gx', 'scale', 'tline', 'gloss', 'umap', 'myspace', 'events', 'school', 'scope', 'iss', 'stars', 'blog')
     nav = (''.join(navlink(*x) for x in NAV_MAIN)
            + f'<details class="more"><summary{" class=on" if more_on else ""}>{bt("More", "और")} ▾</summary><div class="morepanel">'
            + ''.join(navlink(*x) for x in NAV_MORE) + '</div></details>')
@@ -865,6 +866,7 @@ def index_page():
              ('📏', bt('Scale of the universe', 'ब्रह्मांड का पैमाना'), 'From a proton to everything we can see', 'प्रोटॉन से लेकर वह सब जो हम देख सकते हैं', 'cosmic-scale.html'),
              ('⏳', bt('Timeline', 'समयरेखा'), '13.8 billion years in one calendar year', '13.8 अरब साल एक कैलेंडर वर्ष में', 'universe-timeline.html'),
              ('📖', bt('Glossary', 'शब्दकोश'), 'Space words, explained simply', 'अंतरिक्ष के शब्द, आसान भाषा में', 'glossary.html'),
+             ('📝', bt('Blog', 'Blog'), 'New post: time travel, what physics really allows', 'New post: time travel, what physics really allows', 'blog.html'),
              ('🛰️', 'spacecraftTitle', 'How far Voyager and JWST are now', 'Voyager और JWST अभी कितनी दूर हैं', 'spacecraft.html'),
              ('⚖️', 'weightTitle', 'Weight, jump and age on every world', 'हर दुनिया पर वज़न, कूद और उम्र', 'you.html'),
              (pic('earth'), 'navCompare', 'Any two worlds side by side', 'कोई भी दो दुनियाएँ आमने-सामने', 'compare.html')]
@@ -880,7 +882,7 @@ def index_page():
     groups = [('img/planets/saturn.webp', bt('The Solar System', 'सौरमंडल'), bt('Planets, moons and where they are today', 'ग्रह, चाँद और वे आज कहाँ हैं'), ['planets.html', 'solar-system.html', 'compare.html', 'you.html', 'maps.html']),
               ('img/space/gx-whirlpool.webp', bt('Deep space', 'गहरा अंतरिक्ष'), bt('Stars, black holes, galaxies and the whole universe', 'तारे, ब्लैक होल, आकाशगंगाएँ और पूरा ब्रह्मांड'), ['stars.html', 'black-holes.html', 'black-holes-101.html', 'galaxies.html', 'universe-map.html', 'cosmic-scale.html', 'universe-timeline.html']),
               ('img/space/sun-eclipse.webp', bt('Watch the sky', 'आसमान देखिए'), bt('What to look for tonight, from your city', 'आज रात क्या देखें, आपके शहर से'), ['sky.html', 'constellations.html', 'sky-events.html', 'iss.html', 'telescope.html']),
-              ('img/space/pic-earthrise.webp', bt('Explore and learn', 'खोजिए और सीखिए'), bt('Missions, spacecraft, lessons and quizzes', 'Missions, अंतरिक्ष यान, पाठ और quiz'), ['community.html', 'missions.html', 'spacecraft.html', 'learn.html', 'quiz.html', 'glossary.html'])]
+              ('img/space/pic-earthrise.webp', bt('Explore and learn', 'खोजिए और सीखिए'), bt('Missions, spacecraft, lessons and quizzes', 'Missions, अंतरिक्ष यान, पाठ और quiz'), ['community.html', 'blog.html', 'missions.html', 'spacecraft.html', 'learn.html', 'quiz.html', 'glossary.html'])]
     cards = ''.join(f'<section class="grp"><div class="grph" style="background-image:url({img})"><h2>{t}</h2><p>{sub}</p></div><div class="sc-grid">{"".join(card(h) for h in hs)}</div></section>' for img, t, sub, hs in groups)
     quiz = ''.join(f'<button type="button" class="opt"{" data-ok=1" if k == "planetJupiter" else ""}>{bi(k)}</button>' for k in ('planetSaturn', 'planetJupiter', 'planetMars', 'planetNeptune'))
     surprise = []
@@ -1091,7 +1093,7 @@ def community_pages():
     body = f'''<div id="prof" class="prof"></div>
 <script>window.ASTRYL_COMMUNITY={json.dumps(cfg, ensure_ascii=False).replace('</', '<\\/')};</script>'''
     write('profile.html', shell('Profile', 'Profile', 'community', body, 'A space lover’s public page on Astryl: sky photos, questions, answers and quiz badges.', canonical='profile.html', extra_head=f'<meta name="robots" content="noindex"><script defer src="assets/profile.js?v={v}"></script>'))
-    body = f'''<section class="blk"><h1>🛡️ Moderation</h1><p class="sub">Photos and posts people reported. Keep it to show it again, remove to delete it for good.</p><div id="mod"></div></section>'''
+    body = f'''<section class="blk"><h1>🛡️ Moderation</h1><p class="sub">Photos, posts and blog comments people reported. Keep it to show it again, remove to delete it for good.</p><div id="mod"></div></section>'''
     write('moderate.html', shell('Moderation', 'Moderation', 'community', body, 'Astryl Community moderation.', canonical='moderate.html', extra_head=f'<meta name="robots" content="noindex"><script defer src="assets/moderate.js?v={v}"></script>'))
 
 
@@ -1170,6 +1172,7 @@ def privacy_page():
 <h2 id="s7">{bt("7. This website", "7. यह website")}</h2>
 <ul>
 {li("No cookies, no ads, no third-party analytics, scripts or fonts. Everything is calculated in your browser.", "कोई cookies, विज्ञापन, बाहरी analytics, scripts या fonts नहीं। सब कुछ आपके browser में calculate होता है।")}
+{li("Blog comments need no account. We store the name you type (or “Guest”), your comment, the time, a scrambled form (hash) of a random id kept in your browser, so you can delete your own comment, and a scrambled form of your internet address that changes every day, used only to limit how often one person can post. Your internet address itself is not stored. Comments are public; reported ones are checked by the moderator.", "Blog comments need no account.")}
 {li("On the community page, reporting a photo or post needs no account. To count each person once, the browser keeps a random id; the server stores only a scrambled form of it (a hash) with the report.", "Community page पर फ़ोटो या post की शिकायत के लिए खाता नहीं चाहिए। हर व्यक्ति को एक बार गिनने के लिए browser एक random id रखता है; server शिकायत के साथ उसका सिर्फ़ बदला हुआ रूप (hash) रखता है।")}
 {li("Your browser remembers language, theme, quiz scores and whether you have seen the welcome window, in local storage on your own device. If you log in, a login token is kept there too, until you log out.", "आपका browser भाषा, theme, quiz scores और यह कि आपने welcome window देख ली है, आपके अपने device की local storage में याद रखता है। Log in करने पर वहीं एक login token भी रहता है, log out करने तक।")}
 {li("The first time you open the site, a welcome window offers to create an account or log in. “Continue without account” closes it and the site remembers that choice on your device.", "Site पहली बार खोलने पर एक welcome window खाता बनाने या log in करने का विकल्प देती है। “बिना खाते के आगे बढ़ें” उसे बंद कर देता है और site आपके device पर वह चुनाव याद रखती है।")}
@@ -1298,7 +1301,7 @@ def main():
     shutil.copy(SRC / 'learn.js', OUT / 'assets/learn.js')
     shutil.copy(SRC / 'universe.js', OUT / 'assets/universe.js')
     shutil.copytree(site_data.CITIES, OUT / 'assets' / 'cities')
-    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js'):
+    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'blog.js'):
         shutil.copy(SRC / name, OUT / 'assets' / name)
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#fbf7ee"/><circle r="30" fill="#1b3a8a"/><ellipse rx="50" ry="15" fill="none" stroke="#6a45d6" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#1b3a8a"/></svg>', encoding='utf-8')
@@ -1319,7 +1322,7 @@ def main():
         body_page(b, i)
     index_page(); planets_page(); simple_pages(); community_pages(); maps_page(); get_page(); privacy_page(); account_page(); not_found(); pwa_files()
     helpers = dict(bt=bt, bi=bi, raw2=raw2, shell=shell, write=write, esc=esc, fmt=fmt, asset_v=asset_v, SITE=SITE, ROOT=ROOT)
-    deep = deepspace.build(helpers) + galaxies.build(helpers) + stars.build(helpers) + lab.build(helpers) + universe.build(helpers) + learn.build(helpers) + umap.build(helpers) + myspace.build(helpers) + skyevents.build(helpers) + students.build(helpers) + telescope.build(helpers) + iss.build(helpers)
+    deep = deepspace.build(helpers) + galaxies.build(helpers) + stars.build(helpers) + lab.build(helpers) + universe.build(helpers) + learn.build(helpers) + umap.build(helpers) + myspace.build(helpers) + skyevents.build(helpers) + students.build(helpers) + telescope.build(helpers) + iss.build(helpers) + blog.build(helpers)
     urls = ['', 'community.html', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'privacy.html', 'account.html', 'black-holes.html', 'galaxies.html'] + deep + [f'body/{b["id"]}.html' for b in BODIES]
     (OUT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}/{u}</loc></url>\n' for u in urls) + '</urlset>\n', encoding='utf-8')
     og_images()

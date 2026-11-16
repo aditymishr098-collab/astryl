@@ -1012,7 +1012,7 @@
       if (!mb.dataset.ready) {
         mb.dataset.ready = '1';
         mb.innerHTML = '<h2 style="margin-top:0">Where each one is right now</h2><p class="note">The solar system seen from above. Rings show how long light takes to travel from the Sun. Tap a spacecraft to see its numbers.</p>' +
-          '<div class="cmtabs" role="tablist">' + Object.keys(CM_VIEWS).map(function (v) { return '<button type="button" role="tab" data-v="' + v + '">' + CM_VIEWS[v][1] + '</button>'; }).join('') + '</div>' +
+          '<div class="cmvtabs" role="tablist">' + Object.keys(CM_VIEWS).map(function (v) { return '<button type="button" role="tab" data-v="' + v + '">' + CM_VIEWS[v][1] + '</button>'; }).join('') + '</div>' +
           '<div class="cmwrap"><svg class="cmsvg" viewBox="0 0 1000 1000" role="img" aria-label="Map of the solar system with the spacecraft"></svg><button type="button" class="cmspin" aria-pressed="true"></button></div><p class="cminfo" aria-live="polite"></p>' +
           '<label class="cmdate"><span>Date: <b></b></span><input type="range" min="-10" max="20" step="0.05" value="0" aria-label="Move the date"><button type="button" class="btn">Today</button></label>' +
           '<p class="note">Planets are at their real places for the date. The far probes are an estimate: each one is placed on a straight line from the Sun toward the part of the sky it is heading for, at its distance for that date. Sizes and the near-Earth rings are not to scale. A light-year is far bigger than all of this: Voyager 1 needs about 17,000 years to travel one.</p>';
