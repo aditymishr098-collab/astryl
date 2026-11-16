@@ -154,9 +154,43 @@ function shuffled<T>(list: T[], rnd: () => number): T[] {
   return a;
 }
 
+// From this day on, every question of a level comes once before any of them comes again.
+const CYCLE_FROM = "2026-11-17";
+
+/** The order of a level's questions in cycle [c]. Questions from the end of the previous cycle are
+ *  moved to the end of this one, so a question never comes back on the very next days. */
+async function cycleOrder(list: string[], tag: string, c: number): Promise<string[]> {
+  const raw = async (i: number) => shuffled(list, mulberry32(parseInt((await sha256Hex(`astryl-cycle:${tag}:${i}`)).slice(0, 8), 16)));
+  let order = await raw(0);
+  for (let i = 1; i <= c; i++) {
+    const tail = order.slice(Math.floor(list.length / 2));
+    const next = await raw(i);
+    order = [...next.filter((k) => !tail.includes(k)), ...next.filter((k) => tail.includes(k))];
+  }
+  return order;
+}
+
+/** [per] questions of one level for day number [dayNo] (counted from CYCLE_FROM). */
+async function cycled(list: string[], per: number, dayNo: number, tag: string): Promise<string[]> {
+  const out: string[] = [];
+  for (let p = dayNo * per; out.length < per; p++) {
+    const k = (await cycleOrder(list, tag, Math.floor(p / list.length)))[p % list.length];
+    if (!out.includes(k)) out.push(k);
+  }
+  return out;
+}
+
 async function dailyQuestions(day: string) {
   const seed = parseInt((await sha256Hex("astryl-daily:" + day)).slice(0, 8), 16);
   const rnd = mulberry32(seed);
+  if (day >= CYCLE_FROM) {
+    const n = Math.round((Date.parse(day + "T00:00:00Z") - Date.parse(CYCLE_FROM + "T00:00:00Z")) / 86400000);
+    const picked = [...await cycled(EASY, 2, n, "easy"), ...await cycled(MEDIUM, 2, n, "medium"), ...await cycled(HARD, 1, n, "hard")];
+    return shuffled(picked, rnd).map((k) => {
+      const q = BANK[k];
+      return { k, o: shuffled([q.a, ...shuffled(q.pool, rnd).slice(0, 3)], rnd), a: q.a };
+    });
+  }
   const kinds = shuffled([
     ...shuffled(EASY, rnd).slice(0, 2),
     ...shuffled(MEDIUM, rnd).slice(0, 2),
@@ -298,19 +332,19 @@ async function handle(req: Request, b: any): Promise<Response> {
       await hit("daily:" + user.id, 40, 3600);
       const day = todayUtc();
       const qs = await dailyQuestions(day);
-      const found = await admin.from("daily_runs").select("started_at, finished_at, correct, ms, points")
+      const found = await admin.from("daily_runs").select("started_at, finished_at, correct, ms, points, picks")
         .eq("user_id", user.id).eq("day", day).maybeSingle();
       let run = found.data;
       if (!run) {
         const ins = await admin.from("daily_runs").insert({ user_id: user.id, day })
-          .select("started_at, finished_at, correct, ms, points").maybeSingle();
+          .select("started_at, finished_at, correct, ms, points, picks").maybeSingle();
         if (ins.error || !ins.data) throw new Fail(500, "daily_failed");
         run = ins.data;
       }
       if (run.finished_at) {
-        // Already played today: show the questions with their answers.
+        // Already played today: the questions with their answers, and what this person picked.
         return reply({
-          day, done: true, correct: run.correct, ms: run.ms, points: run.points,
+          day, done: true, correct: run.correct, ms: run.ms, points: run.points, picks: run.picks ?? null,
           questions: qs.map((q) => ({ k: q.k, o: q.o, a: q.a })),
         });
       }
@@ -343,7 +377,7 @@ async function handle(req: Request, b: any): Promise<Response> {
       );
       const points = dailyPoints(correct, ms);
       const upd = await admin.from("daily_runs")
-        .update({ finished_at: new Date().toISOString(), correct, ms, points })
+        .update({ finished_at: new Date().toISOString(), correct, ms, points, picks: answers as string[] })
         .eq("user_id", user.id).eq("day", day).is("finished_at", null)
         .select("user_id");
       if (upd.error) throw new Fail(500, "daily_failed");

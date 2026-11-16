@@ -350,7 +350,7 @@ def build(h):
 
     # ---------------- 6 colours ----------------
     s = 'star-colours-and-sizes'
-    cls_rows = [[f'<b style="color:{c}">{l}</b>', (f'{lo:,}–{hi_:,} K' if hi_ < 50000 else f'over {lo:,} K', f'{lo:,}–{hi_:,} K' if hi_ < 50000 else f'{lo:,} K से ज़्यादा'), (en, hi)] for l, c, lo, hi_, en, hi in CLASSES]
+    cls_rows = [[f'<b class="sclass" style="color:{c}">{l}</b>', (f'{lo:,}–{hi_:,} K' if hi_ < 50000 else f'over {lo:,} K', f'{lo:,}–{hi_:,} K' if hi_ < 50000 else f'{lo:,} K से ज़्यादा'), (en, hi)] for l, c, lo, hi_, en, hi in CLASSES]
     body = S.head('Star colours and sizes', 'तारों के रंग और आकार', 'Look closely at the night sky: stars are not all white.', 'रात के आसमान को ध्यान से देखिए: सारे तारे सफ़ेद नहीं हैं।') + sec(
         H2('Colour tells temperature', 'रंग तापमान बताता है'),
         P('Like a piece of iron in a fire, a star glows red when it is cooler and turns white, then blue, as it gets hotter. Betelgeuse looks orange-red at about 3,600 K; Rigel looks blue-white at about 12,000 K. The Sun, at about 5,800 K, gives out most light in the green-yellow, but together its colours look white from space.',

@@ -1207,9 +1207,8 @@ def privacy_page():
 
 
 def account_page():
-    body = f"""<section class="blk" style="max-width:640px"><h1>{bt("Astryl account", "Astryl खाता")}</h1>
-<div id="acct"><noscript><p>{bt("The account page needs JavaScript.", "Account page को JavaScript चाहिए।")}</noscript></p></div>
-<p class="note"><a href="privacy.html">{bt("Privacy Policy", "Privacy Policy")}</a></p></section>"""
+    body = f"""<section class="acpage"><div id="acct"><h1>{bt("Astryl account", "Astryl खाता")}</h1><noscript><p>{bt("The account page needs JavaScript.", "Account page को JavaScript चाहिए।")}</p></noscript></div>
+<p class="note acfoot"><a href="privacy.html">{bt("Privacy Policy", "Privacy Policy")}</a></p></section>"""
     write('account.html', shell('Account', 'खाता', 'account', body, 'Create your Astryl account with a username and password, and keep your favourites, quiz scores and settings in step between the app and this website.', canonical='account.html'))
 
 
