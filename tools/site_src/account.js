@@ -435,45 +435,127 @@
         check('saved', t('acctCodeSaved'), '', ui.saved) +
         '<p><button class="btn primary" type="button" data-act="codeDone"' + (ui.saved ? '' : ' disabled') + '>' + esc(t('acctContinue')) + '</button></p>';
     } else if (s) {
-      var p = getPrefs();
-      h = '<div class="card whoami">' + (getAvatar() ? avatarImg('bigpic') : '<span class="bigpic ph">\uD83D\uDC64</span>') + '<div><b>' + esc(t('acctLoggedInAs', { name: s.username })) + '</b><div class="btns"><label class="btn" for="photoIn">' + esc(w(getAvatar() ? 'avatarChange' : 'avatarChoose')) + '</label>' +
-        (getAvatar() ? '<button class="btn" type="button" data-act="photoDel">' + esc(w('avatarRemove')) + '</button>' : '') + '</div>' +
-        '<input id="photoIn" type="file" accept="image/*" hidden><small class="note">' + esc(w('avatarNote')) + '</small>' + (ui.delMsg && !ui.del ? '<small class="note">' + esc(ui.delMsg) + '</small>' : '') + '</div></div>' +
-        '<p><a class="btn primary" href="' + ROOT + 'my-space.html">\u2B50 ' + (lang() === 'hi' ? 'My space खोलें: favourites, scores, badges' : 'Open My space: favourites, scores, badges') + '</a></p>' +
-        '<div class="card">' + check('syncOn', t('acctSync'), t('acctSyncNote'), p.syncOn) +
-        '<p><button class="btn" type="button" data-act="syncNow"' + (syncing || !p.syncOn ? ' disabled' : '') + '>' + esc(t('acctSyncNow')) + '</button> <span class="note">' +
-        esc({ syncing: t('acctSyncing'), ok: t('acctSyncOk'), failed: t('acctSyncFailed') }[syncStatus] || '') + '</span></p></div>' +
-        '<h3>' + esc(t('acctOptionalTitle')) + '</h3><div class="card">' +
-        check('showOnBoard', w('boardShow'), w('boardShowNote'), p.showOnBoard) + check('countMe', t('acctCountMe'), t('acctCountMeNote'), p.countMe) + check('shareCountry', t('acctShareCountry'), t('acctShareCountryNote'), p.shareCountry) + '</div>' +
-        '<p class="note">' + esc(w('webNote')) + '</p>' +
-        (ui.newCode ? '<div class="card"><h3>' + esc(t('acctCodeTitle')) + '</h3><p>' + esc(t('acctCodeWarn')) + '</p>' + codeCard(ui.newCode) + '</div>' : '') +
-        '<div class="btns"><button class="btn" type="button" data-act="newCode">' + esc(t('acctNewCode')) + '</button><button class="btn" type="button" data-act="logout">' + esc(t('acctLogOut')) + '</button></div>' +
-        '<p class="note">' + esc(t('acctNewCodeNote')) + '</p>' +
-        '<div class="card danger"><h3>' + esc(t('acctDelete')) + '</h3><p>' + esc(t('acctDeleteNote')) + '</p>' +
-        (ui.del ? '<p>' + esc(t('acctDeleteConfirmBody')) + '</p>' + field('delpass', t('acctPassword'), 'password', '', 'current-password') +
-          '<p><button class="btn danger-btn" type="button" data-act="delete"' + (ui.busy ? ' disabled' : '') + '>' + esc(t('acctDeleteButton')) + '</button> <button class="btn" type="button" data-act="delCancel">' + esc(t('cancel')) + '</button></p>'
-          : '<p><button class="btn danger-btn" type="button" data-act="delAsk">' + esc(t('acctDelete')) + '</button></p>') +
-        (ui.delMsg ? '<p class="no">' + esc(ui.delMsg) + '</p>' : '') + '</div>';
+      h = dashboard(s);
+    } else if (gateEl) {
+      h = authForm();
     } else {
-      var create = ui.mode === 'create', recover = ui.mode === 'recover';
-      h = gateEl ? '' : '<p class="sub">' + esc(w('webIntro')) + '</p>';
-      if (!recover) h += '<div class="tabs"><button type="button" class="' + (create ? 'on' : '') + '" data-act="mode:create">' + esc(t('acctTabCreate')) + '</button><button type="button" class="' + (!create ? 'on' : '') + '" data-act="mode:login">' + esc(t('acctTabLogin')) + '</button></div>';
-      else h += '<h2>' + esc(t('acctRecoverTitle')) + '</h2>';
-      h += field('user', t('acctUsername'), 'text', create || recover ? t('acctUsernameHint') : '', 'username');
-      if (recover) h += field('code', t('acctRecoverCode'), 'text', 'XXXX-XXXX-XXXX-XXXX');
-      h += field('pass', recover ? t('acctRecoverNewPassword') : t('acctPassword'), pwType(), create || recover ? t('acctPasswordHint') : '', create || recover ? 'new-password' : 'current-password');
-      if (create) h += field('pass2', t('acctPasswordAgain'), pwType(), '', 'new-password');
-      h += check('show', w('showPassword'), '', ui.show);
-      if (create) {
-        h += check('consent', t('acctConsent'), '', !!ui.f.consent) + '<p><a href="' + ROOT + 'privacy.html" target="_blank" rel="noopener">' + esc(t('acctReadPolicy')) + '</a></p>';
-      }
-      if (ui.err) h += '<p class="no">' + esc(ui.err) + '</p>';
-      h += '<p><button class="btn primary" type="button" data-act="submit"' + (ui.busy || (create && !ui.f.consent) ? ' disabled' : '') + '>' + esc(create ? t('acctTabCreate') : recover ? t('acctRecoverButton') : t('acctTabLogin')) + '</button></p>';
-      if (ui.mode === 'login') h += '<p><a href="#" data-act="mode:recover">' + esc(t('acctForgot')) + '</a></p>';
-      if (recover) h += '<p><a href="#" data-act="mode:login">' + esc(t('acctBackToLogin')) + '</a></p>';
+      h = '<div class="acsplit">' + authArt() + '<div class="acside"><div class="card acform">' + authForm() + '</div></div></div>';
     }
-    if (ui.notice) h = '<p class="ok"><b>' + esc(ui.notice) + '</b></p>' + h;
+    if (ui.notice) h = '<p class="ok acnotice"><b>' + esc(ui.notice) + '</b></p>' + h;
     root.innerHTML = h;
+    // the entrance animation plays once, not on every redraw
+    if (!gateEl) { root.classList.toggle('acx-in', !ui.drawn); ui.drawn = true; }
+    pwMeter(); userCheck();
+  }
+
+  /* ---------- the parts of the account page ---------- */
+  var BENEFITS = [['🔄', 'Everything in sync', 'Favourites, quiz scores and settings follow you between the app and this website.'],
+    ['🗓️', 'Daily 5 and leaderboards', 'Five new questions every day, a streak to keep and a place on the leaderboard.'],
+    ['👥', 'Join the community', 'Share your sky photos, ask questions and answer other space lovers.'],
+    ['🔒', 'No e-mail needed', 'Just a username and a password. A recovery code replaces “forgot password”.']];
+  function authArt() {
+    return '<div class="acart"><div class="acorbs" aria-hidden="true"><i></i><i></i><i></i></div><div class="acarttx"><span class="aceyebrow">✨ Astryl account</span>' +
+      '<h1>Your universe, <span class="grad">everywhere.</span></h1><p class="sub">Optional and free. Keep your space journey on every device.</p><ul class="acben">' +
+      BENEFITS.map(function (x, i) { return '<li style="--i:' + i + '"><span class="acbic" aria-hidden="true">' + x[0] + '</span><div><b>' + esc(x[1]) + '</b><small>' + esc(x[2]) + '</small></div></li>'; }).join('') + '</ul></div></div>';
+  }
+  function pwField(id, label, hint, ac) {
+    return '<label class="fld pw"><span>' + esc(label) + '</span><span class="pwbox"><input id="f_' + id + '" data-f="' + id + '" type="' + pwType() + '" value="' + esc(ui.f[id] || '') + '" autocomplete="' + ac + '" autocapitalize="off" autocorrect="off" spellcheck="false"' + (ui.busy ? ' disabled' : '') + '>' +
+      '<button type="button" class="eye" data-act="eye" aria-label="' + (ui.show ? 'Hide password' : 'Show password') + '" aria-pressed="' + ui.show + '">' + (ui.show ? '🙈' : '👁️') + '</button></span>' + (hint ? '<small>' + esc(hint) + '</small>' : '') + '</label>';
+  }
+  function authForm() {
+    var create = ui.mode === 'create', recover = ui.mode === 'recover', h = '';
+    if (!recover) h += '<div class="actabs" role="tablist"><span class="acind' + (create ? '' : ' r') + '" aria-hidden="true"></span><button type="button" role="tab" aria-selected="' + create + '" class="' + (create ? 'on' : '') + '" data-act="mode:create">' + esc(t('acctTabCreate')) + '</button><button type="button" role="tab" aria-selected="' + !create + '" class="' + (!create ? 'on' : '') + '" data-act="mode:login">' + esc(t('acctTabLogin')) + '</button></div>';
+    h += '<h2 class="acformt">' + (create ? 'Create your free account' : recover ? esc(t('acctRecoverTitle')) : 'Welcome back 👋') + '</h2>';
+    h += field('user', t('acctUsername'), 'text', create || recover ? t('acctUsernameHint') : '', 'username');
+    if (create) h += '<small class="ucheck" id="uCheck" aria-live="polite"></small>';
+    if (recover) h += field('code', t('acctRecoverCode'), 'text', 'XXXX-XXXX-XXXX-XXXX');
+    h += pwField('pass', recover ? t('acctRecoverNewPassword') : t('acctPassword'), create || recover ? t('acctPasswordHint') : '', create || recover ? 'new-password' : 'current-password');
+    if (create || recover) h += '<div class="pwmeter" aria-hidden="true"><i id="pwBar"></i></div><small class="note" id="pwText" aria-live="polite"></small>';
+    if (create) h += pwField('pass2', t('acctPasswordAgain'), '', 'new-password');
+    if (create) h += check('consent', t('acctConsent'), '', !!ui.f.consent) + '<p class="note"><a href="' + ROOT + 'privacy.html" target="_blank" rel="noopener">' + esc(t('acctReadPolicy')) + ' ↗</a></p>';
+    if (ui.err) h += '<p class="no acerr">' + esc(ui.err) + '</p>';
+    h += '<button class="btn primary acgo" type="button" data-act="submit"' + (ui.busy || (create && !ui.f.consent) ? ' disabled' : '') + '>' + (ui.busy ? '<span class="spin" aria-hidden="true"></span>' : '') + esc(create ? t('acctTabCreate') : recover ? t('acctRecoverButton') : t('acctTabLogin')) + ' →</button>';
+    if (ui.mode === 'login') h += '<p class="note acalt"><a href="#" data-act="mode:recover">' + esc(t('acctForgot')) + '</a></p>';
+    if (recover) h += '<p class="note acalt"><a href="#" data-act="mode:login">← ' + esc(t('acctBackToLogin')) + '</a></p>';
+    return h;
+  }
+  function toggle(id, label, note, on) {
+    return '<label class="tgl"><span class="tgltx"><b>' + esc(label) + '</b>' + (note ? '<small>' + esc(note) + '</small>' : '') + '</span><input type="checkbox" role="switch" data-c="' + id + '"' + (on ? ' checked' : '') + (ui.busy ? ' disabled' : '') + '><span class="tglsw" aria-hidden="true"></span></label>';
+  }
+  var LEVELS = [[0, '🧑‍🚀', 'Cadet'], [200, '✈️', 'Pilot'], [600, '🧭', 'Navigator'], [1500, '👩‍🚀', 'Astronaut'], [3500, '🚀', 'Commander'], [7000, '🌌', 'Galaxy Explorer']];
+  function levelOf(p) { var l = LEVELS[0], next = null; LEVELS.forEach(function (x, i) { if (p >= x[0]) { l = x; next = LEVELS[i + 1] || null; } }); return { l: l, next: next }; }
+  function num(v) { return v == null ? '–' : Number(v).toLocaleString('en-GB'); }
+  function dashboard(s) {
+    var p = getPrefs(), st = ui.stats || {}, pts = st.points, lv = typeof pts === 'number' ? levelOf(pts) : null;
+    var prog = lv && lv.next ? Math.round((pts - lv.l[0]) / (lv.next[0] - lv.l[0]) * 100) : 100;
+    var photoLabel = esc(w(getAvatar() ? 'avatarChange' : 'avatarChoose'));
+    var pic = getAvatar() ? avatarImg('acpic') : '<span class="acpic ph" aria-hidden="true">' + esc(s.username.charAt(0).toUpperCase()) + '</span>';
+    var h = '<section class="acbanner"><div class="acaurora" aria-hidden="true"></div><div class="acbin">' +
+      '<div class="acpicwrap">' + pic + '<label class="acpicbtn" for="photoIn" title="' + photoLabel + '"><span aria-hidden="true">📷</span><span class="sr-only">' + photoLabel + '</span></label><input id="photoIn" type="file" accept="image/*" hidden></div>' +
+      '<div class="acwho"><span class="aceyebrow">' + (lv ? lv.l[1] + ' ' + esc(lv.l[2]) : '🧑‍🚀 Space explorer') + '</span><h1>' + esc(s.username) + '</h1>' +
+      '<div class="acchips"><span><b>' + num(pts) + '</b> Space Points</span><span>🔥 <b>' + num(st.streak) + '</b> day streak</span><span>📷 <b>' + num(st.photos) + '</b> photos</span><span>❓ <b>' + num(st.questions) + '</b> questions</span></div>' +
+      (lv && lv.next ? '<div class="aclv"><div class="aclvbar"><i style="width:' + prog + '%"></i></div><small>' + num(lv.next[0] - pts) + ' points to ' + lv.next[1] + ' ' + esc(lv.next[2]) + '</small></div>' : '') +
+      (getAvatar() ? '<button class="linkbtn acpicdel" type="button" data-act="photoDel">' + esc(w('avatarRemove')) + '</button>' : '') +
+      '</div><div class="acquick"><a class="btn primary" href="' + ROOT + 'profile.html?u=' + encodeURIComponent(s.username) + '">👤 My profile</a><a class="btn" href="' + ROOT + 'my-space.html">⭐ My space</a><a class="btn" href="' + ROOT + 'quiz.html#daily">🗓️ Daily 5</a></div></div></section>';
+    if (ui.delMsg && !ui.del) h += '<p class="note">' + esc(ui.delMsg) + '</p>';
+    h += '<div class="acgrid">';
+    h += '<section class="card accard" style="--i:0"><h2><span class="acic" aria-hidden="true">🔄</span> Sync</h2>' + toggle('syncOn', t('acctSync'), 'Favourites, quiz scores, theme, city and birth date are kept in your account and shared between the app and astryl.space.', p.syncOn) +
+      '<div class="acrow"><button class="btn" type="button" data-act="syncNow"' + (syncing || !p.syncOn ? ' disabled' : '') + '>' + (syncing ? '<span class="spin" aria-hidden="true"></span>' : '↻ ') + esc(t('acctSyncNow')) + '</button><span class="acstat ' + (syncStatus || '') + '">' + esc({ syncing: t('acctSyncing'), ok: '✓ ' + t('acctSyncOk'), failed: t('acctSyncFailed') }[syncStatus] || '') + '</span></div></section>';
+    h += '<section class="card accard" style="--i:1"><h2><span class="acic" aria-hidden="true">🛡️</span> Privacy</h2><p class="note">Optional. All off until you switch them on, except the leaderboard.</p>' +
+      toggle('showOnBoard', w('boardShow'), w('boardShowNote'), p.showOnBoard) + toggle('countMe', t('acctCountMe'), t('acctCountMeNote'), p.countMe) + toggle('shareCountry', t('acctShareCountry'), t('acctShareCountryNote'), p.shareCountry) + '</section>';
+    h += '<section class="card accard" style="--i:2"><h2><span class="acic" aria-hidden="true">🔑</span> Security</h2><p>Your recovery code lets you set a new password if you forget it. It works three times.</p>' +
+      (ui.newCode ? '<div class="acnew"><b>' + esc(t('acctCodeTitle')) + '</b><p class="note">' + esc(t('acctCodeWarn')) + '</p>' + codeCard(ui.newCode) + '</div>' : '') +
+      '<div class="acrow"><button class="btn" type="button" data-act="newCode">🔁 ' + esc(t('acctNewCode')) + '</button></div><p class="note">' + esc(t('acctNewCodeNote')) + '</p></section>';
+    h += '<section class="card accard" style="--i:3"><h2><span class="acic" aria-hidden="true">🚪</span> Session</h2><p>Logged in as <b>' + esc(s.username) + '</b> on this browser.</p><div class="acrow"><button class="btn" type="button" data-act="logout">' + esc(t('acctLogOut')) + '</button></div></section>';
+    h += '</div>';
+    h += '<section class="card danger acdanger"><div><h2>⚠️ Danger zone</h2><p>' + esc(t('acctDeleteNote')) + '</p></div><div class="acdz">' +
+      (ui.del ? '<p>' + esc(t('acctDeleteConfirmBody')) + '</p>' + field('delpass', t('acctPassword'), 'password', '', 'current-password') +
+        '<div class="acrow"><button class="btn danger-btn" type="button" data-act="delete"' + (ui.busy ? ' disabled' : '') + '>' + esc(t('acctDeleteButton')) + '</button><button class="btn" type="button" data-act="delCancel">' + esc(t('cancel')) + '</button></div>'
+        : '<button class="btn danger-btn" type="button" data-act="delAsk">🗑️ ' + esc(t('acctDelete')) + '</button>') +
+      (ui.delMsg && ui.del ? '<p class="no">' + esc(ui.delMsg) + '</p>' : '') + '</div></section>';
+    return h;
+  }
+  /* password strength, shown under a new password */
+  function pwMeter() {
+    var bar = $('#pwBar'), txt = $('#pwText'), inp = $('#f_pass'); if (!bar || !inp || !txt) return;
+    var v = inp.value, sc = 0;
+    if (v.length >= 8) sc++; if (v.length >= 12) sc++; if (/[a-z]/.test(v) && /[A-Z]/.test(v)) sc++; if (/\d/.test(v)) sc++; if (/[^A-Za-z0-9]/.test(v)) sc++;
+    var lv = !v ? 0 : v.length < 8 ? 1 : sc <= 2 ? 2 : sc <= 3 ? 3 : 4;
+    bar.style.width = (lv * 25) + '%'; bar.className = 'pw' + lv;
+    txt.textContent = ['', 'Too short: at least 8 characters', 'Weak: add numbers or symbols', 'Good', 'Strong 💪'][lv];
+  }
+  /* is the username free? (asked a moment after typing stops) */
+  var ucTimer = null, ucLast = '', ucText = '', ucCls = 'ucheck';
+  function userCheck(typed) {
+    var el = $('#uCheck'), inp = $('#f_user'); if (!el || !inp) return;
+    var v = inp.value.trim().toLowerCase();
+    function show(txt, cls) { ucText = txt; ucCls = 'ucheck ' + (cls || ''); el.textContent = txt; el.className = ucCls; }
+    if (!typed && v === ucLast) { el.textContent = ucText; el.className = ucCls; return; }
+    clearTimeout(ucTimer); ucLast = v;
+    if (!v) return show('');
+    if (!/^[a-z0-9_]{3,20}$/.test(v)) return show('3 to 20 letters (a to z), digits or _', 'no');
+    show('Checking…');
+    ucTimer = setTimeout(function () {
+      api('check', { username: v }).then(function (j) {
+        if ((($('#f_user') || {}).value || '').trim().toLowerCase() !== v) return;
+        var e2 = $('#uCheck'); el = e2 || el;
+        show(j && j.available ? '✓ “' + v + '” is free' : '✗ “' + v + '” is taken', j && j.available ? 'ok' : 'no');
+      }, function () { show(''); });
+    }, 450);
+  }
+  function loadStats() {
+    var s = getSession(); if (!s || ui.statsLoading) return;
+    ui.statsLoading = true;
+    token().then(function (k) {
+      return Promise.all([
+        fetch('https://pmfjjlfggzihbnbmqkao.supabase.co/functions/v1/community', { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-astryl-token': k }, body: JSON.stringify({ action: 'profile', u: s.username }) }).then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; }),
+        api('board', {}, k).catch(function () { return {}; })
+      ]);
+    }).then(function (r) {
+      var pr = r[0] || {}, bd = r[1] || {};
+      ui.stats = { points: pr.quiz ? pr.quiz.points : null, photos: pr.photos ? pr.photos.length : null, questions: pr.questions ? pr.questions.length : null, streak: bd.me_stats ? bd.me_stats.streak : 0 };
+      if ($('#acct') && getSession()) draw();
+    }, function () { });
   }
   function saveFields() {
     var root = $('#acct'); if (!root) return;
@@ -512,7 +594,7 @@
       };
     }
     ui.busy = true; draw();
-    run().then(function () { ui.busy = false; draw(); if (ui.mode === 'create' && getSession()) sync(); ping(); }, function (e) { ui.busy = false; ui.err = errText(e); draw(); });
+    run().then(function () { ui.busy = false; ui.drawn = false; draw(); if (ui.mode === 'create' && getSession()) sync(); ping(); loadStats(); }, function (e) { ui.busy = false; ui.err = errText(e); draw(); });
   }
   function onClick(e) {
     var el = e.target.closest ? e.target.closest('[data-act]') : null;
@@ -521,6 +603,7 @@
     saveFields(); ui.notice = '';
     if (act.indexOf('mode:') === 0) { ui.mode = act.slice(5); ui.err = ''; ui.f.pass = ''; ui.f.pass2 = ''; return draw(); }
     if (act === 'submit') return submit();
+    if (act === 'eye') { ui.show = !ui.show; draw(); var pf = $('#f_pass'); if (pf) pf.focus(); return; }
     if (act === 'copy') {
       var txt = ui.code || ui.newCode || '';
       try { navigator.clipboard.writeText(txt); el.textContent = t('acctCopied'); } catch (x) { var r = document.createRange(); r.selectNodeContents($('#codeText')); var sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); }
@@ -530,7 +613,7 @@
     if (act === 'photoDel') return void token().then(function (k) { return api('avatar_delete', {}, k); }).then(function () { store.del('astryl-avatar'); navAccount(); draw(); }, function (x) { ui.delMsg = errText(x); draw(); });
     if (act === 'syncNow') return void sync();
     if (act === 'newCode') return void token().then(function (k) { return api('newcode', {}, k); }).then(function (j) { ui.newCode = fmtCode(j.code); draw(); }, function (x) { ui.delMsg = errText(x); draw(); });
-    if (act === 'logout') { clearSession(); ui.newCode = null; ui.del = false; ui.mode = 'login'; return draw(); }
+    if (act === 'logout') { clearSession(); ui.newCode = null; ui.del = false; ui.mode = 'login'; ui.stats = null; ui.statsLoading = false; ui.drawn = false; return draw(); }
     if (act === 'delAsk') { ui.del = true; ui.delMsg = ''; return draw(); }
     if (act === 'delCancel') { ui.del = false; ui.delMsg = ''; ui.f.delpass = ''; return draw(); }
     if (act === 'delete') {
@@ -565,11 +648,11 @@
     var root = $('#acct'); if (!root) return;
     root.addEventListener('click', onClick);
     root.addEventListener('change', function (e) { if (e.target && e.target.id === 'photoIn') { var f = e.target.files && e.target.files[0]; e.target.value = ''; return pickPhoto(f); } onChange(e); });
-    root.addEventListener('input', function (e) { if (e.target.dataset && e.target.dataset.f) ui.f[e.target.dataset.f] = e.target.value; });
+    root.addEventListener('input', function (e) { if (e.target.dataset && e.target.dataset.f) ui.f[e.target.dataset.f] = e.target.value; if (e.target.id === 'f_pass') pwMeter(); if (e.target.id === 'f_user') userCheck(true); });
     root.addEventListener('keydown', function (e) { if (e.key === 'Enter' && e.target.dataset && e.target.dataset.f && !ui.code && !getSession()) { e.preventDefault(); submit(); } });
     if (/[?&]mode=login/.test(location.search) && !getSession()) ui.mode = 'login';
     draw(); onLang(draw);
-    if (getSession()) sync();
+    if (getSession()) { sync(); loadStats(); }
   }
 
   /* ---------- the public counter ---------- */
@@ -604,7 +687,7 @@
   function fill(str, o) { for (var k in o) str = str.split('{' + k + '}').join(o[k]); return str; }
   function dailyPage() {
     var root = $('#daily'); if (!root) return;
-    var d = { phase: 'idle', qs: [], i: 0, picked: [], startAt: 0, result: null, answers: null, board: null, tab: 'today', err: '', busy: false }, tick = null;
+    var d = { phase: 'idle', qs: [], i: 0, picked: [], startAt: 0, result: null, answers: null, board: null, tab: 'today', err: '', busy: false, showAns: false }, tick = null;
     function me() { return getSession(); }
     function loadBoard() {
       var go = function (k) { return api('board', {}, k); };
@@ -647,7 +730,10 @@
       var h = '<h3>' + esc(w('boardReview')) + '</h3>';
       d.qs.forEach(function (q, i) {
         var right = d.answers && d.answers[i], mine = d.picked[i];
-        h += '<div class="card"><b>' + esc(qText(q.k)) + '</b><p>' + (right ? '<span class="' + (mine === right ? 'ok' : 'no') + '">' + esc(mine ? bodyName(mine) : '–') + '</span>' + (mine !== right ? ' → <b>' + esc(bodyName(right)) + '</b>' : '') : '') + '</p></div>';
+        var line = !right ? '' : !mine ? 'Answer: <b>' + esc(bodyName(right)) + '</b>'
+          : mine === right ? '<span class="ok">✓ ' + esc(bodyName(mine)) + '</span>'
+          : '<span class="no">✗ ' + esc(bodyName(mine)) + '</span> → <b>' + esc(bodyName(right)) + '</b>';
+        h += '<div class="card"><b>' + esc(qText(q.k)) + '</b><p>' + line + '</p></div>';
       });
       return h;
     }
@@ -690,7 +776,7 @@
         q.o.forEach(function (id) { h += '<button type="button" class="opt" data-dl="pick:' + id + '"' + (d.busy ? ' disabled' : '') + '>' + esc(bodyName(id)) + '</button>'; });
         h += '</div>';
       } else if (d.phase === 'check') h += '<div class="card"><p>' + esc(w('boardSubmitting')) + '</p></div>';
-      else if (d.phase === 'done') h += resultCard() + review();
+      else if (d.phase === 'done') h += resultCard() + '<p class="ansbtn"><button type="button" class="btn" data-dl="answers" aria-expanded="' + d.showAns + '">' + (d.showAns ? '🙈 Hide today\'s answers' : '👀 See today\'s answers') + '</button></p>' + (d.showAns ? review() : '');
       h += streakPanel() + board();
       root.innerHTML = h;
       clock();
@@ -703,7 +789,7 @@
       d.err = ''; d.busy = true; draw();
       token().then(function (k) { return api('daily_start', {}, k); }).then(function (j) {
         d.busy = false; d.qs = j.questions; d.i = 0; d.picked = [];
-        if (j.done) { d.phase = 'done'; d.result = { points: j.points, correct: j.correct, ms: j.ms }; d.answers = j.questions.map(function (q) { return q.a; }); d.picked = []; }
+        if (j.done) { d.phase = 'done'; d.result = { points: j.points, correct: j.correct, ms: j.ms }; d.answers = j.questions.map(function (q) { return q.a; }); d.picked = Array.isArray(j.picks) ? j.picks : []; d.showAns = false; }
         else { d.phase = 'play'; d.startAt = Date.now() - (j.elapsedMs || 0); }
         draw(); loadBoard();
       }, function (e) { d.busy = false; d.err = errText(e); draw(); });
@@ -711,7 +797,7 @@
     function submit() {
       d.phase = 'check'; draw();
       token().then(function (k) { return api('daily_submit', { answers: d.picked }, k); }).then(function (j) {
-        d.result = j; d.answers = j.answers; d.phase = 'done'; draw(); loadBoard();
+        d.result = j; d.answers = j.answers; d.phase = 'done'; d.showAns = false; draw(); loadBoard();
       }, function (e) { d.phase = 'idle'; d.err = e && e.code === 'already_done' ? '' : errText(e); draw(); loadBoard(); });
     }
     root.addEventListener('click', function (e) {
@@ -719,6 +805,7 @@
       var a = el.dataset.dl;
       if (a === 'play') return start();
       if (a === 'share') return sharePicture();
+      if (a === 'answers') { d.showAns = !d.showAns; return draw(); }
       if (a.indexOf('tab:') === 0) { d.tab = a.slice(4); return draw(); }
       if (a.indexOf('pick:') === 0 && d.phase === 'play') {
         d.picked.push(a.slice(5));

@@ -424,7 +424,7 @@
       if (!level) {
         h += '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px">' +
           '<p class="sub" style="margin:0">' + t('quizIntro') + '</p>' +
-          '<span class="badge" style="font-size:14px;padding:6px 14px;background:rgba(255,138,71,0.16);border:1px solid rgba(255,138,71,0.45);border-radius:999px;color:#ff9b60;font-weight:700">🔥 ' + st + ' day streak</span></div>';
+          '<span class="badge" style="font-size:14px;padding:6px 14px;background:rgba(255,138,71,0.16);border:1px solid rgba(255,138,71,0.45);border-radius:999px;color:var(--streak,#ff9b60);font-weight:700">🔥 ' + st + ' day streak</span></div>';
         // 60s Blitz Survival card
         h += '<div class="card" style="margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border:1px solid rgba(255,138,71,0.4)">' +
           '<div><h3 style="margin:0 0 4px">⚡ 60s Blitz Survival (3 ❤️)</h3><p class="note" style="margin:0">60 seconds · 3 lives · 2x/3x Combo Multiplier' + (bb > 0 ? ' · <b>Best: ' + bb + ' pts</b>' : '') + '</p></div>' +
