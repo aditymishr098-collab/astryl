@@ -1,5 +1,5 @@
-// Astryl "community" Edge Function: the sky photo gallery and the questions-and-answers board,
-// plus moderation.
+// Astryl "community" Edge Function: the sky photo gallery, the questions-and-answers board,
+// comments on the blog (no account needed), plus moderation.
 //
 // Photos and posts appear right away, and people can edit or delete their own. Anything reported comes to the moderators (rows in
 // community_admins); after 3 reports it is hidden until a moderator keeps or removes it.
@@ -24,6 +24,15 @@ const CFG = config as { photoKinds: string[][]; postKinds: string[][] };
 const PHOTO_KINDS = new Set(CFG.photoKinds.map((k) => k[0]));
 const POST_KINDS = new Set(CFG.postKinds.map((k) => k[0]));
 const REASONS = new Set(["rude", "spam", "personal", "offtopic", "other"]);
+const CFGB = config as unknown as { blogPosts?: string[] };
+const BLOG = new Set(CFGB.blogPosts ?? []);
+// links and web addresses are not allowed in blog comments (they are almost always spam)
+const LINK = /(https?:|www\.|\b[a-z0-9-]{2,}\.(com|net|org|ru|io|xyz|info|biz|co|me|link|site|top|online|ly|gg|in|app|dev|shop|store|click|tk|cn|su|pro|live)\b)/i;
+const PEPPER = (Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "").slice(-24);
+/** Tidy free text: no control characters, at most one empty line in a row. */
+function tidyText(s: string) {
+  return s.replace(/\r/g, "").replace(/[\u0000-\u0009\u000b-\u001f\u007f\u200b-\u200f\u202a-\u202e]/g, "").replace(/\n{3,}/g, "\n\n").trim();
+}
 const MAX_FULL = 900_000, MAX_THUMB = 120_000;
 
 class Fail extends Error {
@@ -264,6 +273,76 @@ async function handle(req: Request, b: any): Promise<Response> {
       return reply({ ok: true });
     }
 
+    /* ---------- blog comments (no account needed) ---------- */
+    case "blog_counts": {
+      const { data } = await admin.from("blog_comments").select("slug").eq("status", "approved").in("slug", [...BLOG]).limit(5000);
+      const n: Record<string, number> = {};
+      for (const r of data ?? []) n[r.slug] = (n[r.slug] ?? 0) + 1;
+      return reply({ counts: n });
+    }
+
+    case "blog_comments": {
+      const slug = String(b.slug ?? "");
+      if (!BLOG.has(slug)) throw new Fail(404, "no_post");
+      const device = String(b.device ?? "").slice(0, 64);
+      const me = device.length >= 16 ? await sha("d:" + device) : "";
+      const { data } = await admin.from("blog_comments").select("id, name, body, voter, created_at").eq("slug", slug).eq("status", "approved")
+        .order("created_at").limit(300);
+      return reply({ comments: (data ?? []).map((c) => ({ id: c.id, name: c.name, body: c.body, at: c.created_at, mine: !!me && c.voter === me })) });
+    }
+
+    case "blog_comment": {
+      const slug = String(b.slug ?? "");
+      if (!BLOG.has(slug)) throw new Fail(404, "no_post");
+      const device = String(b.device ?? "").slice(0, 64);
+      if (device.length < 16) throw new Fail(400, "no_device");
+      if (String(b.website ?? "") !== "") return reply({ ok: true, id: null }); // the hidden field only bots fill in
+      const body = tidyText(String(b.body ?? ""));
+      if (body.length < 2) throw new Fail(400, "too_short");
+      if (body.length > 1000) throw new Fail(400, "too_long");
+      if (LINK.test(body)) throw new Fail(400, "no_links");
+      let name = tidyText(String(b.name ?? "")).replace(/\s+/g, " ").slice(0, 30).trim();
+      if (!name || /astryl|admin|moderator|official/i.test(name) || LINK.test(name)) name = "Guest";
+      const voter = await sha("d:" + device);
+      const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "none";
+      const day = new Date().toISOString().slice(0, 10);
+      const ipkey = await sha("ip:" + day + ":" + PEPPER + ":" + ip);
+      const minAgo = new Date(Date.now() - 60_000).toISOString(), dayAgo = new Date(Date.now() - 86_400_000).toISOString();
+      const recent = async (col: string, val: string, since: string) => {
+        const { count } = await admin.from("blog_comments").select("id", { count: "exact", head: true }).eq(col, val).gte("created_at", since);
+        return count ?? 0;
+      };
+      if ((await recent("ipkey", ipkey, minAgo)) + (await recent("voter", voter, minAgo)) > 0) throw new Fail(429, "slow_down");
+      if ((await recent("voter", voter, dayAgo)) >= 20) throw new Fail(429, "day_limit");
+      { const { count } = await admin.from("blog_comments").select("id", { count: "exact", head: true }).eq("ipkey", ipkey); if ((count ?? 0) >= 20) throw new Fail(429, "day_limit"); }
+      { const { count } = await admin.from("blog_comments").select("id", { count: "exact", head: true }).gte("created_at", minAgo); if ((count ?? 0) >= 30) throw new Fail(429, "busy"); }
+      const ins = await admin.from("blog_comments").insert({ slug, name, body, voter, ipkey }).select("id, created_at").single();
+      if (ins.error) throw ins.error;
+      return reply({ ok: true, id: ins.data.id, name, body, at: ins.data.created_at });
+    }
+
+    case "blog_delete": {
+      const device = String(b.device ?? "").slice(0, 64);
+      if (device.length < 16) throw new Fail(400, "no_device");
+      await admin.from("blog_comments").delete().eq("id", String(b.id ?? "")).eq("voter", await sha("d:" + device));
+      return reply({ ok: true });
+    }
+
+    case "blog_report": {
+      const id = String(b.id ?? "");
+      if (!/^[0-9a-f-]{36}$/.test(id)) throw new Fail(400, "bad_id");
+      const user = await userFrom(req, false);
+      const device = String(b.device ?? "").slice(0, 64);
+      if (!user && device.length < 16) throw new Fail(400, "no_device");
+      const voter = await sha(user ? "u:" + user.id : "d:" + device);
+      const reason = REASONS.has(String(b.reason ?? "")) ? String(b.reason) : "other";
+      const { data: t } = await admin.from("blog_comments").select("id, reports").eq("id", id).maybeSingle();
+      if (!t) throw new Fail(404, "not_found");
+      const { error } = await admin.from("community_reports").insert({ kind: "blog", target: id, voter, reason });
+      if (!error) { const n = (t.reports ?? 0) + 1; await admin.from("blog_comments").update(n >= 3 ? { reports: n, status: "pending" } : { reports: n }).eq("id", id); }
+      return reply({ ok: true });
+    }
+
     /* ---------- moderation ---------- */
     case "admin_queue": {
       await mustAdmin(req);
@@ -279,7 +358,12 @@ async function handle(req: Request, b: any): Promise<Response> {
       const { data: rs } = ids.length ? await admin.from("community_reports").select("target, reason").in("target", ids) : { data: [] };
       const why: Record<string, Record<string, number>> = {};
       for (const r of rs ?? []) { const w = (why[r.target] ??= {}); w[r.reason || "other"] = (w[r.reason || "other"] ?? 0) + 1; }
+      const { data: bc } = await admin.from("blog_comments").select("id, slug, name, body, status, reports, created_at").or("status.eq.pending,reports.gt.0").order("created_at").limit(100);
+      const bids = (bc ?? []).map((c) => c.id);
+      const { data: brs } = bids.length ? await admin.from("community_reports").select("target, reason").eq("kind", "blog").in("target", bids) : { data: [] };
+      for (const r of brs ?? []) { const w = (why[r.target] ??= {}); w[r.reason || "other"] = (w[r.reason || "other"] ?? 0) + 1; }
       return reply({
+        comments: (bc ?? []).map((c) => ({ id: c.id, slug: c.slug, by: c.name, body: c.body, status: c.status, reports: c.reports, why: why[c.id] ?? {}, at: c.created_at })),
         photos: (ph ?? []).map((p) => ({ id: p.id, by: nm[p.user_id] ?? "", title: p.title, kind: p.kind, taken: p.taken, status: p.status, reports: p.reports, why: why[p.id] ?? {}, at: p.created_at, thumb: b64(hexToBytes(p.thumb as unknown as string)) })),
         posts: (po ?? []).map((p) => ({ id: p.id, by: nm[p.user_id] ?? "", kind: p.kind, body: p.body, status: p.status, reports: p.reports, why: why[p.id] ?? {}, at: p.created_at, replyTo: p.parent_id ? pb[p.parent_id] ?? "" : null })),
       });
@@ -295,7 +379,7 @@ async function handle(req: Request, b: any): Promise<Response> {
     case "admin_decide": {
       await mustAdmin(req);
       const kind = String(b.kind ?? ""), id = String(b.id ?? ""), verdict = String(b.verdict ?? "");
-      const table = kind === "photo" ? "community_photos" : kind === "post" ? "community_posts" : "";
+      const table = kind === "photo" ? "community_photos" : kind === "post" ? "community_posts" : kind === "blog" ? "blog_comments" : "";
       if (!table) throw new Fail(400, "bad_kind");
       if (verdict === "approve") {
         await admin.from(table).update({ status: "approved", reports: 0, decided_at: new Date().toISOString() }).eq("id", id);
