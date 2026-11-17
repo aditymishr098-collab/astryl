@@ -182,7 +182,7 @@
       done(res.updatedMs || 0); return true;
     }).catch(function () { syncStatus = 'failed'; return false; }).then(function (ok) { syncing = false; redraw(); return ok; });
   }
-  /* Favourites (shared with the app) and website progress (the "web" part, which the app keeps
+  /* Favourites and website progress (the "web" part, which other clients keep
      but does not use). Best scores and lessons read are joined, so nothing is lost either way. */
   function readJson(k, d) { try { var v = store.get(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }
   function mergeWeb(merged, remote, remoteWins) {
@@ -196,14 +196,14 @@
     merged.favorites = fav;
     store.set('astryl-favs', JSON.stringify(fav));
     var rw = remote && remote.web && typeof remote.web === 'object' ? remote.web : {}, web = { ds: {}, bh101: [] };
-    // Deep space quiz bests: the app keeps them as quizBests "ds-bh", "ds-gx", "ds-all".
+    // Deep space quiz bests: kept as quizBests "ds-bh", "ds-gx", "ds-all".
     var qb = merged.quizBests || (merged.quizBests = {});
     ['bh', 'gx', 'all'].forEach(function (k) {
       var local = parseInt(readJson('astryl-ds-best-' + k, 0), 10) || 0, far = Math.max(parseInt(rw.ds && rw.ds[k], 10) || 0, parseInt(qb['ds-' + k], 10) || 0), best = Math.max(local, far);
       if (best > 0) { web.ds[k] = best; qb['ds-' + k] = best; }
       if (best > local) store.set('astryl-ds-best-' + k, JSON.stringify(best));
     });
-    // Lessons read, shared with the app's Learn screen as "group/slug" (blackholes/what-is-a-black-hole).
+    // Lessons read, kept as "group/slug" (blackholes/what-is-a-black-hole).
     // Reading is never undone, so both sides are joined.
     var read = readJson('astryl-read', {}), lessons = [];
     if (!read || typeof read !== 'object' || Array.isArray(read)) read = {};
@@ -226,7 +226,7 @@
     if (readChanged) store.set('astryl-read', JSON.stringify(read));
     store.set('astryl-bh101', JSON.stringify(web.bh101));
     merged.lessons = lessons;
-    // Things seen with your own eyes, shared with the app: joined, keeping the first date.
+    // Things seen with your own eyes, joined across devices, keeping the first date.
     var seenL = readJson('astryl-seen', {}), seenR = {}, seenM = {};
     if (!seenL || typeof seenL !== 'object' || Array.isArray(seenL)) seenL = {};
     [rw.seen, remote && remote.seen].forEach(function (src) {
@@ -243,9 +243,9 @@
     merged.seen = seenM;
     web.seen = seenM;
     merged.web = web;
-    // The city is shared with the app (same city list). The newer side wins.
-    // A city chosen in this browser always stays; the app's city is only used when none is chosen here.
-    // Only cities from the app's own list are sent back, since the app knows only those.
+    // The city is shared between devices (same city list). The newer side wins.
+    // A city chosen in this browser always stays; the synced city is only used when none is chosen here.
+    // Only cities from the built-in list are sent back.
     var lcity = readJson('astryl-city', ''), rcity = remote && typeof remote.city === 'string' ? remote.city : '';
     var appIds = (window.ASTRYL && window.ASTRYL.cities || []).map(function (c) { return c[0]; });
     if (!lcity && rcity && appIds.indexOf(rcity) >= 0) store.set('astryl-city', JSON.stringify(rcity));
@@ -449,7 +449,7 @@
   }
 
   /* ---------- the parts of the account page ---------- */
-  var BENEFITS = [['🔄', 'Everything in sync', 'Favourites, quiz scores and settings follow you between the app and this website.'],
+  var BENEFITS = [['🔄', 'Everything in sync', 'Favourites, quiz scores and settings follow you to every device you log in on.'],
     ['🗓️', 'Daily 5 and leaderboards', 'Five new questions every day, a streak to keep and a place on the leaderboard.'],
     ['👥', 'Join the community', 'Share your sky photos, ask questions and answer other space lovers.'],
     ['🔒', 'No e-mail needed', 'Just a username and a password. A recovery code replaces “forgot password”.']];
@@ -499,7 +499,7 @@
       '</div><div class="acquick"><a class="btn primary" href="' + ROOT + 'profile.html?u=' + encodeURIComponent(s.username) + '">👤 My profile</a><a class="btn" href="' + ROOT + 'my-space.html">⭐ My space</a><a class="btn" href="' + ROOT + 'quiz.html#daily">🗓️ Daily 5</a></div></div></section>';
     if (ui.delMsg && !ui.del) h += '<p class="note">' + esc(ui.delMsg) + '</p>';
     h += '<div class="acgrid">';
-    h += '<section class="card accard" style="--i:0"><h2><span class="acic" aria-hidden="true">🔄</span> Sync</h2>' + toggle('syncOn', t('acctSync'), 'Favourites, quiz scores, theme, city and birth date are kept in your account and shared between the app and astryl.space.', p.syncOn) +
+    h += '<section class="card accard" style="--i:0"><h2><span class="acic" aria-hidden="true">🔄</span> Sync</h2>' + toggle('syncOn', t('acctSync'), 'Favourites, quiz scores, theme, city and birth date are kept in your account and shared between your devices.', p.syncOn) +
       '<div class="acrow"><button class="btn" type="button" data-act="syncNow"' + (syncing || !p.syncOn ? ' disabled' : '') + '>' + (syncing ? '<span class="spin" aria-hidden="true"></span>' : '↻ ') + esc(t('acctSyncNow')) + '</button><span class="acstat ' + (syncStatus || '') + '">' + esc({ syncing: t('acctSyncing'), ok: '✓ ' + t('acctSyncOk'), failed: t('acctSyncFailed') }[syncStatus] || '') + '</span></div></section>';
     h += '<section class="card accard" style="--i:1"><h2><span class="acic" aria-hidden="true">🛡️</span> Privacy</h2><p class="note">Optional. All off until you switch them on, except the leaderboard.</p>' +
       toggle('showOnBoard', w('boardShow'), w('boardShowNote'), p.showOnBoard) + toggle('countMe', t('acctCountMe'), t('acctCountMeNote'), p.countMe) + toggle('shareCountry', t('acctShareCountry'), t('acctShareCountryNote'), p.shareCountry) + '</section>';

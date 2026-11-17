@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<paths>
-    <!-- Downloaded updates live in the app cache, in an "updates" folder. -->
-    <cache-path name="updates" path="updates/" />
-    <!-- Planet cards the user shares. -->
-    <cache-path name="shared" path="shared/" />
-</paths>

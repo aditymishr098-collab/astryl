@@ -1,4 +1,4 @@
-/* SGP4 (near-Earth, WGS-72), the same maths as the app's lib/core/sgp4.dart: turns a satellite's
+/* SGP4 (near-Earth, WGS-72): turns a satellite's
    two-line orbit data (TLE) into its position (km, TEME frame) at any time. Used by iss.js. */
 (function (g) {
   var PI2 = 2 * Math.PI, MU = 398600.8, RE = 6378.135, XKE = 60 / Math.sqrt(RE * RE * RE / MU);

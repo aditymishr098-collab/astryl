@@ -1,5 +1,5 @@
 /* Universe map: the planets (now), nearby stars, black holes and 3,600 real galaxies in one 3D space.
-   The same data and maths as the Astryl app (lib/core/universe.dart). Runs in the browser only; nothing is sent anywhere. */
+   Runs in the browser only; nothing is sent anywhere. */
 (function () {
   var U = window.ASTRYL_UNI, A = window.ASTRYL, API = window.ASTRYL_API, cv = document.getElementById('umCv');
   if (!U || !cv || !API) return;

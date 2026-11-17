@@ -901,3 +901,4 @@ body[data-page=account] main.wrap{max-width:none;padding:0 clamp(16px,3.2vw,48px
 @media (min-width:900px){.dchist,.dcgrid .dccard:nth-child(5){grid-column:span 2}}
 /* related pages */
 .related .sc small{display:block;color:var(--muted);font-weight:400;margin-top:2px}
+.policy-layout>*{min-width:0}

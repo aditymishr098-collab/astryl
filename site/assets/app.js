@@ -1,6 +1,6 @@
 /* Astryl website: language, theme, and the interactive pages.
-   All the maths below is a port of the app's own Dart code (lib/core), so the
-   website and the app agree. Nothing is sent anywhere. */
+   All the maths below is Astryl's own, so the
+   pages agree with each other. Nothing is sent anywhere. */
 (function () {
   'use strict';
   var D = window.ASTRYL;
@@ -93,7 +93,7 @@
     km: function (km) { return km < 1e6 ? t('valueKm', { value: fmt(km) }) : km < 1e9 ? t('valueMillionKm', { value: fmt(km / 1e6, 1) }) : t('valueBillionKm', { value: fmt(km / 1e9, 2) }); }
   };
 
-  /* ---------- orbits (port of lib/core/orbits.dart and sky.dart) ---------- */
+  /* ---------- orbits ---------- */
   var KM_AU = 149597870.7, C_KMS = 299792.458;
   function rad(d) { return d * Math.PI / 180; }
   function deg(r) { return r * 180 / Math.PI; }
@@ -297,7 +297,7 @@
     onRender(function () { weights(); age(); });
   }
 
-  /* ---------- page: quiz (port of lib/core/quiz.dart) ---------- */
+  /* ---------- page: quiz ---------- */
   var KINDS = {
     easy: ['largest', 'smallest', 'hottest', 'coldest', 'mostMoons', 'breathable', 'closest', 'farthest', 'star', 'dwarf', 'moonVisited'],
     medium: ['strongestGravity', 'shortestDay', 'longestDay', 'largestMoon', 'smallestMoon', 'thickAirMoon', 'geyserMoon', 'volcanicMoon', 'backwardsMoon', 'biggestRocky', 'coldestRocky', 'highestPressure'],
@@ -879,7 +879,7 @@
     onRender(draw);
   }
 
-  /* ---------- page: spacecraft (port of lib/core/spacecraft.dart) ---------- */
+  /* ---------- page: spacecraft ---------- */
   function spacecraftPage() {
     var box = $('#craft'); if (!box) return;
     // "how far has each one gone": every spacecraft and a few landmarks on one log scale

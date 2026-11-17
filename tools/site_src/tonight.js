@@ -1,7 +1,6 @@
 /* Your city: tonight's sky (Sun and Moon times, which planets are up), the coming eclipses and meteor
    showers with calendar files, and the "I've seen it" list. Everything is worked out in the browser.
-   The chosen city is kept in this browser and, with an account and sync on, in the account (the app
-   uses the same city list). Times are shown in this device's time zone. */
+   The chosen city is kept in this browser and, with an account and sync on, in the account. Times are shown in this device's time zone. */
 (function () {
   var D = window.ASTRYL, API = window.ASTRYL_API;
   if (!D || !API || !D.cities) return;
@@ -15,7 +14,7 @@
   function esc(x) { return String(x).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
 
   /* ---------- city ----------
-     The city is kept as the app's city id (so it can sync with the app) or as a place picked from the
+     The city is kept as a built-in city id (so it can sync) or as a place picked from the
      world list or from "my location": {n: name, c: country code, lat, lon}. */
   var byId = {}, AUTO = 'astryl-city-auto';
   D.cities.forEach(function (c) { byId[c[0]] = c; });
