@@ -472,7 +472,7 @@
     h += pwField('pass', recover ? t('acctRecoverNewPassword') : t('acctPassword'), create || recover ? t('acctPasswordHint') : '', create || recover ? 'new-password' : 'current-password');
     if (create || recover) h += '<div class="pwmeter" aria-hidden="true"><i id="pwBar"></i></div><small class="note" id="pwText" aria-live="polite"></small>';
     if (create) h += pwField('pass2', t('acctPasswordAgain'), '', 'new-password');
-    if (create) h += check('consent', t('acctConsent'), '', !!ui.f.consent) + '<p class="note"><a href="' + ROOT + 'privacy.html" target="_blank" rel="noopener">' + esc(t('acctReadPolicy')) + ' ↗</a></p>';
+    if (create) h += check('consent', t('acctConsent'), '', !!ui.f.consent) + '<p class="note"><a href="' + ROOT + 'privacy.html" target="_blank" rel="noopener">' + esc(t('acctReadPolicy')) + ' ↗</a> · By creating an account you agree to the <a href="' + ROOT + 'terms.html" target="_blank" rel="noopener">Terms and Conditions ↗</a></p>';
     if (ui.err) h += '<p class="no acerr">' + esc(ui.err) + '</p>';
     h += '<button class="btn primary acgo" type="button" data-act="submit"' + (ui.busy || (create && !ui.f.consent) ? ' disabled' : '') + '>' + (ui.busy ? '<span class="spin" aria-hidden="true"></span>' : '') + esc(create ? t('acctTabCreate') : recover ? t('acctRecoverButton') : t('acctTabLogin')) + ' →</button>';
     if (ui.mode === 'login') h += '<p class="note acalt"><a href="#" data-act="mode:recover">' + esc(t('acctForgot')) + '</a></p>';
@@ -506,7 +506,12 @@
     h += '<section class="card accard" style="--i:2"><h2><span class="acic" aria-hidden="true">🔑</span> Security</h2><p>Your recovery code lets you set a new password if you forget it. It works three times.</p>' +
       (ui.newCode ? '<div class="acnew"><b>' + esc(t('acctCodeTitle')) + '</b><p class="note">' + esc(t('acctCodeWarn')) + '</p>' + codeCard(ui.newCode) + '</div>' : '') +
       '<div class="acrow"><button class="btn" type="button" data-act="newCode">🔁 ' + esc(t('acctNewCode')) + '</button></div><p class="note">' + esc(t('acctNewCodeNote')) + '</p></section>';
-    h += '<section class="card accard" style="--i:3"><h2><span class="acic" aria-hidden="true">🚪</span> Session</h2><p>Logged in as <b>' + esc(s.username) + '</b> on this browser.</p><div class="acrow"><button class="btn" type="button" data-act="logout">' + esc(t('acctLogOut')) + '</button></div></section>';
+    h += '<section class="card accard" style="--i:3"><h2><span class="acic" aria-hidden="true">🚪</span> Session</h2><p>Logged in as <b>' + esc(s.username) + '</b> on this browser.</p>' +
+      (ui.ren ? '<div class="acren"><p class="note">Your username is also your login name. Your photos, posts and points stay with you. You can change it once every 30 days, and the link to your old profile page stops working.</p>' +
+        field('newuser', 'New username', 'text', '3 to 20: small letters, numbers and _', 'username') + field('renpass', 'Your password, to confirm', 'password', '', 'current-password') +
+        (ui.renMsg ? '<p class="no" role="alert">' + esc(ui.renMsg) + '</p>' : '') +
+        '<div class="acrow"><button class="btn primary" type="button" data-act="renSave"' + (ui.busy ? ' disabled' : '') + '>' + (ui.busy ? '<span class="spin" aria-hidden="true"></span>' : '') + 'Save new username</button><button class="btn" type="button" data-act="renCancel">' + esc(t('cancel')) + '</button></div></div>'
+        : (ui.renOk ? '<p class="ok" role="status">✓ ' + esc(ui.renOk) + '</p>' : '') + '<div class="acrow"><button class="btn" type="button" data-act="renAsk">✏️ Change username</button><button class="btn" type="button" data-act="logout">' + esc(t('acctLogOut')) + '</button></div>') + '</section>';
     h += '</div>';
     h += '<section class="card danger acdanger"><div><h2>⚠️ Danger zone</h2><p>' + esc(t('acctDeleteNote')) + '</p></div><div class="acdz">' +
       (ui.del ? '<p>' + esc(t('acctDeleteConfirmBody')) + '</p>' + field('delpass', t('acctPassword'), 'password', '', 'current-password') +
@@ -614,6 +619,27 @@
     if (act === 'syncNow') return void sync();
     if (act === 'newCode') return void token().then(function (k) { return api('newcode', {}, k); }).then(function (j) { ui.newCode = fmtCode(j.code); draw(); }, function (x) { ui.delMsg = errText(x); draw(); });
     if (act === 'logout') { clearSession(); ui.newCode = null; ui.del = false; ui.mode = 'login'; ui.stats = null; ui.statsLoading = false; ui.drawn = false; return draw(); }
+    if (act === 'renAsk') { ui.ren = true; ui.renMsg = ''; ui.renOk = ''; draw(); var nf = $('#f_newuser'); if (nf) nf.focus(); return; }
+    if (act === 'renCancel') { ui.ren = false; ui.renMsg = ''; ui.f.newuser = ''; ui.f.renpass = ''; return draw(); }
+    if (act === 'renSave') {
+      var nu = String(ui.f.newuser || '').trim().toLowerCase(), rp = ui.f.renpass || '';
+      if (!/^[a-z0-9_]{3,20}$/.test(nu)) { ui.renMsg = t('acctErrUsername'); return draw(); }
+      if (!rp) { ui.renMsg = 'Please type your password to confirm.'; return draw(); }
+      ui.busy = true; ui.renMsg = ''; draw();
+      return void token().then(function (k) {
+        return fetch(API.replace(/account$/, 'rename'), { method: 'POST', headers: { 'Content-Type': 'application/json', 'apikey': KEY, 'x-astryl-token': k }, body: JSON.stringify({ username: nu, password: rp }) })
+          .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) { var x = fail(j.error || 'server_error', r.status); x.next = j.next; throw x; } return j; }); }, function () { throw fail('offline'); });
+      }).then(function (j) {
+        var old = getSession();
+        if (j.session) setSession(toSession(j, j.username)); else if (old) { old.username = j.username; setSession(old); }
+        ui.busy = false; ui.ren = false; ui.f.newuser = ''; ui.f.renpass = ''; ui.renOk = 'Your username is now ' + j.username + '.'; ui.stats = null; navAccount(); draw(); loadStats();
+      }, function (x) {
+        ui.busy = false;
+        ui.renMsg = x.code === 'too_soon' ? 'You changed your username a short time ago. You can change it again on ' + new Date(x.next).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) + '.'
+          : x.code === 'same_username' ? 'That is already your username.' : x.code === 'bad_login' ? 'That password is not right.' : errText(x);
+        draw();
+      });
+    }
     if (act === 'delAsk') { ui.del = true; ui.delMsg = ''; return draw(); }
     if (act === 'delCancel') { ui.del = false; ui.delMsg = ''; ui.f.delpass = ''; return draw(); }
     if (act === 'delete') {

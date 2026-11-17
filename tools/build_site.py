@@ -12,6 +12,8 @@ import deepspace
 import galaxies
 import stars
 import blog
+import discover
+import legal
 import lab
 import umap
 import myspace
@@ -412,7 +414,7 @@ def asset_v():
     '''A short hash of the scripts and styles, so a changed file is never served from an old cache.'''
     if not _ASSET_V:
         h = hashlib.md5()
-        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'blog.js', 'sw.js'):
+        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'blog.js', 'discover.js', 'sw.js'):
             h.update((SRC / name).read_bytes())
         h.update((ROOT / 'tools' / 'formation.py').read_bytes())
         if (OUT / 'assets/quiz-bank.js').exists():
@@ -636,7 +638,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 </main>
 <footer><div class="wrap cols">
 <div><b>Astryl</b><br>{bt("Know your space.", "अपने अंतरिक्ष को जानिए।")}<br>© 2026 Astryl · <a href="{SITE}">astryl.space</a></div>
-<div><a href="{p}privacy.html">{bt("Privacy Policy", "Privacy Policy")}</a><br><a href="{p}account.html">{bt("Account", "खाता")}</a><br><a href="{p}my-space.html">{bt("My space", "My space")}</a><br><a href="{p}community.html">👥 {bt("Astryl Community", "Astryl Community")}</a></div>
+<div><a href="{p}privacy.html">{bt("Privacy Policy", "Privacy Policy")}</a><br><a href="{p}terms.html">Terms and Conditions</a><br><a href="{p}your-data.html">Your data</a><br><a href="{p}account.html">{bt("Account", "खाता")}</a><br><a href="{p}my-space.html">{bt("My space", "My space")}</a><br><a href="{p}community.html">👥 {bt("Astryl Community", "Astryl Community")}</a></div>
 <div>{bt("Facts: NASA Planetary Fact Sheet", "तथ्य: NASA Planetary Fact Sheet")}<div id="installBox" class="installbox"></div></div>
 </div></footer>
 {"<script src=\"" + p + "assets/data.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/app.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/account.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/me.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/fx.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/pwa.js?v=" + asset_v() + "\"></script>" if scripts else ""}
@@ -691,6 +693,82 @@ def heading_fix(path, html):
     return html[:k] + f'<h2 class="sr-only">{esc(label)}</h2>' + html[k:]
 
 
+# "You may also like": every feature page ends with links to related pages (pages that already
+# have "Keep exploring" keep that instead).
+REL_CARDS = {
+    'planets.html': ('🪐', 'Planets and moons', 'Every planet and big moon, with real numbers'),
+    'solar-system.html': ('☀️', 'Solar System 3D Live', 'The planets where they really are today'),
+    'compare.html': ('⚖️', 'Compare two worlds', 'Size, gravity and day length side by side'),
+    'you.html': ('🧑‍🚀', 'You in space', 'Your weight and age on every world'),
+    'quiz.html': ('🧠', 'Space quiz', 'Daily 5 and ranked rounds for Space Points'),
+    'deep-space-quiz.html': ('🌌', 'Black hole and galaxy quiz', 'Test what you know about deep space'),
+    'sky.html': ('🌙', 'Moon and sky tonight', 'Moon phase and what is up from your city'),
+    'sky-events.html': ('🌑', 'Eclipses and meteor showers', 'Every eclipse until 2029, with times'),
+    'constellations.html': ('✨', 'Constellations', 'All 88 patterns of the night sky'),
+    'maps.html': ('🗺️', 'Moon and Mars maps', 'Where every mission landed'),
+    'missions.html': ('🚀', 'Space missions', 'From Sputnik to Chandrayaan-3'),
+    'spacecraft.html': ('🛰️', 'Spacecraft now', 'A map of where Voyager and the others are today'),
+    'iss.html': ('🛰️', 'Space station passes', 'Live map and when it flies over you'),
+    'telescope.html': ('🔭', 'Telescope simulator', 'What a telescope really shows'),
+    'stars.html': ('⭐', 'Stars', 'How stars are born, live and die'),
+    'black-holes.html': ('⚫', 'Black holes', 'How they form and what falling in is like'),
+    'black-holes-101.html': ('🎓', 'Black holes 101', 'Seven lessons, a quiz and a badge'),
+    'black-hole-lab.html': ('🧪', 'Black hole lab', 'Play with gravity, light and time'),
+    'galaxies.html': ('🌌', 'Galaxies', 'The Milky Way, Andromeda and beyond'),
+    'universe-map.html': ('🧭', 'Universe map', 'Fly through 3,600 real galaxies in 3D'),
+    'cosmic-scale.html': ('📏', 'Scale of the universe', 'From a proton to everything we can see'),
+    'universe-timeline.html': ('⏳', 'Timeline of the universe', '13.8 billion years in one year'),
+    'glossary.html': ('📖', 'Glossary', 'Space words, explained simply'),
+    'learn.html': ('🎓', 'For students', 'Sun, Moon, eclipses and stars for class 6 to 10'),
+    'community.html': ('👥', 'Astryl Community', 'Sky photos, questions and answers'),
+    'blog.html': ('📝', 'Blog', 'Longer stories about space and time'),
+    'blog/time-travel.html': ('⏳', 'Time travel', 'What physics really allows'),
+    'stars/life-of-a-star.html': ('🌟', 'The life of a star', 'From a cloud of gas to a supernova'),
+    'black-holes/falling-into-a-black-hole.html': ('🕳️', 'Falling into a black hole', 'What you would see and feel'),
+}
+REL = {
+    'planets.html': ['solar-system.html', 'compare.html', 'you.html', 'maps.html'],
+    'solar-system.html': ['planets.html', 'spacecraft.html', 'sky.html', 'cosmic-scale.html'],
+    'compare.html': ['planets.html', 'you.html', 'cosmic-scale.html', 'quiz.html'],
+    'you.html': ['compare.html', 'planets.html', 'blog/time-travel.html', 'quiz.html'],
+    'quiz.html': ['deep-space-quiz.html', 'black-holes-101.html', 'learn.html', 'community.html'],
+    'deep-space-quiz.html': ['quiz.html', 'black-holes.html', 'galaxies.html', 'black-holes-101.html'],
+    'sky.html': ['sky-events.html', 'constellations.html', 'iss.html', 'telescope.html'],
+    'sky-events.html': ['sky.html', 'constellations.html', 'iss.html', 'community.html'],
+    'constellations.html': ['sky.html', 'stars.html', 'telescope.html', 'sky-events.html'],
+    'maps.html': ['missions.html', 'spacecraft.html', 'planets.html', 'telescope.html'],
+    'missions.html': ['spacecraft.html', 'maps.html', 'iss.html', 'blog.html'],
+    'spacecraft.html': ['missions.html', 'solar-system.html', 'blog/time-travel.html', 'iss.html'],
+    'stars.html': ['stars/life-of-a-star.html', 'black-holes.html', 'constellations.html', 'galaxies.html'],
+    'black-holes.html': ['black-holes-101.html', 'black-hole-lab.html', 'blog/time-travel.html', 'stars.html'],
+    'black-holes-101.html': ['black-hole-lab.html', 'black-holes.html', 'deep-space-quiz.html', 'blog/time-travel.html'],
+    'black-hole-lab.html': ['black-holes/falling-into-a-black-hole.html', 'black-holes-101.html', 'blog/time-travel.html', 'deep-space-quiz.html'],
+    'galaxies.html': ['universe-map.html', 'cosmic-scale.html', 'black-holes.html', 'stars.html'],
+    'cosmic-scale.html': ['universe-timeline.html', 'universe-map.html', 'compare.html', 'galaxies.html'],
+    'universe-timeline.html': ['cosmic-scale.html', 'blog/time-travel.html', 'stars/life-of-a-star.html', 'galaxies.html'],
+    'glossary.html': ['learn.html', 'quiz.html', 'stars.html', 'blog.html'],
+    'learn.html': ['quiz.html', 'glossary.html', 'sky.html', 'planets.html'],
+    'community.html': ['blog.html', 'sky.html', 'telescope.html', 'quiz.html'],
+    'blog.html': ['community.html', 'spacecraft.html', 'black-holes.html', 'universe-timeline.html'],
+    'blog/time-travel.html': ['black-holes/falling-into-a-black-hole.html', 'black-hole-lab.html', 'spacecraft.html', 'universe-timeline.html'],
+}
+
+
+def related(path, content):
+    if 'Keep exploring' in content or 'class="blk related"' in content:
+        return ''
+    if path.startswith('body/'):
+        bid = path[5:-5]
+        picks = ['compare.html', 'solar-system.html', 'maps.html' if bid in ('moon', 'mars') else 'you.html', 'spacecraft.html' if bid in ('jupiter', 'saturn', 'uranus', 'neptune', 'pluto', 'sun') else 'missions.html']
+    else:
+        picks = REL.get(path)
+    if not picks:
+        return ''
+    pre = '../' * path.count('/')
+    cards = ''.join(f'<a class="sc" href="{pre}{h}"><span class="ic">{REL_CARDS[h][0]}</span><span><b>{REL_CARDS[h][1]}</b><small>{REL_CARDS[h][2]}</small></span><span class="go">→</span></a>' for h in picks)
+    return f'<section class="blk related"><h2>You may also like</h2><div class="sc-grid" style="padding-top:6px">{cards}</div></section>'
+
+
 def write(path, content):
     f = OUT / path
     f.parent.mkdir(parents=True, exist_ok=True)
@@ -698,6 +776,9 @@ def write(path, content):
         content = spacephotos.place(path, content, bt, esc)
         if path in CM_PROMO:
             content = content.replace('\n</main>', '\n' + cm_promo(path) + '\n</main>', 1)
+        rel = related(path, content)
+        if rel:
+            content = content.replace('\n</main>', '\n' + rel + '\n</main>', 1)
         content = heading_fix(path, content)
     f.write_text(content, encoding='utf-8')
 
@@ -907,6 +988,8 @@ def index_page():
 <div class="herog"><canvas id="heroGlobe" aria-label="{esc("The Earth right now, with day and night and the space station")}"></canvas><p class="note herocap">{bt("The Earth right now: real day and night, and the space station where it really is.", "अभी की पृथ्वी: असली दिन और रात, और अंतरिक्ष स्टेशन ठीक वहीं जहाँ वह है।")}</p></div>
 </section>
 <div class="livebar" id="liveBar"></div>
+<section class="blk discover" id="discover"></section>
+<script>window.ASTRYL_DISCOVER={json.dumps(discover.data(universe.GLOSSARY, {b["id"]: tr("en", NAME_KEY[b["id"]]) for b in BODIES if b["id"] in PHOTO}, [f"blog/{blog.POSTS[0]['slug']}.html", blog.POSTS[0]["title"], blog.POSTS[0]["desc"]]), ensure_ascii=False).replace('</', '<\\/')};</script>
 <section class="blk"><h2>{bt("Today in space", "आज अंतरिक्ष में")}</h2><div class="today" id="today"></div></section>
 <section class="duo">
 <div class="card" id="homeQuiz"><h2>{bt("Quick quiz", "झटपट quiz")}</h2><div class="q">{bt("Which planet is known for its Great Red Spot?", "किस ग्रह का Great Red Spot मशहूर है?")}</div><div class="opts">{quiz}</div><p class="qres"></p></div>
@@ -931,7 +1014,7 @@ def index_page():
 </section>
 <section class="blk"><div class="grid daily2"><div class="card apod" id="dailyPhoto"></div><div class="card" id="dailyFact"></div></div></section>
 <section class="blk"><h2>{bt("This website in numbers", "यह website आँकड़ों में")}</h2><div class="stats" id="stats"></div><p class="note" id="statsCountries"></p><p class="note" id="statsNote"></p></section>'''
-    write('index.html', shell('Explore the Universe', 'ब्रह्मांड खोजिए', 'home', body, 'Astryl: planets, moons, stars and space missions. Real positions and real numbers for any date, free and open source.', canonical='', extra_head=f'<script defer src="assets/sgp4.js?v={asset_v()}"></script><script defer src="assets/home.js?v={asset_v()}"></script><script defer src="assets/cosmos.js?v={asset_v()}"></script><script defer src="assets/tonight.js?v={asset_v()}"></script><script defer src="assets/apod.js?v={asset_v()}"></script>', ld=[{'@context': 'https://schema.org', '@type': 'WebApplication', 'name': 'Astryl', 'applicationCategory': 'EducationalApplication', 'operatingSystem': 'Any', 'description': 'Planets, moons, stars and space missions with real positions and real numbers for any date. Free.', 'url': SITE + '/', 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}, 'inLanguage': ['en', 'hi']}, {'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Astryl', 'url': SITE + '/', 'inLanguage': ['en', 'hi']}]))
+    write('index.html', shell('Explore the Universe', 'ब्रह्मांड खोजिए', 'home', body, 'Astryl: planets, moons, stars and space missions. Real positions and real numbers for any date, free and open source.', canonical='', extra_head=f'<script defer src="assets/sgp4.js?v={asset_v()}"></script><script defer src="assets/home.js?v={asset_v()}"></script><script defer src="assets/cosmos.js?v={asset_v()}"></script><script defer src="assets/tonight.js?v={asset_v()}"></script><script defer src="assets/apod.js?v={asset_v()}"></script><script defer src="assets/discover.js?v={asset_v()}"></script>', ld=[{'@context': 'https://schema.org', '@type': 'WebApplication', 'name': 'Astryl', 'applicationCategory': 'EducationalApplication', 'operatingSystem': 'Any', 'description': 'Planets, moons, stars and space missions with real positions and real numbers for any date. Free.', 'url': SITE + '/', 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}, 'inLanguage': ['en', 'hi']}, {'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Astryl', 'url': SITE + '/', 'inLanguage': ['en', 'hi']}]))
 
 
 def planets_page():
@@ -1211,7 +1294,7 @@ def privacy_page():
 
 def account_page():
     body = f"""<section class="acpage"><div id="acct"><h1>{bt("Astryl account", "Astryl खाता")}</h1><noscript><p>{bt("The account page needs JavaScript.", "Account page को JavaScript चाहिए।")}</p></noscript></div>
-<p class="note acfoot"><a href="privacy.html">{bt("Privacy Policy", "Privacy Policy")}</a></p></section>"""
+<p class="note acfoot"><a href="privacy.html">{bt("Privacy Policy", "Privacy Policy")}</a> · <a href="terms.html">Terms and Conditions</a> · <a href="your-data.html">Your data</a></p></section>"""
     write('account.html', shell('Account', 'खाता', 'account', body, 'Create your Astryl account with a username and password, and keep your favourites, quiz scores and settings in step between the app and this website.', canonical='account.html'))
 
 
@@ -1301,7 +1384,7 @@ def main():
     shutil.copy(SRC / 'learn.js', OUT / 'assets/learn.js')
     shutil.copy(SRC / 'universe.js', OUT / 'assets/universe.js')
     shutil.copytree(site_data.CITIES, OUT / 'assets' / 'cities')
-    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'blog.js'):
+    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'blog.js', 'discover.js'):
         shutil.copy(SRC / name, OUT / 'assets' / name)
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#fbf7ee"/><circle r="30" fill="#1b3a8a"/><ellipse rx="50" ry="15" fill="none" stroke="#6a45d6" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#1b3a8a"/></svg>', encoding='utf-8')
@@ -1322,7 +1405,7 @@ def main():
         body_page(b, i)
     index_page(); planets_page(); simple_pages(); community_pages(); maps_page(); get_page(); privacy_page(); account_page(); not_found(); pwa_files()
     helpers = dict(bt=bt, bi=bi, raw2=raw2, shell=shell, write=write, esc=esc, fmt=fmt, asset_v=asset_v, SITE=SITE, ROOT=ROOT)
-    deep = deepspace.build(helpers) + galaxies.build(helpers) + stars.build(helpers) + lab.build(helpers) + universe.build(helpers) + learn.build(helpers) + umap.build(helpers) + myspace.build(helpers) + skyevents.build(helpers) + students.build(helpers) + telescope.build(helpers) + iss.build(helpers) + blog.build(helpers)
+    deep = deepspace.build(helpers) + galaxies.build(helpers) + stars.build(helpers) + lab.build(helpers) + universe.build(helpers) + learn.build(helpers) + umap.build(helpers) + myspace.build(helpers) + skyevents.build(helpers) + students.build(helpers) + telescope.build(helpers) + iss.build(helpers) + blog.build(helpers) + legal.build(helpers)
     urls = ['', 'community.html', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'privacy.html', 'account.html', 'black-holes.html', 'galaxies.html'] + deep + [f'body/{b["id"]}.html' for b in BODIES]
     (OUT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}/{u}</loc></url>\n' for u in urls) + '</urlset>\n', encoding='utf-8')
     og_images()

@@ -149,11 +149,14 @@
   document.querySelectorAll('.sphoto img, .mphoto img').forEach(function (im) { im.tabIndex = 0; im.setAttribute('role', 'button'); });
 })();
 
-/* First visit only: a short trip at warp speed (about a second), then the page. Skippable, and
+/* On the first visit and whenever the page is refreshed: a short trip at warp speed (about a
+   second), then the page. Not shown when moving between pages by links. Skippable, and
    never shown when the visitor has asked for less motion. */
 (function () {
-  var K = 'astryl-intro-seen';
-  try { if (localStorage.getItem(K)) return; localStorage.setItem(K, '1'); } catch (e) { return; }
+  var K = 'astryl-intro-seen', first = false, reload = false;
+  try { first = !localStorage.getItem(K); localStorage.setItem(K, '1'); } catch (e) { }
+  try { var nv = performance.getEntriesByType('navigation')[0]; reload = !!nv && nv.type === 'reload'; } catch (e) { }
+  if (!first && !reload) return;
   if ((window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) || /bot|crawl|spider|lighthouse|headless/i.test(navigator.userAgent)) return;
   var box = document.createElement('div'); box.className = 'intro'; box.setAttribute('aria-hidden', 'true');
   box.innerHTML = '<canvas></canvas><div class="ilogo">✦ Astryl</div><button type="button" class="iskip">Skip ›</button>';
