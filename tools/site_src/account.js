@@ -104,7 +104,7 @@
   function getPrefs() {
     var p = {};
     try { p = JSON.parse(store.get('astryl-acct') || '{}') || {}; } catch (e) {}
-    return { syncOn: p.syncOn !== false, showOnBoard: p.showOnBoard !== false, countMe: p.countMe === true, shareCountry: p.shareCountry === true, syncedMs: p.syncedMs || 0, lastPing: p.lastPing || 0 };
+    return { syncOn: p.syncOn !== false, showOnBoard: p.showOnBoard !== false, countMe: true, shareCountry: true, syncedMs: p.syncedMs || 0, lastPing: p.lastPing || 0, autoOn: p.autoOn === true };
   }
   function setPrefs(p) { store.set('astryl-acct', JSON.stringify(p)); }
   function patchPrefs(o) { var p = Object.assign(getPrefs(), o); setPrefs(p); return p; }
@@ -260,12 +260,57 @@
     clearTimeout(timer); timer = setTimeout(sync, 3000);
   });
 
-  /* ---------- anonymous active-user count (only if switched on) ---------- */
+  /* ---------- anonymous active-user count ---------- */
   function ping() {
-    var p = getPrefs();
-    if (!p.countMe || Date.now() - p.lastPing < 4 * 3600 * 1000) return;
-    api('ping', { device: deviceId(), country: p.shareCountry ? country() : null }).then(function () { patchPrefs({ lastPing: Date.now() }); }, function () {});
+    var p = getPrefs(), s = getSession();
+    if (!s) return; // only for people with an account
+    if (!p.autoOn) { // once: tell the server that counting and country are on for this account (the leaderboard choice is kept)
+      token().then(function (k) { return api('prefs', { showOnBoard: p.showOnBoard, countMe: true, shareCountry: true, shareLocation: false, country: country() }, k); }).then(function () { patchPrefs({ autoOn: true }); }, function () {});
+    }
+    if (Date.now() - p.lastPing < 4 * 3600 * 1000) return;
+    api('ping', { device: deviceId(), country: country() }).then(function () { patchPrefs({ lastPing: Date.now() }); }, function () {});
   }
+
+  /* ---------- names: people choose a name to show; the username stays the login name ---------- */
+  var RENAME = API.replace(/account$/, 'rename'), nameCache = {}, nameWait = {}, nameTimer = null;
+  try { nameCache = JSON.parse(sessionStorage.getItem('astryl-names') || '{}') || {}; } catch (e) { nameCache = {}; }
+  function nameApi(body, token) {
+    var h = { 'Content-Type': 'application/json', 'apikey': KEY }; if (token) h['x-astryl-token'] = token;
+    return fetch(RENAME, { method: 'POST', headers: h, body: JSON.stringify(body) }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) { var x = fail(j.error || 'server_error', r.status); x.next = j.next; throw x; } return j; });
+    }, function () { throw fail('offline'); });
+  }
+  function shownName(u) { var s = getSession(); if (s && s.username === u && s.name) return s.name; return nameCache[u] || u; }
+  function paintNames() {
+    var want = [];
+    [].forEach.call(document.querySelectorAll('a.plink:not([data-nm]), [data-un]:not([data-nm])'), function (el) {
+      var u = el.getAttribute('data-un');
+      if (!u) { var m = /[?&]u=([a-z0-9_]{3,20})/.exec(el.getAttribute('href') || ''); u = m && m[1]; }
+      if (!u) { el.setAttribute('data-nm', '-'); return; }
+      if (nameCache[u] !== undefined) { el.setAttribute('data-nm', u); var n = shownName(u); if (n !== u) { el.textContent = n; el.title = '@' + u; } }
+      else if (!nameWait[u]) { nameWait[u] = 1; want.push(u); }
+    });
+    if (!want.length) return;
+    nameApi({ action: 'names', users: want.slice(0, 100) }).then(function (j) {
+      want.forEach(function (u) { nameCache[u] = (j.names && j.names[u]) || ''; delete nameWait[u]; });
+      try { sessionStorage.setItem('astryl-names', JSON.stringify(nameCache)); } catch (e) { }
+      paintNames();
+    }, function () { want.forEach(function (u) { delete nameWait[u]; nameCache[u] = ''; }); });
+  }
+  function watchNames() {
+    paintNames();
+    if (!window.MutationObserver) return;
+    new MutationObserver(function () { clearTimeout(nameTimer); nameTimer = setTimeout(paintNames, 120); }).observe(document.body, { childList: true, subtree: true });
+  }
+  /** Fetches my own shown name after logging in on a new device. */
+  function loadMyName() {
+    var s = getSession(); if (!s || !s.username) return Promise.resolve();
+    return nameApi({ action: 'names', users: [s.username] }).then(function (j) {
+      var n = (j.names && j.names[s.username]) || '', cur = getSession();
+      if (cur && cur.username === s.username && cur.name !== n) { cur.name = n; setSession(cur); if (!ui.f.myname) ui.f.myname = n; navAccount(); if ($('#acct') && !ui.code) draw(); }
+    }, function () { });
+  }
+  function nameOk(v) { return /^[\p{L}\p{M}\p{N} .'’-]{2,30}$/u.test(v) && /\p{L}/u.test(v); }
 
   /* ---------- welcome: create an account, log in, or carry on without ---------- */
   var gateEl = null;
@@ -423,7 +468,7 @@
   function navAccount() {
     var el = $('#acctNav'); if (!el) return;
     var s = getSession();
-    if (s && s.username) el.innerHTML = '<a class="btn primary" href="' + (document.body.dataset.root || '') + 'account.html">' + (getAvatar() ? avatarImg('navpic') : '\uD83D\uDC64 ') + esc(s.username) + '</a>';
+    if (s && s.username) el.innerHTML = '<a class="btn primary" href="' + (document.body.dataset.root || '') + 'account.html">' + (getAvatar() ? avatarImg('navpic') : '\uD83D\uDC64 ') + esc(s.name || s.username) + '</a>';
   }
   function draw() {
     navAccount();
@@ -466,7 +511,8 @@
     var create = ui.mode === 'create', recover = ui.mode === 'recover', h = '';
     if (!recover) h += '<div class="actabs" role="tablist"><span class="acind' + (create ? '' : ' r') + '" aria-hidden="true"></span><button type="button" role="tab" aria-selected="' + create + '" class="' + (create ? 'on' : '') + '" data-act="mode:create">' + esc(t('acctTabCreate')) + '</button><button type="button" role="tab" aria-selected="' + !create + '" class="' + (!create ? 'on' : '') + '" data-act="mode:login">' + esc(t('acctTabLogin')) + '</button></div>';
     h += '<h2 class="acformt">' + (create ? 'Create your free account' : recover ? esc(t('acctRecoverTitle')) : 'Welcome back 👋') + '</h2>';
-    h += field('user', t('acctUsername'), 'text', create || recover ? t('acctUsernameHint') : '', 'username');
+    if (create) h += field('dname', 'Your name', 'text', 'Shown to everyone, for example on your photos and the leaderboard. You can change it later.', 'name');
+    h += field('user', t('acctUsername'), 'text', create ? 'Used to log in. 3 to 20: small letters, numbers and _. No two people can have the same one.' : recover ? t('acctUsernameHint') : '', 'username');
     if (create) h += '<small class="ucheck" id="uCheck" aria-live="polite"></small>';
     if (recover) h += field('code', t('acctRecoverCode'), 'text', 'XXXX-XXXX-XXXX-XXXX');
     h += pwField('pass', recover ? t('acctRecoverNewPassword') : t('acctPassword'), create || recover ? t('acctPasswordHint') : '', create || recover ? 'new-password' : 'current-password');
@@ -486,13 +532,14 @@
   function levelOf(p) { var l = LEVELS[0], next = null; LEVELS.forEach(function (x, i) { if (p >= x[0]) { l = x; next = LEVELS[i + 1] || null; } }); return { l: l, next: next }; }
   function num(v) { return v == null ? '–' : Number(v).toLocaleString('en-GB'); }
   function dashboard(s) {
+    if (ui.f.myname == null) ui.f.myname = s.name || '';
     var p = getPrefs(), st = ui.stats || {}, pts = st.points, lv = typeof pts === 'number' ? levelOf(pts) : null;
     var prog = lv && lv.next ? Math.round((pts - lv.l[0]) / (lv.next[0] - lv.l[0]) * 100) : 100;
     var photoLabel = esc(w(getAvatar() ? 'avatarChange' : 'avatarChoose'));
     var pic = getAvatar() ? avatarImg('acpic') : '<span class="acpic ph" aria-hidden="true">' + esc(s.username.charAt(0).toUpperCase()) + '</span>';
     var h = '<section class="acbanner"><div class="acaurora" aria-hidden="true"></div><div class="acbin">' +
       '<div class="acpicwrap">' + pic + '<label class="acpicbtn" for="photoIn" title="' + photoLabel + '"><span aria-hidden="true">📷</span><span class="sr-only">' + photoLabel + '</span></label><input id="photoIn" type="file" accept="image/*" hidden></div>' +
-      '<div class="acwho"><span class="aceyebrow">' + (lv ? lv.l[1] + ' ' + esc(lv.l[2]) : '🧑‍🚀 Space explorer') + '</span><h1>' + esc(s.username) + '</h1>' +
+      '<div class="acwho"><span class="aceyebrow">' + (lv ? lv.l[1] + ' ' + esc(lv.l[2]) : '🧑‍🚀 Space explorer') + '</span><h1>' + esc(s.name || s.username) + '</h1><p class="acuser">@' + esc(s.username) + '</p>' +
       '<div class="acchips"><span><b>' + num(pts) + '</b> Space Points</span><span>🔥 <b>' + num(st.streak) + '</b> day streak</span><span>📷 <b>' + num(st.photos) + '</b> photos</span><span>❓ <b>' + num(st.questions) + '</b> questions</span></div>' +
       (lv && lv.next ? '<div class="aclv"><div class="aclvbar"><i style="width:' + prog + '%"></i></div><small>' + num(lv.next[0] - pts) + ' points to ' + lv.next[1] + ' ' + esc(lv.next[2]) + '</small></div>' : '') +
       (getAvatar() ? '<button class="linkbtn acpicdel" type="button" data-act="photoDel">' + esc(w('avatarRemove')) + '</button>' : '') +
@@ -501,14 +548,15 @@
     h += '<div class="acgrid">';
     h += '<section class="card accard" style="--i:0"><h2><span class="acic" aria-hidden="true">🔄</span> Sync</h2>' + toggle('syncOn', t('acctSync'), 'Favourites, quiz scores, theme, city and birth date are kept in your account and shared between your devices.', p.syncOn) +
       '<div class="acrow"><button class="btn" type="button" data-act="syncNow"' + (syncing || !p.syncOn ? ' disabled' : '') + '>' + (syncing ? '<span class="spin" aria-hidden="true"></span>' : '↻ ') + esc(t('acctSyncNow')) + '</button><span class="acstat ' + (syncStatus || '') + '">' + esc({ syncing: t('acctSyncing'), ok: '✓ ' + t('acctSyncOk'), failed: t('acctSyncFailed') }[syncStatus] || '') + '</span></div></section>';
-    h += '<section class="card accard" style="--i:1"><h2><span class="acic" aria-hidden="true">🛡️</span> Privacy</h2><p class="note">Optional. All off until you switch them on, except the leaderboard.</p>' +
-      toggle('showOnBoard', w('boardShow'), w('boardShowNote'), p.showOnBoard) + toggle('countMe', t('acctCountMe'), t('acctCountMeNote'), p.countMe) + toggle('shareCountry', t('acctShareCountry'), t('acctShareCountryNote'), p.shareCountry) + '</section>';
+    h += '<section class="card accard" style="--i:1"><h2><span class="acic" aria-hidden="true">👤</span> Your name</h2><p class="note">This is the name everyone sees: on your photos, questions, the leaderboard and your profile. Your username (@' + esc(s.username) + ') is for logging in.</p>' +
+      field('myname', 'Name', 'text', '2 to 30 letters', 'name') + (ui.nameMsg ? '<p class="' + (ui.nameOk ? 'ok' : 'no') + '" role="status">' + esc(ui.nameMsg) + '</p>' : '') +
+      '<div class="acrow"><button class="btn primary" type="button" data-act="nameSave"' + (ui.nameBusy ? ' disabled' : '') + '>' + (ui.nameBusy ? '<span class="spin" aria-hidden="true"></span>' : '') + 'Save name</button></div></section>';
     h += '<section class="card accard" style="--i:2"><h2><span class="acic" aria-hidden="true">🔑</span> Security</h2><p>Your recovery code lets you set a new password if you forget it. It works three times.</p>' +
       (ui.newCode ? '<div class="acnew"><b>' + esc(t('acctCodeTitle')) + '</b><p class="note">' + esc(t('acctCodeWarn')) + '</p>' + codeCard(ui.newCode) + '</div>' : '') +
       '<div class="acrow"><button class="btn" type="button" data-act="newCode">🔁 ' + esc(t('acctNewCode')) + '</button></div><p class="note">' + esc(t('acctNewCodeNote')) + '</p></section>';
     h += '<section class="card accard" style="--i:3"><h2><span class="acic" aria-hidden="true">🚪</span> Session</h2><p>Logged in as <b>' + esc(s.username) + '</b> on this browser.</p>' +
       (ui.ren ? '<div class="acren"><p class="note">Your username is also your login name. Your photos, posts and points stay with you. You can change it once every 30 days, and the link to your old profile page stops working.</p>' +
-        field('newuser', 'New username', 'text', '3 to 20: small letters, numbers and _', 'username') + field('renpass', 'Your password, to confirm', 'password', '', 'current-password') +
+        field('newuser', 'New username', 'text', '3 to 20: small letters, numbers and _', 'username') + '<small class="ucheck" id="renCheck" aria-live="polite"></small>' + field('renpass', 'Your password, to confirm', 'password', '', 'current-password') +
         (ui.renMsg ? '<p class="no" role="alert">' + esc(ui.renMsg) + '</p>' : '') +
         '<div class="acrow"><button class="btn primary" type="button" data-act="renSave"' + (ui.busy ? ' disabled' : '') + '>' + (ui.busy ? '<span class="spin" aria-hidden="true"></span>' : '') + 'Save new username</button><button class="btn" type="button" data-act="renCancel">' + esc(t('cancel')) + '</button></div></div>'
         : (ui.renOk ? '<p class="ok" role="status">✓ ' + esc(ui.renOk) + '</p>' : '') + '<div class="acrow"><button class="btn" type="button" data-act="renAsk">✏️ Change username</button><button class="btn" type="button" data-act="logout">' + esc(t('acctLogOut')) + '</button></div>') + '</section>';
@@ -576,17 +624,20 @@
     if (!NAME_RE.test(name)) { ui.err = t('acctErrUsername'); return draw(); }
     var run;
     if (ui.mode === 'create') {
+      var shown = String(f.dname || '').replace(/\s+/g, ' ').trim();
+      if (!nameOk(shown)) { ui.err = 'Please type your name: 2 to 30 letters. No links or symbols.'; return draw(); }
       if (pass.length < 8 || pass.length > 72) { ui.err = t('acctErrPassword'); return draw(); }
       if (pass !== f.pass2) { ui.err = t('acctErrMismatch'); return draw(); }
       run = function () {
-        return api('signup', { username: name, password: pass, consent: true, consentVersion: 1, showOnBoard: f.showOnBoard !== false, countMe: !!f.countMe, shareCountry: !!f.shareCountry, shareLocation: false, country: f.shareCountry ? country() : null }).then(function (j) {
-          setSession(toSession(j, name)); patchPrefs({ showOnBoard: f.showOnBoard !== false, countMe: !!f.countMe, shareCountry: !!f.shareCountry, syncedMs: 0 });
+        return api('signup', { username: name, password: pass, consent: true, consentVersion: 1, showOnBoard: true, countMe: true, shareCountry: true, shareLocation: false, country: country() }).then(function (j) {
+          var ses = toSession(j, name); ses.name = shown; setSession(ses); patchPrefs({ showOnBoard: true, autoOn: true, syncedMs: 0 });
+          nameApi({ action: 'name', name: shown }, ses.access).catch(function () { var c = getSession(); if (c) { c.name = ''; setSession(c); } });
           ui.code = fmtCode(j.code || ''); ui.saved = false; ui.f = {};
         });
       };
     } else if (ui.mode === 'login') {
       if (!pass) { ui.err = t('acctErrLogin'); return draw(); }
-      run = function () { return api('login', { username: name, password: pass }).then(function (j) { setSession(toSession(j, name)); patchPrefs({ syncedMs: 0 }); ui.f = {}; return sync(); }); };
+      run = function () { return api('login', { username: name, password: pass }).then(function (j) { setSession(toSession(j, name)); patchPrefs({ syncedMs: 0 }); ui.f = {}; loadMyName(); return sync(); }); };
     } else {
       if (normCode(f.code).length !== 16) { ui.err = t('acctErrCode'); return draw(); }
       if (pass.length < 8 || pass.length > 72) { ui.err = t('acctErrPassword'); return draw(); }
@@ -618,7 +669,19 @@
     if (act === 'photoDel') return void token().then(function (k) { return api('avatar_delete', {}, k); }).then(function () { store.del('astryl-avatar'); navAccount(); draw(); }, function (x) { ui.delMsg = errText(x); draw(); });
     if (act === 'syncNow') return void sync();
     if (act === 'newCode') return void token().then(function (k) { return api('newcode', {}, k); }).then(function (j) { ui.newCode = fmtCode(j.code); draw(); }, function (x) { ui.delMsg = errText(x); draw(); });
-    if (act === 'logout') { clearSession(); ui.newCode = null; ui.del = false; ui.mode = 'login'; ui.stats = null; ui.statsLoading = false; ui.drawn = false; return draw(); }
+    if (act === 'logout') { clearSession(); ui.newCode = null; ui.del = false; ui.mode = 'login'; ui.nameMsg = ''; ui.f.myname = null; ui.stats = null; ui.statsLoading = false; ui.drawn = false; return draw(); }
+    if (act === 'nameSave') {
+      var nn = String(ui.f.myname || '').replace(/\s+/g, ' ').trim();
+      if (!nameOk(nn)) { ui.nameOk = false; ui.nameMsg = 'Please use 2 to 30 letters. No links or symbols.'; return draw(); }
+      ui.nameBusy = true; ui.nameMsg = ''; draw();
+      return void token().then(function (k) { return nameApi({ action: 'name', name: nn }, k); }).then(function (j) {
+        var c = getSession(); if (c) { c.name = j.name; setSession(c); nameCache[c.username] = j.name; try { sessionStorage.setItem('astryl-names', JSON.stringify(nameCache)); } catch (e) { } }
+        ui.nameBusy = false; ui.nameOk = true; ui.nameMsg = '✓ Saved. Everyone now sees “' + j.name + '”.'; ui.f.myname = j.name; draw();
+      }, function (x) {
+        ui.nameBusy = false; ui.nameOk = false;
+        ui.nameMsg = x.code === 'bad_name' ? 'That name cannot be used. Please use 2 to 30 letters, with no links, and not a name that looks like the Astryl team.' : errText(x); draw();
+      });
+    }
     if (act === 'renAsk') { ui.ren = true; ui.renMsg = ''; ui.renOk = ''; draw(); var nf = $('#f_newuser'); if (nf) nf.focus(); return; }
     if (act === 'renCancel') { ui.ren = false; ui.renMsg = ''; ui.f.newuser = ''; ui.f.renpass = ''; return draw(); }
     if (act === 'renSave') {
@@ -631,7 +694,7 @@
           .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) { var x = fail(j.error || 'server_error', r.status); x.next = j.next; throw x; } return j; }); }, function () { throw fail('offline'); });
       }).then(function (j) {
         var old = getSession();
-        if (j.session) setSession(toSession(j, j.username)); else if (old) { old.username = j.username; setSession(old); }
+        if (j.session) { var ns = toSession(j, j.username); ns.name = old && old.name; setSession(ns); } else if (old) { old.username = j.username; setSession(old); }
         ui.busy = false; ui.ren = false; ui.f.newuser = ''; ui.f.renpass = ''; ui.renOk = 'Your username is now ' + j.username + '.'; ui.stats = null; navAccount(); draw(); loadStats();
       }, function (x) {
         ui.busy = false;
@@ -658,23 +721,18 @@
     if (c === 'saved') { ui.saved = on; return draw(); }
     if (!s) { ui.f[c] = on; return draw(); }
     if (c === 'syncOn') { patchPrefs({ syncOn: on }); draw(); if (on) sync(); return; }
-    if (c === 'showOnBoard') {
-      patchPrefs({ showOnBoard: on }); draw();
-      var q = getPrefs();
-      token().then(function (k) { return api('prefs', { showOnBoard: on, countMe: q.countMe, shareCountry: q.shareCountry, shareLocation: false, country: q.shareCountry ? country() : null }, k); }).catch(function () {});
-      return;
-    }
-    if (c === 'countMe' || c === 'shareCountry') {
-      var p = patchPrefs((function () { var o = {}; o[c] = on; o.lastPing = 0; return o; })());
-      draw();
-      token().then(function (k) { return api('prefs', { countMe: p.countMe, shareCountry: p.shareCountry, shareLocation: false, country: p.shareCountry ? country() : null }, k); }).then(function () { ping(); }, function () {});
-    }
   }
   function accountPage() {
     var root = $('#acct'); if (!root) return;
     root.addEventListener('click', onClick);
     root.addEventListener('change', function (e) { if (e.target && e.target.id === 'photoIn') { var f = e.target.files && e.target.files[0]; e.target.value = ''; return pickPhoto(f); } onChange(e); });
-    root.addEventListener('input', function (e) { if (e.target.dataset && e.target.dataset.f) ui.f[e.target.dataset.f] = e.target.value; if (e.target.id === 'f_pass') pwMeter(); if (e.target.id === 'f_user') userCheck(true); });
+    var renT = null;
+    root.addEventListener('input', function (e) {
+      if (e.target.id === 'f_newuser') {
+        var v = e.target.value.trim().toLowerCase(), el = $('#renCheck'); clearTimeout(renT);
+        if (el) { el.className = 'ucheck'; el.textContent = !v ? '' : /^[a-z0-9_]{3,20}$/.test(v) ? 'Checking…' : '3 to 20 letters (a to z), digits or _'; if (v && !/^[a-z0-9_]{3,20}$/.test(v)) el.className = 'ucheck no'; }
+        if (/^[a-z0-9_]{3,20}$/.test(v)) renT = setTimeout(function () { api('check', { username: v }).then(function (j) { var e2 = $('#renCheck'), i2 = $('#f_newuser'); if (!e2 || !i2 || i2.value.trim().toLowerCase() !== v) return; e2.textContent = j && j.available ? '✓ “' + v + '” is free' : '✗ “' + v + '” is taken'; e2.className = 'ucheck ' + (j && j.available ? 'ok' : 'no'); }, function () { }); }, 450);
+      } if (e.target.dataset && e.target.dataset.f) ui.f[e.target.dataset.f] = e.target.value; if (e.target.id === 'f_pass') pwMeter(); if (e.target.id === 'f_user') userCheck(true); });
     root.addEventListener('keydown', function (e) { if (e.key === 'Enter' && e.target.dataset && e.target.dataset.f && !ui.code && !getSession()) { e.preventDefault(); submit(); } });
     if (/[?&]mode=login/.test(location.search) && !getSession()) ui.mode = 'login';
     draw(); onLang(draw);
@@ -844,6 +902,7 @@
   }
 
   navAccount(); welcome(); accountPage(); dailyPage(); statsBlock(); ping(); track(); notices();
+  watchNames(); (function () { var s0 = getSession(); if (s0 && s0.name === undefined) loadMyName(); })();
   if (getSession()) fetchAvatar();
   if (getSession() && !$('#acct')) sync();
 })();

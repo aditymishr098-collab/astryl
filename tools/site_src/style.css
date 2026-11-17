@@ -902,3 +902,8 @@ body[data-page=account] main.wrap{max-width:none;padding:0 clamp(16px,3.2vw,48px
 /* related pages */
 .related .sc small{display:block;color:var(--muted);font-weight:400;margin-top:2px}
 .policy-layout>*{min-width:0}
+.acuser{margin:.1em 0 .5em;color:var(--muted);font-size:.95rem}
+@media (max-width:700px){.fld input,.bcform input,.bcform textarea,.pwbox input{font-size:16px}}
+.accard .fld input{width:100%;box-sizing:border-box;font:inherit;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card2);color:var(--text)}
+.accard .fld input:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent2) 22%,transparent)}
+.accard .fld small{display:block;color:var(--muted);margin-top:4px}

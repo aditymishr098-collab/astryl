@@ -1,4 +1,8 @@
-// Astryl "rename" Edge Function: lets a logged-in person change their username.
+// Astryl "rename" Edge Function: usernames and display names.
+//
+//   (no action)       change the username (needs the password, once every 30 days)
+//   action "name"     set the name shown to others (logged in)
+//   action "names"    public: the shown names for a list of usernames
 //
 // The username is also the login name, so the change needs the current password, and it is
 // allowed once every 30 days. Photos, posts and points stay with the account (they are tied to
@@ -36,6 +40,19 @@ async function tooMany(key: string, max: number, windowSec: number) {
   return false;
 }
 
+/** A name people may show: 2 to 30 characters, letters, numbers, spaces and . ' - only; no
+ *  links, no contact details, and nothing that pretends to be the Astryl team. */
+function cleanName(v: unknown): string | null {
+  if (typeof v !== "string") return null;
+  const t = v.normalize("NFC").replace(/\s+/g, " ").trim();
+  if (t.length < 2 || t.length > 30) return null;
+  if (!/^[\p{L}\p{M}\p{N} .'’-]+$/u.test(t)) return null;
+  if (!/\p{L}/u.test(t)) return null;
+  if (/astryl|admin|moderator|official|support/i.test(t)) return null;
+  if (/(https?|www\.|\.(com|net|org|ru|io|xyz|in|me)\b)/i.test(t) || /\d{7,}/.test(t)) return null;
+  return t;
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
   if (req.method !== "POST") return reply({ error: "bad_method" }, 405);
@@ -45,11 +62,29 @@ Deno.serve(async (req: Request) => {
     let b: Record<string, unknown> = {};
     try { b = JSON.parse(text || "{}"); } catch { return reply({ error: "bad_json" }, 400); }
 
+    if (b.action === "names") {
+      const list = Array.isArray(b.users) ? [...new Set(b.users.filter((u) => typeof u === "string" && /^[a-z0-9_]{3,20}$/.test(u)))].slice(0, 100) : [];
+      if (!list.length) return reply({ names: {} });
+      const { data } = await admin.from("profiles").select("username, display_name").in("username", list);
+      const names: Record<string, string> = {};
+      for (const r of data ?? []) if (r.display_name) names[r.username] = r.display_name;
+      return reply({ names });
+    }
+
     const token = req.headers.get("x-astryl-token") || "";
     if (!token) return reply({ error: "no_token" }, 401);
     const got = await admin.auth.getUser(token);
     const user = got.data?.user;
     if (got.error || !user) return reply({ error: "bad_token" }, 401);
+
+    if (b.action === "name") {
+      const shown = cleanName(b.name);
+      if (!shown) return reply({ error: "bad_name" }, 400);
+      if (await tooMany("name:" + user.id, 10, 3600)) return reply({ error: "rate_limited" }, 429);
+      const up = await admin.from("profiles").update({ display_name: shown }).eq("id", user.id).select("username").maybeSingle();
+      if (up.error || !up.data) return reply({ error: "no_profile" }, 401);
+      return reply({ ok: true, name: shown, username: up.data.username });
+    }
 
     const name = typeof b.username === "string" ? b.username.trim().toLowerCase() : "";
     if (!/^[a-z0-9_]{3,20}$/.test(name)) return reply({ error: "bad_username" }, 400);

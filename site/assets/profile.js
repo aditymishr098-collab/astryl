@@ -45,7 +45,7 @@
     document.title = p.u + ' · Astryl';
     var since = new Date(p.since + '-01T00:00:00Z').toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
     var q = p.quiz, lv = q ? level(q.points) : null;
-    var h = '<section class="prhead card"><span class="cav prav" style="--h:' + hue(p.u) + '" aria-hidden="true">' + esc(p.u.charAt(0).toUpperCase()) + '</span><div class="prwho"><h1>' + esc(p.u) + '</h1>' +
+    var h = '<section class="prhead card"><span class="cav prav" style="--h:' + hue(p.u) + '" aria-hidden="true">' + esc(p.u.charAt(0).toUpperCase()) + '</span><div class="prwho"><h1 data-un="' + esc(p.u) + '">' + esc(p.u) + '</h1><p class="acuser">@' + esc(p.u) + '</p>' +
       '<p class="note">On Astryl since ' + esc(since) + (lv ? ' · ' + lv[1] + ' ' + lv[2] : '') + '</p>' +
       '<div class="prnums"><span><b>' + num(p.photos.length) + '</b> photos</span><span><b>' + num(p.questions.length) + '</b> questions</span><span><b>' + num(p.answers.length) + '</b> answers</span>' + (q ? '<span><b>' + num(q.points) + '</b> Space Points</span>' : '') + '</div>' +
       (p.mine ? '<p class="note">This is your public page. Everyone can see your photos and posts here.' + (q ? '' : ' Your points are hidden because you are not shown on the leaderboard.') + '</p>' : '') + '</div></section>';
