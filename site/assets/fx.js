@@ -149,11 +149,14 @@
   document.querySelectorAll('.sphoto img, .mphoto img').forEach(function (im) { im.tabIndex = 0; im.setAttribute('role', 'button'); });
 })();
 
-/* First visit only: a short trip at warp speed (about a second), then the page. Skippable, and
+/* On the first visit and whenever the page is refreshed: a short trip at warp speed (about a
+   second), then the page. Not shown when moving between pages by links. Skippable, and
    never shown when the visitor has asked for less motion. */
 (function () {
-  var K = 'astryl-intro-seen';
-  try { if (localStorage.getItem(K)) return; localStorage.setItem(K, '1'); } catch (e) { return; }
+  var K = 'astryl-intro-seen', first = false, reload = false;
+  try { first = !localStorage.getItem(K); localStorage.setItem(K, '1'); } catch (e) { }
+  try { var nv = performance.getEntriesByType('navigation')[0]; reload = !!nv && nv.type === 'reload'; } catch (e) { }
+  if (!first && !reload) return;
   if ((window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) || /bot|crawl|spider|lighthouse|headless/i.test(navigator.userAgent)) return;
   var box = document.createElement('div'); box.className = 'intro'; box.setAttribute('aria-hidden', 'true');
   box.innerHTML = '<canvas></canvas><div class="ilogo">✦ Astryl</div><button type="button" class="iskip">Skip ›</button>';
@@ -179,4 +182,29 @@
     if (t > 1.7) end();
     requestAnimationFrame(frame);
   })(t0);
+})();
+
+/* "On this page": on wide screens, long reading pages get a list of their sections on the right
+   that follows you as you scroll and shows where you are. Phones and tablets do not need it. */
+(function () {
+  var main = document.querySelector('main'); if (!main || main.querySelector('.toc,.ptoc')) return;
+  var hs = [].slice.call(main.querySelectorAll('.prose h2')).filter(function (h) { return h.offsetParent !== null && !h.closest('details,.card,#comments'); });
+  if (hs.length < 3) return;
+  var used = {};
+  var items = hs.map(function (h) {
+    if (!h.id) { var s = (h.textContent || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48) || 'part'; var id = s, n = 2; while (used[id] || document.getElementById(id)) id = s + '-' + n++; h.id = id; }
+    used[h.id] = 1;
+    return '<li><a href="#' + h.id + '">' + (h.textContent || '').replace(/[<>&]/g, '') + '</a></li>';
+  });
+  var aside = document.createElement('aside');
+  aside.className = 'ptoc'; aside.setAttribute('aria-label', 'On this page');
+  aside.innerHTML = '<div class="tocin"><p class="tochd">On this page</p><ol>' + items.join('') + '</ol><a class="toctop" href="#main">↑ Back to top</a></div>';
+  main.appendChild(aside); main.classList.add('hastoc');
+  if (!('IntersectionObserver' in window)) return;
+  var links = aside.querySelectorAll('a[href^="#"]:not(.toctop)'), cur = null;
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) cur = e.target.id; });
+    links.forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + cur); });
+  }, { rootMargin: '-80px 0px -65% 0px' });
+  hs.forEach(function (h) { io.observe(h); });
 })();
