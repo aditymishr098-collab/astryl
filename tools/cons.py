@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
-# Serpens is one constellation in two parts. The app's catalogue lists its tail twice; the head is added here.
+# Serpens is one constellation in two parts. The catalogue lists its tail twice; the head is added here.
 SERPENS_CAPUT = [237.405, -3.430, 237.704, 4.478, 236.067, 6.426, 233.701, 10.539, 236.547, 15.422, 235.388, 19.670, 237.185, 18.142, 239.113, 15.662, 236.547, 15.422]
 
 # stars shared by two figures, and the constellation they officially belong to (IAU boundaries)
@@ -28,7 +28,7 @@ def load():
 
 
 def merge_serpens(cons):
-    """Serpens is one constellation in two parts (head and tail), listed twice in the app's catalogue."""
+    """Serpens is one constellation in two parts (head and tail), listed twice in the catalogue."""
     parts = [c for c in cons if c['id'] == 'Ser']
     lines = [seg for c in parts for seg in c['lines']]
     if not any(abs(seg[0] - SERPENS_CAPUT[0]) < 0.01 for seg in lines):

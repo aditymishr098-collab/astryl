@@ -32,10 +32,7 @@ def main():
         shard = first if 'a' <= first <= 'z' else '_'
         out.setdefault(shard, []).append([name, r['country'], lat, lon])
     here = os.path.dirname(os.path.abspath(__file__))
-    # The website's copy, and the app's while the app is in this repository.
     folders = [os.path.join(here, '..', 'data', 'cities')]
-    if os.path.isdir(os.path.join(here, '..', 'assets')):
-        folders.append(os.path.join(here, '..', 'assets', 'cities'))
     total = 0
     for shard, items in out.items():
         items.sort(key=lambda x: (len(x[0]), x[0]))

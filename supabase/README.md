@@ -1,7 +1,6 @@
 # Astryl online backend (Supabase)
 
-Optional accounts, sync and the public counter. The app and the website talk to
-**one** function, `account`. Every table is locked (row level security with no
+Optional accounts, sync and the public counter. The website talks to the functions in `functions/` (accounts and sync go through `account`). Every table is locked (row level security with no
 policy), so the public key cannot read or write anything by itself.
 
 | Part | File |
@@ -11,8 +10,8 @@ policy), so the public key cannot read or write anything by itself.
 | Keeps the free project awake | `../.github/workflows/keepalive.yml` |
 
 Project: `pmfjjlfggzihbnbmqkao`. The public (publishable) key is in
-`lib/data/sync.dart` and `tools/site_src/app.js`. **The service role / secret key
-must never be put in the app, the website or this repository.** The function
+`tools/site_src/app.js`. **The service role / secret key
+must never be put in the website or this repository.** The function
 reads it from Supabase's own environment (`SUPABASE_SERVICE_ROLE_KEY`), which is
 set automatically.
 

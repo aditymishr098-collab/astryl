@@ -1,5 +1,5 @@
 # Builds the website on every pull request that changes it, so a broken build
-# is caught before it reaches main. The build only needs data/ and tools/.
+# is caught before it reaches main.
 name: Site check
 
 on:
@@ -8,6 +8,7 @@ on:
       - 'data/**'
       - 'tools/**'
       - 'site/**'
+      - 'supabase/**'
       - '.github/workflows/site-check.yml'
 
 permissions:
@@ -23,7 +24,5 @@ jobs:
           python-version: '3.12'
       - name: Install Pillow, NumPy (pictures) and fontTools (web fonts)
         run: pip install pillow numpy fonttools==4.66.1
-      - name: Build the site without the app's folders
-        run: |
-          rm -rf lib assets android test
-          python3 tools/build_site.py
+      - name: Build the site
+        run: python3 tools/build_site.py

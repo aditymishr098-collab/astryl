@@ -23,7 +23,7 @@
   var DIRL = [['north', 'उत्तर'], ['north-east', 'उत्तर-पूर्व'], ['east', 'पूर्व'], ['south-east', 'दक्षिण-पूर्व'], ['south', 'दक्षिण'], ['south-west', 'दक्षिण-पश्चिम'], ['west', 'पश्चिम'], ['north-west', 'उत्तर-पश्चिम']];
   function dirI(az) { return Math.round(n360(az) / 45) % 8; }
 
-  /* ---------- maths (same as the app's lib/core/iss.dart) ---------- */
+  /* ---------- maths ---------- */
   function jd(ms) { return ms / 86400000 + 2440587.5; }
   function gmst(ms) { return n360(280.46061837 + 360.98564736629 * (jd(ms) - 2451545)); }
   function ecef(p, ms) { var th = gmst(ms) * DEG, c = Math.cos(th), s = Math.sin(th); return { x: p.x * c + p.y * s, y: -p.x * s + p.y * c, z: p.z }; }

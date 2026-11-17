@@ -1,4 +1,4 @@
-"""The Universe map page: the app's 3D map in the browser (logic in site_src/universe.js).
+"""The Universe map page: a 3D map in the browser (logic in site_src/universe.js).
 
 The data file is made from data/tables/universe_catalog.dart (made by tools/build_universe.py)."""
 import json

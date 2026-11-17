@@ -1,7 +1,6 @@
 """Writes supabase/functions/account/quiz_bank.json: for every quiz kind the
 right answer and the bodies the wrong answers are taken from. The Daily 5
-function uses it to build and to check questions. The same answers are worked
-out in lib/core/quiz.dart; test/quiz_bank_test.dart checks the two agree.
+function uses it to build and to check questions.
 Run: python3 tools/gen_quiz_bank.py"""
 import importlib.util, json, pathlib
 

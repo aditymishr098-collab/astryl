@@ -1,7 +1,7 @@
 /* Astryl home page: a turning Milky Way, and a scroll journey from the galaxy
    to the Solar System (real positions for the chosen date) to Earth and Moon.
    The galaxy is an artist's impression. Planet, Sun and Moon positions use the
-   same maths as the app (see app.js). Plain canvas, no libraries. */
+   same maths as the rest of the site (see app.js). Plain canvas, no libraries. */
 (function () {
   'use strict';
   var API = window.ASTRYL_API, D = window.ASTRYL;

@@ -56,11 +56,68 @@ def data_body():
             '<div class="card"><h3>✏️ Change it</h3><p>Change your username, your leaderboard switch and your password on the Account page. Edit your own photos and posts from the ⋯ menu in the community.</p></div>'
             '<div class="card"><h3>🗑️ Delete it</h3><p>Delete single photos, posts and comments yourself. “Delete my account” on the Account page removes the account and everything stored with it, straight away.</p></div>'
             '<div class="card"><h3>📬 Ask for a copy</h3><p>Write to <a href="mailto:contact@astryl.space">contact@astryl.space</a> with your username to get a copy of your data or to have something corrected.</p></div></div>'
-            '<h2>Where it is kept</h2><p>Astryl’s data is kept in a Supabase database that only Astryl’s own server code can read; the website itself is served by GitHub Pages. The details, including the old Android app, are in the <a href="privacy.html">Privacy Policy</a>. The rules for using Astryl are in the <a href="terms.html">Terms and Conditions</a>.</p></section>')
+            '<h2>Where it is kept</h2><p>Astryl’s data is kept in a Supabase database that only Astryl’s own server code can read; the website itself is served by GitHub Pages. The details are in the <a href="privacy.html">Privacy Policy</a>. The rules for using Astryl are in the <a href="terms.html">Terms and Conditions</a>.</p></section>')
 
 
 def build(h):
     shell, write = h['shell'], h['write']
     write('terms.html', shell('Terms and Conditions', 'Terms and Conditions', 'get', terms_body(), 'Astryl Terms and Conditions: the rules for using the website, the community and comments, accounts, content and limits of liability.', canonical='terms.html'))
     write('your-data.html', shell('Your data', 'Your data', 'get', data_body(), 'What Astryl stores about you, why and for how long, and how to see, change or delete it.', canonical='your-data.html'))
+    write('privacy.html', shell('Privacy Policy', 'Privacy Policy', 'get', privacy_body(), 'Astryl Privacy Policy: no ads, an optional account with only a username and a password; what is stored, why, and how to delete it.', canonical='privacy.html'))
     return ['terms.html', 'your-data.html']
+
+
+def privacy_body():
+    def table(head, rows):
+        return ('<div class="tscroll"><table><tr>' + ''.join(f'<th>{h}</th>' for h in head) + '</tr>'
+                + ''.join('<tr>' + ''.join(f'<td>{c}</td>' for c in r) + '</tr>' for r in rows) + '</table></div>')
+    secs = [
+        ('Who is responsible', '<p>Astryl (astryl.space) is made by Adity Mishra. For questions about your data, write to <a href="mailto:contact@astryl.space">contact@astryl.space</a>.</p>'),
+        ('In your browser', '<ul><li>Planet facts, the Moon, planet positions, eclipses, the star map and the sky for your city are worked out in your browser. Your city is never sent for this.</li>'
+         '<li>Your browser remembers your theme, city, quiz scores, saved things, your “days in a row” count and whether you have seen the welcome window, in local storage on your own device. If you log in, a login token is kept there too, until you log out.</li>'
+         '<li>To work offline and open fast, the website keeps copies of its own pages, scripts and pictures in your browser (a service worker cache). It stores nothing about you and sends nothing. Clearing the site data in your browser removes all of this.</li>'
+         '<li>No cookies, no ads, no third-party analytics, scripts or fonts.</li></ul>'),
+        ('The account', '<p>The account is optional: you can read and use the website without one. It keeps your favourites, scores and settings on every device, and lets you take part in the community and the leaderboards. It needs a username and a password. No e-mail address, name or phone number is asked for.</p>'
+         + table(['What we store', 'Why', 'For how long'], [
+             ('Your username and a hash of your password (the password itself is never stored or visible to us); the date you last changed your username', 'To log you in', 'Until you delete the account'),
+             ('A hash of your recovery code, how many times it can still be used, failed tries', 'So you can set a new password if you forget it', 'Until you delete the account'),
+             ('The date you accepted this policy and its version, the date you joined, the date you last used the account', 'To show your consent and run the account', 'Until you delete the account'),
+             ('If sync is on: favourites, quiz scores, which lessons you have read, the “I’ve seen it” list, theme, text size and city (never a GPS place). Other pages you have read stay in your browser and are never sent', 'To keep your devices in step', 'Until you delete the account or switch sync off'),
+             ('Daily 5: for each day you play, your answers, your score, how many were right and how long it took', 'To make the leaderboard and rank you', 'Until you delete the account'),
+             ('Quiz rounds (only when you play one while logged in): which questions you got, your answers with their time, the points of each round, and your Space Points', 'To check each answer on the server, keep the points fair and show the leaderboard', 'Until you delete the account'),
+             ('Astryl Community (only what you choose to add): sky photos you upload (made smaller, with camera and location data removed in your browser), your title and the place and date you type, your posts and replies, stars you give. They are shown with your username right away; anything reported is checked by the moderator and may be removed', 'To run the community and keep it safe', 'Until you delete it or the account'),
+         ])
+         + '<p>The recovery code is shown once when you make the account. Keep it safe: it is the only way back in if you forget your password, it works 3 times, and nobody (including us) can read it back. If you lose both the password and the code, the account cannot be recovered.</p>'
+         '<p>Your public profile page shows your username, the month you joined, what you shared in the community and, only if you are shown on the leaderboard, your Space Points and badges.</p>'),
+        ('Switches in your account', '<ul><li><b>Show me on the leaderboard</b> (on by default): the leaderboards show your username, score, right answers and time. Switch it off and your name no longer appears; your own rank stays visible to you.</li>'
+         '<li><b>Count me as an active user</b>: your browser sends a random number it made itself, at most once every few hours, with no username. It is not linked to you or your account, is kept for 90 days and is used only to show how many people use Astryl.</li>'
+         '<li><b>Share my country</b>: the country from your browser’s language and region setting, kept with that random number and shown only as a count per country. It is not worked out from your IP address or your location.</li></ul>'),
+        ('Comments and reports without an account', '<ul><li>Blog comments need no account. We store the name you type (or “Guest”), your comment, the time, a scrambled form (hash) of a random id kept in your browser, so you can delete your own comment, and a scrambled form of your internet address that changes every day, used only to limit how often one person can post. Your internet address itself is not stored. Comments are public; reported ones are checked by the moderator.</li>'
+         '<li>Reporting a photo, post or comment needs no account. To count each person once, the browser keeps a random id; the server stores only a scrambled form of it with the report.</li></ul>'),
+        ('Counting visits', '<p>To see which pages are read, each page view adds one to a daily total on the Astryl server. This is what is counted, and nothing else:</p>'
+         + table(['Counted', 'Not stored at all'], [('The page name, the language, a size class of your screen (small, medium or large), the website that sent you here (if any), and the country.', 'Your IP address itself, a cookie, any id, the time of day, your browser or device model, or anything that could point to one person.')])
+         + '<p>The country is read by the network from the connection when the request arrives; the address itself is not kept. Rows are kept for 400 days. Nothing is counted if your browser sends “Do Not Track” or “Global Privacy Control”.</p>'
+         '<p>To see how many different people visit, the server makes a one-way code from your IP address, the day and a secret that only the server knows, and adds that code to the list for the day. The IP address itself is not saved. The code cannot be turned back into an address and is different every day, so a person cannot be followed from one day to the next. The codes are deleted after 90 days. This is not done if your browser sends “Do Not Track” or “Global Privacy Control”.</p>'
+         '<p>A small notice can ask, once, whether you want to share your approximate place. It is optional. If you press “Share”, your browser asks for permission; the point is rounded to about 10 km and added to a count for the day, with no code, no account and no IP address. If you say no, nothing is sent.</p>'),
+        ('Where the data is kept and who handles it', '<p>Account data is stored with Supabase (database and login service), on servers in Singapore. The website reaches it only through server functions that check who is asking; the tables themselves cannot be read from outside. To limit abuse, a hashed (not readable) key and a counter are kept for up to 2 days; no IP address is stored in readable form. The website itself is a plain static site served by GitHub Pages, which follows GitHub’s own privacy statement.</p>'
+         '<p>The home page shows NASA’s Astronomy Picture of the Day: the text comes through the Astryl server and the picture loads straight from NASA’s server, which sees your IP address like any website. The space station page gets the station’s orbit data from the Astryl server (or, if that fails, from wheretheiss.at). Nothing about you is sent.</p>'
+         '<p>We do not sell data, show ads, use third-party analytics or trackers, or share data with anyone else.</p>'),
+        ('Your choices and rights', '<ul><li>Delete your account at any time on the <a href="account.html">Account page</a>. Your account and everything stored for it online are removed straight away.</li>'
+         '<li>Turn any switch off at any time. This withdraws your consent for that part; the data it created is removed or stops growing.</li>'
+         '<li>Log out to stop syncing on a device.</li>'
+         '<li>To ask what is stored about you, to get a copy, or to have something corrected or removed, write to contact@astryl.space and tell us your username. Depending on where you live you may also have the right to complain to your data protection authority.</li></ul>'
+         '<p>A short version of all this is on the <a href="your-data.html">Your data</a> page.</p>'),
+        ('Children', '<p>Astryl is for everyone who likes space. If you are under 16, please ask a parent or guardian before making an account. The website is fully usable without one.</p>'),
+        ('Changes', '<p>If this policy changes in a way that matters, the new version is published on this page with a new date. The full source code, including the server code in the folder <code>supabase/</code>, is open for anyone to read on GitHub.</p>'),
+    ]
+    toc = ''.join(f'<a href="#s{i}">{i}. {t}</a>' for i, (t, _) in enumerate(secs, 1))
+    glance = ''.join(f'<div class="card"><div class="ico">{ic}</div><h3>{t}</h3><p>{d}</p></div>' for ic, t, d in [
+        ('🚫', 'No ads, nothing sold', 'No ad networks, no data brokers, no third-party analytics.'),
+        ('👤', 'Account is optional, no e-mail', 'Just a username and a password, no e-mail, name or phone number.'),
+        ('📊', 'Counted, not tracked', 'Page views are only added up: no cookie, no IP address, no id.'),
+        ('🗑️', 'You can delete it all', 'One button deletes your account and everything stored for it.')])
+    return (f'<section class="blk policy-head"><h1>Privacy Policy</h1><p class="note">Last updated {UPDATED} · applies to astryl.space</p>'
+            '<p class="sub">In plain words: we do not sell anything about you, there are no ads, and you can use everything without an account. This page lists exactly what is kept when you do choose something, and how to remove it.</p>'
+            f'<h2 class="sr-only">Our promises</h2><div class="glance">{glance}</div></section>'
+            f'<section class="blk policy-layout"><nav class="toc" aria-label="On this page"><b>On this page</b>{toc}</nav><div class="policy">'
+            + ''.join(_sec(i, t, h) for i, (t, h) in enumerate(secs, 1)) + '</div></section>')

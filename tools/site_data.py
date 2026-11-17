@@ -1,4 +1,4 @@
-"""Where the website's own data lives (the data/ folder), so the site does not depend on the app.
+"""Where the website's own data lives (the data/ folder).
 
 data/text/     English and Hindi texts (app_en.arb, app_hi.arb)
 data/tables/   planets, moons, stars, constellations, cities, missions, events, facts, the
