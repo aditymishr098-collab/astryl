@@ -65,6 +65,7 @@
 
   var H = null, G = null, P = null;
   var tab = /talk/.test(location.hash) ? 'talk' : 'gallery';
+  var gView = get('astryl-cm-view', 0) || (window.matchMedia && matchMedia('(max-width:620px)').matches ? 1 : 2), gMoreBusy = false;
   var gKind = 'all', gSort = 'new', pFilter = 'all', reply = null, editing = null;
 
   /* ---------- hero numbers and tabs ---------- */
@@ -90,7 +91,7 @@
     var h = '<div class="cmbar"><div class="chips" role="group">' + [['all', '✨', 'All', 'सब']].concat(C.photoKinds).map(function (k) {
       var lab = k[0] === 'all' ? T(k[2], k[3]) : T(esc(k[2]).replace(/ \(.*\)$/, ''), esc(k[3]).replace(/ \(.*\)$/, ''));
       return '<button type="button" class="chip' + (gKind === k[0] ? ' on' : '') + '" data-gkind="' + k[0] + '">' + k[1] + ' ' + lab + '</button>';
-    }).join('') + '</div><div class="seg"><button type="button" data-gsort="new" class="' + (gSort === 'new' ? 'on' : '') + '">🕒 ' + T('Newest', 'नई') + '</button><button type="button" data-gsort="top" class="' + (gSort === 'top' ? 'on' : '') + '">⭐ ' + T('Most stars', 'सबसे ज़्यादा ⭐') + '</button></div></div>';
+    }).join('') + '</div><div class="seg cmview" role="group" aria-label="Layout"><button type="button" data-gview="1" class="' + (gView === 1 ? 'on' : '') + '" aria-label="One big photo per row">▮</button><button type="button" data-gview="2" class="' + (gView === 2 ? 'on' : '') + '" aria-label="Two photos per row">▮▮</button></div><div class="seg"><button type="button" data-gsort="new" class="' + (gSort === 'new' ? 'on' : '') + '">🕒 ' + T('Newest', 'नई') + '</button><button type="button" data-gsort="top" class="' + (gSort === 'top' ? 'on' : '') + '">⭐ ' + T('Most stars', 'सबसे ज़्यादा ⭐') + '</button></div></div>';
     h += '<div id="cmUpBox"></div>';
     if (G && G.pending) h += '<p class="note">⏳ ' + num(G.pending) + ' ' + T('of your photos are hidden after reports, waiting for the moderator.', 'आपकी फ़ोटो शिकायतों के बाद छिपी हैं, moderator का इंतज़ार कर रही हैं।') + '</p>';
     if (!G) h += '<div class="cgal">' + '<div class="cph sk"></div>'.repeat(6) + '</div>';
@@ -98,13 +99,34 @@
       var list = G.photos.filter(function (p) { return gKind === 'all' || p.kind === gKind; });
       if (gSort === 'top') list = list.slice().sort(function (a, b) { return (b.stars - a.stars) || (a.at < b.at ? 1 : -1); });
       if (!list.length) h += empty('📷', G.photos.length ? T('No photos of this kind yet.', 'इस तरह की कोई फ़ोटो अभी नहीं।') : T('No photos yet. Be the first to share the sky!', 'अभी कोई फ़ोटो नहीं। आसमान बाँटने वाले पहले आप बनिए!'), 'photo');
-      else h += '<div class="cgal">' + list.map(photoCard).join('') + '</div>';
+      else h += '<div class="cgal' + (gView === 1 ? ' one' : '') + '">' + list.map(photoCard).join('') + '</div>' +
+        (G.more ? '<div class="cmmore"><button type="button" class="btn" data-more>' + (gMoreBusy ? '⏳ ' : '') + T('Show more photos', 'और फ़ोटो') + '</button></div>' : '');
     }
     box.innerHTML = h;
+    layoutGallery();
+  }
+  /* Photos keep their own shape: each card spans as many 8 px grid rows as its height needs. */
+  function layoutGallery() {
+    var g = document.querySelector('#cmGallery .cgal'); if (!g || !g.children.length) return;
+    [].forEach.call(g.querySelectorAll('img:not([data-lw])'), function (im) { im.setAttribute('data-lw', '1'); if (!im.complete) im.addEventListener('load', function () { clearTimeout(layT); layT = setTimeout(layoutGallery, 60); }); });
+    [].forEach.call(g.children, function (c) {
+      var im = c.querySelector('img'), r = im && Number(im.getAttribute('data-r')) || 1;
+      var w = c.getBoundingClientRect().width, cap = c.querySelector('figcaption');
+      var hgt = w / r + (cap ? cap.getBoundingClientRect().height : 0);
+      c.style.gridRowEnd = 'span ' + Math.ceil((hgt + 14) / 8);
+    });
+  }
+  var layT = null; window.addEventListener('resize', function () { clearTimeout(layT); layT = setTimeout(layoutGallery, 120); });
+  function loadMore() {
+    if (!G || !G.more || gMoreBusy) return;
+    var last = G.photos[G.photos.length - 1]; gMoreBusy = true; drawGallery();
+    call('photos', { before: last.at }).then(function (j) {
+      gMoreBusy = false; if (j && Array.isArray(j.photos)) { G.photos = G.photos.concat(j.photos); G.more = !!j.more; } drawGallery();
+    }).catch(function () { gMoreBusy = false; drawGallery(); });
   }
   function photoCard(p) {
     var k = kindOf(C.photoKinds, p.kind);
-    return '<figure class="cph" data-pid="' + esc(p.id) + '"><button type="button" class="cphimg" data-open="' + esc(p.id) + '" aria-label="' + esc(p.title) + '"><img src="' + URL_ + '?action=img&size=thumb&id=' + encodeURIComponent(p.id) + '" alt="' + esc(p.title) + '" loading="lazy"></button>' +
+    return '<figure class="cph" data-pid="' + esc(p.id) + '"><button type="button" class="cphimg" data-open="' + esc(p.id) + '" aria-label="' + esc(p.title) + '"><img src="' + URL_ + '?action=img&size=thumb&id=' + encodeURIComponent(p.id) + '" alt="' + esc(p.title) + '" loading="lazy" data-r="' + ratio(p) + '" style="aspect-ratio:' + ratio(p) + '"></button>' +
       '<figcaption><span class="ckind">' + (k ? k[1] : '') + '</span><b>' + esc(p.title) + '</b><small>' + avatar(p.by) + who(p.by) + ' · ' + ago(p.at) + '</small>' +
       '<span class="cact"><button type="button" class="star' + (p.starred ? ' on' : '') + '" data-star="' + esc(p.id) + '" aria-label="' + (hi() ? 'Star दें' : 'Give a star') + '">⭐ ' + num(p.stars) + '</button>' + menu('photo', p) + '</span></figcaption></figure>';
   }
@@ -113,50 +135,44 @@
       : loginBtn('Log in to take part', 'हिस्सा लेने के लिए log in कीजिए');
     return '<div class="cmempty"><div class="cmeic">' + icon + '</div><p>' + text + '</p>' + btn + '</div>';
   }
+  function ratio(p) { var r = p.w && p.h ? p.w / p.h : 1; return Math.max(0.5, Math.min(2.2, r)).toFixed(3); }
   function photoById(id) { return G && G.photos.filter(function (p) { return p.id === id; })[0]; }
+  function shownList() {
+    var list = G ? G.photos.filter(function (p) { return gKind === 'all' || p.kind === gKind; }) : [];
+    if (gSort === 'top') list = list.slice().sort(function (a, b) { return (b.stars - a.stars) || (a.at < b.at ? 1 : -1); });
+    return list;
+  }
   function openPhoto(id) {
     var p = photoById(id); if (!p) return;
-    var k = kindOf(C.photoKinds, p.kind);
-    var box = document.createElement('div'); box.className = 'lightbox cmlb'; box.setAttribute('role', 'dialog');
-    box.innerHTML = '<div class="cmlbin"><img src="' + URL_ + '?action=img&size=full&id=' + encodeURIComponent(p.id) + '" alt="' + esc(p.title) + '">' +
-      '<div class="cmlbcap" data-pid="' + esc(p.id) + '"><b>' + esc(p.title) + '</b><small>' + (k ? k[1] + ' ' + esc(L([k[2], k[3]])) : '') + (p.taken ? ' · 📍 ' + esc(p.taken) : '') + '</small><small>' + avatar(p.by) + who(p.by) + ' · ' + ago(p.at) + edited(p) + '</small>' +
+    var old = document.querySelector('.cmlb'); if (old) old.remove();
+    var list = shownList(), at = list.indexOf(p), k = kindOf(C.photoKinds, p.kind);
+    var box = document.createElement('div'); box.className = 'lightbox cmlb'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-label', p.title); box.tabIndex = -1;
+    box.innerHTML = '<div class="cmlbin"><div class="cmlbimg"><img src="' + URL_ + '?action=img&size=full&id=' + encodeURIComponent(p.id) + '" alt="' + esc(p.title) + '">' +
+      (at > 0 ? '<button type="button" class="cmlbnav prev" data-go="' + esc(list[at - 1].id) + '" aria-label="Previous photo">‹</button>' : '') +
+      (at >= 0 && at < list.length - 1 ? '<button type="button" class="cmlbnav next" data-go="' + esc(list[at + 1].id) + '" aria-label="Next photo">›</button>' : '') + '</div>' +
+      '<div class="cmlbcap" data-pid="' + esc(p.id) + '"><b>' + esc(p.title) + '</b><small>' + (k ? k[1] + ' ' + esc(L([k[2], k[3]])) : '') + (p.taken ? ' · 📍 ' + esc(p.taken) : '') + (list.length > 1 && at >= 0 ? ' · ' + (at + 1) + ' / ' + list.length : '') + '</small><small>' + avatar(p.by) + who(p.by) + ' · ' + ago(p.at) + edited(p) + '</small>' +
       '<span class="cact"><button type="button" class="star' + (p.starred ? ' on' : '') + '" data-star="' + esc(p.id) + '">⭐ ' + num(p.stars) + '</button>' + menu('photo', p) + '</span></div>' +
       '<button type="button" class="cmlbx" aria-label="Close">✕</button></div>';
-    box.addEventListener('click', function (e) { if (e.target === box || e.target.closest('.cmlbx')) box.remove(); });
-    document.body.appendChild(box);
-  }
-
-  /* upload */
-  function upForm() {
-    var kinds = C.photoKinds.map(function (k) { return '<option value="' + k[0] + '">' + k[1] + ' ' + esc(L([k[2], k[3]])) + '</option>'; }).join('');
-    $('cmUpBox').innerHTML = '<div class="card upform"><h3>📷 ' + T('Share your sky photo', 'अपने आसमान की फ़ोटो भेजिए') + '</h3>' +
-      '<label class="drop" for="cmFile"><input type="file" accept="image/*" id="cmFile"><span id="cmPrev"><span class="dropic">🖼️</span>' + T('Tap to choose a photo', 'फ़ोटो चुनने के लिए tap कीजिए') + '</span></label>' +
-      '<label>' + T('Title', 'शीर्षक') + '<input type="text" id="cmTitle" maxlength="80" placeholder="' + (hi() ? 'जैसे: छत से पूर्णिमा का चाँद' : 'e.g. Full Moon from my roof') + '"></label>' +
-      '<div class="row2"><label>' + T('What is it?', 'यह क्या है?') + '<select id="cmKind">' + kinds + '</select></label>' +
-      '<label>' + T('Where and when (optional)', 'कहाँ और कब (ज़रूरी नहीं)') + '<input type="text" id="cmTaken" maxlength="60" placeholder="' + (hi() ? 'जैसे: लखनऊ, नवंबर 2026' : 'e.g. Pune, November 2026') + '"></label></div>' +
-      '<label class="chk"><input type="checkbox" id="cmOwn"> ' + T('I took this photo myself, and Astryl may show it with my username.', 'यह फ़ोटो मैंने ख़ुद खींची है, और Astryl इसे मेरे username के साथ दिखा सकता है।') + '</label>' +
-      '<p class="note">🔒 ' + T('The photo is made smaller in your browser and camera and location data is removed before it is sent. No faces of people, and no exact address.', 'फ़ोटो भेजने से पहले browser में छोटी की जाती है और camera व location की जानकारी हटा दी जाती है। लोगों के चेहरे नहीं, और पूरा पता नहीं।') + '</p>' +
-      '<div class="btns"><button type="button" class="btn primary" id="cmSend">' + T('Share it', 'भेजिए') + '</button><button type="button" class="btn" id="cmCancel">' + T('Cancel', 'रद्द करें') + '</button></div><p class="cmerr no" id="cmUpErr"></p></div>';
-    $('cmUpBox').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-  function shrink(file, max, q) {
-    return new Promise(function (ok, no) {
-      var img = new Image(), url = URL.createObjectURL(file);
-      img.onload = function () {
-        var s = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight)), w = Math.round(img.naturalWidth * s), h = Math.round(img.naturalHeight * s);
-        var c = document.createElement('canvas'); c.width = w; c.height = h; c.getContext('2d').drawImage(img, 0, 0, w, h);
-        URL.revokeObjectURL(url);
-        var data = c.toDataURL('image/jpeg', q); ok({ b64: data.split(',')[1], w: w, h: h, url: data });
-      };
-      img.onerror = function () { no(new Error('not_jpeg')); }; img.src = url;
+    function close() { box.remove(); document.removeEventListener('keydown', key); }
+    function key(e) {
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowLeft' && at > 0) openPhoto(list[at - 1].id);
+      else if (e.key === 'ArrowRight' && at < list.length - 1) openPhoto(list[at + 1].id);
+    }
+    box.addEventListener('click', function (e) {
+      var g = e.target.closest('[data-go]'); if (g) { document.removeEventListener('keydown', key); openPhoto(g.dataset.go); return; }
+      if (e.target === box || e.target.closest('.cmlbx')) close();
     });
+    var x0 = null;
+    box.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    box.addEventListener('touchend', function (e) {
+      if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null;
+      if (Math.abs(dx) < 50) return;
+      var n = dx < 0 ? at + 1 : at - 1; if (n >= 0 && n < list.length) { document.removeEventListener('keydown', key); openPhoto(list[n].id); }
+    });
+    document.addEventListener('keydown', key);
+    document.body.appendChild(box); box.focus();
   }
-  var upFile = null;
-  document.addEventListener('change', function (e) {
-    if (e.target.id !== 'cmFile' || !e.target.files[0]) return;
-    upFile = e.target.files[0];
-    shrink(upFile, 600, 0.8).then(function (p) { $('cmPrev').innerHTML = '<img src="' + p.url + '" alt="">'; });
-  });
 
   /* ---------- the ⋯ menu: edit and delete your own, report anybody else's ---------- */
   function menu(kind, x) {
@@ -199,7 +215,7 @@
     else {
       var list = P.posts.filter(function (p) { return pFilter === 'all' || (pFilter === 'open' ? !p.replies.length : p.mine || p.replies.some(function (r) { return r.mine; })); });
       if (!list.length) h += empty('💬', P.posts.length ? T('Nothing here yet.', 'यहाँ अभी कुछ नहीं।') : T('No questions yet. Start the conversation!', 'अभी कोई सवाल नहीं। बातचीत शुरू कीजिए!'), 'post');
-      else h += list.map(postCard).join('');
+      else h += '<div class="cmplist">' + list.map(postCard).join('') + '</div>';
     }
     box.innerHTML = h;
   }
@@ -240,6 +256,8 @@
     if ((x = t.closest('[data-gsort]'))) { gSort = x.dataset.gsort; drawGallery(); return; }
     if ((x = t.closest('[data-pf]'))) { pFilter = x.dataset.pf; drawPosts(); return; }
     if ((x = t.closest('[data-open]'))) { openPhoto(x.dataset.open); return; }
+    if ((x = t.closest('[data-gview]'))) { gView = +x.dataset.gview; set('astryl-cm-view', gView); drawGallery(); return; }
+    if (t.closest('[data-more]')) { loadMore(); return; }
     if ((x = t.closest('[data-pk]'))) { x.parentNode.querySelectorAll('.chip').forEach(function (c) { c.classList.toggle('on', c === x); }); return; }
     if (t.closest('#cmCancel')) { $('cmUpBox').innerHTML = ''; upFile = null; return; }
     if ((x = t.closest('#cmSend'))) { sendPhoto(x); return; }

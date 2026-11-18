@@ -118,8 +118,13 @@ async function handle(req: Request, b: any): Promise<Response> {
 
     case "photos": {
       const user = await userFrom(req, false);
-      const { data } = await admin.from("community_photos").select("id, user_id, title, kind, taken, w, h, stars, created_at, edited_at")
-        .eq("status", "approved").order("created_at", { ascending: false }).limit(60);
+      // 30 at a time, newest first; "before" (the time of the last photo shown) asks for the next 30
+      const before = typeof b.before === "string" && /^\d{4}-\d\d-\d\dT[\d:.]+(\+00:00|Z)$/.test(b.before) ? b.before : null;
+      let q = admin.from("community_photos").select("id, user_id, title, kind, taken, w, h, stars, created_at, edited_at")
+        .eq("status", "approved").order("created_at", { ascending: false }).limit(31);
+      if (before) q = q.lt("created_at", before);
+      const { data: rows } = await q;
+      const more = (rows ?? []).length > 30, data = (rows ?? []).slice(0, 30);
       const nm = await names((data ?? []).map((p) => p.user_id));
       let starred: string[] = [];
       if (user && data?.length) {
@@ -128,7 +133,7 @@ async function handle(req: Request, b: any): Promise<Response> {
       }
       let pending = 0;
       if (user) { const { count } = await admin.from("community_photos").select("id", { count: "exact", head: true }).eq("user_id", user.id).eq("status", "pending"); pending = count ?? 0; }
-      return reply({ photos: (data ?? []).map((p) => ({ id: p.id, by: nm[p.user_id] ?? "", title: p.title, kind: p.kind, taken: p.taken, w: p.w, h: p.h, stars: p.stars, at: p.created_at, edited: !!p.edited_at, mine: user?.id === p.user_id, starred: starred.includes(p.id) })), pending });
+      return reply({ photos: (data ?? []).map((p) => ({ id: p.id, by: nm[p.user_id] ?? "", title: p.title, kind: p.kind, taken: p.taken, w: p.w, h: p.h, stars: p.stars, at: p.created_at, edited: !!p.edited_at, mine: user?.id === p.user_id, starred: starred.includes(p.id) })), pending, more });
     }
 
     case "upload": {

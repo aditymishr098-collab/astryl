@@ -965,6 +965,41 @@ header.top.navopen .menubtn span:nth-child(1){transform:translateY(6px) rotate(4
 #skyBgCanvas{background:none;border:0;border-radius:0;max-width:none}
 @media(max-width:820px){.homehero .herog{max-width:190px}.homehero{gap:8px;padding-top:16px}}
 
+/* ---------- community: more room for photos (Nov 2026) ---------- */
+body[data-page=community] main.wrap{max-width:1680px;padding-left:clamp(14px,3vw,48px);padding-right:clamp(14px,3vw,48px)}
+.cmhero.slim{border-radius:18px;margin-top:8px}
+.cmhero.slim .cmherotx{max-width:none;padding:clamp(16px,2.6vw,28px) clamp(16px,3vw,32px);display:grid;grid-template-columns:1fr auto;gap:6px 24px;align-items:center}
+.cmhero.slim .cmeyebrow{grid-column:1/-1;justify-self:start}
+.cmhero.slim h1{margin:0;font-size:clamp(1.35rem,2.6vw,2rem)}
+.cmhero.slim .sub{margin:0;grid-column:1;font-size:.95rem}
+.cmhero.slim .btns{grid-column:2;grid-row:2/4;margin:0;justify-content:flex-end}
+.cmhero.slim .cmnums{grid-column:1/-1;margin-top:4px}
+@media(max-width:820px){.cmhero.slim .cmherotx{grid-template-columns:1fr}.cmhero.slim .btns{grid-column:1;grid-row:auto;justify-content:flex-start}.cmhero.slim .sub,.cmhero.slim .cmeyebrow{display:none}.cmhero.slim .btns .btn{padding:9px 14px}}
+.cmtabs{margin-top:12px}
+/* photos keep their shape, in a grid that fills the width */
+.cgal{grid-auto-rows:8px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0 16px;align-items:start}
+.cph{margin-bottom:0}
+.cph img{aspect-ratio:auto;object-fit:cover;height:auto}
+.cph.sk{grid-row-end:span 40}
+.cmview{display:none}
+.cmmore{display:flex;justify-content:center;margin:18px 0 6px}
+@media(max-width:620px){
+  .cgal{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 10px}
+  .cgal.one{grid-template-columns:1fr}
+  .cgal.one .cph figcaption{padding:10px 14px 14px}.cgal.one .cph figcaption b{font-size:1.05rem}
+  .cmview{display:inline-flex}
+}
+/* photo viewer: next and previous */
+.cmlbimg{position:relative;background:#000}
+.cmlbimg>img{display:block;max-height:calc(100vh - 200px);width:100%;object-fit:contain}
+.cmlbnav{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:99px;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:1.8rem;line-height:1;cursor:pointer}
+.cmlbnav.prev{left:10px}.cmlbnav.next{right:10px}.cmlbnav:hover{background:rgba(0,0,0,.8)}
+.cmlb:focus{outline:none}
+/* questions: two columns on wide screens */
+@media(min-width:1100px){.cmplist{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}.cmplist .post{margin:0}}
+@media(max-width:820px){.cmhero.slim h1{font-size:1.3rem}.cmhero.slim .btns{gap:8px;flex-wrap:nowrap}.cmhero.slim .btns .btn{padding:8px 12px;font-size:.9rem;white-space:nowrap}.cmhero.slim .cmherotx{padding:14px 16px}}
+@media(max-width:360px){.cmhero.slim .btns .btn[data-new=post]{display:none}}
+
 /* line icons (tools/icons.py) */
 .icn{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.17em;background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat;flex:none}
 h1 .icn,h2 .icn,h3 .icn{color:var(--accent)}
