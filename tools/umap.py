@@ -54,7 +54,7 @@ def build(h):
 {P("In real time nothing here seems to move: the Sun needs about 230 million years for one trip around the Galaxy. The speed buttons run the clock faster so you can watch planets orbit and the Milky Way turn. The disk is turned as one piece to keep the picture simple.", "असली समय में यहाँ कुछ हिलता नहीं दिखता: सूर्य को आकाशगंगा का एक चक्कर लगाने में लगभग 23 करोड़ साल लगते हैं। speed के बटन घड़ी तेज़ कर देते हैं, ताकि आप ग्रहों को घूमते और मिल्की वे को घूमते देख सकें। तस्वीर सरल रखने के लिए पूरी disk एक साथ घुमाई गई है।")}
 <p class="note">{bt("Galaxy data:", "आकाशगंगाओं का data:")} <a href="https://github.com/mattiaverga/OpenNGC" rel="noopener">OpenNGC</a> {bt("by Mattia Verga and contributors (CC BY-SA 4.0).", "Mattia Verga और साथी (CC BY-SA 4.0)।")}</p>
 </section>
-{k.keep_exploring('', [('black-holes.html', '⚫', 'Black holes', 'ब्लैक होल'), ('galaxies.html', '🌌', 'Galaxies', 'Galaxies'), ('cosmic-scale.html', '📏', 'Scale of the universe', 'ब्रह्मांड का पैमाना'), ('black-hole-lab.html', '🧪', 'Black hole lab', 'ब्लैक होल lab')])}'''
+{k.keep_exploring('', [('how-we-move.html', '🌀', 'How we move through space', 'How we move through space'), ('black-holes.html', '⚫', 'Black holes', 'ब्लैक होल'), ('galaxies.html', '🌌', 'Galaxies', 'Galaxies'), ('cosmic-scale.html', '📏', 'Scale of the universe', 'ब्रह्मांड का पैमाना'), ('black-hole-lab.html', '🧪', 'Black hole lab', 'ब्लैक होल lab')])}'''
     html = h['shell']('Universe map', 'ब्रह्मांड का नक्शा', 'umap', body,
                       'A free 3D map of the universe in your browser: the planets right now, nearby stars, 62 black holes and 3,600 real galaxies. Zoom from the Solar System to the edge of the observable universe.',
                       canonical='universe-map.html',
