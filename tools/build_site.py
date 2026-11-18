@@ -4,13 +4,14 @@
 Reads the website's data in data/ (see tools/site_data.py); Run it from the
 project root:  python3 tools/build_site.py
 """
-import hashlib, html, json, math, re, shutil
+import datetime, hashlib, html, json, math, re, shutil
 from pathlib import Path
 
 import deepspace
 import galaxies
 import stars
 import blog
+import tonight
 import discover
 import legal
 import lab
@@ -702,6 +703,7 @@ REL_CARDS = {
     'quiz.html': ('🧠', 'Space quiz', 'Daily 5 and ranked rounds for Space Points'),
     'deep-space-quiz.html': ('🌌', 'Black hole and galaxy quiz', 'Test what you know about deep space'),
     'sky.html': ('🌙', 'Moon and sky tonight', 'Moon phase and what is up from your city'),
+    'tonight.html': ('🔭', 'Night sky tonight', 'Planets and the Moon for 50 cities'),
     'sky-events.html': ('🌑', 'Eclipses and meteor showers', 'Every eclipse until 2029, with times'),
     'constellations.html': ('✨', 'Constellations', 'All 88 patterns of the night sky'),
     'maps.html': ('🗺️', 'Moon and Mars maps', 'Where every mission landed'),
@@ -732,8 +734,8 @@ REL = {
     'you.html': ['compare.html', 'planets.html', 'blog/time-travel.html', 'quiz.html'],
     'quiz.html': ['deep-space-quiz.html', 'black-holes-101.html', 'learn.html', 'community.html'],
     'deep-space-quiz.html': ['quiz.html', 'black-holes.html', 'galaxies.html', 'black-holes-101.html'],
-    'sky.html': ['sky-events.html', 'constellations.html', 'iss.html', 'telescope.html'],
-    'sky-events.html': ['sky.html', 'constellations.html', 'iss.html', 'community.html'],
+    'sky.html': ['tonight.html', 'sky-events.html', 'iss.html', 'telescope.html'],
+    'sky-events.html': ['tonight.html', 'sky.html', 'constellations.html', 'iss.html'],
     'constellations.html': ['sky.html', 'stars.html', 'telescope.html', 'sky-events.html'],
     'maps.html': ['missions.html', 'spacecraft.html', 'planets.html', 'telescope.html'],
     'missions.html': ['spacecraft.html', 'maps.html', 'iss.html', 'blog.html'],
@@ -1013,7 +1015,7 @@ def index_page():
 </section>
 <section class="blk"><div class="grid daily2"><div class="card apod" id="dailyPhoto"></div><div class="card" id="dailyFact"></div></div></section>
 <section class="blk"><h2>{bt("This website in numbers", "यह website आँकड़ों में")}</h2><div class="stats" id="stats"></div><p class="note" id="statsCountries"></p><p class="note" id="statsNote"></p></section>'''
-    write('index.html', shell('Explore the Universe', 'ब्रह्मांड खोजिए', 'home', body, 'Astryl: planets, moons, stars and space missions. Real positions and real numbers for any date, free and open source.', canonical='', extra_head=f'<script defer src="assets/sgp4.js?v={asset_v()}"></script><script defer src="assets/home.js?v={asset_v()}"></script><script defer src="assets/cosmos.js?v={asset_v()}"></script><script defer src="assets/tonight.js?v={asset_v()}"></script><script defer src="assets/apod.js?v={asset_v()}"></script><script defer src="assets/discover.js?v={asset_v()}"></script>', ld=[{'@context': 'https://schema.org', '@type': 'WebApplication', 'name': 'Astryl', 'applicationCategory': 'EducationalApplication', 'operatingSystem': 'Any', 'description': 'Planets, moons, stars and space missions with real positions and real numbers for any date. Free.', 'url': SITE + '/', 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}, 'inLanguage': ['en', 'hi']}, {'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Astryl', 'url': SITE + '/', 'inLanguage': ['en', 'hi']}]))
+    write('index.html', shell('Tonight’s sky, planets and space for your city', 'ब्रह्मांड खोजिए', 'home', body, 'Astryl: planets, moons, stars and space missions. Real positions and real numbers for any date, free and open source.', canonical='', extra_head=f'<script defer src="assets/sgp4.js?v={asset_v()}"></script><script defer src="assets/home.js?v={asset_v()}"></script><script defer src="assets/cosmos.js?v={asset_v()}"></script><script defer src="assets/tonight.js?v={asset_v()}"></script><script defer src="assets/apod.js?v={asset_v()}"></script><script defer src="assets/discover.js?v={asset_v()}"></script>', ld=[{'@context': 'https://schema.org', '@type': 'WebApplication', 'name': 'Astryl', 'applicationCategory': 'EducationalApplication', 'operatingSystem': 'Any', 'description': 'Planets, moons, stars and space missions with real positions and real numbers for any date. Free.', 'url': SITE + '/', 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}, 'inLanguage': ['en', 'hi']}, {'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Astryl', 'url': SITE + '/', 'inLanguage': ['en', 'hi']}]))
 
 
 def planets_page():
@@ -1056,8 +1058,9 @@ def simple_pages():
 <section class="blk"><h2>{bt("Planets tonight", "आज रात के ग्रह")}</h2><div class="card" id="planetsTonight"></div></section>
 <section class="blk"><h2>{bi("moonCalendar")}</h2><div class="row"><button class="btn" id="calPrev">‹ {bi("previousMonth")}</button><b id="calTitle"></b><button class="btn" id="calNext">{bi("nextMonth")} ›</button></div><div class="moons" id="calGrid"></div><div id="calPhases" style="margin-top:14px"></div><p class="note">{bi("moonCalendarNote")}</p></section>
 <section class="blk"><h2>{bi("eventsTitle")}</h2><p class="sub">{bt("Meteor shower peaks for the next 12 months, with how bright the Moon will be on the peak night.", "अगले 12 महीनों में उल्कापात के चरम दिन, और उस रात चाँद कितना चमकीला होगा।")}</p><div class="grid" id="showers"></div></section>
+<section class="blk callout"><b>🔭 Night sky tonight, city by city:</b> <a href="tonight.html">planets, Moon and sunset for 50 cities →</a></section>
 <section class="blk callout"><b>{bt("Want it for your city?", "अपने शहर के लिए चाहिए?")}</b> {bt("My space shows sunset, moonrise and the planets you can see tonight from your city, and the space station page shows when the ISS flies over you.", "My space में आपके शहर का सूर्यास्त, चाँद का उगना और आज रात दिखने वाले ग्रह हैं, और अंतरिक्ष स्टेशन वाला page बताता है कि ISS आपके ऊपर से कब गुज़रेगा।")} <a href="my-space.html">{bt("Open My space", "My space खोलें")}</a> · <a href="iss.html">{bt("Space station passes", "अंतरिक्ष स्टेशन कब दिखेगा")}</a></section>'''
-    write('sky.html', shell('Moon and sky', 'चाँद और आसमान', 'sky', body, "Tonight's Moon phase, a Moon calendar and the next meteor showers.", canonical='sky.html'))
+    write('sky.html', shell('What planets are visible tonight? Moon phase and night sky', 'चाँद और आसमान', 'sky', body, "What planets can I see tonight? The planets up tonight from your city, the Moon phase and calendar, and the next meteor showers.", canonical='sky.html'))
     # spacecraft
     body = f'''<section class="blk"><h1>{bi("spacecraftTitle")}</h1><p class="sub">{bi("spacecraftSubtitle")}</p><div class="card cmap" id="craftMap"></div><div class="card ladder" id="craftLadder"></div><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))" id="craft"></div><p class="note">{bi("spacecraftNote")}</p></section>
 <script>window.ASTRYL_CRAFTPICS={json.dumps({k: '<div class="mphotos">' + ''.join(spacephotos.figure(p, '', bt, esc, cls='mphoto') for p in v) + '</div>' for k, v in missionphotos.CRAFT.items()}, ensure_ascii=False).replace('</', '<\\/')};</script>'''
@@ -1299,10 +1302,15 @@ def main():
     for i, b in enumerate(BODIES):
         body_page(b, i)
     index_page(); planets_page(); simple_pages(); community_pages(); maps_page(); get_page(); account_page(); not_found(); pwa_files()
-    helpers = dict(bt=bt, bi=bi, raw2=raw2, shell=shell, write=write, esc=esc, fmt=fmt, asset_v=asset_v, SITE=SITE, ROOT=ROOT)
+    helpers = dict(bt=bt, bi=bi, raw2=raw2, shell=shell, write=write, esc=esc, fmt=fmt, asset_v=asset_v, SITE=SITE, ROOT=ROOT, orbits=ORBITS)
+    tonight_urls = tonight.build(helpers)
     deep = deepspace.build(helpers) + galaxies.build(helpers) + stars.build(helpers) + lab.build(helpers) + universe.build(helpers) + learn.build(helpers) + umap.build(helpers) + myspace.build(helpers) + skyevents.build(helpers) + students.build(helpers) + telescope.build(helpers) + iss.build(helpers) + blog.build(helpers) + legal.build(helpers)
     urls = ['', 'community.html', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'privacy.html', 'account.html', 'black-holes.html', 'galaxies.html'] + deep + [f'body/{b["id"]}.html' for b in BODIES]
-    (OUT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}/{u}</loc></url>\n' for u in urls) + '</urlset>\n', encoding='utf-8')
+    today = datetime.date.today().isoformat()
+    urls = urls + [u for u in tonight_urls if u not in urls]
+    def sm(u):
+        return f'<url><loc>{SITE}/{u}</loc>' + (f'<lastmod>{today}</lastmod><changefreq>daily</changefreq>' if u.startswith('tonight') else '') + '</url>\n'
+    (OUT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(sm(u) for u in urls) + '</urlset>\n', encoding='utf-8')
     og_images()
     (ROOT / 'tools' / 'i18n' / 'source.tsv').write_text('# id<TAB>English text of every translatable text on the site (generated by build_site.py)\n' + ''.join(f'{k}\t{v}\n' for k, v in sorted(SOURCE.items(), key=lambda kv: kv[1])), encoding='utf-8')
     print('pages:', len(list(OUT.rglob('*.html'))), 'share images:', len(_OG), 'texts:', len(SOURCE), {lg: len(TRX[lg]) for lg in EXTRA_LANGS})
