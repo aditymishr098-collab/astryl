@@ -11,6 +11,7 @@ import deepspace
 import galaxies
 import stars
 import blog
+import icons
 import tonight
 import discover
 import legal
@@ -414,9 +415,10 @@ def asset_v():
     '''A short hash of the scripts and styles, so a changed file is never served from an old cache.'''
     if not _ASSET_V:
         h = hashlib.md5()
-        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'blog.js', 'discover.js', 'sw.js'):
+        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'blog.js', 'discover.js', 'citypick.js', 'icons.js', 'sw.js'):
             h.update((SRC / name).read_bytes())
         h.update((ROOT / 'tools' / 'formation.py').read_bytes())
+        h.update((ROOT / 'tools' / 'icons.py').read_bytes())
         if (OUT / 'assets/quiz-bank.js').exists():
             h.update((OUT / 'assets/quiz-bank.js').read_bytes())
         h.update(data_js().encode('utf-8'))
@@ -630,8 +632,8 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 <div class="stars"></div>
 <header class="top"><div class="wrap bar">
 <a class="brand" href="{p}index.html">{logo_svg()}Astryl</a>
-<nav class="links">{nav}</nav>
-<div class="tools"><button id="themeBtn" aria-label="Theme">☾</button><span id="acctNav" class="acctnav"><a class="btn" href="{p}account.html?mode=login">{bt("Log in", "Login")}</a><a class="btn primary" href="{p}account.html">{bt("Sign up", "खाता बनाएँ")}</a></span></div>
+<nav class="links" id="siteNav" aria-label="Main">{nav}</nav>
+<div class="tools"><button id="themeBtn" aria-label="Theme">☾</button><span id="acctNav" class="acctnav"><a class="btn" href="{p}account.html?mode=login">{bt("Log in", "Login")}</a><a class="btn primary" href="{p}account.html">{bt("Sign up", "खाता बनाएँ")}</a></span><button type="button" class="menubtn" id="menuBtn" aria-expanded="false" aria-controls="siteNav" aria-label="Menu"><span></span><span></span><span></span></button></div>
 </div></header>
 <main class="wrap" id="main" tabindex="-1">
 {body}
@@ -641,7 +643,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 <div><a href="{p}privacy.html">{bt("Privacy Policy", "Privacy Policy")}</a><br><a href="{p}terms.html">Terms and Conditions</a><br><a href="{p}your-data.html">Your data</a><br><a href="{p}account.html">{bt("Account", "खाता")}</a><br><a href="{p}my-space.html">{bt("My space", "My space")}</a><br><a href="{p}community.html">👥 {bt("Astryl Community", "Astryl Community")}</a></div>
 <div>{bt("Facts: NASA Planetary Fact Sheet", "तथ्य: NASA Planetary Fact Sheet")}<div id="installBox" class="installbox"></div></div>
 </div></footer>
-{"<script src=\"" + p + "assets/data.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/app.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/account.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/me.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/fx.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/pwa.js?v=" + asset_v() + "\"></script>" if scripts else ""}
+{"<script src=\"" + p + "assets/data.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/app.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/account.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/me.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/fx.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/pwa.js?v=" + asset_v() + "\"></script><script src=\"" + p + "assets/icons.js?v=" + asset_v() + "\"></script>" if scripts else ""}
 </body></html>
 '''
 
@@ -781,6 +783,7 @@ def write(path, content):
         if rel:
             content = content.replace('\n</main>', '\n' + rel + '\n</main>', 1)
         content = heading_fix(path, content)
+        content = icons.html(content)
     f.write_text(content, encoding='utf-8')
 
 
@@ -928,6 +931,23 @@ def orrery_svg():
     return f'<svg class="orrery" width="520" height="520" viewBox="-256 -256 512 512" role="img" aria-label="{esc("The planets going round the Sun")}"><defs>{defs}</defs>{rings}{sun}{orbs}</svg>'
 
 
+def pghero(title, grad, lead, buttons, img, alt=''):
+    """The top of a section page: big title, one line, buttons and a photo (the Stars page style)."""
+    btns = ''.join(f'<a class="btn{" primary" if i == 0 else ""}" href="{h}">{t}</a>' for i, (t, h) in enumerate(buttons))
+    return (f'<section class="hero2 starhero pghero"><div><h1 class="rise">{title} <span class="grad">{grad}</span></h1><p class="lead rise">{lead}</p>'
+            f'<div class="btns rise">{btns}</div></div><div class="starhero-img"><img src="{img}" alt="{esc(alt)}" loading="eager"></div></section>')
+
+
+def city_picker(p, compact=False):
+    """A city box that opens that city's "Night sky tonight" page (handled by citypick.js)."""
+    data = json.dumps([[c[0], c[1], c[2], c[3], c[4]] for c in tonight.CITIES], ensure_ascii=False)
+    opts = ''.join(f'<option value="{esc(c[1])}, {esc(c[2])}"></option>' for c in tonight.CITIES)
+    return (f'<form class="citypick{" compact" if compact else ""}" action="{p}tonight.html" data-root="{p}" data-cities=\'{esc(data)}\'>'
+            f'<label class="sr-only" for="cityIn{"2" if compact else ""}">Your city</label><input id="cityIn{"2" if compact else ""}" name="city" list="cityList{"2" if compact else ""}" placeholder="Type your city: Delhi, London, New York…" autocomplete="off" required>'
+            f'<datalist id="cityList{"2" if compact else ""}">{opts}</datalist><button class="btn primary" type="submit">{"Go" if compact else "See tonight’s sky"} →</button>'
+            f'<button class="btn" type="button" data-near>📍 {"Near me" if compact else "Use my location"}</button><p class="note cpmsg" aria-live="polite"></p></form>')
+
+
 def index_page():
     # (icon html, title key, English line, Hindi line, link)
     def pic(i):
@@ -978,61 +998,39 @@ def index_page():
         if pid in spacephotos.SIZES:
             _, en, hi_ = spacephotos.INFO[pid]
             surprise.append({'u': u, 'img': f'img/space/{pid}.webp', 't': [en.split(':')[0].split('(')[0].split(',')[0].strip()[:60], hi_.split(':')[0].split('(')[0].split(',')[0].strip()[:60]], 'd': [en, hi_]})
-    body = f'''<section class="hero2">
+    by['tonight.html'] = ('🔭', bt('Night sky tonight', 'Night sky tonight'), 'Planets, Moon and sunset for your city', 'Planets, Moon and sunset for your city', 'tonight.html')
+    explore = ['tonight.html', 'planets.html', 'solar-system.html', 'sky-events.html', 'iss.html', 'spacecraft.html', 'stars.html', 'black-holes.html', 'galaxies.html', 'learn.html', 'quiz.html', 'blog.html']
+    body = f"""<section class="hero2 homehero">
 <div>
-<h1 class="rise">{bt("Explore the", "खोजिए")} <span class="grad">{bt("Universe.", "ब्रह्मांड।")}</span></h1>
-<p class="lead rise">{bt("Planets, moons, stars and space missions: real positions and real numbers for any date.", "ग्रह, चाँद, तारे और अंतरिक्ष missions: किसी भी तारीख़ की असली स्थिति और असली आँकड़े।")}</p>
-<div class="btns rise"><a class="btn primary" href="planets.html">{bt("Explore space", "अंतरिक्ष खोजिए")} →</a><a class="btn" href="quiz.html">{bt("Take the quiz", "Quiz खेलिए")}</a></div>
-<p class="acctline rise" id="acctLine">{bt("Free account: your favourites, scores and streak are kept on every device.", "मुफ़्त खाता: आपके favourites, scores और streak हर device पर साथ रहते हैं।")} <a href="account.html">{bt("Create account", "खाता बनाएँ")} →</a></p>
-<div class="chips rise"><span class="chip">{bt("Free", "मुफ़्त")}</span><span class="chip">{bt("Open source", "Open source")}</span><span class="chip">{bt("No ads", "कोई विज्ञापन नहीं")}</span></div>
+<h1 class="rise">{bt("What’s in your", "What’s in your")} <span class="grad">{bt("sky tonight?", "sky tonight?")}</span></h1>
+<p class="lead rise">{bt("The planets you can see, where to look, the Moon and sunset, worked out for your city tonight. Plus real photos and real numbers for everything in space.", "")}</p>
+<div class="rise">{city_picker('')}</div>
+<div class="chips rise popcities">{''.join(f'<a class="chip" href="tonight/{c[0]}.html">{esc(c[1])}</a>' for c in tonight.CITIES if c[0] in ('delhi', 'mumbai', 'london', 'new-york', 'dubai', 'sydney', 'yerevan'))}<a class="chip" href="tonight.html">{bt("All 50 cities", "All 50 cities")} →</a></div>
 </div>
-<div class="herog"><canvas id="heroGlobe" aria-label="{esc("The Earth right now, with day and night and the space station")}"></canvas><p class="note herocap">{bt("The Earth right now: real day and night, and the space station where it really is.", "अभी की पृथ्वी: असली दिन और रात, और अंतरिक्ष स्टेशन ठीक वहीं जहाँ वह है।")}</p></div>
+<div class="herog"><canvas id="heroGlobe" aria-label="{esc("The Earth right now, with day and night and the space station")}"></canvas><p class="note herocap">{bt("The Earth right now: real day and night, and the space station where it really is.", "")}</p></div>
 </section>
-<div class="livebar" id="liveBar"></div>
 <section class="blk discover" id="discover"></section>
 <script>window.ASTRYL_DISCOVER={json.dumps(discover.data(universe.GLOSSARY, {b["id"]: tr("en", NAME_KEY[b["id"]]) for b in BODIES if b["id"] in PHOTO}, [f"blog/{blog.POSTS[0]['slug']}.html", blog.POSTS[0]["title"], blog.POSTS[0]["desc"]]), ensure_ascii=False).replace('</', '<\\/')};</script>
-<section class="blk"><h2>{bt("Today in space", "आज अंतरिक्ष में")}</h2><div class="today" id="today"></div></section>
-<section class="duo">
-<div class="card" id="homeQuiz"><h2>{bt("Quick quiz", "झटपट quiz")}</h2><div class="q">{bt("Which planet is known for its Great Red Spot?", "किस ग्रह का Great Red Spot मशहूर है?")}</div><div class="opts">{quiz}</div><p class="qres"></p></div>
-<div class="card" id="surprise"><h2>{bt("Surprise me", "कुछ नया दिखाओ")}</h2><p>{bt("A real photo or a fact from somewhere in space, picked at random.", "अंतरिक्ष में कहीं से एक असली तस्वीर या तथ्य, बिना क्रम के चुना हुआ।")}</p><button type="button" class="btn primary">🎲 {bt("Show me something", "कुछ दिखाओ")}</button><div class="sres"></div></div>
-</section>
-<section class="blk"><div class="card cmhome" id="homeCommunity"><div class="cmtext"><h2>👥 {bt("Astryl Community", "Astryl Community")}</h2><p>{bt("Share your own photos of the Moon, planets and stars, ask anything about space and answer other people's questions.", "चाँद, ग्रहों और तारों की अपनी फ़ोटो बाँटिए, अंतरिक्ष के बारे में कुछ भी पूछिए और दूसरों के सवालों के जवाब दीजिए।")}</p><div class="btns"><a class="btn primary" href="community.html">{bt("Open the community", "Community खोलिए")} →</a><a class="btn" href="community.html#talk">❓ {bt("Ask a question", "सवाल पूछिए")}</a></div></div><div class="cmlatest" id="homeCmLatest"></div></div></section>
-{cards}
-<script>window.ASTRYL_SURPRISE={json.dumps(surprise, ensure_ascii=False).replace('</', '<\\/')};</script>
-<section class="journey" id="journey"><div class="stick">
-<canvas id="cosmos" aria-label="{esc("Scroll to travel from the Milky Way to the Solar System, Earth and the Moon")}"></canvas>
-<div class="caps">
-<div class="cap on"><h2>{bt("Our galaxy", "हमारी आकाशगंगा")}</h2><p>{bt("The Milky Way holds hundreds of billions of stars. The Sun sits in one of its arms, about 26,000 light-years from the centre. Scroll to travel in.", "आकाशगंगा में सैकड़ों अरब तारे हैं। सूर्य उसकी एक भुजा में है, केंद्र से लगभग 26,000 प्रकाश-वर्ष दूर। भीतर जाने के लिए scroll करें।")}</p></div>
-<div class="cap"><h2>{bt("The Solar System", "सौरमंडल")}</h2><p>{bt("Every planet in its real place today. Keep scrolling and time moves forward. Distances are squeezed so the inner planets stay visible.", "हर ग्रह आज अपनी असली जगह पर। Scroll करते रहिए, समय आगे बढ़ता है। भीतरी ग्रह दिखते रहें इसलिए दूरियाँ दबाई गई हैं।")} <a href="solar-system.html">{bt("Open the full Solar System", "पूरा सौरमंडल खोलें")}</a></p></div>
-<div class="cap"><h2>{bt("Earth and the Moon", "पृथ्वी और चाँद")}</h2><p>{bt("The Moon is where it really is right now, and the Sun is on the side that lights it.", "चाँद ठीक वहीं है जहाँ वह अभी है, और सूर्य उस तरफ़ है जिधर से उसे रोशनी मिलती है।")} <a href="sky.html">{bt("Moon calendar", "चाँद का calendar")}</a></p></div>
-</div>
-<div class="jdate" id="jDate"></div>
-<div class="jphase" id="jPhase"><canvas width="64" height="64"></canvas><span></span></div>
-<div class="jdots"><i class="on"></i><i></i><i></i></div>
-</div></section>
-<section class="blk">
-<div class="card"><h2>{bt("Tonight's sky", "आज रात का आसमान")}</h2><div class="moonrow" id="homeMoon"></div><div id="homeTonight"></div><a class="btn" href="sky.html">{bt("Open the Moon calendar", "चाँद का calendar खोलें")} →</a></div>
-</section>
-<section class="blk"><div class="grid daily2"><div class="card apod" id="dailyPhoto"></div><div class="card" id="dailyFact"></div></div></section>
-<section class="blk"><h2>{bt("This website in numbers", "यह website आँकड़ों में")}</h2><div class="stats" id="stats"></div><p class="note" id="statsCountries"></p><p class="note" id="statsNote"></p></section>'''
-    write('index.html', shell('Tonight’s sky, planets and space for your city', 'ब्रह्मांड खोजिए', 'home', body, 'Astryl: planets, moons, stars and space missions. Real positions and real numbers for any date, free and open source.', canonical='', extra_head=f'<script defer src="assets/sgp4.js?v={asset_v()}"></script><script defer src="assets/home.js?v={asset_v()}"></script><script defer src="assets/cosmos.js?v={asset_v()}"></script><script defer src="assets/tonight.js?v={asset_v()}"></script><script defer src="assets/apod.js?v={asset_v()}"></script><script defer src="assets/discover.js?v={asset_v()}"></script>', ld=[{'@context': 'https://schema.org', '@type': 'WebApplication', 'name': 'Astryl', 'applicationCategory': 'EducationalApplication', 'operatingSystem': 'Any', 'description': 'Planets, moons, stars and space missions with real positions and real numbers for any date. Free.', 'url': SITE + '/', 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}, 'inLanguage': ['en', 'hi']}, {'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Astryl', 'url': SITE + '/', 'inLanguage': ['en', 'hi']}]))
+<section class="blk"><h2>{bt("Explore", "Explore")}</h2><p class="sub">{bt("Everything on Astryl starts from one of these.", "")}</p><div class="sc-grid homegrid">{"".join(card(h) for h in explore)}</div></section>
+<section class="blk"><div class="grid daily2"><div class="card cmhome" id="homeCommunity"><div class="cmtext"><h2>👥 {bt("Astryl Community", "Astryl Community")}</h2><p>{bt("Share your own photos of the Moon, planets and stars, ask anything about space and answer other people's questions.", "")}</p><div class="btns"><a class="btn primary" href="community.html">{bt("Open the community", "Open the community")} →</a><a class="btn" href="community.html#talk">❓ {bt("Ask a question", "Ask a question")}</a></div></div></div><div class="card apod" id="dailyPhoto"></div></div></section>"""
+    write('index.html', shell('What’s in your sky tonight? Planets, Moon and space for your city', 'ब्रह्मांड खोजिए', 'home', body, 'What planets can you see tonight? Astryl shows the planets, the Moon and sunset for your city, plus real photos and real numbers for everything in space. Free, no ads.', canonical='', extra_head=f'<script defer src="assets/sgp4.js?v={asset_v()}"></script><script defer src="assets/home.js?v={asset_v()}"></script><script defer src="assets/citypick.js?v={asset_v()}"></script><script defer src="assets/apod.js?v={asset_v()}"></script><script defer src="assets/discover.js?v={asset_v()}"></script>', ld=[{'@context': 'https://schema.org', '@type': 'WebApplication', 'name': 'Astryl', 'applicationCategory': 'EducationalApplication', 'operatingSystem': 'Any', 'description': 'Planets, moons, stars and space missions with real positions and real numbers for any date. Free.', 'url': SITE + '/', 'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}, 'inLanguage': ['en', 'hi']}, {'@context': 'https://schema.org', '@type': 'WebSite', 'name': 'Astryl', 'url': SITE + '/', 'inLanguage': ['en', 'hi']}]))
 
 
 def planets_page():
     def card(b):
         return f'<a class="card pcard" data-id="{b["id"]}" data-search="{b["id"]}" href="body/{b["id"]}.html">{planet_pic(b, uid="p")}<div><b>{bname(b["id"])}</b><br><small>{val(v_diam(b))}</small></div></a>'
-    groups = [('star', bt('Star', 'तारा'), [b for b in BODIES if b['kind'] == 'star']), ('planet', bt('Planets', 'ग्रह'), [b for b in BODIES if b['kind'] == 'planet']),
+    groups = [('planet', bt('The Sun and the planets', 'The Sun and the planets'), [b for b in BODIES if b['kind'] in ('star', 'planet')]),
               ('dwarf', bt('Dwarf planet', 'बौना ग्रह'), [b for b in BODIES if b['id'] == 'pluto']), ('moon', bi('majorMoons'), [b for b in BODIES if b['kind'] == 'moon'])]
     secs = ''.join(f'<section class="blk"><h2>{t}</h2><div class="grid">{"".join(card(b) for b in bs)}</div></section>' for _, t, bs in groups)
-    body = f'''<section class="blk"><h1>{bi("planetsTitle")}</h1><p class="sub">{bt("Tap a world for its size, gravity, temperature, atmosphere and facts.", "किसी दुनिया पर क्लिक करें: उसका आकार, गुरुत्वाकर्षण, तापमान, वायुमंडल और तथ्य।")}</p>
+    body = pghero('Planets and', 'moons.', 'Every planet, Pluto and the big moons: how big they are, their gravity, weather, air and how they formed, with real photos.', [('Compare two worlds →', 'compare.html'), ('See them in 3D', 'solar-system.html')], 'img/space/pic-voyager-jupiter.webp', 'Jupiter photographed by Voyager') + f'''<section class="blk"><p class="sub">{bt("Tap a world for its size, gravity, temperature, atmosphere and facts.", "")}</p>
 <div class="row"><input type="search" id="q" placeholder="{esc(tr("en", "searchHint"))}" aria-label="Search"></div></section>{secs}'''
     write('planets.html', shell('Planets and moons', 'ग्रह और चाँद', 'planets', body, 'Every planet, Pluto and nine major moons: diameter, gravity, temperature, day and year length, atmosphere and a life score.', canonical='planets.html', extra_head=f'<script defer src="assets/sheet.js?v={asset_v()}"></script>'))
 
 
 def simple_pages():
     # solar system
-    body = f'''<section class="blk"><h1>{bi("solarSystemTitle")}</h1><p class="sub">{bt("NASA Eyes-style 3D Solar System explorer: drag to rotate in 3D, scroll/pinch to zoom, and tap any planet or moon to fly the camera to it and see live telemetry below.", "NASA Eyes जैसा 3D लाइव सौरमंडल: घुमाने के लिए खींचें, ज़ूम करें, और किसी भी ग्रह या चंद्रमा पर क्लिक करके वहाँ उड़कर जाएँ व नीचे लाइव आँकड़े देखें।")}</p>
-<div class="eyes-wrap"><div class="eyes-chips" id="solChips"></div><div class="eyes-stage"><canvas id="solar"></canvas><div class="eyes-badge">● <span class="t" lang="en">EYES ON SOLAR SYSTEM · 3D LIVE</span><span class="t" lang="hi">3D लाइव सौरमंडल</span></div><button class="btn eyes-back" id="solBack" style="display:none">← {bi("spaceBack")}</button></div>
+    body = f'''<section class="blk"><h1>{bi("solarSystemTitle")}</h1><p class="sub">{bt("The planets where they really are today, in 3D. Drag to turn it, pinch or scroll to zoom, and tap a planet or moon to fly to it.", "NASA Eyes जैसा 3D लाइव सौरमंडल: घुमाने के लिए खींचें, ज़ूम करें, और किसी भी ग्रह या चंद्रमा पर क्लिक करके वहाँ उड़कर जाएँ व नीचे लाइव आँकड़े देखें।")}</p>
+<div class="eyes-wrap"><div class="eyes-chips" id="solChips"></div><div class="eyes-stage"><canvas id="solar"></canvas><div class="eyes-badge">● <span class="t" lang="en">SOLAR SYSTEM · 3D LIVE</span><span class="t" lang="hi">3D लाइव सौरमंडल</span></div><button class="btn eyes-back" id="solBack" style="display:none">← {bi("spaceBack")}</button></div>
 <div class="row" style="margin-top:12px"><button class="btn" id="solMonthBack">« {bi("monthBack")}</button><button class="btn" id="solPlay">▶</button><button class="btn" id="solToday"></button><button class="btn" id="solMonthFwd">{bi("monthForward")} »</button><b id="solDate"></b></div>
 <input type="range" id="solDay" min="-3650" max="3650" value="0" style="width:100%" aria-label="Date">
 <div class="card eyes-telemetry" id="solTelemetry"></div></div>
@@ -1049,20 +1047,19 @@ def simple_pages():
 <section class="blk" id="bday"><h2>🎂 {bi("setBirthDate")}</h2><div class="row"><input type="date" id="birth" aria-label="Birth date"></div><p class="note">{bt("Worked out in your browser. Nothing is sent or saved.", "आपके browser में ही निकाला जाता है। कुछ भेजा या save नहीं किया जाता।")}</p><div id="ageOut"></div><div id="bdOut"></div><div id="bsOut"></div><script type="application/json" id="bsStars">{myspace.birthday_stars()}</script></section>'''
     write('you.html', shell('Weight, age and birthday sky', 'वज़न, उम्र और जन्मदिन का आसमान', 'you', body, 'Your weight, jump height and age on every planet, the Moon and the planets on the day you were born, how far your birthday light has travelled, and a picture to share.', canonical='you.html', extra_head=f'<script defer src="assets/birthday.js?v={asset_v()}"></script>'))
     # quiz
-    body = f'''<section class="blk"><h1>{bi("quizTitle")}</h1><div id="daily" class="daily"></div></section>
-<section class="blk"><h2>{bt("Rounds for Space Points", "Space Points वाले rounds")}</h2><p class="sub">{bt("Real NASA photos, constellations, missions, bigger or smaller and best guess. Log in and every right answer earns Space Points.", "NASA की असली तस्वीरें, नक्षत्र, missions, बड़ा या छोटा और अंदाज़ा। Log in करें तो हर सही जवाब पर Space Points मिलते हैं।")}</p><div id="rounds"></div></section>
+    body = pghero('How well do you know', 'space?', 'Daily 5: the same five questions for everyone, every day. Then rounds of real NASA photos, constellations and missions for Space Points and badges.', [('Play Daily 5 ↓', '#daily'), ('Rounds for Space Points ↓', '#rounds')], 'img/space/gx-webb.webp', 'Galaxies seen by the James Webb Space Telescope') + f'''<section class="blk"><h2 class="sr-only">Daily 5</h2><div id="daily" class="daily"></div></section>
+<section class="blk" id="rounds"><h2>{bt("Rounds for Space Points", "Space Points वाले rounds")}</h2><p class="sub">{bt("Real NASA photos, constellations, missions, bigger or smaller and best guess. Log in and every right answer earns Space Points.", "NASA की असली तस्वीरें, नक्षत्र, missions, बड़ा या छोटा और अंदाज़ा। Log in करें तो हर सही जवाब पर Space Points मिलते हैं।")}</p><div id="rounds"></div></section>
 <section class="blk"><h2>{bt("Practice", "अभ्यास")}</h2><div id="quiz"></div></section>'''
     write('quiz.html', shell('Space quiz', 'अंतरिक्ष quiz', 'quiz', body, 'A space quiz: real NASA photos, constellations, missions, bigger or smaller, best guess and planet levels, with Space Points and a leaderboard.', canonical='quiz.html', extra_head=f'<script defer src="assets/quiz-bank.js?v={asset_v()}"></script><script defer src="assets/rounds.js?v={asset_v()}"></script>'))
     # sky
-    body = f'''<section class="blk"><h1>{bi("skyTitle")}</h1><div class="card" id="moonNow"></div></section>
-<section class="blk"><h2>{bt("Planets tonight", "आज रात के ग्रह")}</h2><div class="card" id="planetsTonight"></div></section>
+    body = f'''<section class="blk"><h1>{bt("What planets are visible tonight?", "What planets are visible tonight?")}</h1><p class="sub">{bt("Pick your city to see which planets are up tonight, where to look and when, with sunset and the Moon.", "")}</p>{city_picker('')}</section>
+<section class="blk"><h2>{bt("The Moon tonight", "The Moon tonight")}</h2><div class="card" id="moonNow"></div></section>
 <section class="blk"><h2>{bi("moonCalendar")}</h2><div class="row"><button class="btn" id="calPrev">‹ {bi("previousMonth")}</button><b id="calTitle"></b><button class="btn" id="calNext">{bi("nextMonth")} ›</button></div><div class="moons" id="calGrid"></div><div id="calPhases" style="margin-top:14px"></div><p class="note">{bi("moonCalendarNote")}</p></section>
 <section class="blk"><h2>{bi("eventsTitle")}</h2><p class="sub">{bt("Meteor shower peaks for the next 12 months, with how bright the Moon will be on the peak night.", "अगले 12 महीनों में उल्कापात के चरम दिन, और उस रात चाँद कितना चमकीला होगा।")}</p><div class="grid" id="showers"></div></section>
-<section class="blk callout"><b>🔭 Night sky tonight, city by city:</b> <a href="tonight.html">planets, Moon and sunset for 50 cities →</a></section>
 <section class="blk callout"><b>{bt("Want it for your city?", "अपने शहर के लिए चाहिए?")}</b> {bt("My space shows sunset, moonrise and the planets you can see tonight from your city, and the space station page shows when the ISS flies over you.", "My space में आपके शहर का सूर्यास्त, चाँद का उगना और आज रात दिखने वाले ग्रह हैं, और अंतरिक्ष स्टेशन वाला page बताता है कि ISS आपके ऊपर से कब गुज़रेगा।")} <a href="my-space.html">{bt("Open My space", "My space खोलें")}</a> · <a href="iss.html">{bt("Space station passes", "अंतरिक्ष स्टेशन कब दिखेगा")}</a></section>'''
-    write('sky.html', shell('What planets are visible tonight? Moon phase and night sky', 'चाँद और आसमान', 'sky', body, "What planets can I see tonight? The planets up tonight from your city, the Moon phase and calendar, and the next meteor showers.", canonical='sky.html'))
+    write('sky.html', shell('What planets are visible tonight? Moon phase and night sky', 'चाँद और आसमान', 'sky', body, "What planets can I see tonight? The planets up tonight from your city, the Moon phase and calendar, and the next meteor showers.", canonical='sky.html', extra_head=f'<script defer src="assets/citypick.js?v={asset_v()}"></script>'))
     # spacecraft
-    body = f'''<section class="blk"><h1>{bi("spacecraftTitle")}</h1><p class="sub">{bi("spacecraftSubtitle")}</p><div class="card cmap" id="craftMap"></div><div class="card ladder" id="craftLadder"></div><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))" id="craft"></div><p class="note">{bi("spacecraftNote")}</p></section>
+    body = pghero('Where are the', 'spacecraft now?', 'Voyager 1 is a full light-day from home. See where it and seven other spacecraft are right now, how fast they move and how long their signals take.', [('Open the map ↓', '#craftMap'), ('All space missions', 'missions.html')], 'img/space/pic-paleblue.webp', 'The Pale Blue Dot photo taken by Voyager 1') + f'''<section class="blk"><div class="card cmap" id="craftMap"></div><div class="card ladder" id="craftLadder"></div><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))" id="craft"></div><p class="note">{bi("spacecraftNote")}</p></section>
 <script>window.ASTRYL_CRAFTPICS={json.dumps({k: '<div class="mphotos">' + ''.join(spacephotos.figure(p, '', bt, esc, cls='mphoto') for p in v) + '</div>' for k, v in missionphotos.CRAFT.items()}, ensure_ascii=False).replace('</', '<\\/')};</script>'''
     write('spacecraft.html', shell('Spacecraft now', 'अंतरिक्ष यान अभी', 'missions', body, 'How far Voyager 1, Voyager 2, New Horizons, JWST, the ISS, Hubble and the Mars rovers are from Earth right now.', canonical='spacecraft.html'))
     # missions
@@ -1213,12 +1210,12 @@ def pwa_files():
         'icons': [{'src': '/img/icons/icon-192.png', 'sizes': '192x192', 'type': 'image/png'},
                   {'src': '/img/icons/icon-512.png', 'sizes': '512x512', 'type': 'image/png'},
                   {'src': '/img/icons/maskable-512.png', 'sizes': '512x512', 'type': 'image/png', 'purpose': 'maskable'}],
-        'shortcuts': [{'name': 'Tonight in your city', 'url': '/my-space.html'}, {'name': 'Space station passes', 'url': '/iss.html'}, {'name': 'Quiz', 'url': '/quiz.html'}],
+        'shortcuts': [{'name': 'Tonight in your city', 'url': '/tonight.html'}, {'name': 'Space station passes', 'url': '/iss.html'}, {'name': 'Quiz', 'url': '/quiz.html'}],
     }
     (OUT / 'manifest.webmanifest').write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding='utf-8')
     v = asset_v()
     core = ['/', '/index.html', '/offline.html', '/planets.html', '/assets/icon.svg', '/img/icons/icon-192.png']
-    core += [f'/assets/{n}?v={v}' for n in ('style.css', 'data.js', 'app.js', 'account.js', 'me.js', 'fx.js', 'pwa.js', 'cosmos.js', 'tonight.js', 'apod.js')]
+    core += [f'/assets/{n}?v={v}' for n in ('style.css', 'data.js', 'app.js', 'account.js', 'me.js', 'fx.js', 'pwa.js', 'icons.js', 'citypick.js', 'home.js', 'apod.js')]
     core += [f'/fonts/{f.replace(".ttf", ".woff")}' for f in FONT_FILES]
     sw = (SRC / 'sw.js').read_text(encoding='utf-8').replace("'__VERSION__'", json.dumps(v)).replace('__CORE__', json.dumps(core))
     (OUT / 'sw.js').write_text(sw, encoding='utf-8')
@@ -1269,7 +1266,8 @@ def main():
     for old in OUT.glob('*.html'):
         old.unlink()
     (OUT / 'assets').mkdir(parents=True, exist_ok=True)
-    shutil.copy(SRC / 'style.css', OUT / 'assets/style.css')
+    (OUT / 'assets/style.css').write_text((SRC / 'style.css').read_text(encoding='utf-8') + '\n/* line icons (tools/icons.py) */\n' + icons.css(), encoding='utf-8')
+    (OUT / 'assets/icons.js').write_text('window.ASTRYL_IC=' + json.dumps(icons.js_map(), ensure_ascii=False) + ';\n' + (SRC / 'icons.js').read_text(encoding='utf-8'), encoding='utf-8')
     shutil.copy(SRC / 'app.js', OUT / 'assets/app.js')
     shutil.copy(SRC / 'account.js', OUT / 'assets/account.js')
     shutil.copy(SRC / 'cosmos.js', OUT / 'assets/cosmos.js')
@@ -1280,7 +1278,7 @@ def main():
     shutil.copy(SRC / 'learn.js', OUT / 'assets/learn.js')
     shutil.copy(SRC / 'universe.js', OUT / 'assets/universe.js')
     shutil.copytree(site_data.CITIES, OUT / 'assets' / 'cities')
-    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'blog.js', 'discover.js'):
+    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'blog.js', 'discover.js', 'citypick.js'):
         shutil.copy(SRC / name, OUT / 'assets' / name)
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#fbf7ee"/><circle r="30" fill="#1b3a8a"/><ellipse rx="50" ry="15" fill="none" stroke="#6a45d6" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#1b3a8a"/></svg>', encoding='utf-8')
@@ -1302,7 +1300,7 @@ def main():
     for i, b in enumerate(BODIES):
         body_page(b, i)
     index_page(); planets_page(); simple_pages(); community_pages(); maps_page(); get_page(); account_page(); not_found(); pwa_files()
-    helpers = dict(bt=bt, bi=bi, raw2=raw2, shell=shell, write=write, esc=esc, fmt=fmt, asset_v=asset_v, SITE=SITE, ROOT=ROOT, orbits=ORBITS)
+    helpers = dict(bt=bt, bi=bi, raw2=raw2, shell=shell, write=write, esc=esc, fmt=fmt, asset_v=asset_v, SITE=SITE, ROOT=ROOT, orbits=ORBITS, city_picker=city_picker)
     tonight_urls = tonight.build(helpers)
     deep = deepspace.build(helpers) + galaxies.build(helpers) + stars.build(helpers) + lab.build(helpers) + universe.build(helpers) + learn.build(helpers) + umap.build(helpers) + myspace.build(helpers) + skyevents.build(helpers) + students.build(helpers) + telescope.build(helpers) + iss.build(helpers) + blog.build(helpers) + legal.build(helpers)
     urls = ['', 'community.html', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'privacy.html', 'account.html', 'black-holes.html', 'galaxies.html'] + deep + [f'body/{b["id"]}.html' for b in BODIES]

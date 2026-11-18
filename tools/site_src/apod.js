@@ -16,7 +16,7 @@
     try { return new Date(s + 'T12:00:00Z').toLocaleDateString(hi ? 'hi-IN' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) { return s; }
   }
   function draw(a) {
-    if (!a || !a.title) { box.innerHTML = '<h3>📷 ' + bi('Space photo of the day', 'आज की अंतरिक्ष तस्वीर') + '</h3><p class="note">' + bi('Could not load today’s photo. Please try again later.', 'आज की तस्वीर load नहीं हो पाई। कृपया बाद में फिर कोशिश कीजिए।') + '</p>'; return; }
+    if (!a || !a.title) { if (box.closest('.daily2') && document.getElementById('homeCommunity')) { box.hidden = true; return; } box.innerHTML = '<h3>📷 ' + bi('Space photo of the day', 'आज की अंतरिक्ष तस्वीर') + '</h3><p class="note">' + bi('Could not load today’s photo. Please try again later.', 'आज की तस्वीर load नहीं हो पाई। कृपया बाद में फिर कोशिश कीजिए।') + '</p>'; return; }
     var img = nasa(a.url), page = nasa(a.page) || 'https://science.nasa.gov/apod/', text = String(a.explanation || ''), short = text.length > 320 ? text.slice(0, text.lastIndexOf(' ', 300)) + '…' : text;
     var h = '<h3>📷 ' + bi('Space photo of the day', 'आज की अंतरिक्ष तस्वीर') + '</h3>';
     if (img) h += '<a class="apodimg" href="' + esc(nasa(a.hdurl) || img) + '" target="_blank" rel="noopener"><img src="' + esc(img) + '" alt="' + esc(a.title) + '" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.style.display=\'none\'"></a>';
