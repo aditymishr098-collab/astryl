@@ -1154,7 +1154,7 @@ MAP_CREDIT = {
 def community_pages():
     cfg = json.loads((ROOT / 'supabase/functions/community/config.json').read_text(encoding='utf-8'))
     v = asset_v()
-    body = f'''<section class="blk cmhero"><div class="cmherobg" aria-hidden="true"></div><div class="cmherotx"><span class="cmeyebrow">👥 Astryl Community</span>
+    body = f'''<section class="blk cmhero slim"><div class="cmherobg" aria-hidden="true"></div><div class="cmherotx"><span class="cmeyebrow">👥 Astryl Community</span>
 <h1>{bt("Share the sky. Ask the universe.", "आसमान बाँटिए। ब्रह्मांड से पूछिए।")}</h1>
 <p class="sub">{bt("Photos of the Moon, planets and stars taken by space lovers, and a place to ask and answer anything about space.", "अंतरिक्ष के शौक़ीनों की खींची चाँद, ग्रहों और तारों की फ़ोटो, और अंतरिक्ष के बारे में कुछ भी पूछने और जवाब देने की जगह।")}</p>
 <div class="btns"><button type="button" class="btn primary" data-new="photo">📷 {bt("Share a photo", "फ़ोटो भेजिए")}</button><button type="button" class="btn" data-new="post">❓ {bt("Ask a question", "सवाल पूछिए")}</button><a class="btn" id="cmMe" hidden href="profile.html">👤 {bt("My profile", "My profile")}</a><a class="btn" id="cmAdmin" hidden href="moderate.html">🛡️ {bt("Moderation queue", "Moderation queue")}</a></div>
