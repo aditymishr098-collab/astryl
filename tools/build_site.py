@@ -1289,6 +1289,8 @@ def main():
     (OUT / 'CNAME').write_text('astryl.space\n', encoding='utf-8')
     (OUT / '.nojekyll').write_text('', encoding='utf-8')
     (OUT / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n', encoding='utf-8')
+    # Google Search Console ownership check (not a secret)
+    (OUT / 'googlec7b6e53400a8007d.html').write_text('google-site-verification: googlec7b6e53400a8007d.html', encoding='utf-8')
     PHOTO.update(photos.build(OUT)); PHOTO_CREDIT.update(photos.credits())
     spacephotos.build(OUT)
     surface_maps()
