@@ -189,7 +189,6 @@ a5741caf	A planetary nebula fades in only about 10,000 to 20,000 years, a blink 
 622d8621	A point-lens model, not a full ray-traced image: real black holes also show an accretion disk and the photon ring. The orange circle marks the Einstein radius.
 586cc2dc	A proton
 e48cbfcf	A quiet shower right at the winter solstice.
-37e5c23d	A real photo or a fact from somewhere in space, picked at random.
 dc955c04	A red blood cell
 2b510cd6	A red dwarf lives so long that not one has died yet: the universe is only 13.8 billion years old.
 c03047ee	A region where gravity is so strong that nothing, not even light, can escape from inside its event horizon.
@@ -266,6 +265,7 @@ d5b567a2	After midnight until dawn.
 f178054b	After the Big Bang, about 13.8 billion years ago, the universe was a nearly smooth mix of gas and dark matter. Slightly denser spots pulled in more matter. Gas fell into them and the first stars lit up a few hundred million years later.
 1dc5c3f9	Air Pump
 73a29bff	Aldebaran
+6fdbe08f	All 50 cities
 d3cfba3e	All 88
 0d696cb4	All 88 constellations, drawn as you see them when you face them in the sky: north up and east to the left. Bigger dots are brighter stars; faint dots are the stars around them.
 9a1d59ec	All 88 constellations, true to the sky
@@ -449,7 +449,6 @@ ff174d64	Crab
 8d490ff3	Crab Pulsar
 46d43046	Cracks and ridges keep renewing the ice; plumes of water may escape.
 91c18a5d	Crane
-42369faa	Create account
 e4b0f54e	Crewed landing
 e76b449b	Cross
 514d599e	Crow
@@ -512,7 +511,6 @@ bd26ebab	Early on
 50d288c5	Early on (unsure)
 e738af8b	Earn the Black hole explorer badge:
 5cdd21c9	Earth
-6f8d9941	Earth and the Moon
 6c778967	Earth grew from rocky planet seeds that collided and merged. Heavy iron sank to form the core. A Mars-sized body called Theia then hit the young Earth, and the debris formed the Moon.
 dcb83c01	Earth is not a perfect ball. It bulges a little at the equator because it spins.
 a36e1218	Earth is the only place we know with life, and about 71% of its surface is covered by water.
@@ -552,18 +550,17 @@ b7503050	Europa formed from rock and ice in the disk around Jupiter. Heat from t
 653f9b82	Every direction you can move points toward the centre, like time itself flowing that way.
 561338ac	Every eclipse until 2029, times for your city
 b95fe6f1	Every eclipse until the end of 2029 and the year's best meteor showers, with times for your city and a calendar file for your phone.
-8e5d31ef	Every planet in its real place today. Keep scrolling and time moves forward. Distances are squeezed so the inner planets stay visible.
 5c196b3e	Every star has a
 81b3d818	Every star is a sun. Some are much bigger than ours, though most are smaller, and all are so far away that they look like points. The nearest star after the Sun, Proxima Centauri, is about 4.2 light-years away: its light takes over four years to reach us.
 eb18611a	Every star starts as a cold, dark cloud. Gravity does the rest.
 2cac5b27	Every world has an escape speed: how fast you must go to leave it for good. From Earth it is about 11 km per second. Squeeze the same mass into a smaller and smaller ball and the escape speed keeps growing.
 2f65c76f	Everything is here on astryl.space, in your browser. Taking you to the home page…
+0709d78b	Everything on Astryl starts from one of these.
 c472c149	Exactly what tipped Uranus over, and why it gives off so little inner heat, is still unknown. Only Voyager 2 has visited, in 1986.
 0a527305	Example
 fb1837ba	Exoplanet
+1819001b	Explore
 5eccfc62	Explore and learn
-9b90d4f1	Explore space
-e7c7ff6d	Explore the
 422d3f8e	Eyepiece
 a11a3089	Eyepiece focal length (mm)
 ae6e9b63	Eyes
@@ -608,8 +605,6 @@ ca231f7b	For your city
 c4aade76	Formed
 65462b61	Four kinds at a glance
 f365c835	Four words to remember
-b24ce0cd	Free
-791d1097	Free account: your favourites, scores and streak are kept on every device.
 7bb1f8d3	From a cold cloud of gas and dust to a shining star.
 80b0c661	From a proton to everything we can see
 5c9e2532	From a proton to everything we can see, in 18 steps. Each step is a size or a distance. Use the arrows or the slider.
@@ -687,7 +682,6 @@ bceff069	How black holes form
 ee2380c9	How far Voyager and JWST are now
 b53871a4	How far is far?
 20fd5f3a	How far is it?
-04a17158	How far some famous spacecraft are from Earth right now.
 04ff1089	How fast the universe expands: about 70 km per second for every megaparsec of distance. The exact value is still debated.
 d077cbc6	How galaxies grew from the first ones, and what happens when they meet.
 474961a1	How long does sunlight take to reach the Earth?
@@ -914,7 +908,6 @@ e62d1bf5	My space shows sunset, moonrise and the planets you can see tonight fro
 384c34e0	My space: add to calendar
 5811bc98	Myths
 d138edfc	Myths and big questions
-bbfb6399	NASA Eyes-style 3D Solar System explorer: drag to rotate in 3D, scroll/pinch to zoom, and tap any planet or moon to fly the camera to it and see live telemetry below.
 49ee3087	Name
 a9394977	Near a black hole of about 10 Suns the stretching is deadly well before the horizon. Near a supermassive black hole like Sagittarius A* the horizon is so large that the stretching there is gentle: you could cross it without feeling anything special, and be torn apart only later, deeper inside.
 bc6af343	Near a black hole, time runs slower as seen from far away. Pick a mass and move the slider to set how close you hover, measured in horizon radii. At 1 you are at the event horizon.
@@ -947,8 +940,8 @@ b48ef75c	New post: time travel, what physics really allows
 d0b3a5fd	Next month
 11202b23	Next ~100 million years
 db5ca4cc	Next:
+5598b051	Night sky tonight
 1e9ef3ba	Nitrogen
-ac6bae59	No ads
 38f5a854	No clear shape, often from a merger or a pull from a neighbour. The Large Magellanic Cloud is one.
 94a5f181	No real atmosphere, it is almost a vacuum.
 053dbe4b	No term matches.
@@ -991,10 +984,7 @@ b1d08c67	Only from the southern hemisphere or near the equator
 a98b9d3e	Only part of the Moon enters Earth’s dark shadow, so a dark bite appears on one side of the full Moon.
 8c89b55f	Only share photos you took yourself.
 e7dfc660	Open My space
-c0227cef	Open source
-c1155394	Open the Moon calendar
 c2d81e68	Open the community
-30638e16	Open the full Solar System
 f0525aaf	Ophiuchus
 8a584259	Opportunity landed in January 2004 and worked for almost 15 years, though it was built for 90 days.
 909cea0c	Orange
@@ -1008,7 +998,6 @@ dbb71cee	Orionids meteor shower
 1d97b028	Our Galaxy's black hole
 bfaa9ec0	Our Milky Way
 37932c94	Our big neighbour, and the collision coming in billions of years.
-6763643a	Our galaxy
 19b73adf	Our home galaxy, seen from the inside.
 1cdae3af	Our home: a barred spiral with hundreds of billions of stars.
 62e5321b	Our neighbourhood
@@ -1076,6 +1065,7 @@ f43dd7f0	Photon sphere
 a9a13c3f	Photosynthesis raises oxygen in the atmosphere about 2.4 billion years ago.
 10dad8e7	Pick a telescope and an eyepiece to see the magnification, how much sky fits in view and roughly what the Moon, planets and deep-sky objects look like.
 fe472f18	Pick two planets to see them side by side.
+853b7307	Pick your city to see which planets are up tonight, where to look and when, with sunset and the Moon.
 18a95264	Planet 1 from the Sun
 563f87d4	Planet 2 from the Sun
 f0aa766c	Planet 3 from the Sun
@@ -1088,9 +1078,8 @@ d1498237	Planet quiz
 de38a410	Planet seeds merge; Earth grows and heats up.
 e532f541	Planetary nebula
 ceb07da5	Planets
-fa065e1b	Planets tonight
+f8346de2	Planets, Moon and sunset for your city
 015ba640	Planets, moons and where they are today
-d135618a	Planets, moons, stars and space missions: real positions and real numbers for any date.
 de3c731b	Play
 7c7954db	Play it step by step
 5d337bfd	Play the Daily 5 on the Quiz page, or the black hole and galaxy quiz.
@@ -1209,7 +1198,6 @@ dd0b2160	Share the sky. Ask the universe.
 cad722e7	Share your own photos of the Moon, planets and stars, ask anything about space and answer other people's questions.
 970da5f1	Shield
 973bbbfd	Ship Compass
-3ef2b566	Show me something
 670e2481	Show on the map
 e319c260	Shukla and Krishna paksha
 d9776f07	Sign up
@@ -1315,7 +1303,6 @@ aa0d528b	Surface
 d6bae364	Surface map
 b3ce83d2	Surface pressure
 5d598156	Surface temperature
-fdc2ecfc	Surprise me
 edc99319	Surveyor 1 was the first American soft landing on the Moon. It sent back more than 11,000 photos and showed that the ground was firm enough to land on.
 b8707884	Swan
 b7ce7c10	Take the Black hole quiz
@@ -1367,7 +1354,6 @@ e517c735	The Local Group
 a53fc84a	The Milky Way all around the sky, joined into one picture. We see our galaxy from inside, as a band of light.
 bc0ce969	The Milky Way band
 52b9d569	The Milky Way belongs to the Local Group, about 10 million light-years across, with more than 80 known galaxies. Two giants dominate it: the Milky Way and Andromeda. Most of the rest are dwarfs that orbit one of the two.
-34e13f43	The Milky Way holds hundreds of billions of stars. The Sun sits in one of its arms, about 26,000 light-years from the centre. Scroll to travel in.
 8da32bc4	The Milky Way is a barred spiral galaxy: a flat disk with a bar of stars across the middle and spiral arms winding out of its ends. The disk is only about 1,000 light-years thick, so it is far wider than it is tall. A faint halo of old stars and dark matter surrounds it.
 f56e86eb	The Milky Way may merge with Andromeda. A 2025 study gives it about even odds within 10 billion years, so it is not certain.
 ad2f0764	The Milky Way, Andromeda and beyond
@@ -1377,10 +1363,10 @@ cd03f279	The Moon
 4874971c	The Moon goes around the Earth about once a month (27.3 days). It has no light of its own: we see it because sunlight falls on it. It is about 3,84,000 km away, and the same side always faces us.
 d58fb10a	The Moon is a little too far from Earth to cover the Sun completely, so a bright “ring of fire” stays around it.
 c6d63389	The Moon is a satellite
-45425e31	The Moon is where it really is right now, and the Sun is on the side that lights it.
 001f1f5d	The Moon moves about 3.8 centimetres farther from Earth every year.
 ec2f9fb9	The Moon passes only through Earth’s faint outer shadow. It dims a little, often too little to notice without a camera.
 10c0679c	The Moon stops
+ec43623c	The Moon tonight
 62f2a1bb	The Moon’s path is tilted
 b7fd1f20	The Moon’s path is tilted by about 5° to the Earth’s path around the Sun. So most months the Moon passes a little above or below the line. Eclipses happen only when a new or full Moon falls near the points where the two paths cross. That lines up about twice a year, so each year has two to five solar eclipses and up to three lunar eclipses somewhere on Earth.
 e0bdfc4b	The Orion Nebula, photographed by Hubble.
@@ -1398,6 +1384,7 @@ cac5c575	The Sombrero Galaxy, a spiral seen almost edge-on, with a dark lane of 
 ff39c45b	The Sun always lights half of the Moon, just as it lights half of the Earth (day side). As the Moon goes around us, we see different amounts of that lit half. This changing shape is called the phase of the Moon.
 2833e5d5	The Sun and everything that goes around it.
 c732cb3e	The Sun and planets form
+13dcd4d2	The Sun and the planets
 8feb1f65	The Sun hides
 ff540cf3	The Sun holds 99.8% of all the mass in the solar system.
 b0183d2e	The Sun in ultraviolet light, from NASA's Solar Dynamics Observatory.
@@ -1515,6 +1502,8 @@ b8ee68ee	The outer layers may be blown away in a supernova. If the core left beh
 6fff97f1	The part of the universe whose light has had time to reach us, about 93 billion light-years across.
 09d1e523	The planet slowly cools and shrinks, wrinkling its crust into long cliffs.
 ce9cb503	The planets are where they are at this moment, from the orbit formulas of NASA JPL. Stars, black holes and galaxies sit at their real directions and distances. Sizes and shapes of galaxies come from the catalogue, and a black hole’s horizon is drawn at its real size when you zoom in on it.
+fe443f8e	The planets where they really are today, in 3D. Drag to turn it, pinch or scroll to zoom, and tap a planet or moon to fly to it.
+00e15807	The planets you can see, where to look, the Moon and sunset, worked out for your city tonight. Plus real photos and real numbers for everything in space.
 c8bce9f5	The point of no return
 47283b18	The quiet, beautiful end of stars like the Sun.
 ab28e520	The red eye of Taurus. A star a bit heavier than the Sun that has already become a giant.
@@ -1553,7 +1542,6 @@ cb09f658	This car-sized rover landed in Gale Crater using a rocket-powered sky c
 946db898	This is what the equations of general relativity say. Nobody has ever gone near a black hole, and what really happens at the very centre is an open question.
 ff55ddc1	This page drifted off into space.
 591a9736	This page has not been opened on this device yet, so it is not saved. Pages you have opened before still work, and everything else comes back when you are online again.
-6ce385f5	This website in numbers
 f638b238	Three neighbours that shape our days, months and years.
 002513b1	Tick it off in My space
 efd04762	Tidal heating melts a global ocean under the ice shell.
@@ -1571,7 +1559,6 @@ e2bb3f96	Titan
 2fe73664	Titan has rivers and lakes, but they hold liquid methane and ethane, not water.
 d30af567	Titan is the only moon with a thick atmosphere. Its air pressure at the surface is higher than on Earth.
 1dd1c5fb	Today
-302e13a0	Today in space
 5e5e3e5c	Tonight in your city
 3ccb253d	Tonight's sky
 1a2a120f	Too small to be a star: below about 8% of the Sun’s mass (about 80 Jupiters), the core never gets hot enough for hydrogen fusion. Such objects are called brown dwarfs, "failed stars".
@@ -1603,7 +1590,6 @@ e406e041	Typical mass
 70efcbb1	Under its icy shell, Europa probably holds about twice as much water as all of Earth's oceans.
 393eb740	Unicorn
 1e78dee4	Universe map
-2aeef800	Universe.
 88183b94	Unknown
 e9e53b69	Unknown; it grew slowly from icy bodies far from the Sun
 986f0816	Until recently
@@ -1666,11 +1652,13 @@ dea08d49	What is in the middle during a lunar eclipse?
 b90b098f	What it is
 33e611c6	What keeps Pluto active so far from the Sun? A hidden ocean under the ice is one possible answer.
 e0831f7e	What mainly causes the seasons?
+d4c281c3	What planets are visible tonight?
 a01ee55c	What stars are, and the patterns people have seen in them.
 f0b47bd9	What the pictures show is not the black hole itself but its dark shadow and the ring of glowing gas around it. The orange colour is added to show how bright each part is.
 c865ccfa	What to look for tonight, from your city
 09d05f13	What will happen to the Sun
 237ac087	What your eyes, binoculars and a small telescope can reach.
+5fb1d474	What’s in your
 67db1c56	When a Sun-like red giant has used up its fuel, it puffs its outer layers into space. The hot core lights the gas from inside, making a glowing shell of many colours. Early astronomers with small telescopes thought these round shapes looked like planets, so they are called planetary nebulae, though they have nothing to do with planets.
 35eb7a7d	When and how it formed
 c7d3bf87	When and how to watch
@@ -1693,7 +1681,6 @@ d10212c9	Where Apollo, Chang'e, Chandrayaan and others landed.
 2476a32d	Where it comes from
 1f4668d0	Where we are
 c267c6c9	Which of these makes its own light?
-a85cac62	Which planet is known for its Great Red Spot?
 cb22579d	Which planet is the largest?
 eec5b26f	Which star helps to find north?
 25a81701	White
@@ -1778,6 +1765,7 @@ a652def5	holes.
 de512999	millions to billions of Suns
 00c6cda5	over 30,000 K
 d0dcbd5c	roughly 50 million years
+dec491ef	sky tonight?
 153a4f6a	stars.
 6748319d	tens of billions of Suns
 d79725d9	the Quiz page has a Stars round.

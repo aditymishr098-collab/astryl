@@ -3,9 +3,9 @@
    - Scripts, styles, fonts and pictures of this site: from the cache first (their names carry a version).
    - Anything on other servers (account, NASA photo, orbit data) is never touched or stored here.
    Nothing about the visitor is stored or sent. */
-var VERSION = "273aa6484a";
+var VERSION = "7dea50c2ce";
 var CACHE = 'astryl-' + VERSION;
-var CORE = ["/", "/index.html", "/offline.html", "/planets.html", "/assets/icon.svg", "/img/icons/icon-192.png", "/assets/style.css?v=273aa6484a", "/assets/data.js?v=273aa6484a", "/assets/app.js?v=273aa6484a", "/assets/account.js?v=273aa6484a", "/assets/me.js?v=273aa6484a", "/assets/fx.js?v=273aa6484a", "/assets/pwa.js?v=273aa6484a", "/assets/cosmos.js?v=273aa6484a", "/assets/tonight.js?v=273aa6484a", "/assets/apod.js?v=273aa6484a", "/fonts/DMSans-Regular.woff", "/fonts/DMSans-Medium.woff", "/fonts/DMSans-Bold.woff", "/fonts/SpaceGrotesk-Medium.woff", "/fonts/SpaceGrotesk-Bold.woff"];
+var CORE = ["/", "/index.html", "/offline.html", "/planets.html", "/assets/icon.svg", "/img/icons/icon-192.png", "/assets/style.css?v=7dea50c2ce", "/assets/data.js?v=7dea50c2ce", "/assets/app.js?v=7dea50c2ce", "/assets/account.js?v=7dea50c2ce", "/assets/me.js?v=7dea50c2ce", "/assets/fx.js?v=7dea50c2ce", "/assets/pwa.js?v=7dea50c2ce", "/assets/icons.js?v=7dea50c2ce", "/assets/citypick.js?v=7dea50c2ce", "/assets/home.js?v=7dea50c2ce", "/assets/apod.js?v=7dea50c2ce", "/fonts/DMSans-Regular.woff", "/fonts/DMSans-Medium.woff", "/fonts/DMSans-Bold.woff", "/fonts/SpaceGrotesk-Medium.woff", "/fonts/SpaceGrotesk-Bold.woff"];
 
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(CORE); }).then(function () { return self.skipWaiting(); }));

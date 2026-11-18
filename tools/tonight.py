@@ -280,7 +280,7 @@ def next_events(day):
     return ecl, sh
 
 
-def page_body(n, esc):
+def page_body(n, esc, picker=''):
     slug, name, country, lat, lon, tzname = n['city']
     tz, day = n['tz'], n['day']
     date_txt = day.strftime('%A %-d %B %Y')
@@ -297,7 +297,7 @@ def page_body(n, esc):
          f'<div class="stat"><b>{hm(n["sunset"], tz)}</b><span>🌇 Sunset</span></div>'
          f'<div class="stat"><b>{hm(n["dark_start"], tz)}</b><span>🌌 Properly dark</span></div>'
          f'<div class="stat"><b>{hm(n["sunrise"], tz)}</b><span>🌅 Sunrise tomorrow</span></div>'
-         f'<div class="stat"><b>{moon_txt}</b><span>Moon</span></div></div></section>')
+         f'<div class="stat"><b>{moon_txt}</b><span>Moon</span></div></div>{picker}</section>')
     h += '<section class="blk"><h2>🪐 Planets you can see tonight</h2>'
     if eye:
         h += '<div class="tnplanets">'
@@ -345,7 +345,7 @@ def build(h):
     urls, rows = ['tonight.html'], []
     for c in CITIES:
         n = night(orbits, c, now)
-        body, summary, faq = page_body(n, esc)
+        body, summary, faq = page_body(n, esc, h['city_picker']('../', True))
         path = f'tonight/{c[0]}.html'
         ld = [{'@context': 'https://schema.org', '@type': 'FAQPage', 'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in faq]},
               {'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [
@@ -353,7 +353,7 @@ def build(h):
                   {'@type': 'ListItem', 'position': 2, 'name': 'Night sky tonight', 'item': SITE + '/tonight.html'},
                   {'@type': 'ListItem', 'position': 3, 'name': c[1], 'item': f'{SITE}/{path}'}]}]
         desc = f'Night sky tonight in {c[1]}, {n["day"].strftime("%-d %B %Y")}: {summary.lower() if summary.startswith("No") else summary}. Sunset {hm(n["sunset"], n["tz"])}, Moon {n["phase"].lower()} {round(n["lit"] * 100)}% lit.'
-        write(path, shell(f'Night sky tonight in {c[1]}: planets, Moon and sunset', '', 'sky', body, desc, depth=1, canonical=path, ld=ld))
+        write(path, shell(f'Night sky tonight in {c[1]}: planets, Moon and sunset', '', 'sky', body, desc, depth=1, canonical=path, ld=ld, extra_head=f'<script defer src="../assets/citypick.js?v={h["asset_v"]()}"></script>'))
         urls.append(path)
         rows.append((c, n, summary))
     # the hub
@@ -361,11 +361,11 @@ def build(h):
     for c, n, s in rows:
         by.setdefault(c[2], []).append((c, n, s))
     hub = ('<section class="blk"><h1>🔭 Night sky tonight</h1><p class="sub">Which planets you can see tonight, where to look, the Moon and sunset, for your city. Updated twice a day.</p>'
-           '<p><a class="btn primary" href="sky.html">📍 Use my exact place</a></p></section><section class="blk"><div class="tncities">')
+           + h['city_picker']('') + '</section><section class="blk"><div class="tncities">')
     for country in sorted(by, key=lambda k: (k not in ('India', 'United States', 'United Kingdom'), k)):
         hub += f'<div class="card"><h2>{esc(country)}</h2><ul>' + ''.join(
             f'<li><a href="tonight/{c[0]}.html"><b>{esc(c[1])}</b></a><small>{esc(s)} · sunset {hm(n["sunset"], n["tz"])}</small></li>' for c, n, s in by[country]) + '</ul></div>'
     hub += '</div></section>'
     write('tonight.html', shell('Night sky tonight: planets, Moon and sunset for your city', '', 'sky', hub,
-                                'What planets can I see tonight? Planets, Moon phase, moonrise and sunset tonight for 50 cities around the world, updated twice a day.', canonical='tonight.html'))
+                                'What planets can I see tonight? Planets, Moon phase, moonrise and sunset tonight for 50 cities around the world, updated twice a day.', canonical='tonight.html', extra_head=f'<script defer src="assets/citypick.js?v={h["asset_v"]()}"></script>'))
     return urls

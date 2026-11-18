@@ -1080,6 +1080,19 @@
   /* ---------- small API for cosmos.js (home page animation) ---------- */
   window.ASTRYL_API = { distKm: distFromEarthKm, setLang: setLang, langs: LANGS, helio: helio, moonEcl: moonEcl, moonPhase: moonPhase, sunLon: sunLon, bname: bname, t: t, onRender: onRender, lang: function () { return lang; } };
 
+  /* Phones: the menu button opens the whole menu (main links and More) under the header. */
+  (function () {
+    var btn = document.getElementById('menuBtn'), head = document.querySelector('header.top');
+    if (!btn || !head) return;
+    function set(open) {
+      head.classList.toggle('navopen', open); btn.setAttribute('aria-expanded', open);
+      var more = head.querySelector('details.more'); if (more) { if (open) more.setAttribute('open', ''); else more.removeAttribute('open'); }
+    }
+    btn.addEventListener('click', function (e) { e.stopPropagation(); set(!head.classList.contains('navopen')); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && head.classList.contains('navopen')) { set(false); btn.focus(); } });
+    document.addEventListener('click', function (e) { if (head.classList.contains('navopen') && !head.contains(e.target)) set(false); });
+  })();
+
   /* The More menu closes when you tap elsewhere or press Escape. */
   document.addEventListener('click', function (e) { document.querySelectorAll('details.more[open]').forEach(function (d) { if (!d.contains(e.target)) d.removeAttribute('open'); }); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') document.querySelectorAll('details.more[open]').forEach(function (d) { d.removeAttribute('open'); }); });
