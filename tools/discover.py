@@ -38,7 +38,7 @@ HISTORY = [
     (8, 6, 2012, 'The rover Curiosity landed on Mars, lowered to the ground by a rocket-powered “sky crane”.', 'body/mars.html'),
     (8, 12, 2018, 'Parker Solar Probe was launched. It is the fastest spacecraft ever built and flies through the Sun’s outer atmosphere.', 'body/sun.html'),
     (8, 20, 1977, 'Voyager 2 was launched. It is the only spacecraft that has visited Uranus and Neptune.', 'spacecraft.html'),
-    (8, 23, 2023, 'Chandrayaan-3 landed near the south pole of the Moon, making India the fourth country to land there.', 'maps.html'),
+    (8, 23, 2023, 'Chandrayaan-3 became the first mission to land near the Moon’s south pole, and India the fourth country to land on the Moon.', 'maps.html'),
     (8, 24, 2006, 'Astronomers voted on what a planet is, and Pluto became a dwarf planet.', 'body/pluto.html'),
     (8, 25, 2012, 'Voyager 1 crossed into interstellar space, the first human-made object to do so.', 'spacecraft.html'),
     (9, 5, 1977, 'Voyager 1 was launched. It is now the most distant thing humans have ever made.', 'spacecraft.html'),

@@ -907,3 +907,13 @@ body[data-page=account] main.wrap{max-width:none;padding:0 clamp(16px,3.2vw,48px
 .accard .fld input{width:100%;box-sizing:border-box;font:inherit;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card2);color:var(--text)}
 .accard .fld input:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent2) 22%,transparent)}
 .accard .fld small{display:block;color:var(--muted);margin-top:4px}
+
+/* ---------- night sky tonight ---------- */
+.tnplanets{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.tnp{display:flex;gap:14px;align-items:flex-start}.tnp img{width:56px;height:56px;border-radius:50%;flex:none}.tnp h3{margin:0 0 .3em}.tnp p{margin:.25em 0}
+a.card.tnev{display:flex;flex-direction:column;gap:4px;color:var(--text);text-decoration:none}.tnev small{color:var(--muted)}.tnev span{color:var(--muted);font-size:.93rem}
+.tnev:hover{border-color:var(--accent2);text-decoration:none}
+.tncities{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.tncities h2{margin:0 0 .5em;font-size:1.1rem}.tncities ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.tncities li{display:flex;flex-direction:column}.tncities small{color:var(--muted)}
+.tnhead .stats .stat b{font-size:1.15rem}

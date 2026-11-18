@@ -89,6 +89,20 @@ def slug_shower(sid):
     return ''.join('-' + ch.lower() if ch.isupper() else ch for ch in sid)
 
 
+def lunar_table(iso):
+    """Static table: can the middle of this lunar eclipse be seen from big cities, and at what local time."""
+    import datetime as dt
+    import tonight
+    t = dt.datetime.fromisoformat(iso)
+    rows = ''
+    for c in tonight.CITIES:
+        alt = tonight.Sky(None, c[3], c[4]).moon(t)[0]
+        lt = tonight.hm(t, tonight.ZoneInfo(c[5])) + ', ' + t.astimezone(tonight.ZoneInfo(c[5])).strftime('%-d %b')
+        rows += f'<tr><td><a href="../tonight/{c[0]}.html">{c[1]}</a></td><td>{lt}</td><td>{"✅ Yes, the Moon is " + str(round(alt)) + "° up" if alt > 2 else "❌ No, the Moon is below the horizon"}</td></tr>'
+    return ('<h3>Times in big cities</h3><div class="tscroll"><table class="cmp"><tr><th>City</th><th>Middle of the eclipse (local time)</th><th>Can it be seen?</th></tr>'
+            + rows + '</table></div>')
+
+
 def build(h):
     import json
     from dskit import Kit, article_ld
@@ -131,6 +145,7 @@ def build(h):
         if lunar:
             sec += H2('When and where it can be seen', 'कब और कहाँ दिखेगा') + P('A lunar eclipse can be seen from every place where the Moon is above the horizon at the time. The table shows the middle of the eclipse in local time.', 'चंद्र ग्रहण हर उस जगह से दिखता है जहाँ उस समय चाँद क्षितिज के ऊपर हो। Table में ग्रहण का बीच स्थानीय समय में है।')
             sec += f'<div id="evTable" data-cities=\'{json.dumps(TABLE_CITIES)}\'></div>'
+            sec += lunar_table(f'{iso}T{ut}:00+00:00')
             sec += k.callout('A lunar eclipse is completely safe to watch with your eyes, binoculars or a telescope.', 'चंद्र ग्रहण आँखों, दूरबीन या telescope से देखना पूरी तरह सुरक्षित है।')
         else:
             sec += H2('Where it can be seen', 'कहाँ दिखेगा') + P(wen, whi)
@@ -140,7 +155,7 @@ def build(h):
         body += k.keep_exploring('../', [('sky-events.html', '📅', 'All eclipses and meteor showers', 'सारे ग्रहण और उल्कापात'), ('my-space.html', '⭐', 'My space: add to calendar', 'My space: calendar में जोड़ें'), ('sky.html', '🌙', 'Moon calendar', 'चाँद का calendar'), ('learn/eclipses.html', '🎓', 'How eclipses work', 'ग्रहण कैसे होते हैं')])
         path = f'sky-events/{eid}.html'
         desc = f'{title_en}: date, time ({ut} UT), type and where it can be seen, with local times for your city.'
-        html = k.shell(title_en, title_hi, 'events', body, desc, depth=1, canonical=path, extra_head=head(1),
+        html = k.shell(title_en + ': date, time and where to see it', title_hi, 'events', body, desc, depth=1, canonical=path, extra_head=head(1),
                        ld=article_ld(k.site, title_en, desc, path, crumbs_hub + [(title_en, path)]) + [{'@context': 'https://schema.org', '@type': 'Event', 'name': title_en, 'startDate': f'{iso}T{ut}:00Z', 'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode', 'eventStatus': 'https://schema.org/EventScheduled', 'location': {'@type': 'Place', 'name': 'Sky', 'address': 'Earth'}, 'description': what[0], 'url': f'{k.site}/{path}'}])
         h['write'](path, html)
         pages.append(path)
@@ -170,7 +185,7 @@ def build(h):
         body += k.keep_exploring('../', [('sky-events.html', '📅', 'All eclipses and meteor showers', 'सारे ग्रहण और उल्कापात'), ('my-space.html', '👀', 'Tick it off in My space', 'My space में tick कीजिए'), ('sky.html', '🌙', 'Moon calendar', 'चाँद का calendar'), ('glossary.html', '📖', 'Space glossary', 'अंतरिक्ष शब्दकोश')])
         path = f'sky-events/{slug}.html'
         desc = f'{title_en}: when it peaks ({dy} {months_en[mo - 1]}), how many meteors to expect, where it comes from and how to watch it.'
-        html = k.shell(title_en, title_hi, 'events', body, desc, depth=1, canonical=path, extra_head=head(1), ld=article_ld(k.site, title_en, desc, path, crumbs_hub + [(title_en, path)]))
+        html = k.shell(title_en + ': peak date and how to watch', title_hi, 'events', body, desc, depth=1, canonical=path, extra_head=head(1), ld=article_ld(k.site, title_en, desc, path, crumbs_hub + [(title_en, path)]))
         h['write'](path, html)
         pages.append(path)
 
@@ -189,5 +204,5 @@ def build(h):
 <section class="blk"><h2>{bt("Eclipses", "ग्रहण")}</h2><div class="sc-grid">{"".join(ecl_card(e) for e in ECLIPSES)}</div></section>
 <section class="blk"><h2>{bt("Meteor showers every year", "हर साल के उल्कापात")}</h2><div class="sc-grid">{"".join(sh_card(s) for s in SHOWERS)}</div></section>'''
     desc = 'Every solar and lunar eclipse until 2029 and the main meteor showers: dates, times for your city, where to see them and how to watch safely.'
-    h['write']('sky-events.html', k.shell('Eclipses and meteor showers', 'ग्रहण और उल्कापात', 'events', body, desc, canonical='sky-events.html', ld=article_ld(k.site, 'Eclipses and meteor showers', desc, 'sky-events.html', crumbs_hub)))
+    h['write']('sky-events.html', k.shell('Next eclipses and meteor showers: dates and times', 'ग्रहण और उल्कापात', 'events', body, desc, canonical='sky-events.html', ld=article_ld(k.site, 'Eclipses and meteor showers', desc, 'sky-events.html', crumbs_hub)))
     return ['sky-events.html'] + pages
