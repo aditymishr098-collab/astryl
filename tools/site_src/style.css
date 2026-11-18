@@ -999,3 +999,26 @@ body[data-page=community] main.wrap{max-width:1680px;padding-left:clamp(14px,3vw
 @media(min-width:1100px){.cmplist{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}.cmplist .post{margin:0}}
 @media(max-width:820px){.cmhero.slim h1{font-size:1.3rem}.cmhero.slim .btns{gap:8px;flex-wrap:nowrap}.cmhero.slim .btns .btn{padding:8px 12px;font-size:.9rem;white-space:nowrap}.cmhero.slim .cmherotx{padding:14px 16px}}
 @media(max-width:360px){.cmhero.slim .btns .btn[data-new=post]{display:none}}
+/* How we move through space */
+.jylive{margin-top:14px;padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:var(--card)}
+.jylive .note{margin:0 0 8px}
+.jyctr{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.jyctr div{display:flex;flex-direction:column}
+.jyctr b{font:700 clamp(1.15rem,2.6vw,1.5rem) "Space Grotesk","DM Sans",sans-serif;font-variant-numeric:tabular-nums;color:var(--accent2)}
+.jyctr span{color:var(--muted);font-size:.85rem}
+.jywrap{position:relative;direction:ltr}
+.jywrap canvas{display:block;width:100%;height:clamp(440px,70vh,760px);border-radius:14px;border:1px solid var(--line);background:#03050a;touch-action:pan-y;outline-offset:3px}
+.jy .umchips button[aria-pressed=true]{border-color:var(--accent);color:var(--text);background:color-mix(in srgb,var(--accent) 18%,var(--card))}
+.jybtns{display:flex;gap:8px;flex-wrap:wrap}
+.jybtns [hidden]{display:none}
+.jyinfo{margin-top:6px}
+.jyinfo h2{margin:0 0 4px;font-size:1.15rem}
+.jyinfo p{margin:0;color:var(--muted)}
+.tblwrap{overflow-x:auto}
+.jyfaq{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;background:var(--card)}
+.jyfaq summary{cursor:pointer;font-weight:600}
+.jyfaq p{margin:8px 0 0}
+@media(max-width:620px){.jywrap canvas{height:clamp(420px,72vh,620px)}}
+.jylegend{margin:10px 0 0;padding-left:1.4em;color:var(--muted);font-size:.9rem}
+.jylegend b{filter:brightness(.9)}
+:root[data-theme=light] .jylegend b{filter:brightness(.6)}

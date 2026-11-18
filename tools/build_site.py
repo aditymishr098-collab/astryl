@@ -15,6 +15,7 @@ import icons
 import tonight
 import discover
 import legal
+import journey
 import lab
 import umap
 import myspace
@@ -415,7 +416,7 @@ def asset_v():
     '''A short hash of the scripts and styles, so a changed file is never served from an old cache.'''
     if not _ASSET_V:
         h = hashlib.md5()
-        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'blog.js', 'discover.js', 'citypick.js', 'icons.js', 'sw.js'):
+        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'blog.js', 'discover.js', 'citypick.js', 'icons.js', 'journey.js', 'sw.js'):
             h.update((SRC / name).read_bytes())
         h.update((ROOT / 'tools' / 'formation.py').read_bytes())
         h.update((ROOT / 'tools' / 'icons.py').read_bytes())
@@ -719,6 +720,7 @@ REL_CARDS = {
     'black-hole-lab.html': ('🧪', 'Black hole lab', 'Play with gravity, light and time'),
     'galaxies.html': ('🌌', 'Galaxies', 'The Milky Way, Andromeda and beyond'),
     'universe-map.html': ('🧭', 'Universe map', 'Fly through 3,600 real galaxies in 3D'),
+    'how-we-move.html': ('🌀', 'How we move through space', 'The Sun, the Milky Way and Andromeda in motion'),
     'cosmic-scale.html': ('📏', 'Scale of the universe', 'From a proton to everything we can see'),
     'universe-timeline.html': ('⏳', 'Timeline of the universe', '13.8 billion years in one year'),
     'glossary.html': ('📖', 'Glossary', 'Space words, explained simply'),
@@ -746,7 +748,8 @@ REL = {
     'black-holes.html': ['black-holes-101.html', 'black-hole-lab.html', 'blog/time-travel.html', 'stars.html'],
     'black-holes-101.html': ['black-hole-lab.html', 'black-holes.html', 'deep-space-quiz.html', 'blog/time-travel.html'],
     'black-hole-lab.html': ['black-holes/falling-into-a-black-hole.html', 'black-holes-101.html', 'blog/time-travel.html', 'deep-space-quiz.html'],
-    'galaxies.html': ['universe-map.html', 'cosmic-scale.html', 'black-holes.html', 'stars.html'],
+    'galaxies.html': ['universe-map.html', 'how-we-move.html', 'cosmic-scale.html', 'black-holes.html'],
+    'how-we-move.html': ['universe-map.html', 'galaxies.html', 'cosmic-scale.html', 'solar-system.html'],
     'cosmic-scale.html': ['universe-timeline.html', 'universe-map.html', 'compare.html', 'galaxies.html'],
     'universe-timeline.html': ['cosmic-scale.html', 'blog/time-travel.html', 'stars/life-of-a-star.html', 'galaxies.html'],
     'glossary.html': ['learn.html', 'quiz.html', 'stars.html', 'blog.html'],
@@ -1278,7 +1281,7 @@ def main():
     shutil.copy(SRC / 'learn.js', OUT / 'assets/learn.js')
     shutil.copy(SRC / 'universe.js', OUT / 'assets/universe.js')
     shutil.copytree(site_data.CITIES, OUT / 'assets' / 'cities')
-    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'blog.js', 'discover.js', 'citypick.js'):
+    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'blog.js', 'discover.js', 'citypick.js', 'journey.js'):
         shutil.copy(SRC / name, OUT / 'assets' / name)
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#fbf7ee"/><circle r="30" fill="#1b3a8a"/><ellipse rx="50" ry="15" fill="none" stroke="#6a45d6" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#1b3a8a"/></svg>', encoding='utf-8')
@@ -1302,7 +1305,7 @@ def main():
     index_page(); planets_page(); simple_pages(); community_pages(); maps_page(); get_page(); account_page(); not_found(); pwa_files()
     helpers = dict(bt=bt, bi=bi, raw2=raw2, shell=shell, write=write, esc=esc, fmt=fmt, asset_v=asset_v, SITE=SITE, ROOT=ROOT, orbits=ORBITS, city_picker=city_picker)
     tonight_urls = tonight.build(helpers)
-    deep = deepspace.build(helpers) + galaxies.build(helpers) + stars.build(helpers) + lab.build(helpers) + universe.build(helpers) + learn.build(helpers) + umap.build(helpers) + myspace.build(helpers) + skyevents.build(helpers) + students.build(helpers) + telescope.build(helpers) + iss.build(helpers) + blog.build(helpers) + legal.build(helpers)
+    deep = deepspace.build(helpers) + galaxies.build(helpers) + stars.build(helpers) + lab.build(helpers) + universe.build(helpers) + learn.build(helpers) + umap.build(helpers) + myspace.build(helpers) + skyevents.build(helpers) + students.build(helpers) + telescope.build(helpers) + iss.build(helpers) + blog.build(helpers) + legal.build(helpers) + journey.build(helpers)
     urls = ['', 'community.html', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'privacy.html', 'account.html', 'black-holes.html', 'galaxies.html'] + deep + [f'body/{b["id"]}.html' for b in BODIES]
     today = datetime.date.today().isoformat()
     urls = urls + [u for u in tonight_urls if u not in urls]
