@@ -375,7 +375,22 @@ def planet_svg(b, size=100, uid=''):
 
 
 def logo_svg():
-    return '<svg viewBox="0 0 120 120" aria-hidden="true"><rect width="120" height="120" rx="28" fill="#10141f" stroke="#222a3d" stroke-width="4"/><g transform="rotate(-22 60 60)"><ellipse cx="60" cy="60" rx="44" ry="17" fill="none" stroke="#5b9bff" stroke-width="5" opacity=".75"/><circle cx="60" cy="60" r="19" fill="#f5a524"/><path d="M16,60 A44,17 0 0 0 104,60" fill="none" stroke="#5b9bff" stroke-width="5"/><circle cx="104" cy="60" r="7.5" fill="#7db0ff"/></g></svg>'
+    """The Astryl mark: the "diamond ring" of a total eclipse, on a dark tile so it reads on any theme."""
+    return ('<svg viewBox="0 0 120 120" aria-hidden="true"><rect x="1.5" y="1.5" width="117" height="117" rx="28" fill="#0a0907" stroke="#2b2416" stroke-width="3"/>'
+            '<circle cx="60" cy="62" r="33" fill="none" stroke="#E7C27A" stroke-opacity=".28" stroke-width="7"/>'
+            '<circle cx="60" cy="62" r="31" fill="none" stroke="#E7C27A" stroke-width="3.2"/><circle cx="60" cy="62" r="29.4" fill="#000"/>'
+            '<circle cx="79.9" cy="38.3" r="9" fill="#FFF3D1" opacity=".35"/>'
+            '<line x1="64" y1="38.3" x2="96" y2="38.3" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>'
+            '<line x1="79.9" y1="24" x2="79.9" y2="52" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>'
+            '<circle cx="79.9" cy="38.3" r="5" fill="#fff"/></svg>')
+
+
+# the favicon: the same mark, simpler and bolder so it still reads at 16 pixels
+ICON_SVG = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#000"/>'
+            '<circle cx="50" cy="52" r="30" fill="none" stroke="#E7C27A" stroke-width="7"/><circle cx="50" cy="52" r="26.5" fill="#000"/>'
+            '<line x1="55" y1="29" x2="84" y2="29" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/>'
+            '<line x1="69.3" y1="16" x2="69.3" y2="42" stroke="#fff" stroke-width="3" stroke-linecap="round"/>'
+            '<circle cx="69.3" cy="29" r="8" fill="#fff"/></svg>')
 
 
 def cons_svg(c):
@@ -570,20 +585,34 @@ def make_og(name, title):
     f_title = ImageFont.truetype(str(fonts / 'SpaceGrotesk-Bold.ttf'), 82)
     f_small = ImageFont.truetype(str(fonts / 'DMSans-Medium.ttf'), 32)
     d = ImageDraw.Draw(img)
-    d.text((70, 60), 'Astryl', font=f_brand, fill=(122, 162, 255))
-    words, lines, cur = title.split(), [], ''
-    for w in words:
-        t = (cur + ' ' + w).strip()
-        if d.textlength(t, font=f_title) > 600 and cur:
-            lines.append(cur)
-            cur = w
-        else:
-            cur = t
-    lines.append(cur)
-    y = 250 - (len(lines) - 1) * 46
+    # the mark: a black Moon with a gold rim and one bright point (the eclipse "diamond ring")
+    mx, my, mr = 96, 84, 24
+    d.ellipse([mx - mr - 3, my - mr - 3, mx + mr + 3, my + mr + 3], fill=(231, 194, 122))
+    d.ellipse([mx - mr, my - mr, mx + mr, my + mr], fill=(0, 0, 0))
+    dx, dy = mx + int(mr * 0.66), my - int(mr * 0.78)
+    d.line([dx - 15, dy, dx + 15, dy], fill=(255, 255, 255), width=2)
+    d.line([dx, dy - 11, dx, dy + 11], fill=(255, 255, 255), width=2)
+    d.ellipse([dx - 5, dy - 5, dx + 5, dy + 5], fill=(255, 255, 255))
+    d.text((134, 60), 'Astryl', font=f_brand, fill=(235, 214, 166))
+    # wrap the title into at most three lines, using a smaller size for long titles
+    for size in (82, 70, 60):
+        f_title = ImageFont.truetype(str(fonts / 'SpaceGrotesk-Bold.ttf'), size)
+        words, lines, cur = title.split(), [], ''
+        for w in words:
+            t = (cur + ' ' + w).strip()
+            if d.textlength(t, font=f_title) > 600 and cur:
+                lines.append(cur)
+                cur = w
+            else:
+                cur = t
+        lines.append(cur)
+        if len(lines) <= 3:
+            break
+    step = int(size * 1.17)
+    y = 290 - (min(len(lines), 3) - 1) * step // 2 - size // 2
     for ln in lines[:3]:
         d.text((70, y), ln, font=f_title, fill=(240, 244, 255))
-        y += 96
+        y += step
     d.text((70, 540), 'Know your space  ·  astryl.space', font=f_small, fill=(160, 176, 214))
     out = OUT / 'img/og'
     out.mkdir(parents=True, exist_ok=True)
@@ -1308,7 +1337,7 @@ def main():
     for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'blog.js', 'discover.js', 'citypick.js', 'journey.js'):
         shutil.copy(SRC / name, OUT / 'assets' / name)
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
-    (OUT / 'assets/icon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-60 -60 120 120"><rect x="-60" y="-60" width="120" height="120" rx="26" fill="#fbf7ee"/><circle r="30" fill="#1b3a8a"/><ellipse rx="50" ry="15" fill="none" stroke="#6a45d6" stroke-width="6" transform="rotate(-24)"/><circle cx="40" cy="-20" r="6" fill="#1b3a8a"/></svg>', encoding='utf-8')
+    (OUT / 'assets/icon.svg').write_text(ICON_SVG, encoding='utf-8')
     (OUT / 'fonts').mkdir()
     for f in ('OFL-DMSans.txt', 'OFL-SpaceGrotesk.txt'):
         shutil.copy(site_data.FONTS / f, OUT / 'fonts' / f)
