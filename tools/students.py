@@ -13,7 +13,7 @@ TOPICS = [
        'The Earth does not make light. It goes around the Sun once in about 365¼ days (a year) and spins on its own axis once in a day. It is the only planet we know with liquid water on its surface and life.',
        'पृथ्वी रोशनी नहीं बनाती। यह लगभग 365¼ दिन (एक साल) में सूर्य का एक चक्कर लगाती है और एक दिन में अपनी धुरी पर एक बार घूमती है। यह अकेला ग्रह है जिसकी सतह पर तरल पानी और जीवन हमें पता है।'),
       ('The Moon is a satellite', 'चाँद एक उपग्रह है',
-       'The Moon goes around the Earth about once a month (27.3 days). It has no light of its own: we see it because sunlight falls on it. It is about 3,84,000 km away, and the same side always faces us.',
+       'The Moon goes around the Earth about once a month (27.3 days). It has no light of its own: we see it because sunlight falls on it. It is about 384,000 km away, and the same side always faces us.',
        'चाँद लगभग एक महीने (27.3 दिन) में पृथ्वी का एक चक्कर लगाता है। इसकी अपनी रोशनी नहीं है: हम इसे इसलिए देखते हैं क्योंकि इस पर धूप पड़ती है। यह लगभग 3,84,000 किमी दूर है, और इसका एक ही हिस्सा हमेशा हमारी तरफ़ रहता है।')],
      [('Sun = star (makes light). Earth = planet. Moon = natural satellite.', 'सूर्य = तारा (रोशनी बनाता है)। पृथ्वी = ग्रह। चाँद = प्राकृतिक उपग्रह।'),
       ('Earth: one spin = one day, one trip around the Sun = one year.', 'पृथ्वी: एक बार घूमना = एक दिन, सूर्य का एक चक्कर = एक साल।')],
