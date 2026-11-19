@@ -4,6 +4,7 @@ Each post is a dict in POSTS (newest first). The comments are kept by the "commu
 Function; its config.json lists the post slugs it accepts (checked by build()).
 Numbers are from published measurements (NASA, NIST, CERN and the papers named in each post).
 """
+import html
 import json
 import math
 
@@ -151,7 +152,98 @@ def time_travel_body():
 '''
 
 
-POSTS = [TIME_TRAVEL]
+VOYAGER_LIGHT_DAY = {
+    'slug': 'voyager-1-one-light-day',
+    'title': 'Voyager 1 is one light-day from Earth: what it means',
+    'h1': 'Voyager 1 is now one light-day from Earth: what that really means',
+    'desc': 'On 18 November 2026 Voyager 1 became the first spacecraft one light-day from Earth, 25.9 billion km away. What that means, how it got there and what comes next.',
+    'date': '2026-11-19',
+    'photo': 'pic-paleblue',
+    'emoji': '🛰️',
+    'minutes': 9,
+}
+
+LIGHT_DAY_KM = 299792.458 * 86400          # 25,902,068,371 km
+AU_KM = 149597870.7
+
+VOYAGER_FAQ = [
+    ('How far is Voyager 1 from Earth?', 'On 18 November 2026 it reached one light-day: about 25.9 billion km, or 173 times the distance from the Earth to the Sun. It moves about 17 km farther away from the Sun every second.'),
+    ('How long does a signal take to reach Voyager 1?', 'About a day each way. A command sent today arrives tomorrow, and the reply comes back the day after, so every question takes about two days.'),
+    ('Is Voyager 1 still working?', 'Yes, but only just. Two of its ten science instruments still work, its power drops by about 4 watts every year, and since 14 November 2026 it has sent only a plain carrier signal without data while engineers look for the cause.'),
+    ('When will Voyager 1 stop working?', 'Nobody knows the exact date. NASA hopes to reach the 50th anniversary of the launch in September 2027, and the mission manager has said at least one Voyager could keep going for another two to five years. After that the probe goes silent but keeps flying.'),
+    ('Will Voyager 1 reach another star?', 'Not really. In about 40,000 years it will pass about 1.6 light-years from the star Gliese 445, still far from it. Even the nearest star, Proxima Centauri, would take it about 75,000 years to reach.'),
+]
+
+
+def voyager_body():
+    ld_km = LIGHT_DAY_KM
+    stats = [('25.9 billion km', 'Distance on 18 November 2026'), ('173 AU', 'Times the Earth–Sun distance'), ('24 hours', 'One way for a radio signal'),
+             ('17 km/s', 'Speed, about 61,000 km/h'), ('160 bits/s', 'How fast it sends data'), ('2 of 10', 'Science instruments still on')]
+    stat_html = ''.join(f'<div class="stat"><b>{a}</b><span>{b}</span></div>' for a, b in stats)
+    light = [('The Moon', '1.3 seconds'), ('The Sun', '8 minutes 20 seconds'), ('Neptune (average)', 'about 4 hours'), ('Pluto (average)', 'about 5½ hours'),
+             ('Voyager 1, today', '24 hours'), ('Proxima Centauri, the nearest star', '4 years 3 months')]
+    light_rows = ''.join(f'<tr><td>{a}</td><td class="w">{b}</td></tr>' for a, b in light)
+    timeline = [
+        ('5 September 1977', 'Launch from Cape Canaveral, 16 days after its twin Voyager 2. It is called Voyager 1 because its faster path reaches Jupiter first.'),
+        ('5 March 1979', 'Closest pass of Jupiter. Its photos show the first active volcanoes ever seen beyond Earth, on the moon Io.'),
+        ('12 November 1980', 'Saturn and a close pass of its moon Titan. That pass bends its path up and out of the plane of the planets for good.'),
+        ('14 February 1990', 'From about 6 billion km it turns round and takes the “Pale Blue Dot”: Earth as a speck in a ray of sunlight. Then its cameras are switched off to save power.'),
+        ('17 February 1998', 'It passes Pioneer 10 and becomes the most distant object people have ever made.'),
+        ('December 2004', 'It crosses the termination shock, where the wind of particles from the Sun suddenly slows down, about 94 times the Earth–Sun distance out.'),
+        ('25 August 2012', 'It crosses the heliopause, the edge of the Sun’s bubble, and becomes the first spacecraft in interstellar space.'),
+        ('November 2023 – June 2024', 'A failed memory chip turns its messages into nonsense. Engineers, working with two-day replies, move the code around the broken chip and get science data back.'),
+        ('18 November 2026', 'One light-day from Earth, 49 years, 2 months and 13 days after launch.'),
+    ]
+    tl = ''.join(f'<li><b>{d}</b>: {t}</li>' for d, t in timeline)
+    faq = ''.join(f'<details class="card"><summary><b>{q}</b></summary><p>{a}</p></details>' for q, a in VOYAGER_FAQ)
+    craft = spacephotos.figure('sc-voyager', '../', lambda e, h='': e, html.escape, cls='sphoto blogfig')
+    return f'''
+<p>On <b>18 November 2026, at about 10:16 UTC</b>, NASA’s Voyager 1 became the first object people have ever made to reach <b>one light-day from Earth</b>. Light, the fastest thing there is, now needs a whole day to cross the gap between us and a 49-year-old probe the size of a small car. A “hello” sent from Earth today arrives tomorrow.</p>
+<p>The distance is about <b>{ld_km / 1e9:.1f} billion km</b>. Here is what that number really means, how Voyager 1 got so far, and what happens to it next.</p>
+<div class="stats">{stat_html}</div>
+
+<h2>How far is one light-day?</h2>
+<p>Light travels 299,792.458 km every second. In one day of 86,400 seconds that adds up to <b>{ld_km:,.0f} km</b>, or about <b>{ld_km / AU_KM:.0f} times the distance from the Earth to the Sun</b> (one astronomical unit, AU). That is more than four times as far as Pluto’s average distance from the Sun.</p>
+<p>It helps to see it as travel time for light:</p>
+<div class="tblwrap"><table class="cmp cols"><tr><th>From Earth to…</th><th>Light takes</th></tr>{light_rows}</table></div>
+<p>So the most distant thing humanity has ever sent out is still only one light-day away, while the nearest star is about <b>1,550 light-days</b> away. At Voyager 1’s speed, the trip to Proxima Centauri would take about 75,000 years.</p>
+
+<h2>Why a message takes a day each way</h2>
+<p>Voyager 1 talks to Earth by radio, and radio waves are light. Nothing can carry a signal faster, so every command now spends 24 hours on the way out, and every answer spends another 24 hours coming back. Asking the spacecraft one question and hearing the reply takes two days. When something breaks, engineers plan each step days in advance and wait.</p>
+<p>The signal is also astonishingly faint. Voyager 1’s transmitter has about 23 watts, roughly a fridge light bulb. By the time that beam has spread across 25.9 billion km, the 70-metre dishes of NASA’s Deep Space Network catch only a few times 10⁻¹⁹ watts, less than a billion-billionth of a watt. It arrives at 160 bits per second, slower than a 1990s dial-up modem.</p>
+{craft}
+
+<h2>Why its distance from Earth wobbles</h2>
+<p>Voyager 1 moves away from the Sun at about 17 km every second, close to 61,000 km/h, about 3.6 times the Earth–Sun distance every year. But the Earth races round the Sun at about 30 km/s. For a few months each year the Earth is moving towards Voyager faster than Voyager moves away, so the distance between them actually shrinks a little. Then the Earth swings round and the gap grows again. Overall it keeps getting bigger, and Voyager 1 is not expected to come back inside one light-day.</p>
+
+<h2>49 years in nine moments</h2>
+<ol class="tline">{tl}</ol>
+
+<h2>Is Voyager 1 still working?</h2>
+<p>Yes, but it is running on very little. Its electricity comes from the heat of decaying plutonium-238, and the supply drops by about <b>4 watts every year</b>. To keep the probe warm enough and its antenna pointed at Earth, engineers keep switching things off. It launched with ten science instruments; only two still work, one that measures magnetic fields and one that listens to waves in the thin gas of interstellar space.</p>
+<p>In April 2026 the team switched off the Low-energy Charged Particles instrument to save power. In early September they made a risky swap nicknamed the “Big Bang”: three devices were turned off and replaced with lower-power ones in one go, after the same swap worked on Voyager 2. On 18 to 20 October contact was lost for about 48 hours until the probe switched to backup thrusters by itself.</p>
+<p>And just before the milestone, on <b>14 November 2026</b>, Voyager 1 started sending only a plain carrier signal, with no science or engineering data. NASA said engineers were analysing the problem and would confirm the light-day from the carrier signal and the known path of the spacecraft. Something similar happened in 2023 and took months to fix, so this may take weeks or longer.</p>
+
+<h2>What happens next</h2>
+<p>The team’s near goal is the <b>50th anniversary of the launch on 5 September 2027</b>. In December 2025 mission manager Suzanne Dodd said she felt confident at least one of the two Voyagers could keep going for another two to five years. One day the power will be too low, the fuel lines may freeze, the antenna will drift off Earth and the probe will fall silent.</p>
+<p>That will not stop it. Voyager 1 will keep coasting through the Milky Way at about 17 km/s for millions of years. In about 40,000 years it will pass about 1.6 light-years from the star Gliese 445. Voyager 2, slower and on a different path, should reach one light-day in November 2035, probably long after its last message.</p>
+<p>Both carry the Golden Record: a gold-plated copper disc with greetings in 55 languages, music, natural sounds and 115 pictures of life on Earth, in case anyone ever finds them.</p>
+
+<h2>See where it is right now</h2>
+<p>The <a href="../spacecraft.html">Spacecraft now</a> page shows Voyager 1, Voyager 2, New Horizons, the James Webb Space Telescope and others, with their distance and signal time for today. To see how the Sun and the whole Solar System move through the galaxy, open <a href="../how-we-move.html">How we move through space</a>.</p>
+
+<h2>Quick answers</h2>
+{faq}
+
+<p class="note">Sources: NASA Voyager mission blog (17 April, 29 October and 18 November 2026); EarthSky, 18 November 2026; CNN interview with Suzanne Dodd, December 2025; NASA/JPL Voyager mission facts. The light-day distance and the signal strength are worked out from the speed of light and the size of the antennas.</p>
+'''
+
+
+TIME_TRAVEL['body'] = time_travel_body
+VOYAGER_LIGHT_DAY['body'] = voyager_body
+VOYAGER_LIGHT_DAY['faq'] = VOYAGER_FAQ
+
+POSTS = [VOYAGER_LIGHT_DAY, TIME_TRAVEL]
 
 
 def nice_date(d):
@@ -182,11 +274,14 @@ def build(h):
         fig = spacephotos.figure(p['photo'], '../', bt, esc, cls='sphoto blogfig').replace('loading="lazy"', 'loading="eager"')
         others = [o for o in POSTS if o is not p][:3]
         body = (f'<article class="blk prose blogpost"><p class="note"><a href="../blog.html">← Blog</a> · {nice_date(p["date"])} · {p["minutes"]} min read</p>'
-                f'<h1>{p["emoji"]} {esc(p["title"])}</h1>{fig}{time_travel_body() if p is TIME_TRAVEL else ""}</article>'
+                f'<h1>{p["emoji"]} {esc(p.get("h1", p["title"]))}</h1>{fig}{p["body"]()}</article>'
                 f'<section class="blk prose" id="comments" data-slug="{p["slug"]}"><h2>💬 Comments</h2><div id="blogComments"><p class="note">⏳ Loading comments…</p></div></section>'
                 + (f'<section class="blk"><h2>More from the blog</h2><div class="bloglist">' + ''.join(card(o, '../') for o in others) + '</div></section>' if others else ''))
         ld = article_ld(SITE, p['title'], p['desc'], path, [('Astryl', ''), ('Blog', 'blog.html'), (p['title'], path)])
         ld[0]['datePublished'] = ld[0]['dateModified'] = p['date']
         ld[0]['inLanguage'] = 'en'
+        if p.get('faq'):
+            ld.append({'@context': 'https://schema.org', '@type': 'FAQPage', 'mainEntity': [
+                {'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in p['faq']]})
         write(path, shell(p['title'], p['title'], 'blog', body, p['desc'], depth=1, canonical=path, extra_head=head.format(p='../'), ld=ld))
     return urls

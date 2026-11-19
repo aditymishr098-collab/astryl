@@ -1,5 +1,5 @@
 {
   "photoKinds": [["moon", "🌙", "The Moon", "चाँद"], ["sun", "☀️", "The Sun (with a proper filter)", "सूरज (सही filter के साथ)"], ["planet", "🪐", "A planet", "ग्रह"], ["stars", "⭐", "Stars and constellations", "तारे और नक्षत्र"], ["eclipse", "🌑", "An eclipse", "ग्रहण"], ["iss", "🛰️", "The space station", "अंतरिक्ष स्टेशन"], ["other", "🌌", "Something else in the sky", "आसमान में कुछ और"]],
   "postKinds": [["question", "❓", "A question", "सवाल"], ["sky", "🔭", "What I saw", "मैंने क्या देखा"], ["idea", "💡", "An idea for Astryl", "Astryl के लिए सुझाव"]],
-  "blogPosts": ["time-travel"]
+  "blogPosts": ["voyager-1-one-light-day", "time-travel"]
 }
