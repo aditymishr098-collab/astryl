@@ -7,6 +7,7 @@ Numbers are from published measurements (NASA, NIST, CERN and the papers named i
 import json
 import math
 
+import pagetext
 import spacephotos
 from dskit import article_ld
 
@@ -172,8 +173,8 @@ def build(h):
 
     # the list of posts
     body = ('<section class="blk"><h1>📝 The Astryl blog</h1><p class="sub">Longer stories about space, time and the universe. Everyone can join the conversation in the comments.</p>'
-            '<div class="bloglist feat">' + ''.join(card(p, '') for p in POSTS) + '</div></section>')
-    write('blog.html', shell('Blog', 'Blog', 'blog', body, 'The Astryl blog: longer stories about space, time and the universe, with comments from readers.', canonical='blog.html', extra_head=head.format(p='')))
+            '<div class="bloglist feat">' + ''.join(card(p, '') for p in POSTS) + '</div></section>' + pagetext.section('blog'))
+    write('blog.html', shell('Blog', 'Blog', 'blog', body, 'The Astryl blog: longer stories about space, time and the universe, with comments from readers.', canonical='blog.html', ld=[pagetext.faq_ld('blog')], extra_head=head.format(p='')))
 
     for p in POSTS:
         path = f'blog/{p["slug"]}.html'

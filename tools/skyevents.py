@@ -7,6 +7,15 @@ so the website works that out for the chosen city.
 """
 
 # id, date, UT of greatest eclipse, lunar?, type, magnitude, where (en, hi) for solar eclipses
+def short_title(name):
+    """Page title for an eclipse, short enough not to be cut off in search results (about 60
+    characters with " · Astryl")."""
+    for tail in (': when and where to see it', ': when and where', ': times'):
+        if len(name) + len(tail) + 9 <= 63:
+            return name + tail
+    return name
+
+
 ECLIPSES = [
     ('2027-02-06-annular-solar', '2027-02-06', '16:00', False, 'annular', 0.928,
      'Ring of fire across Chile, Argentina, Uruguay and West Africa (Côte d’Ivoire, Ghana, Togo, Benin, Nigeria); a partial eclipse over most of South America and Africa.',
@@ -155,7 +164,7 @@ def build(h):
         body += k.keep_exploring('../', [('sky-events.html', '📅', 'All eclipses and meteor showers', 'सारे ग्रहण और उल्कापात'), ('my-space.html', '⭐', 'My space: add to calendar', 'My space: calendar में जोड़ें'), ('sky.html', '🌙', 'Moon calendar', 'चाँद का calendar'), ('learn/eclipses.html', '🎓', 'How eclipses work', 'ग्रहण कैसे होते हैं')])
         path = f'sky-events/{eid}.html'
         desc = f'{title_en}: date, time ({ut} UT), type and where it can be seen, with local times for your city.'
-        html = k.shell(title_en + ': date, time and where to see it', title_hi, 'events', body, desc, depth=1, canonical=path, extra_head=head(1),
+        html = k.shell(short_title(title_en), title_hi, 'events', body, desc, depth=1, canonical=path, extra_head=head(1),
                        ld=article_ld(k.site, title_en, desc, path, crumbs_hub + [(title_en, path)]) + [{'@context': 'https://schema.org', '@type': 'Event', 'name': title_en, 'startDate': f'{iso}T{ut}:00Z', 'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode', 'eventStatus': 'https://schema.org/EventScheduled', 'location': {'@type': 'Place', 'name': 'Sky', 'address': 'Earth'}, 'description': what[0], 'url': f'{k.site}/{path}'}])
         h['write'](path, html)
         pages.append(path)
