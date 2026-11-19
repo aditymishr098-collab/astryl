@@ -880,7 +880,8 @@ body[data-page=account] main.wrap{max-width:none;padding:0 clamp(16px,3.2vw,48px
 .dchead{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;margin-bottom:14px}
 .dchead h2{margin:0}.dchead .note{margin:.2em 0 0}
 .dcstreak{display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:99px;border:1px solid var(--line);background:var(--card)}
-.dcstreak b{font-size:1.3rem}.dcstreak small{color:var(--muted)}
+.dcstreak{font-size:.9rem;color:var(--muted)}.dcstreak b{color:var(--text);font-size:1rem}
+@media(max-width:620px){.dcstreak{padding:6px 12px}}
 .dcgrid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
 .dccard{position:relative;display:flex;flex-direction:column;gap:5px;padding:18px;border:1px solid var(--line);border-radius:18px;background:var(--card);color:var(--text);text-decoration:none;transition:transform .2s,border-color .2s;animation:dcin .5s both}
 .dccard:nth-child(2){animation-delay:.06s}.dccard:nth-child(3){animation-delay:.12s}.dccard:nth-child(4){animation-delay:.18s}.dccard:nth-child(5){animation-delay:.24s}.dccard:nth-child(6){animation-delay:.3s}
