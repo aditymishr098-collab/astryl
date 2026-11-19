@@ -38,7 +38,7 @@ jobs:
           python-version: '3.12'
       - name: Build the site
         run: |
-          pip install pillow numpy fonttools==4.66.1
+          pip install pillow numpy fonttools==4.66.1 brotli==1.1.0
           python3 tools/build_site.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

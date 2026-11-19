@@ -72,6 +72,6 @@ def build(h):
     ld[0]['datePublished'] = ld[0]['dateModified'] = '2026-11-18'
     ld.append({'@context': 'https://schema.org', '@type': 'FAQPage', 'mainEntity': [
         {'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in FAQ]})
-    write(PATH, shell(TITLE, TITLE, 'umap', body, DESC, canonical=PATH, ld=ld,
+    write(PATH, shell(TITLE, TITLE, 'move', body, DESC, canonical=PATH, ld=ld,
                       extra_head=f'<script defer src="assets/journey.js?v={v}"></script>'))
     return [PATH]
