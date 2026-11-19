@@ -2,6 +2,7 @@
 import json
 
 from dskit import Kit
+import pagetext
 
 # s: set (bh or gx); q: question; o: options; a: index of the right option; e: explanation (en, hi)
 def _o(*xs):
@@ -46,10 +47,10 @@ def build(h):
 <div id="dsq"></div>
 {note("Your best scores stay in this browser only. They are not sent anywhere.", "आपके सबसे अच्छे स्कोर सिर्फ़ इसी browser में रहते हैं। कहीं भेजे नहीं जाते।")}</section>
 <section class="blk callout">{bt("Earn the Black hole explorer badge:", "Black hole explorer badge पाइए:")} <a href="black-holes-101.html">{bt("Black holes 101", "Black holes 101")} →</a></section>
-<script type="application/json" id="dsqData">{data}</script>'''
+<script type="application/json" id="dsqData">{data}</script>''' + pagetext.section('dsq')
     out.append(('deep-space-quiz.html', h['shell']('Black hole and galaxy quiz', 'ब्लैक होल और galaxy quiz', 'quiz', body,
-                'A free quiz on black holes and galaxies, with 20 questions and an explanation for every answer.',
-                canonical='deep-space-quiz.html', extra_head=f'<script defer src="assets/learn.js?v={asset_v()}"></script>')))
+                'A free quiz on black holes and galaxies, with 21 questions and an explanation for every answer.',
+                canonical='deep-space-quiz.html', ld=[pagetext.faq_ld('dsq')], extra_head=f'<script defer src="assets/learn.js?v={asset_v()}"></script>')))
 
     # ---------- learning path
     lessons = [
