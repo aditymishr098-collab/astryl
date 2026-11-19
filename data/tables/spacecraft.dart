@@ -138,7 +138,7 @@ const List<Spacecraft> spacecraft = <Spacecraft>[
     id: 'hubble',
     name: 'Hubble',
     kind: SpacecraftKind.lowOrbit,
-    fixedKm: 520,
+    fixedKm: 480,
   ),
   Spacecraft(
     id: 'marsrovers',

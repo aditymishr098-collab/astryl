@@ -46,7 +46,7 @@ TEXT = {
     'you': {
         'h2': 'Why your weight changes from planet to planet',
         'p': [
-            'Your mass, how much of you there is, stays the same everywhere. Your weight is how hard a planet’s gravity pulls on that mass, so it changes. On the Moon you would weigh about a sixth of your Earth weight and could jump about six times as high. On Jupiter, at the top of its clouds, you would weigh about two and a half times as much.',
+            'Your mass, how much of you there is, stays the same everywhere. Your weight is how hard a planet’s gravity pulls on that mass, so it changes. On the Moon you would weigh about a sixth of your Earth weight and could jump about six times as high. On Jupiter, at the top of its clouds, you would weigh about 2.4 times as much.',
             'Your age changes too, because a year is the time a planet takes to go once round the Sun. A Mars year lasts 687 Earth days, so you are younger in Mars years; a Mercury year lasts only 88 days, so you are much older in Mercury years.',
             'The birthday sky shows where the planets and the Moon were on the day you were born, and how far the light that left Earth that day has travelled since. Everything is worked out in your browser; nothing is sent or saved.',
         ],

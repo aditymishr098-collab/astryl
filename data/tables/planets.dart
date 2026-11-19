@@ -287,7 +287,7 @@ const List<Planet> planets = <Planet>[
     meanTempC: -110,
     dayHours: 9.9,
     yearDays: 4331,
-    moons: 115,
+    moons: 101,
     distanceMillionKm: 778.5,
     pressureBar: null,
     atmosphere: <GasShare>[
@@ -310,7 +310,7 @@ const List<Planet> planets = <Planet>[
     meanTempC: -140,
     dayHours: 10.7,
     yearDays: 10747,
-    moons: 293,
+    moons: 285,
     distanceMillionKm: 1432.0,
     pressureBar: null,
     atmosphere: <GasShare>[
@@ -406,7 +406,7 @@ const List<Planet> otherBodies = <Planet>[
     parentId: 'earth',
     diameterKm: 3475,
     gravity: 1.62,
-    meanTempC: -23,
+    meanTempC: -20,
     dayHours: 708.7,
     yearDays: 27.3,
     moons: 0,
