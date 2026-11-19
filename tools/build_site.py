@@ -4,7 +4,7 @@
 Reads the website's data in data/ (see tools/site_data.py); Run it from the
 project root:  python3 tools/build_site.py
 """
-import datetime, hashlib, html, json, math, re, shutil
+import datetime, hashlib, html, json, math, re, shutil, sys
 from pathlib import Path
 
 import deepspace
@@ -404,7 +404,7 @@ def cons_svg(c):
 # ------------------------------------------------------------------ page shell
 # The top menu keeps four main pages; the rest sit under "More". Home is the logo.
 NAV_MAIN = [('planets.html', 'planets', bi('planetsTitle')), ('solar-system.html', 'solar', bi('solarSystemTitle')), ('sky.html', 'sky', bi('skyTitle')), ('quiz.html', 'quiz', bi('navQuiz')), ('community.html', 'community', bt('Community', 'Community'))]
-NAV_MORE = [('blog.html', 'blog', bt('Blog', 'Blog')), ('my-space.html', 'myspace', bt('My space', 'My space')), ('sky-events.html', 'events', bt('Eclipses and meteor showers', 'ग्रहण और उल्कापात')), ('learn.html', 'school', bt('For students', 'छात्रों के लिए')), ('telescope.html', 'scope', bt('Telescope simulator', 'Telescope simulator')), ('iss.html', 'iss', bt('Space station passes', 'अंतरिक्ष स्टेशन कब दिखेगा')), ('compare.html', 'compare', bi('navCompare')), ('you.html', 'you', bt('You', 'आप')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')),
+NAV_MORE = [('blog.html', 'blog', bt('Blog', 'Blog')), ('my-space.html', 'myspace', bt('My space', 'My space')), ('sky-events.html', 'events', bt('Eclipses and meteor showers', 'ग्रहण और उल्कापात')), ('learn.html', 'school', bt('For students', 'छात्रों के लिए')), ('telescope.html', 'scope', bt('Telescope simulator', 'Telescope simulator')), ('iss.html', 'iss', bt('Space station passes', 'अंतरिक्ष स्टेशन कब दिखेगा')), ('how-we-move.html', 'move', bt('How we move through space', 'How we move through space')), ('compare.html', 'compare', bi('navCompare')), ('you.html', 'you', bt('You', 'आप')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')),
             ('missions.html', 'missions', bi('missionsTitle')), ('spacecraft.html', 'spacecraft', bi('spacecraftTitle')),
             ('universe-map.html', 'umap', bt('Universe map', 'ब्रह्मांड का नक्शा')), ('stars.html', 'stars', bt('Stars', 'तारे')), ('galaxies.html', 'gx', bt('Galaxies', 'Galaxies')), ('cosmic-scale.html', 'scale', bt('Scale of the universe', 'ब्रह्मांड का पैमाना')), ('universe-timeline.html', 'tline', bt('Timeline', 'समयरेखा')), ('glossary.html', 'gloss', bt('Glossary', 'शब्दकोश')), ('black-holes.html', 'bh', bt('Black holes', 'ब्लैक होल'))]
 
@@ -602,7 +602,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
     p = '../' * depth
     def navlink(h, k, label):
         return f'<a href="{p}{h}"{" class=on" if k == page else ""}>{label}</a>'
-    more_on = page in ('compare', 'you', 'cons', 'maps', 'missions', 'bh', 'gx', 'scale', 'tline', 'gloss', 'umap', 'myspace', 'events', 'school', 'scope', 'iss', 'stars', 'blog')
+    more_on = page in ('compare', 'you', 'cons', 'maps', 'missions', 'bh', 'gx', 'scale', 'tline', 'gloss', 'umap', 'myspace', 'events', 'school', 'scope', 'iss', 'stars', 'blog', 'move')
     nav = (''.join(navlink(*x) for x in NAV_MAIN)
            + f'<details class="more"><summary{" class=on" if more_on else ""}>{bt("More", "और")} ▾</summary><div class="morepanel">'
            + ''.join(navlink(*x) for x in NAV_MORE) + '</div></details>')
@@ -624,7 +624,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 <meta property="og:site_name" content="Astryl"><meta name="robots" content="max-image-preview:large"><meta property="og:image:alt" content="{esc(title_en)} · Astryl">
 <meta property="og:image" content="{ogimg}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{esc(title_en)} · Astryl"><meta name="twitter:description" content="{esc(desc_en)}"><meta name="twitter:image" content="{ogimg}">
 <link rel="icon" href="{p}assets/icon.svg" type="image/svg+xml"><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Astryl"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="preload" href="{p}fonts/DMSans-Regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="{p}fonts/SpaceGrotesk-Bold.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="{p}fonts/DMSans-Regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="{p}fonts/SpaceGrotesk-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{p}assets/style.css?v={asset_v()}">
 <script>try{{var s=localStorage,A=["en","hi","es","pt","fr","ar"],l=s.getItem("astryl-lang");if(A.indexOf(l)<0){{l=(navigator.language||"en").slice(0,2);if(A.indexOf(l)<0)l="en"}}var d=document.documentElement;d.lang=l;d.dir=l==="ar"?"rtl":"ltr";if(s.getItem("astryl-theme")!=="light")d.setAttribute("data-theme","dark")}}catch(e){{document.documentElement.setAttribute("data-theme","dark")}}if(window.IntersectionObserver&&!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))document.documentElement.classList.add("js")</script>
 {ldtag}{extra_head}</head>
@@ -1219,7 +1219,7 @@ def pwa_files():
     v = asset_v()
     core = ['/', '/index.html', '/offline.html', '/planets.html', '/assets/icon.svg', '/img/icons/icon-192.png']
     core += [f'/assets/{n}?v={v}' for n in ('style.css', 'data.js', 'app.js', 'account.js', 'me.js', 'fx.js', 'pwa.js', 'icons.js', 'citypick.js', 'home.js', 'apod.js')]
-    core += [f'/fonts/{f.replace(".ttf", ".woff")}' for f in FONT_FILES]
+    core += [f'/fonts/{f.replace(".ttf", ".woff2")}' for f in FONT_FILES]
     sw = (SRC / 'sw.js').read_text(encoding='utf-8').replace("'__VERSION__'", json.dumps(v)).replace('__CORE__', json.dumps(core))
     (OUT / 'sw.js').write_text(sw, encoding='utf-8')
 
@@ -1229,13 +1229,36 @@ FONT_FILES = ('DMSans-Regular.ttf', 'DMSans-Medium.ttf', 'DMSans-Bold.ttf', 'Spa
 FONT_UNICODES = '0000-00FF,0131,0152-0153,02C6,02DA,02DC,2000-206F,2070-209F,20AC,2100-214F,2190-21FF,2212,2215,2248,2260,2264,2265,00D7,2032,2033'
 
 
+def _brotli_for_fonts():
+    """fontTools needs the brotli module to write WOFF2. CI installs it; on a machine without it,
+    use Node's built-in brotli instead (same output format)."""
+    try:
+        import brotli  # noqa: F401
+        return
+    except ImportError:
+        pass
+    import subprocess, types
+    if not shutil.which('node'):
+        raise SystemExit('WOFF2 fonts need the brotli module (pip install brotli) or Node.js')
+    js = ("const z=require('zlib');const c=[];process.stdin.on('data',d=>c.push(d)).on('end',()=>{const b=Buffer.concat(c);"
+          "process.stdout.write(process.argv[1]==='c'?z.brotliCompressSync(b,{params:{[z.constants.BROTLI_PARAM_MODE]:z.constants.BROTLI_MODE_FONT,"
+          "[z.constants.BROTLI_PARAM_QUALITY]:11,[z.constants.BROTLI_PARAM_SIZE_HINT]:b.length}}):z.brotliDecompressSync(b))})")
+    run = lambda how, data: subprocess.run(['node', '-e', js, how], input=bytes(data), capture_output=True, check=True).stdout
+    m = types.ModuleType('brotli')
+    m.MODE_GENERIC, m.MODE_TEXT, m.MODE_FONT = 0, 1, 2
+    m.compress = lambda data, mode=0, quality=11, lgwin=22, lgblock=0: run('c', data)
+    m.decompress = lambda data: run('d', data)
+    sys.modules['brotli'] = m
+
+
 def web_font(src, dst):
-    """A smaller copy of a font for the website: Latin only, as WOFF (cached by source size)."""
+    """A smaller copy of a font for the website: Latin only, as WOFF2 (cached by source size)."""
     from fontTools import subset
     cache = ROOT / 'build' / 'fonts' / (dst.name + f'.{src.stat().st_size}')
     if not cache.exists():
         cache.parent.mkdir(parents=True, exist_ok=True)
-        opts = subset.Options(); opts.flavor = 'woff'; opts.layout_features = ['*']; opts.name_IDs = ['*']; opts.notdef_outline = True
+        _brotli_for_fonts()
+        opts = subset.Options(); opts.flavor = 'woff2'; opts.layout_features = ['*']; opts.name_IDs = ['*']; opts.notdef_outline = True
         font = subset.load_font(str(src), opts)
         sub = subset.Subsetter(opts); sub.populate(unicodes=subset.parse_unicodes(FONT_UNICODES)); sub.subset(font)
         subset.save_font(font, str(cache), opts)
@@ -1289,7 +1312,7 @@ def main():
     for f in ('OFL-DMSans.txt', 'OFL-SpaceGrotesk.txt'):
         shutil.copy(site_data.FONTS / f, OUT / 'fonts' / f)
     for f in FONT_FILES:
-        web_font(site_data.FONTS / f, OUT / 'fonts' / f.replace('.ttf', '.woff'))
+        web_font(site_data.FONTS / f, OUT / 'fonts' / f.replace('.ttf', '.woff2'))
     (OUT / 'CNAME').write_text('astryl.space\n', encoding='utf-8')
     (OUT / '.nojekyll').write_text('', encoding='utf-8')
     (OUT / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n', encoding='utf-8')

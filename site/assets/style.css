@@ -1,8 +1,8 @@
-@font-face{font-family:"DM Sans";src:url(../fonts/DMSans-Regular.woff) format("woff");font-weight:400;font-display:swap}
-@font-face{font-family:"DM Sans";src:url(../fonts/DMSans-Medium.woff) format("woff");font-weight:500;font-display:swap}
-@font-face{font-family:"DM Sans";src:url(../fonts/DMSans-Bold.woff) format("woff");font-weight:700;font-display:swap}
-@font-face{font-family:"Space Grotesk";src:url(../fonts/SpaceGrotesk-Medium.woff) format("woff");font-weight:500;font-display:swap}
-@font-face{font-family:"Space Grotesk";src:url(../fonts/SpaceGrotesk-Bold.woff) format("woff");font-weight:700;font-display:swap}
+@font-face{font-family:"DM Sans";src:url(../fonts/DMSans-Regular.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"DM Sans";src:url(../fonts/DMSans-Medium.woff2) format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"DM Sans";src:url(../fonts/DMSans-Bold.woff2) format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url(../fonts/SpaceGrotesk-Medium.woff2) format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url(../fonts/SpaceGrotesk-Bold.woff2) format("woff2");font-weight:700;font-display:swap}
 :root{--bg:#f4f6fa;--bg2:#e9eef6;--card:#ffffff;--card2:#e9eef6;--line:#d5dfee;--text:#0d1321;--muted:#56657f;--accent:#245d9b;--accent2:#1d4ed8;--on:#ffffff;--violet:#3b82f6;--good:#047857;--bad:#b91c1c;--shadow:0 6px 18px rgba(13,19,33,.04)}
 :root[data-theme=dark]{--bg:#06080e;--bg2:#0c101a;--card:#10141f;--card2:#171d2b;--line:#222a3d;--text:#f3f6fc;--muted:#8c9bb5;--accent:#5b9bff;--accent2:#7db0ff;--on:#060a12;--violet:#6b8afd;--good:#34d399;--bad:#f87171;--shadow:0 8px 24px rgba(0,0,0,.35)}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
@@ -134,7 +134,6 @@ footer .cols{display:flex;gap:28px;flex-wrap:wrap;justify-content:space-between}
 @media(prefers-reduced-motion:reduce){.cap{transition:none}}
 
 /* ---- v2 look: cream paper, deep blue, soft motion ---- */
-body{animation:pagein .5s ease both}
 @keyframes pagein{from{opacity:0}to{opacity:1}}
 @keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -549,12 +548,6 @@ svg.surfmap{cursor:grab}svg.surfmap:active{cursor:grabbing}svg.surfmap .sdot.pic
 .spick b{display:block}.spick small{display:block;color:var(--muted);font-size:.85rem;line-height:1.4}.spick em{font-style:normal;color:var(--accent);font-weight:700;font-size:.85rem}
 @keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
 /* first-visit intro and page transitions */
-.intro{position:fixed;inset:0;z-index:100;background:#02030a;display:flex;align-items:center;justify-content:center;transition:opacity .45s}
-.intro canvas{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:0;max-width:none}
-.intro .ilogo{position:relative;font:700 clamp(2rem,8vw,3.4rem) "Space Grotesk";color:#fff;letter-spacing:.02em;opacity:0;transform:scale(.9);transition:opacity .5s,transform .6s}
-.intro.show .ilogo{opacity:1;transform:none}
-.intro .iskip{position:absolute;right:16px;bottom:16px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:99px;padding:8px 14px;font:inherit;cursor:pointer}
-.intro.out{opacity:0;pointer-events:none}
 @view-transition{navigation:auto}
 ::view-transition-old(root){animation:vtOut .2s ease both}
 ::view-transition-new(root){animation:vtIn .32s ease both}
