@@ -633,7 +633,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 <a class="skip" href="#main">Skip to content</a>
 <div class="stars"></div>
 <header class="top"><div class="wrap bar">
-<a class="brand" href="{p}index.html">{logo_svg()}Astryl</a>
+<a class="brand" href="{p or "./"}">{logo_svg()}Astryl</a>
 <nav class="links" id="siteNav" aria-label="Main">{nav}</nav>
 <div class="tools"><button id="themeBtn" aria-label="Theme">☾</button><span id="acctNav" class="acctnav"><a class="btn" href="{p}account.html?mode=login">{bt("Log in", "Login")}</a><a class="btn primary" href="{p}account.html">{bt("Sign up", "खाता बनाएँ")}</a></span><button type="button" class="menubtn" id="menuBtn" aria-expanded="false" aria-controls="siteNav" aria-label="Menu"><span></span><span></span><span></span></button></div>
 </div></header>
@@ -1185,8 +1185,8 @@ def community_pages():
 
 def get_page():
     # Old links to get.html go to the home page.
-    body = f'''<section class="blk"><h1>{bt("Astryl is a website", "Astryl एक website है")}</h1><p class="sub">{bt("Everything is here on astryl.space, in your browser. Taking you to the home page…", "सब कुछ यहीं astryl.space पर, आपके browser में है। आपको home page पर ले जा रहे हैं…")}</p><p><a class="btn primary" href="index.html">{bt("Go to the home page", "Home page पर जाएँ")} →</a></p></section>'''
-    write('get.html', shell('Astryl', 'Astryl', 'home', body, 'Astryl is a website: astryl.space.', canonical='index.html', extra_head='<meta name="robots" content="noindex"><meta http-equiv="refresh" content="2;url=index.html">'))
+    body = f'''<section class="blk"><h1>{bt("Astryl is a website", "Astryl एक website है")}</h1><p class="sub">{bt("Everything is here on astryl.space, in your browser. Taking you to the home page…", "सब कुछ यहीं astryl.space पर, आपके browser में है। आपको home page पर ले जा रहे हैं…")}</p><p><a class="btn primary" href="./">{bt("Go to the home page", "Home page पर जाएँ")} →</a></p></section>'''
+    write('get.html', shell('Astryl', 'Astryl', 'home', body, 'Astryl is a website: astryl.space.', canonical='', extra_head='<meta name="robots" content="noindex"><meta http-equiv="refresh" content="2;url=./">'))
 
 
 def account_page():
@@ -1196,14 +1196,14 @@ def account_page():
 
 
 def not_found():
-    body = f'''<section class="blk" style="text-align:center;padding:80px 0"><h1>404</h1><p class="sub" style="margin:auto">{bt("This page drifted off into space.", "यह page अंतरिक्ष में खो गया।")}</p><p><a class="btn primary" href="/index.html">{bt("Back home", "होम पर लौटें")}</a></p></section>'''
-    write('404.html', shell('Page not found', 'Page नहीं मिला', 'home', body, 'Page not found.', scripts=False, extra_head='<meta name="robots" content="noindex">').replace('href="index.html"', 'href="/index.html"').replace('href="assets/', 'href="/assets/'))
+    body = f'''<section class="blk" style="text-align:center;padding:80px 0"><h1>404</h1><p class="sub" style="margin:auto">{bt("This page drifted off into space.", "यह page अंतरिक्ष में खो गया।")}</p><p><a class="btn primary" href="/">{bt("Back home", "होम पर लौटें")}</a></p></section>'''
+    write('404.html', shell('Page not found', 'Page नहीं मिला', 'home', body, 'Page not found.', scripts=False, extra_head='<meta name="robots" content="noindex">').replace('href="./"', 'href="/"').replace('href="assets/', 'href="/assets/'))
 
 
 def pwa_files():
     """The installable website: offline page, web app manifest, icons and the service worker."""
-    body = f'''<section class="blk" style="text-align:center;padding:60px 0"><h1>📡 {bt("You are offline", "आप offline हैं")}</h1><p class="sub" style="margin:auto">{bt("This page has not been opened on this device yet, so it is not saved. Pages you have opened before still work, and everything else comes back when you are online again.", "यह page इस device पर पहले नहीं खुला, इसलिए save नहीं है। पहले खोले हुए pages अब भी चलते हैं, और बाक़ी सब internet आते ही वापस आ जाएगा।")}</p><p><a class="btn primary" href="/index.html">{bt("Home", "होम")}</a> <a class="btn" href="/planets.html">{bt("Planets", "ग्रह")}</a></p></section>'''
-    write('offline.html', shell('Offline', 'Offline', 'home', body, 'You are offline.', extra_head='<meta name="robots" content="noindex">').replace('href="index.html"', 'href="/index.html"').replace('href="assets/', 'href="/assets/').replace('src="assets/', 'src="/assets/'))
+    body = f'''<section class="blk" style="text-align:center;padding:60px 0"><h1>📡 {bt("You are offline", "आप offline हैं")}</h1><p class="sub" style="margin:auto">{bt("This page has not been opened on this device yet, so it is not saved. Pages you have opened before still work, and everything else comes back when you are online again.", "यह page इस device पर पहले नहीं खुला, इसलिए save नहीं है। पहले खोले हुए pages अब भी चलते हैं, और बाक़ी सब internet आते ही वापस आ जाएगा।")}</p><p><a class="btn primary" href="/">{bt("Home", "होम")}</a> <a class="btn" href="/planets.html">{bt("Planets", "ग्रह")}</a></p></section>'''
+    write('offline.html', shell('Offline', 'Offline', 'home', body, 'You are offline.', extra_head='<meta name="robots" content="noindex">').replace('href="./"', 'href="/"').replace('href="assets/', 'href="/assets/').replace('src="assets/', 'src="/assets/'))
     (OUT / 'img' / 'icons').mkdir(parents=True, exist_ok=True)
     for f in ('icon-192.png', 'icon-512.png', 'maskable-512.png', 'apple-touch-icon.png'):
         shutil.copy(site_data.DATA / 'icons' / f, OUT / 'img' / 'icons' / f)
