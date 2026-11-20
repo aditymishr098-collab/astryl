@@ -1033,3 +1033,6 @@ body[data-page=community] main.wrap{max-width:1680px;padding-left:clamp(14px,3vw
 .s3-label{position:absolute;left:0;top:0;pointer-events:auto;background:none;border:0;padding:3px 6px;border-radius:6px;font:500 .76rem/1 "DM Sans",sans-serif;letter-spacing:.04em;color:rgba(225,232,250,.78);text-shadow:0 1px 3px #000;white-space:nowrap;cursor:pointer}
 .s3-label:hover,.s3-label.on{color:#E7C27A}
 .s3-label:focus-visible{outline:2px solid #E7C27A;outline-offset:1px}
+.bh3d canvas{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#000;cursor:grab;image-rendering:auto}
+.bh3d canvas:active{cursor:grabbing}
+.bhctl .bhtilt{min-width:180px}
