@@ -21,7 +21,7 @@
     if (bar || !ready || snoozed() || (!deferred && !iosSafari)) return;
     bar = document.createElement('div');
     bar.className = 'instbar'; bar.setAttribute('role', 'region'); bar.setAttribute('aria-label', 'Install Astryl');
-    bar.innerHTML = '<img src="/img/icons/icon-192.png" alt="" width="40" height="40"><div><b>Install Astryl</b><span>' +
+    bar.innerHTML = '<img src="/img/icons/icon-192.png?v=__ICONV__" alt="" width="40" height="40"><div><b>Install Astryl</b><span>' +
       (deferred ? 'Opens like an app, works offline, no app store needed.' : 'Tap <b>Share</b>, then <b>Add to Home Screen</b>.') + '</span></div>' +
       (deferred ? '<button class="btn primary" type="button" data-i="go">Install</button>' : '') +
       '<button class="instx" type="button" data-i="later" aria-label="Not now">✕</button>';
