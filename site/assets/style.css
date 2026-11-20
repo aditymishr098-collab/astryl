@@ -1040,6 +1040,36 @@ body[data-page=community] main.wrap{max-width:1680px;padding-left:clamp(14px,3vw
 .s3-btn.on{background:#E7C27A;color:#140f05}
 .s3-btn:focus-visible{outline:2px solid #E7C27A;outline-offset:2px}
 .s3-label.s3-probe{color:#E7C27A}
+/* How we move: 3D scene, your speeds, moments */
+.jy3d{position:absolute;inset:0;width:100%!important;height:100%!important;border-radius:14px;cursor:grab;touch-action:none}
+.jy3d:active{cursor:grabbing}
+.jy3l{position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:14px}
+.jy3lab{position:absolute;left:0;top:0;margin:-9px 0 0 6px;font:600 .78rem/1 "DM Sans",sans-serif;color:#e8edf7;text-shadow:0 1px 3px #000,0 0 6px #000;white-space:nowrap}
+.jy3lab.sun{color:#ffd36b;margin-left:-12px}
+.jy3lab.dir{color:#7fe8ff;transform-origin:left}
+.jy3lab.ang{color:#7fe8ff;font-size:.9rem}
+.jy3lab.gal{color:rgba(160,180,255,.75);font-weight:500}
+.jymine{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.jymine div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.jymine b{font:700 clamp(1.15rem,2.6vw,1.5rem) "Space Grotesk","DM Sans",sans-serif;font-variant-numeric:tabular-nums;color:var(--accent)}
+.jymine span{color:var(--muted);font-size:.85rem}
+.jycity{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:.85rem;color:var(--muted)}
+.jycity select{max-width:100%;min-width:0;flex:1;padding:6px 8px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink,inherit);font:inherit}
+#jyShare{margin-top:12px}
+.jymoments{margin-top:8px}
+.jymoments button b{font-weight:700;margin-right:2px}
+.jysee{margin-top:2px}
+table.cmp td b{white-space:nowrap}
+@media(max-width:620px){table.cmp td .note{white-space:nowrap}}
+@media(max-width:620px){
+  .jytbl tr:first-child{display:none}
+  .jytbl tr{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .jytbl td{border:0!important;padding:0!important;text-align:left!important}
+  .jytbl td:first-child{grid-column:1/-1;font-weight:600}
+  .jytbl td.w{text-align:right!important;align-self:center}
+  .jytbl td.w::before{content:"towards ";font-weight:400;color:var(--muted)}
+}
+.jylive .jymine{border-top:1px solid var(--line)}
 
 /* line icons (tools/icons.py) */
 .icn{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.17em;background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat;flex:none}
