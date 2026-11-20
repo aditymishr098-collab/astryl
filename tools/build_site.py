@@ -393,6 +393,14 @@ ICON_SVG = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect
             '<circle cx="69.3" cy="29" r="8" fill="#fff"/></svg>')
 
 
+def icon_v():
+    '''A short hash of the logo files, so a new logo is never served from an old cache.'''
+    h = hashlib.md5(ICON_SVG.encode('utf-8'))
+    for f in ('icon-192.png', 'icon-512.png', 'maskable-512.png', 'apple-touch-icon.png'):
+        h.update((site_data.DATA / 'icons' / f).read_bytes())
+    return h.hexdigest()[:8]
+
+
 def cons_svg(c):
     lines = c['lines']
     pts = [(lines_i[k], lines_i[k + 1]) for lines_i in lines for k in range(0, len(lines_i) - 1, 2)]
@@ -440,6 +448,7 @@ def asset_v():
             h.update((OUT / 'assets/quiz-bank.js').read_bytes())
         h.update(data_js().encode('utf-8'))
         h.update(umap.CATALOG.read_bytes())
+        h.update(icon_v().encode('utf-8'))
         _ASSET_V.append(h.hexdigest()[:10])
     return _ASSET_V[0]
 
@@ -551,12 +560,13 @@ def make_og(name, title):
     body = next((b for b in BODIES if b['id'] == name), None)
     cols = [_hex(c) for c in (body['colors'] if body else ['#7aa2ff', '#3b5bd6', '#cfe0ff'])]
     base, dark, light = cols[0], _mix(cols[0], (0, 0, 0), 0.55), _mix(cols[-1] if len(cols) > 1 else cols[0], (255, 255, 255), 0.35)
-    cx, cy, R = 900, 315, 185
     rings = bool(body and body.get('rings')) or (body is None and not theme)
+    # a ringed world sits further right and smaller, so its rings never reach the title
+    cx, cy, R = (950, 315, 140) if rings else (900, 315, 185)
     layer = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     ld = ImageDraw.Draw(layer)
     if rings:
-        for rr, w, a in ((1.75, 16, 190), (2.05, 10, 150), (2.3, 5, 120)):
+        for rr, w, a in ((1.6, 14, 190), (1.85, 9, 150), (2.05, 5, 120)):
             ld.ellipse([cx - R * rr, cy - R * rr * 0.28, cx + R * rr, cy + R * rr * 0.28], outline=(223, 192, 124, a), width=w)
         layer = layer.rotate(14, center=(cx, cy), resample=Image.BICUBIC)
         img.paste(layer, (0, 0), layer)
@@ -576,7 +586,7 @@ def make_og(name, title):
     if rings:
         front = Image.new('RGBA', (W, H), (0, 0, 0, 0))
         fd = ImageDraw.Draw(front)
-        for rr, w, a in ((1.75, 16, 190), (2.05, 10, 150), (2.3, 5, 120)):
+        for rr, w, a in ((1.6, 14, 190), (1.85, 9, 150), (2.05, 5, 120)):
             fd.arc([cx - R * rr, cy - R * rr * 0.28, cx + R * rr, cy + R * rr * 0.28], 0, 180, fill=(223, 192, 124, a), width=w)
         front = front.rotate(14, center=(cx, cy), resample=Image.BICUBIC)
         img.paste(front, (0, 0), front)
@@ -595,12 +605,12 @@ def make_og(name, title):
     d.ellipse([dx - 5, dy - 5, dx + 5, dy + 5], fill=(255, 255, 255))
     d.text((134, 60), 'Astryl', font=f_brand, fill=(235, 214, 166))
     # wrap the title into at most three lines, using a smaller size for long titles
-    for size in (82, 70, 60):
+    for size in (82, 70, 60, 52):
         f_title = ImageFont.truetype(str(fonts / 'SpaceGrotesk-Bold.ttf'), size)
         words, lines, cur = title.split(), [], ''
         for w in words:
             t = (cur + ' ' + w).strip()
-            if d.textlength(t, font=f_title) > 600 and cur:
+            if d.textlength(t, font=f_title) > 540 and cur:
                 lines.append(cur)
                 cur = w
             else:
@@ -653,7 +663,7 @@ def shell(title_en, title_hi, page, body, desc_en, depth=0, canonical='', script
 <meta property="og:title" content="{esc(title_en)} · Astryl"><meta property="og:description" content="{esc(desc_en)}"><meta property="og:type" content="website"><meta property="og:url" content="{url}"><meta name="theme-color" content="#06080e">
 <meta property="og:site_name" content="Astryl"><meta name="robots" content="max-image-preview:large"><meta property="og:image:alt" content="{esc(title_en)} · Astryl">
 <meta property="og:image" content="{ogimg}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{esc(title_en)} · Astryl"><meta name="twitter:description" content="{esc(desc_en)}"><meta name="twitter:image" content="{ogimg}">
-<link rel="icon" href="{p}assets/icon.svg" type="image/svg+xml"><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Astryl"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" href="{p}assets/icon.svg?v={icon_v()}" type="image/svg+xml"><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png?v={icon_v()}"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Astryl"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preload" href="{p}fonts/DMSans-Regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="{p}fonts/SpaceGrotesk-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{p}assets/style.css?v={asset_v()}">
 <script>try{{var s=localStorage,A=["en","hi","es","pt","fr","ar"],l=s.getItem("astryl-lang");if(A.indexOf(l)<0){{l=(navigator.language||"en").slice(0,2);if(A.indexOf(l)<0)l="en"}}var d=document.documentElement;d.lang=l;d.dir=l==="ar"?"rtl":"ltr";if(s.getItem("astryl-theme")!=="light")d.setAttribute("data-theme","dark")}}catch(e){{document.documentElement.setAttribute("data-theme","dark")}}if(window.IntersectionObserver&&!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))document.documentElement.classList.add("js")</script>
@@ -1240,14 +1250,14 @@ def pwa_files():
         'name': 'Astryl: Know your space', 'short_name': 'Astryl', 'id': '/', 'start_url': '/', 'scope': '/', 'display': 'standalone',
         'background_color': '#05070f', 'theme_color': '#06080e', 'lang': 'en', 'dir': 'ltr', 'categories': ['education', 'science'],
         'description': 'Planets, moons, stars and space missions: real positions and real numbers for any date.',
-        'icons': [{'src': '/img/icons/icon-192.png', 'sizes': '192x192', 'type': 'image/png'},
-                  {'src': '/img/icons/icon-512.png', 'sizes': '512x512', 'type': 'image/png'},
-                  {'src': '/img/icons/maskable-512.png', 'sizes': '512x512', 'type': 'image/png', 'purpose': 'maskable'}],
+        'icons': [{'src': '/img/icons/icon-192.png?v=' + icon_v(), 'sizes': '192x192', 'type': 'image/png'},
+                  {'src': '/img/icons/icon-512.png?v=' + icon_v(), 'sizes': '512x512', 'type': 'image/png'},
+                  {'src': '/img/icons/maskable-512.png?v=' + icon_v(), 'sizes': '512x512', 'type': 'image/png', 'purpose': 'maskable'}],
         'shortcuts': [{'name': 'Tonight in your city', 'url': '/tonight.html'}, {'name': 'Space station passes', 'url': '/iss.html'}, {'name': 'Quiz', 'url': '/quiz.html'}],
     }
     (OUT / 'manifest.webmanifest').write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding='utf-8')
     v = asset_v()
-    core = ['/', '/index.html', '/offline.html', '/planets.html', '/assets/icon.svg', '/img/icons/icon-192.png']
+    core = ['/', '/index.html', '/offline.html', '/planets.html', f'/assets/icon.svg?v={icon_v()}', f'/img/icons/icon-192.png?v={icon_v()}']
     core += [f'/assets/{n}?v={v}' for n in ('style.css', 'data.js', 'app.js', 'account.js', 'me.js', 'fx.js', 'pwa.js', 'icons.js', 'citypick.js', 'home.js', 'apod.js')]
     core += [f'/fonts/{f.replace(".ttf", ".woff2")}' for f in FONT_FILES]
     sw = (SRC / 'sw.js').read_text(encoding='utf-8').replace("'__VERSION__'", json.dumps(v)).replace('__CORE__', json.dumps(core))
@@ -1336,6 +1346,8 @@ def main():
     shutil.copytree(site_data.CITIES, OUT / 'assets' / 'cities')
     for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'blog.js', 'discover.js', 'citypick.js', 'journey.js'):
         shutil.copy(SRC / name, OUT / 'assets' / name)
+    pwa = OUT / 'assets/pwa.js'
+    pwa.write_text(pwa.read_text(encoding='utf-8').replace('__ICONV__', icon_v()), encoding='utf-8')
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')
     (OUT / 'assets/icon.svg').write_text(ICON_SVG, encoding='utf-8')
     (OUT / 'fonts').mkdir()
