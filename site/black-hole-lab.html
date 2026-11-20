@@ -12,10 +12,10 @@
 <meta property="og:image" content="https://astryl.space/img/og/black-hole-lab.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Black hole lab · Astryl"><meta name="twitter:description" content="Free black hole tools: a gravitational lensing simulator, a Schwarzschild radius calculator for any mass and a gravitational time dilation calculator."><meta name="twitter:image" content="https://astryl.space/img/og/black-hole-lab.jpg">
 <link rel="icon" href="assets/icon.svg?v=a7f1611c" type="image/svg+xml"><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png?v=a7f1611c"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Astryl"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preload" href="fonts/DMSans-Regular.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="fonts/SpaceGrotesk-Bold.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css?v=cff9a96c1c">
+<link rel="stylesheet" href="assets/style.css?v=58e86b8d62">
 <script>try{var s=localStorage,A=["en","hi","es","pt","fr","ar"],l=s.getItem("astryl-lang");if(A.indexOf(l)<0){l=(navigator.language||"en").slice(0,2);if(A.indexOf(l)<0)l="en"}var d=document.documentElement;d.lang=l;d.dir=l==="ar"?"rtl":"ltr";if(s.getItem("astryl-theme")!=="light")d.setAttribute("data-theme","dark")}catch(e){document.documentElement.setAttribute("data-theme","dark")}if(window.IntersectionObserver&&!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))document.documentElement.classList.add("js")</script>
 <script type="application/ld+json">[{"@context":"https://schema.org","@type":"WebApplication","name":"Black hole lab","applicationCategory":"EducationalApplication","operatingSystem":"Any","url":"https://astryl.space/black-hole-lab.html","inLanguage":["en","hi"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]</script>
-<script defer src="assets/lab.js?v=cff9a96c1c"></script></head>
+<script defer src="assets/lab.js?v=58e86b8d62"></script><script defer src="assets/bhsim.js?v=58e86b8d62"></script></head>
 <body data-page="bh" data-root="">
 <a class="skip" href="#main">Skip to content</a>
 <div class="stars"></div>
@@ -27,20 +27,24 @@
 <main class="wrap" id="main" tabindex="-1">
 <p style="margin-top:20px"><a href="black-holes.html">← <span class="t" lang="en">Black holes</span></a></p>
 <section class="blk"><h1><span class="t" lang="en">Black hole lab</span></h1><p class="sub"><span class="t" lang="en">Bend the sky, size any black hole and slow down a clock. It all runs in your browser and nothing is sent anywhere.</span></p></section>
-<section class="blk prose"><h2><span class="t" lang="en">1. Bend the sky</span></h2>
+<section class="blk prose"><h2><span class="t" lang="en">1. Fly around a black hole</span></h2>
+<p><span class="t" lang="en">This black hole is drawn live by your phone or computer. Each pixel follows a ray of light back through curved space, so you see what Einstein&#x27;s gravity really does: the far side of the glowing disk appears above and below the black hole, a thin bright ring hugs the shadow, and one side of the disk shines brighter because the gas there is rushing towards you. Turn the Doppler effect off to see the difference.</span></p>
+<div class="card bhcard" id="bhSim"></div>
+</section>
+<section class="blk prose"><h2><span class="t" lang="en">2. Bend the sky</span></h2>
 <p><span class="t" lang="en">Gravity bends light, so a black hole in front of stars acts like a lens. Drag the black hole across the sky and watch the stars behind it stretch into arcs and a bright ring, called the Einstein ring. Use the slider to make it heavier.</span></p>
 <div class="simwrap"><canvas id="simCv" aria-label="Gravitational lensing simulator" width="480" height="320"></canvas></div>
 <div class="row"><label><span class="t" lang="en">Mass</span> <input type="range" id="simMass" min="25" max="110" value="55" aria-label="Mass"></label><button class="btn" type="button" id="simReset"><span class="t" lang="en">Centre it</span></button></div>
 <p class="note"><span class="t" lang="en">A point-lens model, not a full ray-traced image: real black holes also show an accretion disk and the photon ring. The orange circle marks the Einstein radius.</span></p>
 </section>
-<section class="blk prose"><h2><span class="t" lang="en">2. How big is it?</span></h2>
+<section class="blk prose"><h2><span class="t" lang="en">3. How big is it?</span></h2>
 <p><span class="t" lang="en">Type any mass and get the size of its event horizon, r = 2GM/c², plus a few more things worked out from it. Tap a preset to try an example.</span></p>
 <div class="row"><input type="number" id="cMass" value="1" min="0" step="any" aria-label="Mass"><select id="cUnit" aria-label="Unit"><option value="kg">kg</option><option value="earth">Earths</option><option value="sun" selected>Suns</option></select></div>
 <div class="row"><button class="btn" type="button" data-v="70" data-u="kg"><span class="t" lang="en">A person</span></button><button class="btn" type="button" data-v="1" data-u="earth"><span class="t" lang="en">Earth</span></button><button class="btn" type="button" data-v="1" data-u="sun"><span class="t" lang="en">The Sun</span></button><button class="btn" type="button" data-v="10" data-u="sun"><span class="t" lang="en">10 Suns</span></button><button class="btn" type="button" data-v="4300000" data-u="sun"><span class="t" lang="en">Sagittarius A*</span></button><button class="btn" type="button" data-v="6500000000" data-u="sun"><span class="t" lang="en">M87*</span></button></div>
 <div class="stats" id="cOut"></div><p class="note" id="cNote"></p>
 <p class="note"><span class="t" lang="en">Density is the mass divided by the volume inside the horizon. Hawking temperature and evaporation time come from Hawking’s 1974 formulas; they are predictions, never measured.</span></p>
 </section>
-<section class="blk prose"><h2><span class="t" lang="en">3. Slow down a clock</span></h2>
+<section class="blk prose"><h2><span class="t" lang="en">4. Slow down a clock</span></h2>
 <p><span class="t" lang="en">Near a black hole, time runs slower as seen from far away. Pick a mass and move the slider to set how close you hover, measured in horizon radii. At 1 you are at the event horizon.</span></p>
 <div class="row"><label><span class="t" lang="en">Mass in Suns</span> <input type="number" id="dMass" value="10" min="0" step="any"></label><label style="flex:1;min-width:200px"><span class="t" lang="en">Distance</span>: <b id="dXv">3</b> × <span class="t" lang="en">horizon radius</span><input type="range" id="dX" min="0.0004" max="9" step="any" value="0.4771" style="width:100%" aria-label="Distance"></label></div>
 <div class="row"><button class="btn" type="button" data-m="10" data-x="1.5"><span class="t" lang="en">Photon sphere</span></button><button class="btn" type="button" data-m="10" data-x="1.01"><span class="t" lang="en">Close to the horizon</span></button><button class="btn" type="button" data-m="10" data-x="3"><span class="t" lang="en">Last stable orbit</span></button><button class="btn" type="button" data-m="3.003e-06" data-x="718000000"><span class="t" lang="en">Earth’s surface</span></button></div>
@@ -55,5 +59,5 @@
 <div><a href="privacy.html"><span class="t" lang="en">Privacy Policy</span></a><br><a href="terms.html">Terms and Conditions</a><br><a href="your-data.html">Your data</a><br><a href="account.html"><span class="t" lang="en">Account</span></a><br><a href="my-space.html"><span class="t" lang="en">My space</span></a><br><a href="community.html"><i class=icn data-i=users aria-hidden=true></i> <span class="t" lang="en">Astryl Community</span></a></div>
 <div><span class="t" lang="en">Facts: NASA Planetary Fact Sheet</span><div id="installBox" class="installbox"></div></div>
 </div></footer>
-<script src="assets/data.js?v=cff9a96c1c"></script><script src="assets/app.js?v=cff9a96c1c"></script><script src="assets/account.js?v=cff9a96c1c"></script><script src="assets/me.js?v=cff9a96c1c"></script><script src="assets/fx.js?v=cff9a96c1c"></script><script src="assets/pwa.js?v=cff9a96c1c"></script><script src="assets/icons.js?v=cff9a96c1c"></script>
+<script src="assets/data.js?v=58e86b8d62"></script><script src="assets/app.js?v=58e86b8d62"></script><script src="assets/account.js?v=58e86b8d62"></script><script src="assets/me.js?v=58e86b8d62"></script><script src="assets/fx.js?v=58e86b8d62"></script><script src="assets/pwa.js?v=58e86b8d62"></script><script src="assets/icons.js?v=58e86b8d62"></script>
 </body></html>

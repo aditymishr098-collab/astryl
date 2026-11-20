@@ -1,5 +1,5 @@
 /* Black hole animations for the black hole pages.
-   #bhSim   a live black hole: light rays are traced through the curved space of a Schwarzschild
+   #bhSim   a live black hole: on the graphics chip when it can (gpu), otherwise light rays are traced through the curved space of a Schwarzschild
             black hole (once, when the view changes), then the hot disk turns in real time.
             The far side of the disk shows up above and below the shadow, as in real simulations.
    #bhFall  falling in: the astronaut's own clock next to the clock of someone watching from far away.
@@ -14,8 +14,129 @@
     new IntersectionObserver(function (es) { es.forEach(function (e) { cb(e.isIntersecting); }); }, { rootMargin: '100px' }).observe(el);
   }
 
-  /* ------------------------------------------------------------ live black hole */
+
+  /* ------------------------------------------------------------ live black hole, real time on the graphics chip
+     Every pixel follows its own light ray back through curved space (Schwarzschild, M = 1, horizon at r = 2):
+     the ray bends with a = -3 h^2 r / |r|^5, the standard form of the light-orbit equation u'' + u = 3u^2.
+     Where a ray crosses the disk (r = 6 to 20) it picks up the colour of the gas there: hotter inside,
+     bluer and brighter on the side moving towards you (Doppler), redder deeper in gravity. */
+  var VS = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+  var FS = [
+    'precision highp float;',
+    'uniform vec2 uRes;uniform float uTime,uFov,uOut,uDop;uniform vec3 uPos,uRight,uUp,uFwd;',
+    'float h2(vec2 q){return fract(sin(dot(q,vec2(127.1,311.7)))*43758.5453);}',
+    'float h3(vec3 q){q=fract(q*.3183099+.1);q*=17.;return fract(q.x*q.y*q.z*(q.x+q.y+q.z));}',
+    'float noise(vec2 q){vec2 i=floor(q),f=fract(q);f=f*f*(3.-2.*f);return mix(mix(h2(i),h2(i+vec2(1.,0.)),f.x),mix(h2(i+vec2(0.,1.)),h2(i+vec2(1.,1.)),f.x),f.y);}',
+    'float fbm(vec2 q){float v=0.,a=.5;for(int i=0;i<4;i++){v+=a*noise(q);q=q*2.03+vec2(3.1,1.7);a*=.5;}return v;}',
+    'vec3 bb(float t){t=t/100.;float r=t<=66.?1.:1.2929*pow(t-60.,-.1332);float g=t<=66.?.3900815*log(t)-.6318414:1.1298909*pow(t-60.,-.0755);',
+    ' float b=t>=66.?1.:(t<=19.?0.:.5432068*log(t-10.)-1.1962541);return clamp(vec3(r,g,b),0.,1.);}',
+    'vec3 sky(vec3 d){vec3 c=vec3(0.);vec3 q=d*170.;vec3 i=floor(q);float h=h3(i);',
+    ' if(h>.992){vec3 f=fract(q)-.5;c+=smoothstep(.42,0.,length(f))*(h-.992)*120.*mix(vec3(1.,.86,.72),vec3(.75,.85,1.),h3(i+7.));}',
+    ' float band=exp(-pow(dot(d,normalize(vec3(.25,.9,.35))),2.)*30.);',
+    ' c+=band*(.05+.07*fbm(vec2(atan(d.z,d.x)*5.,d.y*9.)))*vec3(.85,.78,.95);return c;}',
+    'vec4 disk(vec3 q,vec3 rd){float r=length(q.xz),a=atan(q.z,q.x),om=pow(r,-1.5),a0=a-om*uTime;',
+    ' vec2 g=vec2(cos(a0),sin(a0))*r;float n=.45+.75*fbm(g*.55)*(.65+.35*sin(r*3.3+fbm(g*.3)*6.));',
+    ' float tp=pow(6./r,.75)*pow(max(0.,1.-sqrt(6./r))+.02,.25)*1.9;',
+    ' vec3 ph=vec3(-q.z,0.,q.x)/r;float be=min(.7,1./sqrt(r-2.));float ga=1./sqrt(1.-be*be);',
+    ' float d=1./(ga*(1.-be*dot(ph,-rd)));float gr=sqrt(1.-2./r);float gt=mix(1.,d*gr/sqrt(1.-2./6.),uDop);',
+    ' float I=tp*n*pow(gt,uDop>.5?3.5:0.);float x=tp*gt;vec3 c=clamp(vec3(1.,.22+.46*x,.02+.3*x*x),0.,1.)*I*.95;',
+    ' float e=smoothstep(6.,6.8,r)*smoothstep(uOut,uOut-5.,r);return vec4(c,clamp(I*1.3,0.,.96)*e);}',
+    'void main(){vec2 uv=(gl_FragCoord.xy-.5*uRes)/uRes.y;vec3 v=normalize(uFwd+(uv.x*uRight+uv.y*uUp)*uFov),p=uPos;',
+    ' vec3 hv=cross(p,v);float hh=dot(hv,hv);vec3 col=vec3(0.);float al=0.;bool inside=false;',
+    ' for(int i=0;i<460;i++){float r=length(p);float dt=clamp(.032*r*(r<4.?.6:1.),.015,2.);',
+    '  vec3 ac=-3.*hh*p/pow(r,5.);vec3 pn=p+v*dt+.5*ac*dt*dt;float rn=length(pn);vec3 an=-3.*hh*pn/pow(rn,5.);vec3 vn=v+.5*(ac+an)*dt;',
+    '  if(p.y*pn.y<0.){float f=p.y/(p.y-pn.y);vec3 q=mix(p,pn,f);float rq=length(q.xz);',
+    '   if(rq>6.&&rq<uOut){vec4 dc=disk(q,normalize(mix(v,vn,f)));col+=(1.-al)*dc.rgb*dc.a;al+=(1.-al)*dc.a;}}',
+    '  p=pn;v=vn;if(rn<2.){inside=true;break;}if(rn>120.&&dot(p,v)>0.)break;if(al>.985)break;}',
+    ' if(!inside)col+=(1.-al)*sky(normalize(v));col=1.-exp(-col*.95);gl_FragColor=vec4(col,1.);}'
+  ].join('\n');
+
+  function gpu(box) {
+    var cv = document.createElement('canvas'), gl;
+    try { gl = cv.getContext('webgl', { antialias: false, alpha: false }) || cv.getContext('experimental-webgl'); } catch (e) { gl = null; }
+    if (!gl) return false;
+    function sh(type, src) { var o = gl.createShader(type); gl.shaderSource(o, src); gl.compileShader(o); return gl.getShaderParameter(o, gl.COMPILE_STATUS) ? o : null; }
+    var vs = sh(gl.VERTEX_SHADER, VS), fs = sh(gl.FRAGMENT_SHADER, FS);
+    if (!vs || !fs) return false;
+    var pr = gl.createProgram(); gl.attachShader(pr, vs); gl.attachShader(pr, fs); gl.linkProgram(pr);
+    if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) return false;
+    gl.useProgram(pr);
+    var buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW);
+    var loc = gl.getAttribLocation(pr, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    var U = {}; ['uRes', 'uTime', 'uFov', 'uOut', 'uDop', 'uPos', 'uRight', 'uUp', 'uFwd'].forEach(function (n) { U[n] = gl.getUniformLocation(pr, n); });
+
+    box.innerHTML = '<div class="bhstage bh3d"></div>' +
+      '<div class="bhctl"><button type="button" class="btn" data-a="play"></button><button type="button" class="btn" data-a="dop" aria-pressed="true"></button>' +
+      '<label class="bhtilt">' + T('Angle', 'कोण') + ' <input type="range" data-a="el" min="-80" max="80" value="8" aria-label="Viewing angle"><b data-v="el"></b></label>' +
+      '<label class="bhtilt">' + T('Distance', 'दूरी') + ' <input type="range" data-a="d" min="12" max="70" value="30" aria-label="Distance"><b data-v="d"></b></label></div>' +
+      '<p class="note">' + T('Drag to fly around it, pinch or scroll to move closer. Every pixel follows its own ray of light through curved space, worked out live: light from behind the disk bends over and under the black hole, and the side of the disk coming towards you looks bluer and brighter. Distances are in units of the black hole\'s mass; the horizon is 2, the disk starts at 6.',
+        'घुमाने के लिए खींचें, पास जाने के लिए pinch या scroll करें। हर pixel अपनी रोशनी की किरण को मुड़े हुए space में पीछे तक follow करता है, live गिना हुआ।') + '</p>';
+    var stage = box.querySelector('.bh3d'); stage.appendChild(cv);
+    cv.setAttribute('aria-label', 'A black hole with its glowing disk, drawn live. Drag to turn.');
+    var elIn = box.querySelector('[data-a=el]'), dIn = box.querySelector('[data-a=d]'), elV = box.querySelector('[data-v=el]'), dV = box.querySelector('[data-v=d]');
+    var az = 0.35, el = 8, dist = 30, dop = 1, t = 0, playing = !reduce, on = true, last = 0, scale = Math.min(1, window.devicePixelRatio || 1) * (window.innerWidth < 700 ? 0.7 : 0.85), slow = 0, fast = 0;
+    function labels() { elV.textContent = Math.round(el) + '°'; dV.textContent = Math.round(dist); elIn.value = Math.round(el); dIn.value = Math.round(dist); }
+    elIn.oninput = function () { el = +elIn.value; labels(); };
+    dIn.oninput = function () { dist = +dIn.value; labels(); };
+    var pb = box.querySelector('[data-a=play]'), db = box.querySelector('[data-a=dop]');
+    function btns() {
+      pb.innerHTML = playing ? '❚❚ ' + T('Pause', 'रोकें') : '▶ ' + T('Play', 'चलाएँ');
+      db.innerHTML = (dop ? '● ' : '○ ') + T('Doppler effect', 'Doppler effect'); db.setAttribute('aria-pressed', dop ? 'true' : 'false');
+    }
+    pb.onclick = function () { playing = !playing; btns(); };
+    db.onclick = function () { dop = dop ? 0 : 1; btns(); };
+    btns(); labels();
+    // drag to turn, wheel or two fingers to zoom
+    var pts = {}, pinch = 0;
+    cv.style.touchAction = 'none';
+    cv.addEventListener('pointerdown', function (e) { pts[e.pointerId] = [e.clientX, e.clientY]; cv.setPointerCapture(e.pointerId); });
+    cv.addEventListener('pointermove', function (e) {
+      if (!pts[e.pointerId]) return;
+      var ids = Object.keys(pts);
+      if (ids.length === 2) {
+        var o = pts[ids[0] == e.pointerId ? ids[1] : ids[0]], d = Math.hypot(e.clientX - o[0], e.clientY - o[1]);
+        if (pinch) { dist = Math.max(12, Math.min(70, dist * pinch / d)); labels(); }
+        pinch = d;
+      } else {
+        az -= (e.clientX - pts[e.pointerId][0]) * 0.008;
+        el = Math.max(-80, Math.min(80, el + (e.clientY - pts[e.pointerId][1]) * 0.35)); labels();
+      }
+      pts[e.pointerId] = [e.clientX, e.clientY];
+    });
+    function up(e) { delete pts[e.pointerId]; pinch = 0; }
+    cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
+    cv.addEventListener('wheel', function (e) { e.preventDefault(); dist = Math.max(12, Math.min(70, dist * (e.deltaY > 0 ? 1.08 : 0.93))); labels(); }, { passive: false });
+    visible(box, function (v) { on = v; if (v) kick(); });
+    document.addEventListener('visibilitychange', kick);
+    var running = false;
+    function kick() { if (!running && on && !document.hidden) { running = true; last = 0; requestAnimationFrame(frame); } }
+    function frame(now) {
+      if (!on || document.hidden) { running = false; return; }
+      var dt = last ? Math.min(0.1, (now - last) / 1000) : 0; last = now;
+      if (playing) t += dt * 9;
+      // keep it smooth on slower phones: draw fewer pixels when frames take too long
+      if (dt > 0.045) { if (++slow > 20 && scale > 0.35) { scale *= 0.85; slow = 0; } } else if (dt && dt < 0.02) { if (++fast > 120 && scale < 1) { scale = Math.min(1, scale * 1.1); fast = 0; } slow = 0; }
+      var w = cv.clientWidth || 600, h = Math.round(w * 9 / 16), W = Math.max(64, Math.round(w * scale)), H = Math.max(36, Math.round(h * scale));
+      if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; }
+      gl.viewport(0, 0, W, H);
+      var e = el * Math.PI / 180, px = dist * Math.cos(e) * Math.sin(az), py = dist * Math.sin(e), pz = dist * Math.cos(e) * Math.cos(az);
+      var f = [-px / dist, -py / dist, -pz / dist], r = [f[1] * 0 - f[2] * 1, f[2] * 0 - f[0] * 0, f[0] * 1 - f[1] * 0];
+      var rl = Math.hypot(r[0], r[1], r[2]) || 1; r = [r[0] / rl, r[1] / rl, r[2] / rl];
+      var u = [r[1] * f[2] - r[2] * f[1], r[2] * f[0] - r[0] * f[2], r[0] * f[1] - r[1] * f[0]];
+      gl.uniform2f(U.uRes, W, H); gl.uniform1f(U.uTime, t); gl.uniform1f(U.uFov, 2 * Math.tan(25 * Math.PI / 180));
+      gl.uniform1f(U.uOut, 20); gl.uniform1f(U.uDop, dop);
+      gl.uniform3f(U.uPos, px, py, pz); gl.uniform3f(U.uRight, r[0], r[1], r[2]); gl.uniform3f(U.uUp, u[0], u[1], u[2]); gl.uniform3f(U.uFwd, f[0], f[1], f[2]);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+      requestAnimationFrame(frame);
+    }
+    kick();
+    return true;
+  }
+
+  /* ------------------------------------------------------------ live black hole (fallback without WebGL) */
   function sim(box) {
+    if (gpu(box)) return;
     box.innerHTML = '<div class="bhstage"><canvas aria-label="Animated black hole with its glowing disk"></canvas></div>' +
       '<div class="bhctl"><button type="button" class="btn" data-a="play"></button>' +
       '<label class="bhtilt">' + T('View from above the disk', 'Disk के ऊपर से देखने का कोण') + ' <input type="range" min="2" max="60" value="9" aria-label="Viewing angle"><b></b></label></div>' +
