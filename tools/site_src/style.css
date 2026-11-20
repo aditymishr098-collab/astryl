@@ -1036,3 +1036,7 @@ body[data-page=community] main.wrap{max-width:1680px;padding-left:clamp(14px,3vw
 .bh3d canvas{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#000;cursor:grab;image-rendering:auto}
 .bh3d canvas:active{cursor:grabbing}
 .bhctl .bhtilt{min-width:180px}
+.s3-btn{position:absolute;left:14px;bottom:14px;padding:7px 12px;border-radius:999px;background:rgba(8,14,32,.8);backdrop-filter:blur(6px);border:1px solid rgba(231,194,122,.4);color:#EBD6A6;font:600 .8rem "DM Sans",sans-serif;cursor:pointer}
+.s3-btn.on{background:#E7C27A;color:#140f05}
+.s3-btn:focus-visible{outline:2px solid #E7C27A;outline-offset:2px}
+.s3-label.s3-probe{color:#E7C27A}

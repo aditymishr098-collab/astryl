@@ -648,7 +648,7 @@
     var s3 = null;
     function try3d() {
       if (s3 || !window.ASTRYL_SOLAR3D) return;
-      s3 = window.ASTRYL_SOLAR3D.start({ stage: cv.parentNode, canvas: cv, helio: helio, moonEcl: moonEcl, orbits: D.orbits, byId: byId, name: bname, pick: function (id) { selectBody(id); requestAnimationFrame(loop); } });
+      s3 = window.ASTRYL_SOLAR3D.start({ stage: cv.parentNode, canvas: cv, helio: helio, moonEcl: moonEcl, orbits: D.orbits, spacecraft: D.spacecraft, byId: byId, name: bname, pick: function (id) { selectBody(id); requestAnimationFrame(loop); } });
       if (s3) { selected = 'sun'; renderChips(); renderTelemetry(); drawFrame(); }
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', try3d); else setTimeout(try3d, 0);

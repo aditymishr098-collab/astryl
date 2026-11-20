@@ -116,6 +116,64 @@
       sp.scale.set(46, 46, 1); scene.add(sp);
     })();
 
+    // the asteroid belt: thousands of rocks between Mars and Jupiter (2.1 to 3.3 AU), turning at the speed of the middle of the belt
+    var belt = (function () {
+      var n = 2600, pos = new Float32Array(n * 3), seed = 11;
+      function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+      for (var i = 0; i < n; i++) {
+        var a = 2.1 + rnd() * 1.2;
+        if (Math.abs(a - 2.5) < 0.03 || Math.abs(a - 2.82) < 0.025 || Math.abs(a - 2.95) < 0.02) a += 0.06; // the Kirkwood gaps
+        var th = rnd() * Math.PI * 2, rr = 26 * Math.sqrt(a);
+        pos[i * 3] = Math.cos(th) * rr; pos[i * 3 + 1] = (rnd() - 0.5) * rr * 0.06; pos[i * 3 + 2] = -Math.sin(th) * rr;
+      }
+      var g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      var pts = new THREE.Points(g, new THREE.PointsMaterial({color: 0xb9a68c, size: 1.3, sizeAttenuation: false, transparent: true, opacity: 0.5, depthWrite: false}));
+      scene.add(pts); return pts;
+    })();
+
+    // Voyager 1 and 2: flying straight out in a fixed direction (their published sky position), distance from speed
+    var probes = [];
+    (function () {
+      var DIR = {voyager1: [258.3, 12.0], voyager2: [301.5, -58.2]}, eps = 23.439 * D2R;
+      (o.spacecraft || []).forEach(function (sc) {
+        if (!DIR[sc.id]) return;
+        var ra = DIR[sc.id][0] * D2R, de = DIR[sc.id][1] * D2R, x = Math.cos(de) * Math.cos(ra), y = Math.cos(de) * Math.sin(ra), z = Math.sin(de);
+        var dir = {x: x, y: y * Math.cos(eps) + z * Math.sin(eps), z: -y * Math.sin(eps) + z * Math.cos(eps)};
+        var dot = new THREE.Mesh(new THREE.SphereGeometry(0.6, 12, 8), new THREE.MeshBasicMaterial({color: 0xE7C27A}));
+        scene.add(dot);
+        var line = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]), new THREE.LineDashedMaterial({color: 0xE7C27A, dashSize: 3, gapSize: 3, transparent: true, opacity: 0.35}));
+        scene.add(line);
+        var lab = document.createElement('button'); lab.type = 'button'; lab.className = 's3-label s3-probe'; labelBox.appendChild(lab);
+        var pr = {id: sc.id, sc: sc, dir: dir, dot: dot, line: line, label: lab, r: 0.6, pos: dot.position, au: 0};
+        lab.addEventListener('click', function () { wantSel = sc.id; kick(); });
+        probes.push(pr); objs[sc.id] = pr; pr.probe = true;
+      });
+    })();
+    function probeTime(ms) {
+      probes.forEach(function (pr) {
+        var km = pr.sc.anchorAu * 149597870.7 + (ms - pr.sc.anchor) / 1000 * pr.sc.speed; pr.au = Math.max(0.01, km / 149597870.7);
+        place({x: pr.dir.x * pr.au, y: pr.dir.y * pr.au, z: pr.dir.z * pr.au}, pr.pos);
+        var lp = pr.line.geometry.attributes.position; lp.setXYZ(1, pr.pos.x, pr.pos.y, pr.pos.z); lp.needsUpdate = true; pr.line.computeLineDistances();
+        pr.label.textContent = pr.sc.name + ' · ' + Math.round(pr.au) + ' AU';
+      });
+    }
+
+    // "Real sizes": shrink every world to its true size compared with the Sun (the distances stay squeezed)
+    var realSize = false, sizeK = 0, btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 's3-btn'; btn.setAttribute('aria-pressed', 'false');
+    btn.textContent = 'Real sizes';
+    btn.addEventListener('click', function () { realSize = !realSize; btn.setAttribute('aria-pressed', realSize ? 'true' : 'false'); btn.classList.toggle('on', realSize); kick(); });
+    cv.parentNode.appendChild(btn);
+    function sizes(dt) {
+      var goal = realSize ? 1 : 0; if (sizeK === goal) return;
+      sizeK = goal > sizeK ? Math.min(1, sizeK + dt / 1.2) : Math.max(0, sizeK - dt / 1.2);
+      Object.keys(objs).forEach(function (id) {
+        var ob = objs[id]; if (ob.probe || id === 'sun') return;
+        var t = 7 * byId[id].diam / 1392700 / ob.r, k = 1 + (t - 1) * ease(sizeK);
+        ob.holder.scale.setScalar(k);
+      });
+    }
+
     // orbits, drawn from the real elements around the shown date (redrawn when the date moves far)
     var orbits = {}, orbitsAt = null, tmpV = new THREE.Vector3();
     function drawOrbits(ms) {
@@ -150,8 +208,11 @@
         var d = par.r * m.k + (id === 'moon' ? 0.3 : 0);
         ob.pos.set(par.pos.x + Math.cos(a) * d, par.pos.y, par.pos.z - Math.sin(a) * d);
       });
+      belt.rotation.y = (days / (365.25 * Math.pow(2.7, 1.5))) * Math.PI * 2;
+      probeTime(ms);
       var hours = ms / 3600000;
       Object.keys(objs).forEach(function (id) {
+        if (objs[id].probe) return;
         var b = byId[id], day = Math.abs(b.day || 24);
         objs[id].spin.rotation.y = ((RETRO[id] ? -1 : 1) * (hours / day) * Math.PI * 2) % (Math.PI * 2);
       });
@@ -163,7 +224,7 @@
       sel = id; fly = 0; from.copy(controls.target); camFrom.copy(camera.position);
       if (id === 'sun' || !objs[id]) off.copy(HOME);
       else {
-        var d = objs[id].r * (id === 'saturn' ? 7 : objs[id].moon ? 9 : 6);
+        var d = objs[id].probe ? 14 : objs[id].r * (id === 'saturn' ? 7 : objs[id].moon ? 9 : 6) * (realSize ? 0.35 : 1);
         off.copy(camera.position).sub(controls.target).normalize().multiplyScalar(d);
         off.y = Math.max(off.y, d * 0.28);
       }
@@ -201,6 +262,7 @@
       if (!onScreen || document.hidden) { running = false; return; }
       var dt = last ? Math.min(0.1, (now - last) / 1000) : 0; last = now;
       if (want != null) setTime(want);
+      sizes(dt);
       if (wantSel !== sel) focus(wantSel);
       if (sel !== 'sun' && objs[sel]) {
         tp.copy(objs[sel].pos);
@@ -213,7 +275,7 @@
       controls.update();
       renderer.render(scene, camera);
       Object.keys(objs).forEach(function (id) {
-        var ob = objs[id]; tmpV.copy(ob.pos); tmpV.y += ob.r; tmpV.project(camera);
+        var ob = objs[id]; tmpV.copy(ob.pos); tmpV.y += ob.r * (ob.holder ? ob.holder.scale.y : 1); tmpV.project(camera);
         var vis = tmpV.z < 1 && Math.abs(tmpV.x) < 1.05 && Math.abs(tmpV.y) < 1.05;
         if (vis && ob.moon) vis = id === sel || camera.position.distanceTo(ob.pos) < ob.r * 60;
         ob.label.style.display = vis ? '' : 'none';
