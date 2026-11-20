@@ -1026,3 +1026,10 @@ body[data-page=community] main.wrap{max-width:1680px;padding-left:clamp(14px,3vw
 .instx:hover{color:var(--text);background:color-mix(in srgb,var(--text) 8%,transparent)}
 @keyframes instUp{from{opacity:0;transform:translate(-50%,12px)}to{opacity:1;transform:translateX(-50%)}}
 @media(prefers-reduced-motion:reduce){.instbar{animation:none}}
+/* 3D Solar System (solar3d.js) */
+.s3-canvas{display:block;width:100%;cursor:grab;touch-action:none;background:#04060e}
+.s3-canvas:active{cursor:grabbing}
+.s3-labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.s3-label{position:absolute;left:0;top:0;pointer-events:auto;background:none;border:0;padding:3px 6px;border-radius:6px;font:500 .76rem/1 "DM Sans",sans-serif;letter-spacing:.04em;color:rgba(225,232,250,.78);text-shadow:0 1px 3px #000;white-space:nowrap;cursor:pointer}
+.s3-label:hover,.s3-label.on{color:#E7C27A}
+.s3-label:focus-visible{outline:2px solid #E7C27A;outline-offset:1px}

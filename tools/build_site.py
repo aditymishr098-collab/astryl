@@ -440,7 +440,7 @@ def asset_v():
     '''A short hash of the scripts and styles, so a changed file is never served from an old cache.'''
     if not _ASSET_V:
         h = hashlib.md5()
-        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'blog.js', 'discover.js', 'citypick.js', 'icons.js', 'journey.js', 'sw.js'):
+        for name in ('style.css', 'app.js', 'account.js', 'cosmos.js', 'moons.js', 'fx.js', 'lab.js', 'scale.js', 'learn.js', 'universe.js', 'me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'blog.js', 'discover.js', 'citypick.js', 'icons.js', 'journey.js', 'solar3d.js', 'sw.js'):
             h.update((SRC / name).read_bytes())
         h.update((ROOT / 'tools' / 'formation.py').read_bytes())
         h.update((ROOT / 'tools' / 'icons.py').read_bytes())
@@ -1079,7 +1079,7 @@ def simple_pages():
 <div class="card eyes-telemetry" id="solTelemetry"></div></div>
 <p class="note">{bt("Drag to tilt & rotate 3D camera · Click a planet to fly to it and see its 3D moon orbits · Distances compressed so inner and outer worlds fit together.", "3D कैमरा घुमाने के लिए खींचें · किसी ग्रह पर क्लिक करके उसकी और उसके चंद्रमाओं की 3D कक्षा देखें।")}</p></section>
 <section class="blk"><h2>{bi("distanceFromEarth")}</h2><div id="solTable"></div></section>'''
-    write('solar-system.html', shell('Solar System 3D Live', '3D लाइव सौरमंडल', 'solar', body, 'Interactive 3D Solar System explorer with real planet positions, moon orbits and live telemetry.', canonical='solar-system.html', extra_head=f'<script defer src="assets/sheet.js?v={asset_v()}"></script>'))
+    write('solar-system.html', shell('Solar System 3D Live', '3D लाइव सौरमंडल', 'solar', body, 'Interactive 3D Solar System explorer with real planet positions, moon orbits and live telemetry.', canonical='solar-system.html', extra_head=f'<script defer src="assets/three.min.js?v={asset_v()}"></script><script defer src="assets/OrbitControls.js?v={asset_v()}"></script><script defer src="assets/solar3d.js?v={asset_v()}"></script><script defer src="assets/sheet.js?v={asset_v()}"></script>'))
     # compare
     body = f'''<section class="blk"><h1>{bi("compareTitle")}</h1><p class="sub">{bi("compareHint")}</p><div class="row"><select id="cmpA" aria-label="A"></select><span>vs</span><select id="cmpB" aria-label="B"></select></div><div id="cmpOut"></div></section>''' + pagetext.section('compare')
     write('compare.html', shell('Compare planets', 'ग्रहों की तुलना', 'compare', body, 'Compare any two planets or moons side by side: size, gravity, day and year length, temperature, moons and air, with real NASA numbers.', canonical='compare.html', ld=[pagetext.faq_ld('compare')]))
@@ -1344,8 +1344,10 @@ def main():
     shutil.copy(SRC / 'learn.js', OUT / 'assets/learn.js')
     shutil.copy(SRC / 'universe.js', OUT / 'assets/universe.js')
     shutil.copytree(site_data.CITIES, OUT / 'assets' / 'cities')
-    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'blog.js', 'discover.js', 'citypick.js', 'journey.js'):
+    for name in ('me.js', 'myspace.js', 'birthday.js', 'tonight.js', 'telescope.js', 'sgp4.js', 'iss.js', 'apod.js', 'worlds.js', 'pwa.js', 'rounds.js', 'bhsim.js', 'sheet.js', 'mapzoom.js', 'home.js', 'community.js', 'moderate.js', 'stars.js', 'profile.js', 'blog.js', 'discover.js', 'citypick.js', 'journey.js', 'solar3d.js'):
         shutil.copy(SRC / name, OUT / 'assets' / name)
+    for name in ('three.min.js', 'OrbitControls.js'):  # three.js r128 (MIT), for the 3D Solar System
+        shutil.copy(SRC / 'vendor' / name, OUT / 'assets' / name)
     pwa = OUT / 'assets/pwa.js'
     pwa.write_text(pwa.read_text(encoding='utf-8').replace('__ICONV__', icon_v()), encoding='utf-8')
     (OUT / 'assets/data.js').write_text(data_js(), encoding='utf-8')

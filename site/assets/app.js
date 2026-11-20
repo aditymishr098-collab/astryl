@@ -613,7 +613,7 @@
     function renderTelemetry() {
       if (!telBox) return;
       var b = byId[selected] || byId.earth, now = ms;
-      var dEarth = selected === 'earth' ? 0 : distFromEarthKm(selected === 'moon' ? 'moon' : (b.kind === 'moon' ? b.parent : selected), now);
+      var dEarth = selected === 'earth' || selected === 'moon' ? 0 : distFromEarthKm(b.kind === 'moon' ? b.parent : selected, now);
       if (selected === 'moon') dEarth = 384400;
       var dSun = selected === 'sun' ? 0 : (b.dist * 1e6);
       var ox = oxy(b);
@@ -643,7 +643,23 @@
       renderTelemetry();
     }
 
+    // real 3D (solar3d.js) when the browser can do it; the flat drawing below otherwise
+    // (three.js and solar3d.js load with defer, so they are ready only at DOMContentLoaded)
+    var s3 = null;
+    function try3d() {
+      if (s3 || !window.ASTRYL_SOLAR3D) return;
+      s3 = window.ASTRYL_SOLAR3D.start({ stage: cv.parentNode, canvas: cv, helio: helio, moonEcl: moonEcl, orbits: D.orbits, byId: byId, name: bname, pick: function (id) { selectBody(id); requestAnimationFrame(loop); } });
+      if (s3) { selected = 'sun'; renderChips(); renderTelemetry(); drawFrame(); }
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', try3d); else setTimeout(try3d, 0);
+
     function drawFrame(ts) {
+      if (s3) {
+        s3.update(ms, selected);
+        lab.textContent = dateText(ms);
+        if (playing) requestAnimationFrame(loop);
+        return;
+      }
       var W = cv.width, H = cv.height;
       var tp = worldPos(selected, ms);
       targetX = tp.x; targetY = tp.y;
@@ -821,6 +837,7 @@
       todayBtn.textContent = t('today');
       renderChips();
       renderTelemetry();
+      if (s3) s3.labels();
       drawFrame();
       var now = Date.now(), h = '<table class="cmp cols"><tr><th></th><th>' + t('distanceFromEarth') + '</th><th>' + t('lightTime') + '</th></tr>';
       planets.filter(function (p) { return p.id !== 'earth'; }).concat([byId.sun]).forEach(function (p) { var km = distFromEarthKm(p.id, now); h += '<tr><td>' + bname(p.id) + '</td><td class="w">' + PT.km(km) + '</td><td>' + PT.duration(km / C_KMS) + '</td></tr>'; });
