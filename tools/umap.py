@@ -33,7 +33,7 @@ def build(h):
     bt, P, H2 = k.bt, k.P, k.H2
     v = h['asset_v']()
     h['write']('assets/universe-data.js', data_js())
-    body = f'''<section class="blk"><h1>{bt("Universe map", "ब्रह्मांड का नक्शा")}</h1><p class="sub">{bt("One 3D space with the planets where they are right now, nearby stars, 62 black holes and 3,600 real galaxies. Drag to turn, pinch or scroll to zoom, tap anything.", "एक 3D अंतरिक्ष जिसमें ग्रह अभी जहाँ हैं वहीं हैं, पास के तारे, 62 ब्लैक होल और 3,600 असली आकाशगंगाएँ। घुमाने के लिए खींचिए, ज़ूम के लिए चुटकी या scroll, किसी भी चीज़ पर टैप कीजिए।")}</p></section>
+    body = f'''<section class="blk"><h1>{bt("Universe map", "ब्रह्मांड का नक्शा")}</h1><p class="sub">{bt("One 3D space with the planets where they are right now, nearby stars, 62 black holes and 3,600 real galaxies. Drag to turn, pinch or scroll to zoom, tap anything.", "एक 3D अंतरिक्ष जिसमें ग्रह अभी जहाँ हैं वहीं हैं, पास के तारे, 62 ब्लैक होल और 3,600 असली आकाशगंगाएँ। घुमाने के लिए खींचिए, ज़ूम के लिए चुटकी या scroll, किसी भी चीज़ पर टैप कीजिए।")}</p><p class="note seealso">{bt("Here you fly through real stars and galaxies in 3D. To compare sizes step by step, from a proton to the whole universe, open", "")} <a href="cosmic-scale.html">{bt("Scale of the universe", "Scale of the universe")} →</a></p></section>
 <section class="blk umap">
 <div class="umchips" id="umLevels"></div>
 <label class="umfind">{bt("Go to", "यहाँ जाएँ")} <input type="search" id="umFind" autocomplete="off" placeholder="Andromeda, M87, Sirius…" aria-label="Search stars, galaxies, black holes"></label>

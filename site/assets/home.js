@@ -200,3 +200,40 @@
     });
   }
 })();
+
+/* The Solar System in 3D on the home page. three.js and the 3D code load only when this
+   section comes near the screen (or the button is tapped), so the page itself opens just as fast. */
+(function () {
+  var box = document.getElementById('home3d');
+  if (!box) return;
+  var pic = box.querySelector('img'), btn = box.querySelector('[data-start]'), started = false;
+  var V = box.getAttribute('data-v') || '', root = document.body.getAttribute('data-root') || '';
+  function load(src) { return new Promise(function (ok, no) { var s = document.createElement('script'); s.src = root + 'assets/' + src + '?v=' + V; s.onload = ok; s.onerror = no; document.head.appendChild(s); }); }
+  function start() {
+    if (started) return; started = true;
+    if (btn) btn.textContent = 'Loading 3D…';
+    var c = document.createElement('canvas'), webgl = false;
+    try { webgl = !!(c.getContext('webgl') || c.getContext('experimental-webgl')); } catch (e) { }
+    if (!webgl) { if (btn) btn.hidden = true; return; } // the picture stays
+    load('three.min.js').then(function () { return load('OrbitControls.js'); }).then(function () { return load('solar3d.js'); }).then(function () {
+      var D = window.ASTRYL, API = window.ASTRYL_API;
+      if (!D || !API || !window.ASTRYL_SOLAR3D) throw new Error('missing');
+      var byId = {}; D.bodies.forEach(function (b) { byId[b.id] = b; });
+      var ms = Date.now(), sel = 'sun', last = 0;
+      var s3 = window.ASTRYL_SOLAR3D.start({ stage: box, canvas: pic, helio: API.helio, moonEcl: API.moonEcl, orbits: D.orbits, spacecraft: D.spacecraft, byId: byId, name: API.bname,
+        pick: function (id) { sel = id; s3.update(ms, sel); } });
+      if (!s3) throw new Error('no 3D');
+      if (btn) btn.hidden = true;
+      box.classList.add('live');
+      s3.update(ms, sel);
+      // time runs at two days a second, so the planets visibly move
+      function tick(t) { var dt = last ? Math.min(0.1, (t - last) / 1000) : 0; last = t; ms += dt * 2 * 86400000; s3.update(ms, sel); requestAnimationFrame(tick); }
+      requestAnimationFrame(tick);
+    }).catch(function () { if (btn) { btn.hidden = true; } });
+  }
+  if (btn) btn.addEventListener('click', start);
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (en) { if (en[0].isIntersecting) { io.disconnect(); start(); } }, { rootMargin: '200px' });
+    io.observe(box);
+  }
+})();

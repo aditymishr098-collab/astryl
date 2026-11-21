@@ -19,6 +19,12 @@ def horizon_radius_km(mass_kg):
     return 2 * G * mass_kg / C ** 2 / 1000
 
 
+MEDAL = '''<svg viewBox="0 0 120 150" width="96" height="120" aria-hidden="true"><defs><radialGradient id="mdl" cx=".4" cy=".35"><stop offset="0" stop-color="#ffe9b0"/><stop offset="1" stop-color="#e29a2e"/></radialGradient></defs>
+<path d="M32 0 L60 52 L88 0 Z" fill="#5b8cff"/><path d="M44 0 L60 30 L76 0 Z" fill="#a98bff"/>
+<circle cx="60" cy="88" r="46" fill="url(#mdl)" stroke="#fff3cf" stroke-width="3"/><circle cx="60" cy="88" r="34" fill="#05070f"/>
+<ellipse cx="60" cy="88" rx="44" ry="10" fill="none" stroke="#ffb347" stroke-width="4" transform="rotate(-18 60 88)"/><circle cx="60" cy="88" r="3" fill="#fff"/></svg>'''
+
+
 def build(h):
     """h: the helpers of build_site (bt, bi, shell, write, esc, fmt, SITE)."""
     bt, shell, write, esc, fmt = h['bt'], h['shell'], h['write'], h['esc'], h['fmt']
@@ -126,7 +132,7 @@ def black_hole_pages(h):
 
     def page(slug, body, en, hi, desc):
         meta = next(s for s in SLUGS if s[0] == slug)
-        rel = k.keep_exploring('../', [('black-hole-lab.html', '🧪', 'Black hole lab', 'ब्लैक होल lab'), ('black-holes-101.html', '🎓', 'Black holes 101', 'Black holes 101'), ('galaxies.html', '🌌', 'Galaxies', 'Galaxies'), ('glossary.html', '📖', 'Glossary', 'शब्दकोश')])
+        rel = k.keep_exploring('../', [('black-hole-lab.html', '🧪', 'Black hole lab', 'ब्लैक होल lab'), ('black-holes.html#course', '🎓', 'Black holes 101', 'Black holes 101'), ('galaxies.html', '🌌', 'Galaxies', 'Galaxies'), ('glossary.html', '📖', 'Glossary', 'शब्दकोश')])
         body = body + rel
         path = f'black-holes/{slug}.html'
         ld = article_ld(h['SITE'], en, desc, path, [('Astryl', ''), ('Black holes', 'black-holes.html'), (en, path)])
@@ -136,13 +142,13 @@ def black_hole_pages(h):
     out = []
 
     # ---- hub
-    cards = ''.join(f'<a class="sc" href="black-holes/{s}.html"><span class="ic">{ic}</span><span><b>{bt(en, hi)}</b><small>{bt(de, dh)}</small></span><span class="go">→</span></a>'
+    cards = ''.join(f'<li data-slug="{s}"><a class="sc" href="black-holes/{s}.html"><span class="tick">✓</span><span class="ic">{ic}</span><span><b>{bt(en, hi)}</b><small>{bt(de, dh)}</small></span><span class="go">→</span></a></li>'
                     for s, en, hi, de, dh, ic in SLUGS)
     hub = f'''<section class="hero2" style="padding-bottom:0">
 <div><h1 class="rise">{bt("Black", "ब्लैक")} <span class="grad">{bt("holes.", "होल।")}</span></h1>
 <p class="lead rise">{bt("The darkest objects in the universe, explained from the start. No maths needed, and every number comes from real measurements.", "ब्रह्मांड की सबसे अँधेरी चीज़ें, शुरू से समझाई हुई। गणित की ज़रूरत नहीं, और हर आँकड़ा असली माप से आया है।")}</p>
-<div class="btns rise"><a class="btn primary" href="black-holes/what-is-a-black-hole.html">{bt("Start here", "यहाँ से शुरू करें")} →</a><a class="btn" href="black-holes/famous-black-holes.html">{bt("Famous black holes", "मशहूर ब्लैक होल")}</a><a class="btn" href="black-hole-lab.html">🧪 {bt("Black hole lab", "ब्लैक होल lab")}</a><a class="btn" href="black-holes-101.html">🎓 {bt("Black holes 101", "Black holes 101")}</a></div></div>
-<div class="card bhcard" id="bhSim"></div></section>
+<div class="btns rise"><a class="btn primary" href="black-holes/what-is-a-black-hole.html">{bt("Start here", "यहाँ से शुरू करें")} →</a><a class="btn" href="black-holes/famous-black-holes.html">{bt("Famous black holes", "मशहूर ब्लैक होल")}</a><a class="btn" href="black-hole-lab.html">🧪 {bt("Black hole lab", "ब्लैक होल lab")}</a><a class="btn" href="#course">🎓 {bt("Black holes 101", "Black holes 101")}</a></div></div>
+<a class="bhpreview" href="black-hole-lab.html"><img src="img/space/bh-3d.webp" width="838" height="472" alt="A black hole with its glowing disk, as drawn by the Black hole lab" loading="lazy"><span class="btn primary">🧪 {bt("Fly around it in 3D", "3D में इसके चारों ओर उड़िए")} →</span></a></section>
 <section class="blk">{facts([
         ("Our Galaxy's black hole", 'हमारी आकाशगंगा का ब्लैक होल', '4.3 million Suns', '43 लाख सूरज के बराबर'),
         ('Distance to it', 'उसकी दूरी', '~26,000 light-years', '~26,000 प्रकाश-वर्ष'),
@@ -151,11 +157,16 @@ def black_hole_pages(h):
     ])}</section>
 <section class="blk"><h2>{bt("Real pictures", "असली तस्वीरें")}</h2><p class="sub">{bt("The Event Horizon Telescope joined radio dishes around the world into one Earth-sized telescope to take these.", "Event Horizon Telescope ने दुनिया भर के radio dishes को जोड़कर पृथ्वी जितना बड़ा एक telescope बनाया और ये तस्वीरें लीं।")}</p>{spacephotos.strip(['bh-m87', 'bh-sgra'], '', bt, esc).replace('<section class="blk">', '').replace('</section>', '')}</section>
 <section class="blk"><h2>{bt("Parts of a black hole", "ब्लैक होल के हिस्से")}</h2><div>{anatomy_svg(bt)}</div></section>
-<section class="blk"><h2>{bt("Seven short pages", "सात छोटे पन्ने")}</h2><div class="sc-grid" style="padding-top:6px">{cards}</div></section>
+<section class="blk" id="course"><h2>{bt("Black holes 101: seven short lessons", "Black holes 101: सात छोटे पाठ")}</h2><p class="sub">{bt("Read them in order, from “what is it?” to the big open questions. Each takes a few minutes. A lesson is ticked after it has been open for a few seconds.", "")}</p>
+<div class="pbar"><i id="pathBar"></i></div><p class="note" id="pathCount"></p>
+<ol id="pathList" class="sc-grid plist2" style="padding-top:6px">{cards}</ol>
+<div class="card badgebox"><div id="badge" data-total="{len(SLUGS)}" data-slugs="{','.join(x[0] for x in SLUGS)}">{MEDAL}</div><div><h3>{bt("Black hole explorer badge", "Black hole explorer badge")}</h3><p id="badgeState"></p>
+<div class="row"><a class="btn primary" href="quiz.html#deep">{bt("Take the Black hole quiz", "Black hole quiz खेलिए")} →</a><button class="btn" type="button" id="pathReset">{bt("Reset progress", "Progress मिटाएँ")}</button></div></div></div>
+<p class="note">{bt("Progress is saved in this browser, and in your account if you have one with sync on.", "")}</p></section>
 <section class="blk callout"><b>{bt("Want to test yourself?", "खुद को परखना है?")}</b> {bt("Play the Daily 5 on the Quiz page, or the black hole and galaxy quiz.", "Quiz page पर Daily 5 खेलिए, या ब्लैक होल और galaxy वाली quiz।")} <a href="quiz.html">{bt("Quiz", "Quiz")} →</a></section>'''
     out.append({'file': 'black-holes.html', 'html': shell('Black holes explained', 'ब्लैक होल, आसान भाषा में', 'bh', hub,
                 'Black holes explained simply: what they are, how they form, what happens if you fall in, the famous ones and how we photographed them. Free.',
-                canonical='black-holes.html', ld=article_ld(h['SITE'], 'Black holes explained', 'Black holes explained simply: what they are, how they form, what happens if you fall in, the famous ones and how we photographed them.', 'black-holes.html', [('Astryl', ''), ('Black holes', 'black-holes.html')]), extra_head=f'<script defer src="assets/bhsim.js?v={h["asset_v"]()}"></script>')})
+                canonical='black-holes.html', ld=article_ld(h['SITE'], 'Black holes explained', 'Black holes explained simply: what they are, how they form, what happens if you fall in, the famous ones and how we photographed them.', 'black-holes.html', [('Astryl', ''), ('Black holes', 'black-holes.html')]), extra_head=f'<script defer src="assets/learn.js?v={h["asset_v"]()}"></script>')})
 
     # ---- 1. what is a black hole
     s = 'what-is-a-black-hole'

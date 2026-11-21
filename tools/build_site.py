@@ -427,8 +427,8 @@ def cons_svg(c):
 
 # ------------------------------------------------------------------ page shell
 # The top menu keeps four main pages; the rest sit under "More". Home is the logo.
-NAV_MAIN = [('planets.html', 'planets', bi('planetsTitle')), ('solar-system.html', 'solar', bi('solarSystemTitle')), ('sky.html', 'sky', bi('skyTitle')), ('quiz.html', 'quiz', bi('navQuiz')), ('community.html', 'community', bt('Community', 'Community'))]
-NAV_MORE = [('blog.html', 'blog', bt('Blog', 'Blog')), ('my-space.html', 'myspace', bt('My space', 'My space')), ('sky-events.html', 'events', bt('Eclipses and meteor showers', 'ग्रहण और उल्कापात')), ('learn.html', 'school', bt('For students', 'छात्रों के लिए')), ('telescope.html', 'scope', bt('Telescope simulator', 'Telescope simulator')), ('iss.html', 'iss', bt('Space station passes', 'अंतरिक्ष स्टेशन कब दिखेगा')), ('how-we-move.html', 'move', bt('How we move through space', 'How we move through space')), ('compare.html', 'compare', bi('navCompare')), ('you.html', 'you', bt('You', 'आप')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')),
+NAV_MAIN = [('planets.html', 'planets', bi('planetsTitle')), ('solar-system.html', 'solar', bi('solarSystemTitle')), ('tonight.html', 'sky', bi('skyTitle')), ('quiz.html', 'quiz', bi('navQuiz')), ('community.html', 'community', bt('Community', 'Community'))]
+NAV_MORE = [('blog.html', 'blog', bt('Blog', 'Blog')), ('profile.html', 'myspace', bt('My space', 'My space')), ('sky-events.html', 'events', bt('Eclipses and meteor showers', 'ग्रहण और उल्कापात')), ('learn.html', 'school', bt('For students', 'छात्रों के लिए')), ('telescope.html', 'scope', bt('Telescope simulator', 'Telescope simulator')), ('iss.html', 'iss', bt('Space station passes', 'अंतरिक्ष स्टेशन कब दिखेगा')), ('how-we-move.html', 'move', bt('How we move through space', 'How we move through space')), ('compare.html', 'compare', bi('navCompare')), ('you.html', 'you', bt('You', 'आप')), ('constellations.html', 'cons', bi('constellationsLabel')), ('maps.html', 'maps', bi('surfaceMapTitle')),
             ('missions.html', 'missions', bi('missionsTitle')), ('spacecraft.html', 'spacecraft', bi('spacecraftTitle')),
             ('universe-map.html', 'umap', bt('Universe map', 'ब्रह्मांड का नक्शा')), ('stars.html', 'stars', bt('Stars', 'तारे')), ('galaxies.html', 'gx', bt('Galaxies', 'Galaxies')), ('cosmic-scale.html', 'scale', bt('Scale of the universe', 'ब्रह्मांड का पैमाना')), ('universe-timeline.html', 'tline', bt('Timeline', 'समयरेखा')), ('glossary.html', 'gloss', bt('Glossary', 'शब्दकोश')), ('black-holes.html', 'bh', bt('Black holes', 'ब्लैक होल'))]
 
@@ -1016,6 +1016,8 @@ def index_page():
              ('⚖️', 'weightTitle', 'Weight, jump and age on every world', 'हर दुनिया पर वज़न, कूद और उम्र', 'you.html'),
              (pic('earth'), 'navCompare', 'Any two worlds side by side', 'कोई भी दो दुनियाएँ आमने-सामने', 'compare.html')]
     by = {t[4]: t for t in tiles}
+    by['tonight.html'] = ('🔭', bt('Night sky tonight', 'Night sky tonight'), 'Planets, Moon and sunset for your city', 'Planets, Moon and sunset for your city', 'tonight.html')
+    by['black-hole-lab.html'] = ('🧪', bt('Black hole lab', 'ब्लैक होल lab'), 'Fly round a black hole in 3D', 'Fly round a black hole in 3D', 'black-hole-lab.html')
     by['telescope.html'] = ('🔭', bt('Telescope simulator', 'Telescope simulator'), 'What a telescope really shows, in real photos', 'Telescope में असल में क्या दिखता है, असली तस्वीरों में', 'telescope.html')
     by['stars.html'] = ('⭐', bt('Stars', 'तारे'), 'How stars are born, live and die', 'तारे कैसे जन्म लेते, जीते और मरते हैं', 'stars.html')
     by['community.html'] = ('👥', bt('Astryl Community', 'Astryl Community'), 'Sky photos, and questions and answers', 'आसमान की फ़ोटो, और सवाल-जवाब', 'community.html')
@@ -1025,8 +1027,8 @@ def index_page():
         ic, k, en, hi_, _ = by[h]
         return f'<a class="sc" href="{h}"><span class="ic">{ic}</span><span><b>{k if k.startswith("<") else bi(k)}</b><small>{bt(en, hi_)}</small></span><span class="go">→</span></a>'
     groups = [('img/planets/saturn.webp', bt('The Solar System', 'सौरमंडल'), bt('Planets, moons and where they are today', 'ग्रह, चाँद और वे आज कहाँ हैं'), ['planets.html', 'solar-system.html', 'compare.html', 'you.html', 'maps.html']),
-              ('img/space/gx-whirlpool.webp', bt('Deep space', 'गहरा अंतरिक्ष'), bt('Stars, black holes, galaxies and the whole universe', 'तारे, ब्लैक होल, आकाशगंगाएँ और पूरा ब्रह्मांड'), ['stars.html', 'black-holes.html', 'black-holes-101.html', 'galaxies.html', 'universe-map.html', 'cosmic-scale.html', 'universe-timeline.html']),
-              ('img/space/sun-eclipse.webp', bt('Watch the sky', 'आसमान देखिए'), bt('What to look for tonight, from your city', 'आज रात क्या देखें, आपके शहर से'), ['sky.html', 'constellations.html', 'sky-events.html', 'iss.html', 'telescope.html']),
+              ('img/space/gx-whirlpool.webp', bt('Deep space', 'गहरा अंतरिक्ष'), bt('Stars, black holes, galaxies and the whole universe', 'तारे, ब्लैक होल, आकाशगंगाएँ और पूरा ब्रह्मांड'), ['stars.html', 'black-holes.html', 'black-hole-lab.html', 'galaxies.html', 'universe-map.html', 'cosmic-scale.html', 'universe-timeline.html']),
+              ('img/space/sun-eclipse.webp', bt('Watch the sky', 'आसमान देखिए'), bt('What to look for tonight, from your city', 'आज रात क्या देखें, आपके शहर से'), ['tonight.html', 'constellations.html', 'sky-events.html', 'iss.html', 'telescope.html']),
               ('img/space/pic-earthrise.webp', bt('Explore and learn', 'खोजिए और सीखिए'), bt('Missions, spacecraft, lessons and quizzes', 'Missions, अंतरिक्ष यान, पाठ और quiz'), ['community.html', 'blog.html', 'missions.html', 'spacecraft.html', 'learn.html', 'quiz.html', 'glossary.html'])]
     cards = ''.join(f'<section class="grp"><div class="grph" style="background-image:url({img})"><h2>{t}</h2><p>{sub}</p></div><div class="sc-grid">{"".join(card(h) for h in hs)}</div></section>' for img, t, sub, hs in groups)
     quiz = ''.join(f'<button type="button" class="opt"{" data-ok=1" if k == "planetJupiter" else ""}>{bi(k)}</button>' for k in ('planetSaturn', 'planetJupiter', 'planetMars', 'planetNeptune'))
@@ -1041,7 +1043,6 @@ def index_page():
         if pid in spacephotos.SIZES:
             _, en, hi_ = spacephotos.INFO[pid]
             surprise.append({'u': u, 'img': f'img/space/{pid}.webp', 't': [en.split(':')[0].split('(')[0].split(',')[0].strip()[:60], hi_.split(':')[0].split('(')[0].split(',')[0].strip()[:60]], 'd': [en, hi_]})
-    by['tonight.html'] = ('🔭', bt('Night sky tonight', 'Night sky tonight'), 'Planets, Moon and sunset for your city', 'Planets, Moon and sunset for your city', 'tonight.html')
     explore = ['tonight.html', 'planets.html', 'solar-system.html', 'sky-events.html', 'iss.html', 'spacecraft.html', 'stars.html', 'black-holes.html', 'galaxies.html', 'learn.html', 'quiz.html', 'blog.html']
     body = f"""<section class="hero2 homehero">
 <div>
@@ -1053,6 +1054,11 @@ def index_page():
 <div class="herog"><canvas id="heroGlobe" aria-label="{esc("The Earth right now, with day and night and the space station")}"></canvas><p class="note herocap">{bt("The Earth right now: real day and night, and the space station where it really is.", "")}</p></div>
 </section>
 <section class="blk discover" id="discover"></section>
+<section class="blk" id="solar3d"><h2>{bt("The Solar System right now", "The Solar System right now")}</h2><p class="sub">{bt("Every planet where it really is today. Drag to turn, pinch or scroll to zoom, tap a planet to fly to it.", "")} <a href="solar-system.html">{bt("Open the full Solar System", "Open the full Solar System")} →</a></p>
+<div class="home3d" id="home3d" data-v="{asset_v()}"><img src="img/home-solar.webp" width="1280" height="820" alt="The planets around the Sun, in 3D" loading="lazy"><button class="btn primary" type="button" data-start>▶ {bt("Start 3D", "Start 3D")}</button></div></section>
+<section class="blk" id="moon"><h2>{bt("The Moon tonight", "The Moon tonight")}</h2><div class="card" id="moonNow"></div>
+<h3 style="margin-top:18px">{bi("moonCalendar")}</h3><div class="row"><button class="btn" id="calPrev">‹ {bi("previousMonth")}</button><b id="calTitle"></b><button class="btn" id="calNext">{bi("nextMonth")} ›</button></div><div class="moons" id="calGrid"></div><div id="calPhases" style="margin-top:14px"></div><p class="note">{bi("moonCalendarNote")}</p></section>
+<section class="blk" id="showers-sec"><h2>{bi("eventsTitle")}</h2><p class="sub">{bt("Meteor shower peaks for the next 12 months, with how bright the Moon will be on the peak night.", "अगले 12 महीनों में उल्कापात के चरम दिन, और उस रात चाँद कितना चमकीला होगा।")} <a href="sky-events.html">{bt("Eclipses too", "ग्रहण भी")} →</a></p><div class="grid" id="showers"></div></section>
 <script>window.ASTRYL_DISCOVER={json.dumps(discover.data(universe.GLOSSARY, {b["id"]: tr("en", NAME_KEY[b["id"]]) for b in BODIES if b["id"] in PHOTO}, [f"blog/{blog.POSTS[0]['slug']}.html", blog.POSTS[0]["title"], blog.POSTS[0]["desc"]], BODIES), ensure_ascii=False).replace('</', '<\\/')};</script>
 <section class="blk"><h2>{bt("Explore", "Explore")}</h2><p class="sub">{bt("Everything on Astryl starts from one of these.", "")}</p><div class="sc-grid homegrid">{"".join(card(h) for h in explore)}</div></section>
 <section class="blk"><div class="grid daily2"><div class="card cmhome" id="homeCommunity"><div class="cmtext"><h2>👥 {bt("Astryl Community", "Astryl Community")}</h2><p>{bt("Share your own photos of the Moon, planets and stars, ask anything about space and answer other people's questions.", "")}</p><div class="btns"><a class="btn primary" href="community.html">{bt("Open the community", "Open the community")} →</a><a class="btn" href="community.html#talk">❓ {bt("Ask a question", "Ask a question")}</a></div></div></div><div class="card apod" id="dailyPhoto"></div></div></section>"""
@@ -1092,22 +1098,18 @@ def simple_pages():
     # quiz
     body = pghero('How well do you know', 'space?', 'Daily 5: the same five questions for everyone, every day. Then rounds of real NASA photos, constellations and missions for Space Points and badges.', [('Play Daily 5 ↓', '#daily'), ('Rounds for Space Points ↓', '#rounds')], 'img/space/gx-webb.webp', 'Galaxies seen by the James Webb Space Telescope') + f'''<section class="blk"><h2 class="sr-only">Daily 5</h2><div id="daily" class="daily"></div></section>
 <section class="blk" id="rounds"><h2>{bt("Rounds for Space Points", "Space Points वाले rounds")}</h2><p class="sub">{bt("Real NASA photos, constellations, missions, bigger or smaller and best guess. Log in and every right answer earns Space Points.", "NASA की असली तस्वीरें, नक्षत्र, missions, बड़ा या छोटा और अंदाज़ा। Log in करें तो हर सही जवाब पर Space Points मिलते हैं।")}</p><div id="rounds"></div></section>
-<section class="blk"><h2>{bt("Practice", "अभ्यास")}</h2><div id="quiz"></div></section>''' + pagetext.section('quiz')
-    write('quiz.html', shell('Space quiz', 'अंतरिक्ष quiz', 'quiz', body, 'A space quiz: real NASA photos, constellations, missions, bigger or smaller, best guess and planet levels, with Space Points and a leaderboard.', canonical='quiz.html', ld=[pagetext.faq_ld('quiz')], extra_head=f'<script defer src="assets/quiz-bank.js?v={asset_v()}"></script><script defer src="assets/rounds.js?v={asset_v()}"></script>'))
-    # sky
-    body = f'''<section class="blk"><h1>{bt("What planets are visible tonight?", "What planets are visible tonight?")}</h1><p class="sub">{bt("Pick your city to see which planets are up tonight, where to look and when, with sunset and the Moon.", "")}</p>{city_picker('')}</section>
-<section class="blk"><h2>{bt("The Moon tonight", "The Moon tonight")}</h2><div class="card" id="moonNow"></div></section>
-<section class="blk"><h2>{bi("moonCalendar")}</h2><div class="row"><button class="btn" id="calPrev">‹ {bi("previousMonth")}</button><b id="calTitle"></b><button class="btn" id="calNext">{bi("nextMonth")} ›</button></div><div class="moons" id="calGrid"></div><div id="calPhases" style="margin-top:14px"></div><p class="note">{bi("moonCalendarNote")}</p></section>
-<section class="blk"><h2>{bi("eventsTitle")}</h2><p class="sub">{bt("Meteor shower peaks for the next 12 months, with how bright the Moon will be on the peak night.", "अगले 12 महीनों में उल्कापात के चरम दिन, और उस रात चाँद कितना चमकीला होगा।")}</p><div class="grid" id="showers"></div></section>
-<section class="blk callout"><b>{bt("Want it for your city?", "अपने शहर के लिए चाहिए?")}</b> {bt("My space shows sunset, moonrise and the planets you can see tonight from your city, and the space station page shows when the ISS flies over you.", "My space में आपके शहर का सूर्यास्त, चाँद का उगना और आज रात दिखने वाले ग्रह हैं, और अंतरिक्ष स्टेशन वाला page बताता है कि ISS आपके ऊपर से कब गुज़रेगा।")} <a href="my-space.html">{bt("Open My space", "My space खोलें")}</a> · <a href="iss.html">{bt("Space station passes", "अंतरिक्ष स्टेशन कब दिखेगा")}</a></section>'''
-    write('sky.html', shell('What planets are visible tonight? Moon phase and night sky', 'चाँद और आसमान', 'sky', body, "What planets can I see tonight? The planets up tonight from your city, the Moon phase and calendar, and the next meteor showers.", canonical='sky.html', extra_head=f'<script defer src="assets/citypick.js?v={asset_v()}"></script>'))
+<section class="blk"><h2>{bt("Practice", "अभ्यास")}</h2><div id="quiz"></div></section>
+<section class="blk" id="deep"><h2>{bt("Black holes and galaxies", "ब्लैक होल और galaxies")}</h2><p class="sub">{bt("Five random questions from the set you pick, each one explained. No account needed; your best scores stay in this browser. Score 4 or more on black holes to help earn the Black hole explorer badge.", "")}</p>
+<div class="row" id="dsqTabs"><button class="btn primary" type="button" data-set="bh">⚫ {bt("Black holes", "ब्लैक होल")}</button><button class="btn" type="button" data-set="gx">🌌 {bt("Galaxies", "Galaxies")}</button><button class="btn" type="button" data-set="all">🎲 {bt("Mixed", "मिला-जुला")}</button></div>
+<div id="dsq"></div><script type="application/json" id="dsqData">{json.dumps(learn.QUESTIONS, ensure_ascii=False)}</script></section>''' + pagetext.section('quiz')
+    write('quiz.html', shell('Space quiz', 'अंतरिक्ष quiz', 'quiz', body, 'A space quiz: real NASA photos, constellations, missions, bigger or smaller, best guess and planet levels, with Space Points and a leaderboard.', canonical='quiz.html', ld=[pagetext.faq_ld('quiz')], extra_head=f'<script defer src="assets/quiz-bank.js?v={asset_v()}"></script><script defer src="assets/rounds.js?v={asset_v()}"></script><script defer src="assets/learn.js?v={asset_v()}"></script>'))
     # spacecraft
-    body = pghero('Where are the', 'spacecraft now?', 'Voyager 1 is a full light-day from home. See where it and seven other spacecraft are right now, how fast they move and how long their signals take.', [('Open the map ↓', '#craftMap'), ('All space missions', 'missions.html')], 'img/space/pic-paleblue.webp', 'The Pale Blue Dot photo taken by Voyager 1') + f'''<section class="blk"><div class="card cmap" id="craftMap"></div><div class="card ladder" id="craftLadder"></div><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))" id="craft"></div><p class="note">{bi("spacecraftNote")}</p></section>
+    body = pghero('Where are the', 'spacecraft now?', 'Voyager 1 is a full light-day from home. See where it and seven other spacecraft are right now, how fast they move and how long their signals take.', [('Open the map ↓', '#craftMap'), ('All space missions', 'missions.html')], 'img/space/pic-paleblue.webp', 'The Pale Blue Dot photo taken by Voyager 1') + f'''<p class="note seealso blk">{bt("This page shows where spacecraft are right now. For the story of space exploration from Sputnik to today, open", "")} <a href="missions.html">{bt("Space missions", "Space missions")} →</a></p>''' + f'''<section class="blk"><div class="card cmap" id="craftMap"></div><div class="card ladder" id="craftLadder"></div><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))" id="craft"></div><p class="note">{bi("spacecraftNote")}</p></section>
 <script>window.ASTRYL_CRAFTPICS={json.dumps({k: '<div class="mphotos">' + ''.join(spacephotos.figure(p, '', bt, esc, cls='mphoto') for p in v) + '</div>' for k, v in missionphotos.CRAFT.items()}, ensure_ascii=False).replace('</', '<\\/')};</script>''' + pagetext.section('spacecraft')
     write('spacecraft.html', shell('Spacecraft now', 'अंतरिक्ष यान अभी', 'missions', body, 'How far Voyager 1, Voyager 2, New Horizons, JWST, the ISS, Hubble and the Mars rovers are from Earth right now.', canonical='spacecraft.html', ld=[pagetext.faq_ld('spacecraft')]))
     # missions
     items = ''.join(f'<div class="m"><div class="y">{m["y"]}</div><h3>{m["name"]} <small class="note">· {m["agency"]}</small></h3><p>{bi("mission" + m["id"].capitalize())}</p>{mission_photos(m["id"])}</div>' for m in MISSIONS)
-    body = f'''<section class="blk"><h1>{bi("missionsTitle")}</h1><p class="sub">{bi("missionsSubtitle")}</p><div class="tl">{items}</div><p><a class="btn" href="spacecraft.html">🛰️ {bi("spacecraftTitle")}</a></p></section>'''
+    body = f'''<section class="blk"><h1>{bi("missionsTitle")}</h1><p class="sub">{bi("missionsSubtitle")}</p><p class="note seealso">{bt("This page is the history, in order. To see where spacecraft are right now, open", "")} <a href="spacecraft.html">{bt("Spacecraft now", "Spacecraft now")} →</a></p><div class="tl">{items}</div><p><a class="btn" href="spacecraft.html">🛰️ {bi("spacecraftTitle")}</a></p></section>'''
     write('missions.html', shell('Space missions', 'अंतरिक्ष missions', 'missions', body, 'Famous moments in space exploration, from Sputnik 1 to Chandrayaan-3.', canonical='missions.html'))
     # constellations
     stories = {c: f'story{c}' for c in ('Ori', 'UMa', 'UMi', 'Cas', 'Cyg', 'Sco', 'Leo', 'Tau', 'Gem', 'Lyr', 'Cru')}
@@ -1185,6 +1187,10 @@ def surface_maps():
             im.thumbnail((3000, 1500) if k == 'moon' else (2400, 1200) if k == 'mars' else (1440, 720))
             im.save(d / f'map-{k}.webp', 'WEBP', quality=72, method=6)
             MAPS[k] = im.size
+    if (sp / 'bh-3d.webp').exists():  # a still from the Black hole lab, for the Black holes page
+        shutil.copy(sp / 'bh-3d.webp', d / 'bh-3d.webp')
+    if (sp / 'home-solar.webp').exists():  # a still of the 3D Solar System, shown on the home page until the 3D loads
+        shutil.copy(sp / 'home-solar.webp', OUT / 'img' / 'home-solar.webp')
 
 
 MAPS = {}
@@ -1215,9 +1221,10 @@ def community_pages():
 <button type="button" class="cmfab" id="cmFab" aria-label="New">＋</button><div class="cmfabmenu" id="cmFabMenu" hidden><button type="button" data-new="photo">📷 {bt("Share a photo", "फ़ोटो भेजिए")}</button><button type="button" data-new="post">❓ {bt("Ask a question", "सवाल पूछिए")}</button></div>
 <script>window.ASTRYL_COMMUNITY={json.dumps(cfg, ensure_ascii=False).replace('</', '<\\/')};</script>'''
     write('community.html', shell('Astryl Community', 'Astryl Community', 'community', body, 'The Astryl Community: sky photos by space lovers, and questions and answers about space.', canonical='community.html', extra_head=f'<script defer src="assets/community.js?v={v}"></script>'))
-    body = f'''<div id="prof" class="prof"><h1 class="sr-only">Profile</h1></div>
+    body = f'''<section class="blk" id="mine"><h1>{bt("My space", "My space")}</h1><div id="mySpace"><noscript><p>{bt("My space needs JavaScript.", "My space को JavaScript चाहिए।")}</p></noscript></div></section>
+<div id="prof" class="prof"></div>
 <script>window.ASTRYL_COMMUNITY={json.dumps(cfg, ensure_ascii=False).replace('</', '<\\/')};</script>'''
-    write('profile.html', shell('Profile', 'Profile', 'community', body, 'A space lover’s public page on Astryl: sky photos, questions, answers and quiz badges.', canonical='profile.html', extra_head=f'<meta name="robots" content="noindex"><script defer src="assets/profile.js?v={v}"></script>'))
+    write('profile.html', shell('My space and profile', 'My space', 'myspace', body, 'Your favourites, quiz scores, streak and badges on Astryl, and a space lover’s public page: sky photos, questions, answers and quiz badges.', canonical='profile.html', extra_head=f'<meta name="robots" content="noindex"><script defer src="assets/profile.js?v={v}"></script><script defer src="assets/tonight.js?v={v}"></script><script defer src="assets/myspace.js?v={v}"></script>'))
     body = f'''<section class="blk"><h1>🛡️ Moderation</h1><p class="sub">Photos, posts and blog comments people reported. Keep it to show it again, remove to delete it for good.</p><div id="mod"></div></section>'''
     write('moderate.html', shell('Moderation', 'Moderation', 'community', body, 'Astryl Community moderation.', canonical='moderate.html', extra_head=f'<meta name="robots" content="noindex"><script defer src="assets/moderate.js?v={v}"></script>'))
 
@@ -1374,6 +1381,8 @@ def main():
     tonight_urls = tonight.build(helpers)
     deep = deepspace.build(helpers) + galaxies.build(helpers) + stars.build(helpers) + lab.build(helpers) + universe.build(helpers) + learn.build(helpers) + umap.build(helpers) + myspace.build(helpers) + skyevents.build(helpers) + students.build(helpers) + telescope.build(helpers) + iss.build(helpers) + blog.build(helpers) + legal.build(helpers) + journey.build(helpers)
     urls = ['', 'community.html', 'planets.html', 'solar-system.html', 'compare.html', 'you.html', 'quiz.html', 'sky.html', 'constellations.html', 'maps.html', 'missions.html', 'spacecraft.html', 'privacy.html', 'account.html', 'black-holes.html', 'galaxies.html'] + deep + [f'body/{b["id"]}.html' for b in BODIES]
+    redirects()
+    urls = [u for u in urls if u not in REDIRECTS]
     today = datetime.date.today().isoformat()
     urls = urls + [u for u in tonight_urls if u not in urls]
     def sm(u):
@@ -1382,6 +1391,38 @@ def main():
     og_images()
     (ROOT / 'tools' / 'i18n' / 'source.tsv').write_text('# id<TAB>English text of every translatable text on the site (generated by build_site.py)\n' + ''.join(f'{k}\t{v}\n' for k, v in sorted(SOURCE.items(), key=lambda kv: kv[1])), encoding='utf-8')
     print('pages:', len(list(OUT.rglob('*.html'))), 'share images:', len(_OG), 'texts:', len(SOURCE), {lg: len(TRX[lg]) for lg in EXTRA_LANGS})
+
+
+# Pages that were merged into others. The old address still works: it sends the visitor on.
+REDIRECTS = {
+    'sky.html': ('', '#moon', 'Night sky tonight'),
+    'black-holes-101.html': ('black-holes.html', '#course', 'Black holes'),
+    'deep-space-quiz.html': ('quiz.html', '#deep', 'Space quiz'),
+    'my-space.html': ('profile.html', '', 'My space'),
+}
+
+
+def redirects():
+    """Writes a small forwarding page for each merged page and points every link on the site at the new place."""
+    for old, (new, frag, title) in REDIRECTS.items():
+        dest = (new or './') + frag
+        html = (f'<!doctype html><html lang="en"><head><meta charset="utf-8"><title>{esc(title)} · Astryl</title>'
+                f'<meta name="robots" content="noindex"><link rel="canonical" href="{SITE}/{new}">'
+                f'<meta http-equiv="refresh" content="0;url={dest}">'
+                f'<script>location.replace({json.dumps(new or "./")} + (location.hash || {json.dumps(frag)}));</script></head>'
+                f'<body style="font-family:sans-serif;background:#05070d;color:#e8edf7;padding:24px"><p>This page has moved: <a style="color:#7fb8ff" href="{dest}">{esc(title)}</a>.</p></body></html>')
+        (OUT / old).write_text(html, encoding='utf-8')
+    pat = re.compile(r'href="((?:\.\./)*)(' + '|'.join(re.escape(k) for k in REDIRECTS) + r')(#[^"]*)?"')
+    def fix(m):
+        new, frag, _ = REDIRECTS[m.group(2)]
+        return f'href="{m.group(1)}{new or ("./" if not m.group(1) else "")}{m.group(3) or frag}"'
+    for f in OUT.rglob('*.html'):
+        if f.name in REDIRECTS and f.parent == OUT:
+            continue
+        t = f.read_text(encoding='utf-8')
+        n = pat.sub(fix, t)
+        if n != t:
+            f.write_text(n, encoding='utf-8')
 
 
 if __name__ == '__main__':

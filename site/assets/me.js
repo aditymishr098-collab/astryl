@@ -21,7 +21,7 @@
   var PATH = [
     ['planets.html', '🪐', 'Planets and moons', 'ग्रह और चाँद'],
     ['solar-system.html', '☀️', 'Solar System 3D', '3D सौरमंडल'],
-    ['sky.html', '🌙', 'Moon calendar', 'चाँद का calendar'],
+    ['tonight.html', '🌙', 'Night sky tonight', 'आज रात का आसमान'],
     ['you.html', '🎂', 'Your birthday sky', 'आपके जन्मदिन का आसमान'],
     ['sky-events.html', '🌑', 'Eclipses and meteor showers', 'ग्रहण और उल्कापात'],
     ['iss.html', '🛰️', 'When to see the space station', 'अंतरिक्ष स्टेशन कब दिखेगा'],
@@ -51,10 +51,9 @@
     ['spacecraft.html', '🛰️', 'Spacecraft', 'अंतरिक्ष यान'],
     ['maps.html', '🗺️', 'Surface maps', 'सतह के नक्शे'],
     ['glossary.html', '📖', 'Space glossary', 'अंतरिक्ष शब्दकोश'],
-    ['quiz.html', '❓', 'Planet quiz', 'ग्रहों की quiz'],
-    ['deep-space-quiz.html', '🧠', 'Black hole and galaxy quiz', 'ब्लैक होल और galaxy quiz']
+    ['quiz.html', '❓', 'Space quiz', 'अंतरिक्ष quiz']
   ];
-  var SKIP = { 'index.html': 1, 'account.html': 1, 'my-space.html': 1, 'privacy.html': 1, 'get.html': 1, '404.html': 1 };
+  var SKIP = { 'index.html': 1, 'account.html': 1, 'profile.html': 1, 'my-space.html': 1, 'privacy.html': 1, 'get.html': 1, '404.html': 1 };
 
   function read() { var r = get(READ, {}); return r && typeof r === 'object' && !Array.isArray(r) ? r : {}; }
   function favs() { var f = get(FAVS, []); return Array.isArray(f) ? f.filter(function (x) { return typeof x === 'string'; }) : []; }

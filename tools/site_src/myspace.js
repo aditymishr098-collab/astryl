@@ -3,6 +3,9 @@
   var box = document.getElementById('mySpace'), ME = window.ASTRYL_ME, API = window.ASTRYL_API;
   if (!box || !ME) return;
   var ACCT = window.ASTRYL_ACCT, root = ME.root;
+  // on the profile page: show the dashboard only on your own page, not when looking at someone else
+  var qu = (new URLSearchParams(location.search).get('u') || '').trim().toLowerCase();
+  if (qu) { var se = ACCT && ACCT.session && ACCT.session(); if (!se || String(se.username || '').toLowerCase() !== qu) { var sec = document.getElementById('mine'); if (sec) sec.hidden = true; return; } }
   function bi(en, hi) { return '<span class="t" lang="en">' + en + '</span><span class="t" lang="hi">' + hi + '</span>'; }
   function esc(x) { return String(x).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function num(k, d) { try { var v = localStorage.getItem(k); return v === null ? d : (parseInt(JSON.parse(v), 10) || 0); } catch (e) { return d; } }
@@ -43,7 +46,7 @@
     }
 
     // next for you
-    var next = ME.nextFor(3, 'my-space.html'), read = ME.read(), nRead = Object.keys(read).length;
+    var next = ME.nextFor(3, 'profile.html'), read = ME.read(), nRead = Object.keys(read).length;
     var nh = next.length ? '<div class="sc-grid">' + next.map(function (x) { return '<a class="sc" href="' + root + x[0] + '"><span class="ic">' + x[1] + '</span><span><b>' + bi(x[2], x[3]) + '</b></span><span class="go">→</span></a>'; }).join('') + '</div>'
       : '<p>' + bi('You have read every page on the reading list. Wow!', 'आपने reading list का हर page पढ़ लिया। वाह!') + '</p>';
     h += card('🧭 ' + bi('Next for you', 'आपके लिए अगला'), nh + '<p class="note">' + bi(nRead + ' pages read so far. Pages count as read after a few seconds on them; this list stays in this browser only.', 'अब तक ' + nRead + ' pages पढ़े। कोई page कुछ seconds खुला रहने पर पढ़ा माना जाता है; यह list सिर्फ़ इसी browser में रहती है।') + '</p>');

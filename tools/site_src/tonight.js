@@ -273,7 +273,7 @@
       var c = city();
       if (!c) { var p = picker(draw); box.innerHTML = '<p>' + bi('Choose your city to see sunset, moonrise and which planets are up tonight.', 'सूर्यास्त, चंद्रोदय और आज रात कौन-से ग्रह दिखेंगे, यह देखने के लिए अपना शहर चुनिए।') + '</p>' + p.html; p.wire(box); return; }
       box.innerHTML = '<p class="cityline">📍 <b>' + esc(c.name) + '</b> <button class="linkbtn" type="button" data-change>' + bi('change', 'बदलें') + '</button></p>' + tonightHtml(c) +
-        '<p><a class="btn" href="my-space.html#calendar">📅 ' + bi('Eclipses and meteor showers', 'ग्रहण और उल्कापात') + '</a></p>';
+        '<p><a class="btn" href="sky-events.html">📅 ' + bi('Eclipses and meteor showers', 'ग्रहण और उल्कापात') + '</a></p>';
       box.querySelector('[data-change]').onclick = function () { set(KEY, ''); draw(); };
     }
     draw(); API.onRender && API.onRender(draw);

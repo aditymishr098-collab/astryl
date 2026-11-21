@@ -1070,3 +1070,18 @@ table.cmp td b{white-space:nowrap}
   .jytbl td.w::before{content:"towards ";font-weight:400;color:var(--muted)}
 }
 .jylive .jymine{border-top:1px solid var(--line)}
+/* Black holes page: picture of the 3D black hole, and the course list with ticks */
+.bhpreview{position:relative;display:block;margin-top:18px;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#000}
+.bhpreview img{display:block;width:100%;height:auto;aspect-ratio:838/472;object-fit:cover}
+.bhpreview .btn{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);white-space:nowrap}
+.plist2{list-style:none;margin:0;padding-left:0}
+.plist2 li{display:flex}.plist2 li a.sc{flex:1}
+.plist2 .tick{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:.8rem;color:transparent;flex:none}
+.plist2 li.done .tick{background:var(--accent);border-color:var(--accent);color:#fff}
+#course .badgebox{margin-top:14px}
+#mine{padding-bottom:0}
+/* Home: the 3D Solar System */
+.home3d{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#04060e}
+.home3d>img{display:block;width:100%;height:auto;aspect-ratio:1280/820;object-fit:cover}
+.home3d>[data-start]{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+.home3d .s3-canvas{border-radius:0}
