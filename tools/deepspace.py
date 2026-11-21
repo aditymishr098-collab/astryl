@@ -38,7 +38,7 @@ def build(h):
 def anatomy_svg(bt):
     def lab(x, y, en, hi, anchor='start'):
         return (f'<text x="{x}" y="{y}" text-anchor="{anchor}" class="t" lang="en" style="fill:var(--text);font:600 14px DM Sans,sans-serif">{en}</text>'
-                f'<text x="{x}" y="{y}" text-anchor="{anchor}" class="t" lang="hi" style="fill:var(--text);font:600 14px DM Sans,sans-serif">{hi}</text>')
+                '')
     return f'''<svg class="bhart" viewBox="0 0 640 380" role="img" aria-label="A black hole with its accretion disk and two jets">
 <defs>
 <linearGradient id="bhDisk" x1="0" x2="1"><stop offset="0" stop-color="#ff7a1a" stop-opacity=".15"/><stop offset=".5" stop-color="#ffb347"/><stop offset="1" stop-color="#ff7a1a" stop-opacity=".15"/></linearGradient>

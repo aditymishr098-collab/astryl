@@ -16,7 +16,7 @@ YEAR_S = 365.25 * 86400
 def _bil(x, y, en, hi, anchor='start', size=14):
     st = f'fill:var(--text);font:600 {size}px DM Sans,sans-serif'
     return (f'<text x="{x}" y="{y}" text-anchor="{anchor}" class="t" lang="en" style="{st}">{en}</text>'
-            f'<text x="{x}" y="{y}" text-anchor="{anchor}" class="t" lang="hi" style="{st}">{hi}</text>')
+            '')
 
 
 def milky_way_svg():

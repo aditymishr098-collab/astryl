@@ -267,7 +267,8 @@ def per(fn):
 
 
 def val(fn):
-    return ''.join(f'<span class="t" lang="{lg}">{esc(fn(lg))}</span>' for lg in ('en', 'hi'))
+    # the website is English only
+    return f'<span class="t" lang="en">{esc(fn("en"))}</span>'
 
 
 def v_diam(b): return lambda lg: tr(lg, 'valueKm', value=fmt(lg, b['diam']))
@@ -1079,7 +1080,7 @@ def planets_page():
 def simple_pages():
     # solar system
     body = f'''<section class="blk"><h1>{bi("solarSystemTitle")}</h1><p class="sub">{bt("The planets where they really are today, in 3D. Drag to turn it, pinch or scroll to zoom, and tap a planet or moon to fly to it.", "NASA Eyes जैसा 3D लाइव सौरमंडल: घुमाने के लिए खींचें, ज़ूम करें, और किसी भी ग्रह या चंद्रमा पर क्लिक करके वहाँ उड़कर जाएँ व नीचे लाइव आँकड़े देखें।")}</p>
-<div class="eyes-wrap"><div class="eyes-chips" id="solChips"></div><div class="eyes-stage"><canvas id="solar"></canvas><div class="eyes-badge">● <span class="t" lang="en">SOLAR SYSTEM · 3D LIVE</span><span class="t" lang="hi">3D लाइव सौरमंडल</span></div><button class="btn eyes-back" id="solBack" style="display:none">← {bi("spaceBack")}</button></div>
+<div class="eyes-wrap"><div class="eyes-chips" id="solChips"></div><div class="eyes-stage"><canvas id="solar"></canvas><div class="eyes-badge">● <span class="t" lang="en">SOLAR SYSTEM · 3D LIVE</span></div><button class="btn eyes-back" id="solBack" style="display:none">← {bi("spaceBack")}</button></div>
 <div class="row" style="margin-top:12px"><button class="btn" id="solMonthBack">« {bi("monthBack")}</button><button class="btn" id="solPlay">▶</button><button class="btn" id="solToday"></button><button class="btn" id="solMonthFwd">{bi("monthForward")} »</button><b id="solDate"></b></div>
 <input type="range" id="solDay" min="-3650" max="3650" value="0" style="width:100%" aria-label="Date">
 <div class="card eyes-telemetry" id="solTelemetry"></div></div>
@@ -1150,8 +1151,6 @@ def maps_page():
             en = L['en']['feat' + f['id']].split(' (')[0]
             tx = min(max(f["lon"] + 180, 30), 330)
             o += f'<text x="{tx:.1f}" y="{90 - f["lat"]:.1f}" font-size="5" fill="#fff" text-anchor="middle" stroke="#000" stroke-opacity=".5" stroke-width=".6" paint-order="stroke" class="t" lang="en">{esc(en)}</text>'
-            hi = L['hi']['feat' + f['id']].split(' (')[0]
-            o += f'<text x="{tx:.1f}" y="{90 - f["lat"]:.1f}" font-size="5" fill="#fff" text-anchor="middle" stroke="#000" stroke-opacity=".5" stroke-width=".6" paint-order="stroke" class="t" lang="hi">{esc(hi)}</text>'
         for si in [x for x in SITES if x['world'] == world]:
             o += f'<a href="#site-{si["id"]}" aria-label="{esc(si["name"])}" data-site="{si["id"]}" data-x="{si["lon"] + 180:.2f}" data-y="{90 - si["lat"]:.2f}"><circle class="sdot" cx="{si["lon"] + 180:.2f}" cy="{90 - si["lat"]:.2f}" r="2.6" fill="{colors[si["kind"]]}" stroke="#fff" stroke-width="1"><title>{esc(si["name"])}</title></circle></a>'
         return o + '</svg>'
