@@ -372,9 +372,12 @@ e90dfb84	Black
 05b3379b	Black hole
 9050e22e	Black hole and galaxy quiz
 27fc3d81	Black hole explorer
+32fcf03c	Black hole explorer badge
 26eb5a11	Black hole lab
 5cce9ed5	Black holes
 39bbc6d0	Black holes 101
+f98c4dce	Black holes 101: seven short lessons
+4864cfde	Black holes and galaxies
 5a092b33	Black holes are cosmic vacuum cleaners
 299dd566	Black holes do not suck things in from far away. If the Sun were swapped for a black hole of the same mass, Earth would keep orbiting exactly as it does now, only in the dark and the cold. Gravity far away depends on mass, not on what the mass is made of.
 5a956811	Black holes grow too
@@ -531,6 +534,7 @@ f228827a	Earth’s axis is tilted about 23.5°.
 bdbf0628	Earth’s surface
 446fcf04	Eclipses
 0757bff6	Eclipses and meteor showers
+e59b1c59	Eclipses too
 8067a9c5	Eight planets
 cfbec59e	Elliptical
 64297940	Enceladus
@@ -551,6 +555,7 @@ b7503050	Europa formed from rock and ice in the disk around Jupiter. Heat from t
 653f9b82	Every direction you can move points toward the centre, like time itself flowing that way.
 561338ac	Every eclipse until 2029, times for your city
 b95fe6f1	Every eclipse until the end of 2029 and the year's best meteor showers, with times for your city and a calendar file for your phone.
+9a7e1126	Every planet where it really is today. Drag to turn, pinch or scroll to zoom, tap a planet to fly to it.
 5c196b3e	Every star has a
 81b3d818	Every star is a sun. Some are much bigger than ours, though most are smaller, and all are so far away that they look like points. The nearest star after the Sun, Proxima Centauri, is about 4.2 light-years away: its light takes over four years to reach us.
 eb18611a	Every star starts as a cold, dark cloud. Gravity does the rest.
@@ -588,9 +593,12 @@ fc39a966	First few hundred million years
 f11a7eec	First tens of millions of years
 df719daa	First ~1 million years
 d040fe30	Fishes
+0c7e30f4	Five random questions from the set you pick, each one explained. No account needed; your best scores stay in this browser. Score 4 or more on black holes to help earn the Black hole explorer badge.
 01e1409b	Five random questions from the set you pick. Every answer is explained.
 479cf8cc	Five things that are not true about black holes, and the questions nobody can answer yet.
 ac51deb7	Fly
+f95fd9f1	Fly around it in 3D
+6df68df6	Fly round a black hole in 3D
 674eba03	Fly through 3,600 real galaxies in 3D
 5e40be61	Flying Fish
 c2ec1e60	Focal length (mm)
@@ -665,6 +673,8 @@ baa8b7cb	Helium
 f732af4f	Herbig-Haro 46/47 (Webb, 2023): two young stars in the centre blowing jets in opposite directions.
 c7e440f7	Hercules
 d18810ca	Herdsman
+01bb602c	Here you fly through real stars and galaxies in 3D. To compare sizes step by step, from a proton to the whole universe, open
+4e3850f4	Here you step through sizes, from a proton to the whole universe. To fly through real stars and galaxies in 3D, open
 a54638fe	Hidden by dust, almost nobody saw it, but its glowing shell is one of the brightest radio sources in the sky.
 8cf04a97	Home
 706b858b	Homo sapiens
@@ -891,7 +901,6 @@ fb1ec2bd	Moon calendar
 ce827da7	Moon of Jupiter
 219d5833	Moon of Neptune
 076fc12a	Moon of Saturn
-88d66818	Moon phase, calendar, meteor showers
 d3da97e2	More
 2c4d1773	More than 100 geysers spray from the "tiger stripes"; the spray feeds Saturn's E ring.
 af606e5f	More than 25 Suns
@@ -906,7 +915,6 @@ df5a246c	My calendar for my city
 8746c28a	My profile
 be6f359b	My space
 13345265	My space needs JavaScript.
-e62d1bf5	My space shows sunset, moonrise and the planets you can see tonight from your city, and the space station page shows when the ISS flies over you.
 384c34e0	My space: add to calendar
 5811bc98	Myths
 d138edfc	Myths and big questions
@@ -985,8 +993,8 @@ a8647325	One of the first strong black hole candidates, from the early 1970s. In
 b1d08c67	Only from the southern hemisphere or near the equator
 a98b9d3e	Only part of the Moon enters Earth’s dark shadow, so a dark bite appears on one side of the full Moon.
 8c89b55f	Only share photos you took yourself.
-e7dfc660	Open My space
 c2d81e68	Open the community
+30638e16	Open the full Solar System
 f0525aaf	Ophiuchus
 8a584259	Opportunity landed in January 2004 and worked for almost 15 years, though it was built for 90 days.
 909cea0c	Orange
@@ -1067,7 +1075,6 @@ f43dd7f0	Photon sphere
 a9a13c3f	Photosynthesis raises oxygen in the atmosphere about 2.4 billion years ago.
 10dad8e7	Pick a telescope and an eyepiece to see the magnification, how much sky fits in view and roughly what the Moon, planets and deep-sky objects look like.
 fe472f18	Pick two planets to see them side by side.
-853b7307	Pick your city to see which planets are up tonight, where to look and when, with sunset and the Moon.
 18a95264	Planet 1 from the Sun
 563f87d4	Planet 2 from the Sun
 f0aa766c	Planet 3 from the Sun
@@ -1102,6 +1109,7 @@ c3088d17	Poop Deck
 7132452e	Primordial
 fa2ead69	Privacy Policy
 196f9660	Probably a few tens of millions of years
+58fc6d87	Progress is saved in this browser, and in your account if you have one with sync on.
 a5e828e0	Protostar
 2b9e46ee	Proxima Centauri
 fda0e733	Proxima Centauri (Hubble), the nearest star to the Sun, 4.24 light-years away.
@@ -1119,6 +1127,7 @@ f8ea0b5b	Quick quiz
 ab458f4b	Quiz
 327ad73c	Quiz and Space Points
 e5d284b6	Ram
+c9f17256	Read them in order, from “what is it?” to the big open questions. Each takes a few minutes. A lesson is ticked after it has been open for a few seconds.
 f2c0292c	Real NASA photos, constellations, missions, bigger or smaller and best guess. Log in and every right answer earns Space Points.
 e6e79206	Real photos (NASA, Hubble, and Adam Evans for Andromeda), shown at their true size for this telescope. Real views are fainter and have less colour, and many telescopes show the view upside down. Planets look tiny even at high power; detail comes with practice and steady air.
 d18d9c75	Real pictures
@@ -1169,7 +1178,6 @@ ce34f886	Saptarishi and the Pole Star
 494cde74	Saturn is so light for its size that it would float in water, if you could find a bathtub big enough.
 dc72cd58	Saturn with the Sun behind it, photographed by Cassini; its rings glow in the backlight.
 100e2eea	Saturn's rings are very wide but very thin: in places only about ten metres thick.
-9f3b9e44	Saw something in the sky tonight? Take a photo and share it in the Astryl Community.
 570a64db	Saw the space station fly over? Share your photo in the Astryl Community.
 3a432448	Scale of the universe
 e318281d	Schwarzschild radius
@@ -1189,7 +1197,6 @@ cc5d9056	September
 3190e2a1	Set Square
 76bb9f53	Set your birth date
 a09a3645	Seven bright stars of Ursa Major form the Saptarishi (Big Dipper). The two stars at its front point to Dhruv tara, the Pole Star, which stays almost still in the north while the whole sky turns around it. Travellers used it to find north.
-3fbb1dc2	Seven lessons, a quiz and a badge
 b3531be8	Seven short pages
 15178316	Several million years, like Uranus
 032bc0bf	Sextant
@@ -1278,6 +1285,7 @@ ea8c2196	Stars of more than 8 Suns
 6bc934ad	Stars that dance
 62c20053	Stars, black holes, galaxies and the whole universe
 3367f116	Stars, gas, dust and dark matter held together by gravity.
+81f0c20d	Start 3D
 8b6db1ec	Start here
 eae11821	Start with Orion (Mriga in Indian astronomy), high in the evening sky from December to March. Red Betelgeuse is its left shoulder, blue Rigel its right foot. Follow the three belt stars down and left to Sirius, the brightest star of the night. Follow them up and right to orange Aldebaran (Rohini).
 39115b47	Start: how stars are born
@@ -1379,6 +1387,7 @@ c5a34770	The Pole Star
 e1b1a01c	The Pole Star. It stays almost still while the whole sky turns around it.
 3cef239d	The Ring Nebula (Hubble): the outer layers of a dying Sun-like star; the white dwarf is the dot in the middle.
 63d66ab5	The Solar System
+017c8068	The Solar System right now
 cac5c575	The Sombrero Galaxy, a spiral seen almost edge-on, with a dark lane of dust (Hubble).
 63cfc867	The Southern Ring Nebula seen by Webb in two kinds of infrared light (2022).
 12aae76d	The Sun
@@ -1545,6 +1554,8 @@ cb09f658	This car-sized rover landed in Gale Crater using a rocket-powered sky c
 946db898	This is what the equations of general relativity say. Nobody has ever gone near a black hole, and what really happens at the very centre is an open question.
 ff55ddc1	This page drifted off into space.
 591a9736	This page has not been opened on this device yet, so it is not saved. Pages you have opened before still work, and everything else comes back when you are online again.
+5f38d805	This page is the history, in order. To see where spacecraft are right now, open
+7eaca956	This page shows where spacecraft are right now. For the story of space exploration from Sputnik to today, open
 f638b238	Three neighbours that shape our days, months and years.
 002513b1	Tick it off in My space
 efd04762	Tidal heating melts a global ocean under the ice shell.
@@ -1622,7 +1633,6 @@ a7576b50	Virgin
 03acc464	Voyager 2 (1989) saw nitrogen geysers and a young surface.
 3f31d471	WR 124 (Webb, 2023): a huge star shedding its outer layers in a cloud of gas and dust before it dies.
 097fe70a	Wait 20 minutes
-152bc95d	Want it for your city?
 878dcc67	Want the story behind the numbers?
 72e4c951	Want to test yourself?
 f7344ab9	Was early Mars warm for a long time or only in short bursts, and did life ever start there? Perseverance is collecting rock samples to help answer this.
@@ -1655,7 +1665,6 @@ dea08d49	What is in the middle during a lunar eclipse?
 b90b098f	What it is
 33e611c6	What keeps Pluto active so far from the Sun? A hidden ocean under the ice is one possible answer.
 e0831f7e	What mainly causes the seasons?
-d4c281c3	What planets are visible tonight?
 a01ee55c	What stars are, and the patterns people have seen in them.
 f0b47bd9	What the pictures show is not the black hole itself but its dark shadow and the ring of glowing gas around it. The orange colour is added to show how bright each part is.
 c865ccfa	What to look for tonight, from your city

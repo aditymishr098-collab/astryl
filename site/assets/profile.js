@@ -29,6 +29,11 @@
 
   var u = (new URLSearchParams(location.search).get('u') || '').trim().toLowerCase();
   if (!u) { var s = ACCT && ACCT.session && ACCT.session(); if (s && s.username) u = s.username; }
+  if (!/^[a-z0-9_]{3,20}$/.test(u) && document.getElementById('mySpace')) {
+    // your own My space is shown above; a public page comes with an account
+    box.innerHTML = '<section class="blk"><p class="note">With a free <a href="' + root + 'account.html">Astryl account</a> you also get a public page for your sky photos and questions.</p></section>';
+    return;
+  }
   if (!/^[a-z0-9_]{3,20}$/.test(u)) {
     box.innerHTML = '<h1 class="sr-only">Profile</h1><div class="cmempty"><div class="cmeic">👤</div><p>No one to show. Open a profile by tapping a name in the community or on a leaderboard.</p><a class="btn primary" href="' + root + 'community.html">Open the community</a></div>';
     return;
