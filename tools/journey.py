@@ -44,6 +44,13 @@ def build(h):
 <button class="btn" type="button" id="jyShare">↗ Share how far you have travelled</button>
 </div>
 </section>
+<section class="blk" id="journey"><h2>The journey, in one flight</h2><p class="sub">From the Sun and its planets out to the stars around us, the Milky Way, the Local Group and the flow of galaxies towards the Great Attractor. Real directions and distances; planets, stars and galaxies are drawn bigger so you can see them. Drag to look around while you fly.</p>
+<div class="jjbox" id="jyJourney"><div class="jjstage"><div class="jjlabels"></div>
+<div class="jjtext"><p class="jjcap">Our <b>Solar System</b></p><p class="jjsub">Press Play to fly from the Sun to the edge of what we know.</p></div>
+<div class="jjstart"><img src="img/space/gx-milkyway.webp" alt="" loading="lazy"><button class="btn primary" type="button" data-jj="play">▶ Play the journey</button></div>
+<p class="jjnogl">Your browser cannot show 3D, so the journey is not available here. The scenes below show each step.</p>
+</div><div class="jjctl"><button class="btn" type="button" data-jj="play2" aria-label="Play or pause">▶ Play</button><div class="jjbar"><i></i></div><div class="jjdots"></div></div></div>
+</section>
 <section class="blk jy">
 <div class="umchips" role="group" aria-label="Choose what to watch">
 <button type="button" data-scene="0">1. Planets and Sun</button><button type="button" data-scene="1">2. Sun round the Milky Way</button><button type="button" data-scene="2">3. Milky Way and Andromeda</button><button type="button" data-scene="3">4. Where we are heading</button>
@@ -81,5 +88,5 @@ def build(h):
     ld.append({'@context': 'https://schema.org', '@type': 'FAQPage', 'mainEntity': [
         {'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in FAQ]})
     write(PATH, shell(TITLE, TITLE, 'move', body, DESC, canonical=PATH, ld=ld,
-                      extra_head=f'<script defer src="assets/three.min.js?v={v}"></script><script defer src="assets/OrbitControls.js?v={v}"></script><script defer src="assets/journey.js?v={v}"></script>'))
+                      extra_head=f'<script defer src="assets/three.min.js?v={v}"></script><script defer src="assets/OrbitControls.js?v={v}"></script><script defer src="assets/journey.js?v={v}"></script><script defer src="assets/journey3d.js?v={v}"></script>'))
     return [PATH]
