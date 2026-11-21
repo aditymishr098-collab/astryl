@@ -60,7 +60,7 @@ def lifetime_years(m):
 def _bil(x, y, en, hi, anchor='start', size=13, fill='var(--text)', weight=600):
     st = f'fill:{fill};font:{weight} {size}px DM Sans,sans-serif'
     return (f'<text x="{x}" y="{y}" text-anchor="{anchor}" class="t" lang="en" style="{st}">{en}</text>'
-            f'<text x="{x}" y="{y}" text-anchor="{anchor}" class="t" lang="hi" style="{st}">{hi}</text>')
+            '')
 
 
 # ---------- drawings ----------
@@ -110,7 +110,6 @@ def hr_svg():
 {ticks}{dots}
 {_bil((L + R) // 2, H - 8, '← hotter · surface temperature · cooler →', '← ज़्यादा गर्म · सतह का तापमान · ज़्यादा ठंडा →', 'middle', 12, '#8c9bb5', 500)}
 <text x="16" y="{(T + B) // 2}" transform="rotate(-90 16 {(T + B) // 2})" text-anchor="middle" class="t" lang="en" style="fill:#8c9bb5;font:500 12px DM Sans,sans-serif">brightness (Sun = 1)</text>
-<text x="16" y="{(T + B) // 2}" transform="rotate(-90 16 {(T + B) // 2})" text-anchor="middle" class="t" lang="hi" style="fill:#8c9bb5;font:500 12px DM Sans,sans-serif">चमक (सूर्य = 1)</text>
 </svg>'''
 
 
